@@ -1,71 +1,57 @@
 # Prima del corso
 
-Questa pagina prepara il vostro computer per le esercitazioni di «Claude e
-Claude Code in pratica — Corso base». Alla fine `tools/verifica_ambiente.sh`
-controlla che non manchi niente.
+Circa un quarto d'ora di preparazione, da fare prima della prima sessione,
+in ordine, dall'inizio alla fine. Si finisce con `tools/verifica_ambiente.sh`
+che risponde «Tutto pronto per il corso.».
 
 ## Che cosa serve
 
 - **Un abbonamento Claude Pro.** Claude Code richiede un account Pro, Max,
   Team, Enterprise o Console: il piano gratuito di claude.ai non lo include.
-- **Un computer** con macOS 13.0 o successivo, Windows 10 1809 o successivo
-  (oppure Windows Server 2019 o successivo), Ubuntu 20.04 o successivo,
-  Debian 10 o successivo, oppure Alpine Linux 3.19 o successivo; almeno 4 GB
-  di RAM, un processore x64 o ARM64 e una connessione a internet.
-- **git**, **Docker** (oppure PHP 8.3 o successivo con Composer), **Python 3
-  con uv**: i paragrafi qui sotto.
+- **Un computer** con almeno 4 GB di RAM, un processore x64 o ARM64 e una
+  connessione a internet.
+- **Linux, oppure Windows con WSL 2**: il paragrafo qui sotto.
+
+## Linux o Windows con WSL 2
+
+Il corso presuppone uno di due ambienti, e tutti i comandi di questa pagina
+si danno nel suo terminale:
+
+- **Linux**: Ubuntu 20.04 o successivo, Debian 10 o successivo, oppure
+  Alpine Linux 3.19 o successivo.
+- **Windows 10 o 11 con WSL 2**, con dentro una distribuzione Linux tra
+  quelle qui sopra (per esempio Ubuntu). Tutto, cioè git, Claude Code,
+  Docker oppure PHP con Composer, Python e uv, si installa e si usa *dentro*
+  la distribuzione, dal suo terminale, non da PowerShell o da CMD.
+
+macOS, Windows senza WSL 2 (PowerShell, CMD, Git Bash) e WSL 1 non sono
+ambienti del corso.
+
+## git
+
+`git --version` deve rispondere. Se manca, si installa con il gestore di
+pacchetti della distribuzione.
 
 ## Installare Claude Code
 
-**macOS, Linux, WSL** — da un terminale:
+Nel terminale (su Windows, quello della distribuzione WSL 2):
 
     curl -fsSL https://claude.ai/install.sh | bash
 
 È l'installazione nativa, quella consigliata, e si aggiorna da sola in
-background.
+background. In WSL si usa proprio questo installer per Linux: `claude` si
+installa e si avvia dentro il terminale WSL.
 
-### Windows
-
-Su Windows Claude Code gira in modo nativo oppure dentro WSL.
-
-- **Windows nativo**, da PowerShell:
-
-      irm https://claude.ai/install.ps1 | iex
-
-  oppure dal Prompt dei comandi (CMD):
-
-      curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
-
-  Non servono diritti di amministratore. Git for Windows è facoltativo per
-  Claude Code: porta Git Bash, che il Bash tool di Claude Code usa; senza,
-  Claude Code esegue i comandi con il PowerShell tool.
-- **WSL**: si usa l'installer per Linux (il comando `curl` del paragrafo
-  sopra), e `claude` si installa e si avvia dentro il terminale WSL, non da
-  PowerShell o da CMD.
-
-Gli script del corso (`tools/*.sh` e i `verifica.sh` degli elementi) sono
-bash: su Windows lanciateli da WSL 2 oppure da Git Bash.
-
-### Altri modi di installare
-
-Con Homebrew (`brew install --cask claude-code`) o con WinGet
-(`winget install Anthropic.ClaudeCode`): queste due installazioni non si
-aggiornano da sole. Su Debian, Fedora, RHEL e Alpine anche dai repository
-apt, dnf o apk. Oppure il pacchetto npm globale `@anthropic-ai/claude-code`,
-che richiede Node.js 22 o successivo: mai con `sudo npm install -g`.
-
-### Controllo
-
-`claude --version` stampa la versione installata. `claude doctor` stampa
-una diagnostica dell'installazione e delle impostazioni, in sola lettura e
-senza avviare una sessione.
+Controllo: `claude --version` stampa la versione installata; `claude doctor`
+stampa una diagnostica dell'installazione e delle impostazioni, in sola
+lettura e senza avviare una sessione.
 
 ## Accedere con l'abbonamento Pro
 
-Lanciate `claude` in un terminale e seguite le istruzioni nel browser,
-accedendo con il vostro account claude.ai. Se dopo l'accesso il browser
-mostra un codice invece di tornare al terminale, incollatelo nel terminale:
-succede spesso in WSL2, nelle sessioni SSH e nei container.
+Lanciate `claude` e seguite le istruzioni nel browser, accedendo con il
+vostro account claude.ai. Se dopo l'accesso il browser mostra un codice
+invece di tornare al terminale, incollatelo nel terminale: in WSL2 succede
+spesso.
 
 Dentro Claude Code, `/status` mostra quale metodo di autenticazione è
 attivo; `/logout` esce, per poi accedere di nuovo.
@@ -82,20 +68,15 @@ Controllate così (il comando non stampa mai la chiave):
     if [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then echo impostata; else echo "non impostata"; fi
 
 Se è impostata, toglietela dal file di avvio della shell in cui la
-definite (per esempio `~/.bashrc` o `~/.zshrc`) e, nel terminale già aperto,
-date `unset ANTHROPIC_API_KEY`: Claude Code torna all'abbonamento.
-
-## git
-
-Serve git: `git --version` deve rispondere. Si installa con il gestore di
-pacchetti del sistema o dal sito di git; su Windows con Git for Windows, che
-porta anche Git Bash.
+definite (per esempio `~/.bashrc`) e, nel terminale già aperto, date
+`unset ANTHROPIC_API_KEY`: Claude Code torna all'abbonamento.
 
 ## Docker, oppure PHP e Composer
 
 Gli esercizi sul gestionale in PHP passano da `tools/php.sh`: usa PHP 8.3 o
-successivo con Composer se li trova sul computer, altrimenti le immagini
-Docker ufficiali di PHP e di Composer. Serve quindi una delle due strade:
+successivo con Composer se li trova, altrimenti le immagini Docker ufficiali
+di PHP e di Composer. Serve una delle due strade, sempre nel terminale
+Linux o della distribuzione WSL 2:
 
 - **Docker** con il servizio attivo: `docker version` mostra anche la parte
   «Server». La prima volta `tools/php.sh` scarica le immagini;
@@ -110,20 +91,30 @@ del corso. Installateli seguendo le istruzioni ufficiali di ciascuno.
 
 ## Il repository delle esercitazioni
 
-Il docente vi consegna il repository: una cartella pronta, oppure un file
-`.bundle` da clonare con
+Il docente vi comunica l'indirizzo del repository online delle
+esercitazioni. Clonatelo ed entrate nella sua cartella:
 
-    git clone <file>.bundle esercitazioni
+    git clone <indirizzo comunicato dal docente> esercitazioni
+    cd esercitazioni
 
-Aprite un terminale nella cartella del repository: i comandi delle
-esercitazioni partono tutti da lì.
+In WSL 2 clonatelo nella cartella di casa della distribuzione (prima un
+`cd ~`), non sotto `/mnt/c`. Tutti i comandi delle esercitazioni partono
+dalla cartella `esercitazioni`.
+
+Durante il corso il docente aggiunge al repository le demo e gli esercizi
+dei moduli: per averli, `git pull` nella cartella `esercitazioni`. Il
+vostro lavoro non ne risente, perché sta negli spazi di lavoro che
+`tools/prepara_esercizio.sh` crea fuori dal repository
+(`~/corso-claude-code/`).
 
 ## Il controllo finale
 
+Dalla cartella `esercitazioni`:
+
     tools/verifica_ambiente.sh
 
-Su Windows lanciatelo da WSL 2 o da Git Bash. Controlla il sistema
-operativo, Claude Code, la variabile `ANTHROPIC_API_KEY`, git, PHP o Docker,
-Python e uv; di Claude Code esegue soltanto `claude --version`, senza nessun
-prompt. Esce con 0 se c'è tutto; altrimenti elenca che cosa sistemare e in
-quale paragrafo di questa pagina.
+Controlla il sistema operativo, Claude Code, la variabile
+`ANTHROPIC_API_KEY`, git, PHP o Docker, Python e uv; di Claude Code esegue
+soltanto `claude --version`, senza nessun prompt. Deve finire con «Tutto
+pronto per il corso.». Se no, elenca che cosa sistemare e in quale
+paragrafo di questa pagina: sistemate e rilanciatelo.

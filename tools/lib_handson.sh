@@ -42,8 +42,9 @@
 #   HANDSON_PERMISSION_MODE  la modalità di permesso di handson::claude_p:
 #                            dontAsk (default), manual, acceptEdits, plan
 #
-# Scritta per il bash 3.2 di macOS come per il bash 5 di Linux e WSL:
-# niente array associativi né readarray, mai "${a[@]}" di un array vuoto.
+# Il corso gira su Linux e su Windows con WSL 2; la libreria resta
+# compatibile anche con il bash 3.2: niente array associativi né
+# readarray, mai "${a[@]}" di un array vuoto.
 # =====================================================================
 
 # Una seconda `source` nello stesso processo non ridefinisce niente.

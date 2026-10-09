@@ -12,8 +12,24 @@ esempio su cui lavorano gli esercizi e le dispense di riferimento.
 - Al docente: per preparare e provare gli elementi prima di ogni sessione.
 
 Prima della prima sessione seguite [`PRIMA_DEL_CORSO.md`](PRIMA_DEL_CORSO.md):
-installazione di Claude Code, accesso con l'abbonamento Pro, strumenti e
-controllo finale.
+Linux o Windows con WSL 2, installazione di Claude Code, accesso con
+l'abbonamento Pro, strumenti e controllo finale.
+
+## Ottenere il repository e aggiornarlo
+
+Il docente comunica l'indirizzo del repository online. Si clona una volta:
+
+    git clone <indirizzo comunicato dal docente> esercitazioni
+    cd esercitazioni
+
+Quando arrivano le demo e gli esercizi di un modulo, si aggiorna dalla
+stessa cartella con
+
+    git pull
+
+Il lavoro degli esercizi sta negli spazi di lavoro, fuori dal repository
+(vedi sotto): `git pull` non lo tocca, e lo cancella solo
+`tools/reset_esercizio.sh`, quando lo chiedete voi.
 
 ## Com'è fatto
 
@@ -38,9 +54,9 @@ cartella contiene:
 
 ## Come si usa un elemento
 
-Gli script di `tools/` sono bash: su Linux e macOS si lanciano dal
-terminale, su Windows da WSL 2 o da Git Bash; sempre dalla cartella del
-repository.
+Gli script di `tools/` sono bash: si lanciano dal terminale di Linux o, su
+Windows, da quello della distribuzione WSL 2; sempre dalla cartella del
+repository, `esercitazioni`.
 
 1. **Prepara** lo spazio di lavoro:
 
@@ -135,5 +151,5 @@ modello, effort, turni attesi, subagent.
 
 Le soluzioni (`soluzione/`) e il materiale del docente (`_docente/`) stanno
 in questo repository e restano fuori dalla copia per i partecipanti, che
-`tools/esporta_studenti.sh` prepara come repository git a sé, con un bundle
-da consegnare.
+`tools/esporta_studenti.sh` prepara come repository git a sé (con un
+bundle): è quella da pubblicare come repository online del corso.

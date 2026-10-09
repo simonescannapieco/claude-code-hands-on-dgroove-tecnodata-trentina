@@ -20,6 +20,8 @@ readonly SELF
 readonly REPO="${SELF%/tests/*}"
 readonly TOOL="${REPO}/tools/verifica_ambiente.sh"
 readonly CHIAVE_FINTA='chiave-finta-di-prova-0042'
+readonly NON_CORSO='il corso presuppone Linux o Windows con WSL 2'
+readonly GUIDA="${REPO}/PRIMA_DEL_CORSO.md"
 TMP="$(mktemp -d)" || { echo "mktemp non riesce" >&2; exit 2; }
 readonly TMP
 trap 'rm -rf -- "${TMP}"' EXIT
@@ -150,26 +152,57 @@ t_python() {
   expect "python al posto di python3" 0 "Python 3.11.4 (python)"
 }
 
+# Lo strumento con un sistema finto e tutto il resto presente.
+# Arguments: $1 l'uscita di uname -s, $2 il contenuto di /proc/version.
+sistema() {
+  printf '%s\n' "$2" > "${PROC}"
+  OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
+    FINTO_UNAME="$1" "${TOOL}" 2>&1)"
+  RC=$?
+}
+
 t_sistemi() {
-  OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
-    FINTO_UNAME=Darwin "${TOOL}" 2>&1)"
-  RC=$?
-  expect "macOS" 0 "sistema operativo: macOS"
-  OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
-    FINTO_UNAME=MINGW64_NT-10.0-19045 "${TOOL}" 2>&1)"
-  RC=$?
-  expect "Windows con Git Bash" 0 "Windows, Git Bash"
   local kernel='5.15.153.1'  # canon:ok -- kernel version, not an address
-  printf 'Linux version %s-microsoft-standard-WSL2\n' "${kernel}" > "${PROC}"
-  ambiente tutto
-  expect "WSL 2" 0 "Windows, WSL 2"
+  sistema Linux 'Linux version 6.1.0-amd64 (Debian 6.1.0)'
+  expect "Linux: in ordine" 0 "sistema operativo: Linux"
+  expect_absent "Linux: nessun rifiuto" "presuppone"
+  sistema Linux "Linux version ${kernel}-microsoft-standard-WSL2"
+  expect "WSL 2: in ordine" 0 "sistema operativo: Windows, WSL 2"
+  expect_absent "WSL 2: nessun rifiuto" "presuppone"
+  sistema Linux 'Linux version 4.4.0-19041-Microsoft'
+  expect "WSL 1: da sistemare" 1 "Windows, WSL 1: ${NON_CORSO}"
+  sistema Darwin ''
+  expect "macOS: da sistemare" 1 "macOS: ${NON_CORSO}"
+  sistema MINGW64_NT-10.0-19045 ''
+  expect "Git Bash: da sistemare" 1 "Windows, Git Bash: ${NON_CORSO}"
+  sistema MSYS_NT-10.0-19045 ''
+  expect "MSYS: da sistemare" 1 "Windows, MSYS: ${NON_CORSO}"
+  sistema CYGWIN_NT-10.0-19045 ''
+  expect "Cygwin: da sistemare" 1 "Windows, Cygwin: ${NON_CORSO}"
+  sistema FreeBSD ''
+  expect "un altro sistema: da sistemare" 1 "«FreeBSD»: ${NON_CORSO}"
+  expect "e indica il paragrafo della guida" 1 "«Linux o Windows con WSL 2»"
+}
+
+# Tutto da sistemare: ogni paragrafo che lo strumento cita esiste come
+# titolo «## …» di PRIMA_DEL_CORSO.md.
+t_paragrafi() {
+  local nome trovati=0 mancanti=''
+  bin vuoto uname
   printf 'Linux version 4.4.0-19041-Microsoft\n' > "${PROC}"
-  ambiente tutto
-  expect "WSL 1 da sistemare" 1 "WSL 1: il corso usa WSL 2"
-  OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
-    FINTO_UNAME=FreeBSD "${TOOL}" 2>&1)"
+  OUT="$(env PATH="${TMP}/vuoto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
+    ANTHROPIC_API_KEY="${CHIAVE_FINTA}" "${TOOL}" 2>&1)"
   RC=$?
-  expect "un sistema fuori dal corso" 1 "«FreeBSD»"
+  expect "tutto da sistemare" 1 "Da sistemare: 7"
+  while IFS= read -r nome; do
+    trovati=$((trovati + 1))
+    grep -qxF "## ${nome}" "${GUIDA}" || mancanti+=" «${nome}»"
+  done < <(grep -o '«[^»]*»' <<< "${OUT}" | sed 's/[«»]//g' | sort -u)
+  if (( trovati >= 6 )) && [[ -z "${mancanti}" ]]; then
+    pass "ogni paragrafo citato è un titolo di PRIMA_DEL_CORSO.md"
+  else
+    fail "paragrafi senza titolo:${mancanti} (citati ${trovati})"
+  fi
 }
 
 main() {
@@ -187,6 +220,7 @@ main() {
   t_php_docker
   t_python
   t_sistemi
+  t_paragrafi
   echo "PASS=${PASS} FAIL=${FAIL}"
   (( FAIL == 0 )) || exit 1
 }

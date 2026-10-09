@@ -3,7 +3,8 @@
 # verifica_ambiente.sh -- controlla, prima del corso, che sul computer ci
 # sia tutto quello che serve alle esercitazioni e, per ciò che manca, dice
 # quale paragrafo di PRIMA_DEL_CORSO.md leggere:
-#   - il sistema operativo: Linux, macOS, Windows con WSL 2 o Git Bash;
+#   - il sistema operativo: Linux, oppure Windows con WSL 2 (ogni altro
+#     sistema, WSL 1 compreso, è da sistemare);
 #   - Claude Code (il comando claude) e la sua versione;
 #   - ANTHROPIC_API_KEY non impostata: con la chiave impostata Claude Code
 #     userebbe la chiave invece dell'abbonamento Pro (il valore non viene
@@ -59,27 +60,26 @@ presente() {
   fi
 }
 
+# Il sistema operativo: in ordine solo Linux e Windows con WSL 2; ogni
+# altro (macOS, Git Bash/MSYS, Cygwin, WSL 1, …) è da sistemare.
 check_os() {
-  local s='' v=''
+  local s='' v='' nome
   s="$(uname -s 2>/dev/null)" || s='sconosciuto'
   if [[ -r "${PROC_VERSION}" ]]; then
     v="$(< "${PROC_VERSION}")"
   fi
-  case "${s}" in
-    Darwin) ok "sistema operativo" "macOS" ;;
-    MINGW*|MSYS*) ok "sistema operativo" "Windows, Git Bash" ;;
-    Linux)
-      if [[ "${v}" == *WSL2* ]]; then
-        ok "sistema operativo" "Windows, WSL 2"
-      elif [[ "${v}" == *[Mm]icrosoft* ]]; then
-        da_fare "sistema operativo" "WSL 1: il corso usa WSL 2" \
-          "(${GUIDA}, «Windows»)"
-      else
-        ok "sistema operativo" "Linux"
-      fi ;;
-    *) da_fare "sistema operativo" "«${s}»: il corso usa Linux, macOS o" \
-         "Windows con WSL 2 o Git Bash (${GUIDA})" ;;
+  case "${s}:${v}" in
+    Linux:*WSL2*) ok "sistema operativo" "Windows, WSL 2"; return 0 ;;
+    Linux:*[Mm]icrosoft*) nome="Windows, WSL 1" ;;
+    Linux:*) ok "sistema operativo" "Linux"; return 0 ;;
+    Darwin:*) nome="macOS" ;;
+    MINGW*) nome="Windows, Git Bash" ;;
+    MSYS*) nome="Windows, MSYS" ;;
+    CYGWIN*) nome="Windows, Cygwin" ;;
+    *) nome="«${s}»" ;;
   esac
+  da_fare "sistema operativo" "${nome}: il corso presuppone Linux o Windows" \
+    "con WSL 2 (${GUIDA}, «Linux o Windows con WSL 2»)"
 }
 
 check_api_key() {
