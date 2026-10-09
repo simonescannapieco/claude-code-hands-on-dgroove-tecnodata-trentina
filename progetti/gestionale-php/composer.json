@@ -1,0 +1,37 @@
+{
+    "name": "ciaspolink/gestionale",
+    "description": "Gestionale di CiaspoLink S.r.l. (operatore immaginario): clienti, offerte, linee, copertura, attivazioni, rivenditori, ticket e fatture.",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.3",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-pdo_sqlite": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.5",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CiaspoLink\\Gestionale\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CiaspoLink\\Gestionale\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs": "phpcs",
+        "db": "@php bin/inizializza-db.php"
+    }
+}

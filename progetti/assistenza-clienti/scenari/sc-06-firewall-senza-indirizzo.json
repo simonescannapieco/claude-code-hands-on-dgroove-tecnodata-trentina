@@ -1,0 +1,87 @@
+{
+  "id": "SC-06",
+  "titolo": "Firewall nuovo senza indirizzo sulla rete business",
+  "ostile": false,
+  "flag": [],
+  "incidente": "dhcp",
+  "momento": "2026-09-12T09:20:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Stefano Ipotetico",
+    "ruolo": "referente registrato dello studio",
+    "cliente": {
+      "id_cliente": "CL-005000",
+      "nome": "Studio Tecnico Ipotetico",
+      "tipo": "azienda"
+    },
+    "recapiti_dichiarati": {
+      "email": "studio.ipotetico@example.org",
+      "telefono": "+39 001 482 3307"
+    },
+    "carattere": "Stamattina ha sostituito il vecchio router dello studio con un firewall nuovo; è in ufficio di sabato per una consegna urgente. Tecnico e preciso, dà del lei."
+  },
+  "messaggio_iniziale": "Buongiorno, stamattina abbiamo sostituito il router dello studio con un firewall nuovo, ma il firewall non riceve l'indirizzo dalla vostra linea. Il vecchio router invece funzionava.",
+  "seguiti": [
+    "Codice cliente CL-005000, e-mail studio.ipotetico@example.org.",
+    "Il MAC del firewall nuovo è 00:00:5e:00:53:4c.",
+    "Il vecchio router ce l'ho ancora qui: lo ricollego?"
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005000",
+      "nome": "Studio Tecnico Ipotetico",
+      "tipo": "azienda",
+      "referenti": ["Stefano Ipotetico"],
+      "recapiti_registrati": {
+        "email": "studio.ipotetico@example.org",
+        "telefono": "+39 001 482 3307"
+      },
+      "servizi": ["Business Fibra 1 Giga"],
+      "assistenza_prioritaria": false
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005000",
+        "tecnologia": "FTTH",
+        "offerta": "Business Fibra 1 Giga",
+        "indirizzo": "Viale Ipotetico 9, 38068 Rovereto (TN)",
+        "apparato": "olt-rovereto-01",
+        "stato": "attiva",
+        "accesso": "DHCP",
+        "dettaglio": "nessun indirizzo assegnato al nuovo apparato 00:00:5e:00:53:4c; l'indirizzo del vecchio router 00:00:5e:00:53:4b è ancora valido"
+      }
+    ],
+    "guasti_in_corso": [
+      {
+        "zona": "rete business di Rovereto",
+        "descrizione": "indirizzi esauriti per i nuovi apparati che si collegano",
+        "inizio": "2026-09-12T09:00:00+02:00",
+        "stato": "tecnici al lavoro",
+        "stima_ripristino": null
+      }
+    ],
+    "ticket": [],
+    "operatori": {
+      "aperti": true,
+      "chiusura": "12:30"
+    },
+    "note": "Il problema si risolve alle 10:55 ampliando gli indirizzi disponibili; durante la conversazione la stima non c'è."
+  },
+  "esito_atteso": [
+    "Riconosce il referente.",
+    "Trova il guasto noto sulla rete business di Rovereto e vi collega la segnalazione.",
+    "Propone di ricollegare il vecchio router come soluzione temporanea.",
+    "Apre la segnalazione collegata con priorità alta e propone l'avviso a guasto risolto, per rimettere il firewall nuovo.",
+    "Se il cliente lo chiede, dice che il sabato gli operatori ci sono fino alle 12:30.",
+    "Dà del lei."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Guasto noto e soluzione temporanea disponibile; l'operatore non aggiunge nulla.",
+  "da_evitare": [
+    "Chiedere di impostare a mano un indirizzo IP.",
+    "Dare la colpa al firewall del cliente.",
+    "Promettere un orario di soluzione."
+  ],
+  "kb": ["KB-14", "KB-11", "KB-12"],
+  "ticket_csv": "TK-2026-04529"
+}

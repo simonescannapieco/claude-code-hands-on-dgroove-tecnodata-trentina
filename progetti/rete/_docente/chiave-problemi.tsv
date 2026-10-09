@@ -1,0 +1,41 @@
+id	apparato	file	marcatore	occorrenza	categoria	gravita	descrizione
+P01	core-trento-01	configurazioni/core-trento-01.cfg	username admin privilege 15 password 0	1	AUD-03	alta	utente locale admin con password in chiaro (password-encryption disattivato); la stessa password e' su core-rovereto-01
+P02	core-trento-01	configurazioni/core-trento-01.cfg	description sw-trento-01 Gi1/0/21 - transito rtr-cles-01	1	AUD-12	bassa	Gi0/0/3 porta la sottointerfaccia .902 verso rtr-pergine-01 (192.0.2.70/31) e va a sw-trento-01 Gi1/0/20, ma la descrizione dice rtr-cles-01 e Gi1/0/21 come Gi0/0/4
+P03	core-trento-01	configurazioni/core-trento-01.cfg	snmp-server community public RO	1	AUD-01	alta	community SNMP v2c predefinita «public», per giunta senza ACL; lo standard e' solo SNMPv3
+P04	core-trento-01	configurazioni/core-trento-01.cfg	transport input telnet ssh	1	AUD-02	alta	telnet ammesso sulle vty 0 4
+P05	core-rovereto-01	configurazioni/core-rovereto-01.cfg	username admin privilege 15 password 0	1	AUD-03	alta	stessa password in chiaro di core-trento-01 (segreto riutilizzato fra apparati)
+P06	core-rovereto-01	configurazioni/core-rovereto-01.cfg	ip http server	1	AUD-02	media	server HTTP in chiaro attivo accanto a quello HTTPS
+P07	sw-trento-01	configurazioni/sw-trento-01.cfg	switchport trunk native vlan 999	1	AUD-09	media	native VLAN 999 sul trunk verso sw-rovereto-01, che usa la VLAN 1 predefinita: incoerenza fra i due capi (il syslog ripete NATIVE_VLAN_MISMATCH ogni ora)
+P08	sw-trento-01	configurazioni/sw-trento-01.cfg	snmp-server community private RW	1	AUD-01	alta	community SNMP «private» in scrittura
+P09	sw-rovereto-01	configurazioni/sw-rovereto-01.cfg	ip address 192.0.2.13 255.255.255.192	1	AUD-11	alta	indirizzo di gestione 192.0.2.13, gia' di olt-rovereto-01; l'inventario assegna 192.0.2.8 (l'OLT segnala IP_CONFLICT, il RADIUS vede un client sconosciuto)
+P10	sw-rovereto-01	configurazioni/sw-rovereto-01.cfg	logging host 192.0.2.243	1	AUD-05	media	syslog verso il collettore dismesso 192.0.2.243: nessuna riga di sw-rovereto-01 nel syslog centrale
+P11	bdr-trento-01	configurazioni/bdr-trento-01.conf	time-zone UTC;	1	AUD-06	bassa	fuso orario UTC invece di Europe/Rome: le sue righe di syslog sono due ore indietro
+P12	bdr-trento-01	configurazioni/bdr-trento-01.conf	telnet;	1	AUD-02	alta	servizio telnet attivo sul router di bordo
+P13	bdr-trento-01	configurazioni/bdr-trento-01.conf	group TRANSITO-B {	1	AUD-08	alta	sessione eBGP con il transito B (AS64497) senza politica di import ne' prefix-limit, a differenza del transito A
+P14	bng-trento-01	configurazioni/bng-trento-01.rsc	change-tcp-mss=no	1	AUD-07	media	profilo PPP senza clamping dell'MSS
+P15	bng-trento-01	configurazioni/bng-trento-01.rsc	max-mru=1500 max-mtu=1500	1	AUD-07	media	MTU/MRU 1500 sulle quattro istanze PPPoE server (lo standard e' 1492)
+P16	bng-trento-01	configurazioni/bng-trento-01.rsc	set [ find default=yes ] name=ciaspolink	1	AUD-01	alta	la community v1/v2c predefinita e' stata solo rinominata con il nome dell'azienda («ciaspolink», facile da indovinare) e resta attiva, senza restrizioni di indirizzo; nessun utente v3
+P17	rtr-pergine-01	configurazioni/rtr-pergine-01.rsc	by RouterOS 6.49.10	1	AUD-13	media	esegue 6.49.10, l'inventario registra 7.15.3
+P18	rtr-pergine-01	configurazioni/rtr-pergine-01.rsc	set telnet address=192.0.2.0/26	1	AUD-02	alta	telnet attivo: ristretto alla rete di gestione ma non disattivato (nell'esportazione della 6 manca «disabled=yes»)
+P19	rtr-cles-01	configurazioni/rtr-cles-01.rsc	secret=nas-371f22ff1c97	1	AUD-15	alta	segreto RADIUS diverso da quello del server (clients.conf): gli accessi del NOC ripiegano sull'utente locale, il server registra «invalid Message-Authenticator»
+P20	rtr-cles-01	configurazioni/rtr-cles-01.rsc	set 3 remote=192.0.2.243	1	AUD-05	media	syslog verso il collettore dismesso: nessuna riga di rtr-cles-01 nel syslog centrale
+P21	rtr-cles-01	configurazioni/rtr-cles-01.rsc	add address=192.0.2.244	1	AUD-04	media	unico server NTP e' quello dismesso 192.0.2.244
+P22	radius-trento-01	configurazioni/radius-trento-01/clients.conf	secret = nas-79be0d6d4380	1	AUD-15	alta	l'altro capo di P19: il segreto del client rtr-cles-01 sul server non coincide con quello dell'apparato
+P23	radius-trento-01	configurazioni/radius-trento-01/clients.conf	secret = testing123	1	AUD-03	alta	client di prova con il segreto predefinito «testing123», aperto a qualunque indirizzo (0.0.0.0/0)
+P24	bts-cles-01	configurazioni/bts-cles-01.rsc	channel-width=20/40/80mhz-Ceee	1	AUD-14	media	settore S3 a 80 MHz; il piano radio prevede 20 MHz su 5260
+P25	bts-cles-01	configurazioni/bts-cles-01.rsc	set www address=192.0.2.0/26	1	AUD-02	media	interfaccia web in HTTP attiva: ristretta alla rete di gestione ma non disattivata (nell'esportazione manca «disabled=yes»)
+P26	olt-trento-01	configurazioni/olt-trento-01.cfg	sysman service telnet enable	1	AUD-02	alta	telnet attivo sull'OLT
+P27	olt-trento-01	configurazioni/olt-trento-01.cfg	ntp-service unicast-server 192.0.2.244	1	AUD-04	media	unico server NTP e' quello dismesso: l'orologio deriva (syslog in anticipo fino a ~50 s, allarme ntp aperto)
+P28	olt-pergine-01	configurazioni/olt-pergine-01.cfg	rule 5 permit source 198.51.100.0 0.0.0.255	1	AUD-10	alta	l'ACL di gestione ammette la rete delle sessioni PPPoE dei clienti invece della rete di gestione 192.0.2.0/26
+P29	olt-pergine-01	configurazioni/olt-pergine-01.cfg	software-version V3.1.0	1	AUD-13	media	esegue V3.1.0, l'inventario registra V5.2.1
+P30	olt-rovereto-01	configurazioni/olt-rovereto-01.cfg	snmp-agent community read cipher	1	AUD-01	alta	SNMP v2c attivo («sys-info version v2c v3») con una community di lettura, che la configurazione mostra cifrata, accanto a v3
+P31	olt-rovereto-01	configurazioni/olt-rovereto-01.cfg	port desc 2 "riserva - non in uso"	1	AUD-12	bassa	la porta PON 0/1/2 e' descritta come riserva ma serve sette ONT, fra cui LN-000203
+P32	ptp-trento-01	configurazioni/ptp-trento-01/system.cfg	httpd.status=enabled	1	AUD-02	media	interfaccia web solo in HTTP (httpd.https.status=disabled)
+P33	ptp-cles-01	configurazioni/ptp-cles-01/system.cfg	snmp.community=public	1	AUD-01	media	SNMP v1/v2c con community «public», v3 disattivato
+P34	ptp-cles-01	configurazioni/ptp-cles-01/system.cfg	system.timezone=GMT	1	AUD-06	media	fuso orario GMT: le sue righe di syslog sono due ore indietro rispetto a ptp-trento-01, l'altro capo dello stesso ponte
+P35	bts-cavareno-01	configurazioni/bts-cavareno-01/system.cfg	radio.1.txpower=27	1	AUD-14	media	potenza 27 dBm; il piano radio prevede 18
+P36	bts-cavareno-01	configurazioni/bts-cavareno-01/system.cfg	wpa.1.psk=12345678	1	AUD-03	alta	chiave WPA2 del settore banale (12345678)
+P37	dhcp-trento-01	configurazioni/dhcp-trento-01/kea-dhcp4.conf	"valid-lifetime": 604800	1	AUD-16	media	lease di 7 giorni sulla subnet della VLAN 312 (lo standard e' 1 giorno): gli indirizzi presi da dispositivi di passaggio restano bloccati per una settimana
+P38	dhcp-trento-01	configurazioni/dhcp-trento-01/kea-dhcp4.conf	"pool": "198.51.100.200 - 198.51.100.213"	1	AUD-16	media	pool di 14 indirizzi per 11 linee: margine del 21%, sotto il 30% richiesto; si esaurisce sabato 12
+P39	sbc-trento-01	configurazioni/sbc-trento-01/kamailio.cfg	kamailio:kamailiorw@	1	AUD-03	alta	credenziali predefinite del database (utente kamailio, password kamailiorw)
+P40	pbx-trento-01	configurazioni/pbx-trento-01/pjsip.conf	password=Falegnameria2025	1	AUD-03	media	i sei interni di CL-000103 usano la stessa password, debole e legata al nome del cliente

@@ -1,0 +1,44 @@
+2026-09-09 00:17:03.889 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 00:39:54.593 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:92], cid=[no info], tid=0x7eedc502: lease 198.51.100.231 has been allocated for 86400 seconds
+2026-09-09 01:17:03.053 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 01:31:27.575 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:03], cid=[no info], tid=0xb66ccb02: lease 203.0.113.3 has been allocated for 86400 seconds
+2026-09-09 02:17:03.902 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 03:17:03.696 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 03:29:20.077 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:05], cid=[no info], tid=0xd31623f0: lease 203.0.113.5 has been allocated for 86400 seconds
+2026-09-09 04:17:03.701 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 04:39:20.951 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:96], cid=[no info], tid=0x70d15820: lease 198.51.100.235 has been allocated for 86400 seconds
+2026-09-09 05:10:14.700 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:93], cid=[no info], tid=0x35d16baa: lease 198.51.100.232 has been allocated for 86400 seconds
+2026-09-09 05:17:03.626 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 06:10:09.432 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:02], cid=[no info], tid=0x8181c140: lease 203.0.113.2 has been allocated for 86400 seconds
+2026-09-09 06:17:03.211 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 07:03:13.001 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:95], cid=[no info], tid=0x5ed2b4aa: lease 198.51.100.234 has been allocated for 86400 seconds
+2026-09-09 07:17:03.405 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 08:17:03.295 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 09:08:10.974 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:ad], cid=[no info], tid=0x9b749e04: lease 198.51.100.208 has been allocated for 604800 seconds
+2026-09-09 09:17:03.168 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 09:18:58.326 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:94], cid=[no info], tid=0x5adf2bde: lease 198.51.100.233 has been allocated for 86400 seconds
+2026-09-09 10:17:03.771 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 11:17:03.377 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 11:39:36.888 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:91], cid=[no info], tid=0xc44ae5a0: lease 198.51.100.230 has been allocated for 86400 seconds
+2026-09-09 12:17:03.967 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 12:40:36.472 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:92], cid=[no info], tid=0x266ce357: lease 198.51.100.231 has been allocated for 86400 seconds
+2026-09-09 13:17:03.735 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 13:29:56.291 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:03], cid=[no info], tid=0xdb65bce1: lease 203.0.113.3 has been allocated for 86400 seconds
+2026-09-09 14:17:03.788 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 15:17:03.023 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 15:27:42.702 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:05], cid=[no info], tid=0xa38f1620: lease 203.0.113.5 has been allocated for 86400 seconds
+2026-09-09 16:17:03.924 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 16:40:08.184 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:96], cid=[no info], tid=0x79eed6e2: lease 198.51.100.235 has been allocated for 86400 seconds
+2026-09-09 17:11:35.860 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:93], cid=[no info], tid=0xd12611dc: lease 198.51.100.232 has been allocated for 86400 seconds
+2026-09-09 17:17:03.163 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 18:10:00.638 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:02], cid=[no info], tid=0xe71783d1: lease 203.0.113.2 has been allocated for 86400 seconds
+2026-09-09 18:17:03.399 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 19:03:06.653 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:95], cid=[no info], tid=0x2a483101: lease 198.51.100.234 has been allocated for 86400 seconds
+2026-09-09 19:17:03.409 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 20:17:03.584 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 21:17:03.621 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 21:18:33.187 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:94], cid=[no info], tid=0xa84c75c7: lease 198.51.100.233 has been allocated for 86400 seconds
+2026-09-09 22:17:03.913 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 22:42:01.765 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:a9], cid=[no info], tid=0x7d9daf3c: lease 198.51.100.204 has been allocated for 604800 seconds
+2026-09-09 23:17:03.005 INFO  [kea-dhcp4.dhcpsrv/2210.139871022552832] DHCPSRV_MEMFILE_LFC_START starting Lease File Cleanup
+2026-09-09 23:39:28.289 INFO  [kea-dhcp4.leases/2210.139871022552832] DHCP4_LEASE_ALLOC [hwtype=1 00:00:5e:00:53:91], cid=[no info], tid=0x650ec548: lease 198.51.100.230 has been allocated for 86400 seconds

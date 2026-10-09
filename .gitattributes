@@ -1,0 +1,16 @@
+# Fine riga LF per tutti i file di testo, su ogni sistema: gli script bash e i
+# controlli byte per byte (genera.py --check, verifica.sh) non reggono il CRLF.
+* text=auto eol=lf
+*.sh text eol=lf
+
+# La copia per i partecipanti (tools/esporta_studenti.sh, cioè git archive)
+# lascia fuori le soluzioni e il materiale del docente: la cartella stessa e
+# il suo contenuto, a ogni profondità (anche progetti/*/_docente/).
+**/soluzione export-ignore
+**/soluzione/** export-ignore
+**/_docente export-ignore
+**/_docente/** export-ignore
+
+# Eccezione voluta: gli alberi di prova dei test hanno soluzione/ e _docente/
+# finti e restano nella copia, così i test girano anche lì.
+tests/fixtures/** -export-ignore

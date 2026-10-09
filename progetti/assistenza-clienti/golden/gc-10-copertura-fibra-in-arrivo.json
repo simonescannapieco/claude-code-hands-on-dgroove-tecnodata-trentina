@@ -1,0 +1,75 @@
+{
+  "id": "GC-10",
+  "scenario": "SC-08",
+  "titolo": "Copertura futura: nessuna data inventata, interesse registrato",
+  "canale": "chat",
+  "inizio": "2026-09-07T12:14:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Ciao! Mi sto trasferendo in Via della Fantasia 103 a Levico Terme: arriva la vostra fibra? Quando potrei attivarla?"
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_copertura",
+          "argomenti": {"comune": "Levico Terme", "via": "Via della Fantasia", "civico": "103"},
+          "risultato": {"indirizzo": "Via della Fantasia 103, 38056 Levico Terme (TN)", "fibra": "in arrivo: lavori previsti, linea non ancora attivabile, data non disponibile", "radio": "non disponibile", "offerte_attivabili": []}
+        }
+      ],
+      "testo": "Ciao! Ho controllato: in Via della Fantasia 103 la fibra è in arrivo, ma la linea non è ancora attivabile e non ho una data da darti. A quell'indirizzo, per ora, non arriva neppure la connessione radio."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Davvero non c'è una data? Mi basta anche indicativa."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Capisco che ti serva per organizzarti, ma una data non c'è, nemmeno indicativa, e non voglio dartene una che poi non teniamo. Se vuoi, registro il tuo interesse: ti avvisiamo noi appena l'indirizzo diventa attivabile. Mi bastano un nome e un recapito."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Va bene, avvisatemi. Potete richiamarmi domattina?"
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Certo. Mi lasci il nome e il numero a cui chiamarti?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Antonio Ipotetico, il numero è +39 004 512 7730."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "categoria": "copertura",
+            "priorita": "bassa",
+            "destinatario": "commerciale",
+            "oggetto": "Verifica copertura - Levico Terme, fibra in arrivo",
+            "descrizione": "Verifica di copertura per Via della Fantasia 103, Levico Terme: fibra in arrivo ma non attivabile, data non disponibile; radio non disponibile. Il potenziale cliente vuole essere avvisato quando l'indirizzo sarà attivabile e chiede una richiamata domattina.",
+            "contatto": {"nome": "Antonio Ipotetico", "telefono": "+39 004 512 7730"},
+            "consenso_ricontatto": true
+          },
+          "risultato": {"id_ticket": "TK-2026-04231", "stato": "aperto", "assegnata_a": "commerciale"}
+        }
+      ],
+      "testo": "Fatto, Antonio: richiesta TK-2026-04231. Il commerciale ti richiama domattina al numero che termina con 7730, e ti avvisiamo appena la fibra è attivabile al tuo indirizzo. In bocca al lupo per il trasloco!"
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04231",
+    "escalation": false,
+    "riassunto": "Copertura in arrivo senza data: verifica senza dati personali, nessuna data inventata nemmeno su insistenza, interesse registrato con il consenso e solo nome e telefono, ricontatto del commerciale."
+  },
+  "punti_chiave": [
+    "Verifica la copertura senza chiedere dati personali.",
+    "Non inventa date, neppure «indicative», e non propone la radio che non c'è.",
+    "Chiede nome e recapito solo quando servono al ricontatto, con il consenso.",
+    "Apre la richiesta per il commerciale con il ricontatto richiesto.",
+    "Dà del tu, tono cordiale."
+  ]
+}

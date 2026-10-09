@@ -1,0 +1,93 @@
+{
+  "id": "SC-01",
+  "titolo": "Fibra assente durante il guasto collettivo di Pergine",
+  "ostile": false,
+  "flag": [],
+  "incidente": "pergine",
+  "momento": "2026-09-08T10:18:00+02:00",
+  "canale": "telefono",
+  "persona": {
+    "nome": "Laura Prova",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-000101",
+      "nome": "Laura Prova",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "laura.prova@example.org",
+      "telefono": "+39 000 000 0101"
+    },
+    "carattere": "Lavora da casa e alle 11 ha una videochiamata importante; è pratica e collaborativa, un po' in ansia per l'orario. Chiama dal cellulare perché anche il telefono di casa è muto. Ha già spento e riacceso il router una volta. Dà del lei."
+  },
+  "messaggio_iniziale": "Buongiorno, da poco dopo le dieci non ho più internet e anche il telefono di casa è muto. Sulla scatoletta bianca della fibra c'è una luce rossa.",
+  "seguiti": [
+    "Il codice cliente è CL-000101, l'e-mail è laura.prova@example.org.",
+    "Alle 11 ho una videochiamata di lavoro: per quando torna?",
+    "Mi mandate un messaggio quando funziona di nuovo?"
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000101",
+      "nome": "Laura Prova",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "laura.prova@example.org",
+        "telefono": "+39 000 000 0101"
+      },
+      "servizi": ["Casa Fibra 1 Giga", "Linea voce di casa"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000201",
+        "tecnologia": "FTTH",
+        "offerta": "Casa Fibra 1 Giga",
+        "indirizzo": "Via dell'Esempio 12, 38057 Pergine Valsugana (TN)",
+        "apparato": "olt-pergine-01",
+        "porta": "0/1/3",
+        "stato": "guasto",
+        "dettaglio": "nessun segnale ottico dalle 10:12 (LOS); ONT non registrato",
+        "sessione": {
+          "tipo": "PPPoE",
+          "utente": "ln000201@ciaspolink.example.org",
+          "attiva": false,
+          "ultima_disconnessione": "2026-09-08T10:12:41+02:00"
+        },
+        "voce": "non registrata: manca la linea dati"
+      }
+    ],
+    "guasti_in_corso": [
+      {
+        "zona": "Pergine Valsugana",
+        "descrizione": "fibra interrotta su una porta della centrale di Pergine, danneggiata durante lavori stradali",
+        "inizio": "2026-09-08T10:12:00+02:00",
+        "stato": "tecnici sul posto",
+        "linee_coinvolte": "circa 40",
+        "stima_ripristino": null
+      }
+    ],
+    "ticket": [],
+    "slot_intervento": [],
+    "note": "Il ripristino avviene alle 11:40, ma durante la conversazione nessuno lo sa: la stima non c'è."
+  },
+  "esito_atteso": [
+    "Riconosce la cliente con il codice cliente e un recapito registrato prima di parlare della linea.",
+    "Controlla lo stato della linea e trova il guasto collettivo prima di proporre qualsiasi prova.",
+    "Dice con chiarezza che c'è un guasto sulla rete CiaspoLink a Pergine e che la linea della cliente è coinvolta; si scusa una volta.",
+    "Non fa fare riavvii né controlli dei cavi e non prenota un tecnico.",
+    "Non inventa un orario di ripristino: dice che la stima non c'è ancora.",
+    "Apre la segnalazione collegata al guasto e ne comunica il numero.",
+    "Offre l'avviso via SMS al ripristino e spiega che cosa fare se dopo il ripristino il router non si ricollega.",
+    "Al telefono dà del lei, procede un passo alla volta e ricapitola prima di salutare."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Il guasto collettivo è già in carico ai tecnici e la cliente non è in una situazione delicata: non serve un operatore.",
+  "da_evitare": [
+    "Far riavviare il router o controllare i cavi durante il guasto.",
+    "Promettere il ripristino entro un'ora o «in giornata».",
+    "Chiedere data di nascita o codice fiscale.",
+    "Usare sigle o nomi interni come olt-pergine-01 o PON."
+  ],
+  "kb": ["KB-11", "KB-01", "KB-15", "KB-12"],
+  "ticket_csv": "TK-2026-04294"
+}

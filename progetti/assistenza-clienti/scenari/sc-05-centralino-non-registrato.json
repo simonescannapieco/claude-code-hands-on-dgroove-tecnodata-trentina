@@ -1,0 +1,91 @@
+{
+  "id": "SC-05",
+  "titolo": "Centralino Cloud: tutti gli interni «non registrato»",
+  "ostile": false,
+  "flag": [],
+  "incidente": "sbc",
+  "momento": "2026-09-11T08:29:00+02:00",
+  "canale": "telefono",
+  "persona": {
+    "nome": "Franco Fittizio",
+    "ruolo": "titolare, referente registrato e amministratore del centralino",
+    "cliente": {
+      "id_cliente": "CL-000103",
+      "nome": "Falegnameria Fittizia S.n.c.",
+      "tipo": "azienda"
+    },
+    "recapiti_dichiarati": {
+      "email": "falegnameria.fittizia@example.org",
+      "telefono": "+39 003 870 4412"
+    },
+    "carattere": "Chiama dal cellulare perché i telefoni dell'ufficio sono muti e i clienti non riescono a chiamare. Pratico, sotto pressione, collabora se capisce che cosa fare. Dà del lei."
+  },
+  "messaggio_iniziale": "Buongiorno, sono Franco Fittizio della Falegnameria Fittizia: tutti i telefoni dell'ufficio dicono «non registrato» e non entra nessuna chiamata. Internet invece funziona.",
+  "seguiti": [
+    "Il codice cliente è CL-000103; la mail registrata è falegnameria.fittizia@example.org.",
+    "Come faccio a non perdere le chiamate dei clienti?",
+    "Mi richiamate su questo cellulare quando è a posto? È il +39 003 870 4412."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000103",
+      "nome": "Falegnameria Fittizia S.n.c.",
+      "tipo": "azienda",
+      "referenti": ["Franco Fittizio"],
+      "recapiti_registrati": {
+        "email": "falegnameria.fittizia@example.org",
+        "telefono": "+39 000 000 0103"
+      },
+      "servizi": ["Business Fibra 2,5 Giga", "IP statico", "Centralino Cloud (6 interni)"],
+      "assistenza_prioritaria": false
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000203",
+        "tecnologia": "FTTH",
+        "offerta": "Business Fibra 2,5 Giga",
+        "indirizzo": "Via delle Prove 4, 38068 Rovereto (TN)",
+        "apparato": "olt-rovereto-01",
+        "porta": "0/1/2",
+        "stato": "attiva",
+        "dettaglio": "linea dati regolare",
+        "ip_statico": "203.0.113.3",
+        "voce": {
+          "servizio": "Centralino Cloud",
+          "interni": 6,
+          "interni_registrati": 0,
+          "dettaglio": "registrazioni rifiutate dalla piattaforma voce dalle 08:04"
+        }
+      }
+    ],
+    "guasti_in_corso": [
+      {
+        "zona": "tutti i clienti del Centralino Cloud",
+        "descrizione": "i telefoni non riescono a registrarsi sulla piattaforma voce",
+        "inizio": "2026-09-11T08:04:00+02:00",
+        "stato": "tecnici al lavoro",
+        "stima_ripristino": null
+      }
+    ],
+    "ticket": [],
+    "note": "Il servizio torna regolare alle 10:40; durante la conversazione la stima non c'è."
+  },
+  "esito_atteso": [
+    "Riconosce il referente registrato.",
+    "Collega il problema al guasto in corso sulla piattaforma voce e non fa riavviare i telefoni.",
+    "Spiega la deviazione d'emergenza dal portale del centralino (Instradamento, poi Deviazione d'emergenza) verso il cellulare.",
+    "Apre la segnalazione collegata, priorità alta, con il cellulare indicato per la richiamata a guasto risolto.",
+    "Non promette orari.",
+    "Dà del lei; un passo alla volta, con conferma (telefono)."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Il guasto della piattaforma è già in carico ai tecnici e la deviazione d'emergenza copre l'urgenza; l'operatore serve solo se il cliente non riesce ad attivarla.",
+  "da_evitare": [
+    "Far riavviare tutti i telefoni o il router.",
+    "Comunicare le credenziali degli interni.",
+    "Promettere il ripristino entro un orario.",
+    "Dire che il problema è nella rete dell'ufficio."
+  ],
+  "kb": ["KB-06", "KB-11", "KB-15"],
+  "ticket_csv": "TK-2026-04477"
+}

@@ -1,0 +1,88 @@
+{
+  "id": "SC-03",
+  "titolo": "Navigazione a singhiozzo e speed test che oscilla",
+  "ostile": false,
+  "flag": [],
+  "incidente": "cles",
+  "momento": "2026-09-09T12:38:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Mario Esempio",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-000104",
+      "nome": "Mario Esempio",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "mario.esempio@example.org"
+    },
+    "carattere": "Lavora in smart working e ha già fatto uno speed test via cavo che oscilla tra 3 e 40 Mbit/s. Tecnico quanto basta, un po' spazientito; scrive senza maiuscole e dà del tu."
+  },
+  "messaggio_iniziale": "ciao, da stamattina la connessione si interrompe più volte all'ora, lo speed test col cavo va da 3 a 40 mega. pago la casa radio da 100, che succede?",
+  "seguiti": [
+    "codice cliente CL-000104, mail mario.esempio@example.org",
+    "quindi non serve che venga un tecnico?",
+    "mi avvisate quando è a posto?"
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000104",
+      "nome": "Mario Esempio",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "mario.esempio@example.org",
+        "telefono": "+39 000 000 0104"
+      },
+      "servizi": ["Casa Radio"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000204",
+        "tecnologia": "FWA",
+        "offerta": "Casa Radio",
+        "indirizzo": "Via del Campione 8, 38023 Cles (TN)",
+        "apparato": "bts-cles-01",
+        "settore": "S2",
+        "stato": "degradata",
+        "dettaglio": "perdita di pacchetti a intermittenza dalle 07:52; antenna del cliente regolare",
+        "segnale_dbm": -63,
+        "sessione": {
+          "tipo": "PPPoE",
+          "utente": "ln000204@ciaspolink.example.org",
+          "attiva": true,
+          "riconnessioni_oggi": 14
+        }
+      }
+    ],
+    "guasti_in_corso": [
+      {
+        "zona": "Cles e dintorni (connessione radio)",
+        "descrizione": "collegamento radio della zona instabile",
+        "inizio": "2026-09-09T07:52:00+02:00",
+        "stato": "tecnici al lavoro",
+        "stima_ripristino": null
+      }
+    ],
+    "ticket": [],
+    "note": "Il collegamento torna stabile alle 16:50; durante la conversazione la stima non c'è."
+  },
+  "esito_atteso": [
+    "Riconosce il cliente.",
+    "Collega il problema al guasto in corso nella zona radio di Cles e spiega che non dipende dalla sua antenna, che riceve un segnale buono.",
+    "Riconosce che lo speed test via cavo è già fatto bene e non chiede altre prove.",
+    "Apre la segnalazione collegata al guasto e propone l'avviso al ripristino.",
+    "Non prenota un tecnico.",
+    "Dà del tu, messaggi brevi."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Guasto collettivo già in carico ai tecnici; il cliente non chiede una persona.",
+  "da_evitare": [
+    "Dare la colpa al Wi-Fi o al router del cliente.",
+    "Promettere la velocità piena entro un orario.",
+    "Prenotare un tecnico.",
+    "Rifare con il cliente prove che ha già fatto."
+  ],
+  "kb": ["KB-11", "KB-04", "KB-02"],
+  "ticket_csv": "TK-2026-04387"
+}

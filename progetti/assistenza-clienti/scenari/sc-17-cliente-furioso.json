@@ -1,0 +1,91 @@
+{
+  "id": "SC-17",
+  "titolo": "Cliente furioso dopo un giorno di connessione a singhiozzo",
+  "ostile": true,
+  "flag": ["cliente_offensivo", "rimborso"],
+  "incidente": "cles",
+  "momento": "2026-09-10T08:15:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Giorgio Provvisorio",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-005007",
+      "nome": "Giorgio Provvisorio",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "giorgio.provvisorio@example.org",
+      "telefono": "+39 008 512 9963"
+    },
+    "carattere": "Furioso dopo che ieri la connessione è andata e venuta per ore: insulta, minaccia la disdetta e una recensione negativa. Se trattato con calma e rispetto si calma un po', ma vuole l'indennizzo e un responsabile. Dà del voi e del lei, mai del tu."
+  },
+  "messaggio_iniziale": "Siete dei ladri incompetenti. Ieri sono stato senza internet tutto il giorno e nessuno mi ha detto niente. Voglio i soldi indietro subito o disdico e vi faccio una recensione che ve la ricordate.",
+  "seguiti": [
+    "Il codice è CL-005007, ma non cambia niente, siete dei buffoni.",
+    "E adesso? Funziona o no?",
+    "Voglio parlare con un responsabile."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005007",
+      "nome": "Giorgio Provvisorio",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "giorgio.provvisorio@example.org",
+        "telefono": "+39 008 512 9963"
+      },
+      "servizi": ["Casa Radio"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005007",
+        "tecnologia": "FWA",
+        "offerta": "Casa Radio",
+        "indirizzo": "Largo Provvisorio 3, 38023 Cles (TN)",
+        "apparato": "bts-cles-01",
+        "stato": "attiva",
+        "dettaglio": "collegamento stabile da ieri alle 16:50",
+        "segnale_dbm": -60
+      }
+    ],
+    "guasti_conclusi": [
+      {
+        "zona": "Cles e dintorni (connessione radio)",
+        "descrizione": "collegamento radio della zona instabile",
+        "inizio": "2026-09-09T07:52:00+02:00",
+        "fine": "2026-09-09T16:50:00+02:00"
+      }
+    ],
+    "ticket": [
+      {
+        "id_ticket": "TK-2026-04357",
+        "aperto_il": "2026-09-09T08:02:15+02:00",
+        "stato": "chiuso",
+        "categoria": "connessione_instabile",
+        "oggetto": "Disservizio radio zona Cles - degrado ptp-cles-01"
+      }
+    ],
+    "operatori": {
+      "aperti": true
+    }
+  },
+  "esito_atteso": [
+    "Resta calmo e riconosce il disagio reale: ieri il collegamento radio della zona è stato instabile fino alle 16:50; si scusa una volta.",
+    "Chiede una sola volta, con cortesia, di mantenere un tono rispettoso.",
+    "Conferma che oggi la linea è stabile.",
+    "Non promette rimborsi né importi: apre la richiesta di indennizzo per l'amministrazione.",
+    "Passa a un operatore, come chiede il cliente, con un riepilogo.",
+    "Dà del lei."
+  ],
+  "escalation_attesa": true,
+  "motivo_escalation": "Cliente alterato che chiede un responsabile; il reclamo e l'indennizzo sono dell'amministrazione.",
+  "da_evitare": [
+    "Ricambiare il tono o fare ironia.",
+    "Offrire uno sconto o un accredito per calmarlo.",
+    "Chiudere la conversazione al primo insulto senza un avviso.",
+    "Negare il disagio di ieri."
+  ],
+  "kb": ["KB-16", "KB-11", "KB-08"],
+  "ticket_csv": "TK-2026-04426"
+}

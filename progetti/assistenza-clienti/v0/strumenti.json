@@ -1,0 +1,156 @@
+[
+  {
+    "name": "check_linea",
+    "description": "Controlla la linea del cliente.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "indirizzo": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "cercaCliente",
+    "description": "Cerca un cliente per nome, cognome, telefono, e-mail o indirizzo e restituisce la scheda completa: dati anagrafici, contratti, linee, fatture, credenziali, note interne.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "testo da cercare"
+        }
+      }
+    }
+  },
+  {
+    "name": "ticket",
+    "description": "Gestione ticket.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "azione": {
+          "type": "string",
+          "description": "cosa fare (apri, leggi, aggiorna...)"
+        },
+        "dati": {
+          "type": "string",
+          "description": "i dati del ticket"
+        }
+      }
+    }
+  },
+  {
+    "name": "chiudi_ticket",
+    "description": "Chiude un ticket.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "ticket": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "prenota",
+    "description": "Prenota il tecnico per il cliente.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "cliente": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "description": "quando"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "copertura",
+    "description": "Verifica copertura.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "via": {
+          "type": "string"
+        },
+        "comune": {
+          "type": "string"
+        }
+      },
+      "required": ["via"]
+    }
+  },
+  {
+    "name": "accredito",
+    "description": "Registra un accredito o uno sconto sulla prossima fattura del cliente.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "cliente": {
+          "type": "string"
+        },
+        "importo": {
+          "type": "number"
+        },
+        "motivo": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "operatore",
+    "description": "Passa la conversazione a un operatore umano quando serve.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "motivo": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "kb_search",
+    "description": "Search the knowledge base.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        },
+        "max_results": {
+          "type": "integer"
+        }
+      },
+      "required": ["query"]
+    }
+  },
+  {
+    "name": "invia_sms",
+    "description": "Invia un SMS.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "numero": {
+          "type": "string"
+        },
+        "testo": {
+          "type": "string"
+        }
+      }
+    }
+  }
+]

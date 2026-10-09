@@ -1,0 +1,594 @@
+2026-09-08 00:02:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:02:48 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:09:12 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:09:13 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:13:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:13:25 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:19:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:19:20 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:24:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:24:41 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:29:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:29:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:34:53 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:34:54 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:40:14 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:40:15 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:47:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:47:14 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:51:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:51:21 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 00:57:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 00:57:20 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:02:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:02:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:09:48 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:09:49 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:14:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:14:14 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:20:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:20:01 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:26:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:26:39 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:32:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:32:09 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:37:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:37:14 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:42:41 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:42:42 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:48:33 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:48:34 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:54:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:54:56 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 01:58:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 01:58:57 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:02:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:02:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:07:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:07:07 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:13:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:13:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:18:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:18:50 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:24:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:24:08 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:30:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:30:01 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:36:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:36:03 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:40:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:40:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:45:14 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:45:15 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:50:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:50:16 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 02:54:54 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 02:54:55 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:01:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:01:32 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:06:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:06:08 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:13:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:13:02 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:19:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:19:39 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:25:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:25:36 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:30:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:30:01 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:34:44 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:34:45 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:40:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:40:38 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:45:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:45:43 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:50:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:50:18 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 03:56:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 03:56:07 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:00:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:00:50 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:06:53 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:06:54 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:12:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:12:07 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:16:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:16:18 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:22:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:22:41 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:27:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:27:44 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:32:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:32:01 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:38:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:38:32 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:43:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:43:17 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:47:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:47:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:52:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:52:32 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 04:58:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 04:58:46 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:04:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:04:21 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:10:30 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:10:31 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:16:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:16:01 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:22:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:22:26 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:27:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:27:43 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:33:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:33:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:39:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:39:03 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:43:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:43:08 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:48:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:48:02 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:53:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:53:30 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 05:58:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 05:58:26 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:03:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:03:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:09:53 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:09:54 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:14:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:14:51 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:21:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:21:20 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:26:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:26:14 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:30:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:30:43 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:35:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:35:20 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:40:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:40:57 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:46:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:47:00 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:51:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:51:44 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 06:58:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 06:58:10 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:03:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:03:10 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:08:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:08:08 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:13:48 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:13:49 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:19:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:19:51 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:25:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:25:11 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:29:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:29:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:35:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:35:36 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:42:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:42:24 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:48:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:48:37 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 07:54:21 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 07:54:22 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:00:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:00:26 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:04:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:04:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:09:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:10:00 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:15:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:15:12 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:20:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:20:53 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:26:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:26:12 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:32:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:32:10 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:36:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:36:51 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:42:05 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:42:06 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:46:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:46:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:52:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:52:21 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 08:56:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 08:56:38 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:01:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:01:24 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:06:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:06:38 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:11:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:11:10 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:16:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:16:41 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:22:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:22:10 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:26:26 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:26:27 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:30:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:30:57 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:34:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:35:00 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:41:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:41:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:46:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:46:52 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:51:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:51:21 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 09:53:39 pppoe,ppp,info <pppoe-ln006078@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 09:53:39 pppoe,ppp,info,account ln006078@ciaspolink.example.org logged out, 730390 12096719180 60483595900 13440799 50402996 from 00:00:5E:00:53:8E
+2026-09-08 09:55:53 pppoe,ppp,info <pppoe-00:00:5E:00:53:8E>: authenticated
+2026-09-08 09:55:53 pppoe,ppp,info,account ln006078@ciaspolink.example.org logged in, 198.51.100.132 from 00:00:5E:00:53:8E
+2026-09-08 09:55:53 pppoe,ppp,info <pppoe-ln006078@ciaspolink.example.org>: connected
+2026-09-08 09:58:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 09:58:12 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:04:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:04:37 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:11:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:11:09 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006021@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006021@ciaspolink.example.org logged out, 373150 908993400 7271947200 1009992 6059956 from 00:00:5E:00:53:55
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006028@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006028@ciaspolink.example.org logged out, 336573 1348648011 4045944033 1498497 3371620 from 00:00:5E:00:53:5C
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006032@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006032@ciaspolink.example.org logged out, 644346 22540511772 67621535316 25045013 56351279 from 00:00:5E:00:53:60
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006033@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006033@ciaspolink.example.org logged out, 398594 2425843084 14555058504 2695381 12129215 from 00:00:5E:00:53:61
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006040@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006040@ciaspolink.example.org logged out, 257372 10294107884 30882323652 11437897 25735269 from 00:00:5E:00:53:68
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006041@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006041@ciaspolink.example.org logged out, 529458 6083472420 24333889680 6759413 20278241 from 00:00:5E:00:53:69
+2026-09-08 10:12:52 pppoe,ppp,info <pppoe-ln006052@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:52 pppoe,ppp,info,account ln006052@ciaspolink.example.org logged out, 583701 1435320759 8611924554 1594800 7176603 from 00:00:5E:00:53:74
+2026-09-08 10:12:53 pppoe,ppp,info <pppoe-ln006022@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:53 pppoe,ppp,info,account ln006022@ciaspolink.example.org logged out, 145520 3480110800 13920443200 3866789 11600369 from 00:00:5E:00:53:56
+2026-09-08 10:12:53 pppoe,ppp,info <pppoe-ln006025@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:53 pppoe,ppp,info,account ln006025@ciaspolink.example.org logged out, 420898 8430586940 101167043280 9367318 84305869 from 00:00:5E:00:53:59
+2026-09-08 10:12:53 pppoe,ppp,info <pppoe-ln006047@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:53 pppoe,ppp,info,account ln006047@ciaspolink.example.org logged out, 379599 12805772265 64028861325 14228635 53357384 from 00:00:5E:00:53:6F
+2026-09-08 10:12:54 pppoe,ppp,info <pppoe-ln006027@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:54 pppoe,ppp,info,account ln006027@ciaspolink.example.org logged out, 270612 4804716060 14414148180 5338573 12011790 from 00:00:5E:00:53:5B
+2026-09-08 10:12:55 pppoe,ppp,info <pppoe-ln006016@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:55 pppoe,ppp,info,account ln006016@ciaspolink.example.org logged out, 327019 11743906328 117439063280 13048784 97865886 from 00:00:5E:00:53:50
+2026-09-08 10:12:55 pppoe,ppp,info <pppoe-ln006034@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:55 pppoe,ppp,info,account ln006034@ciaspolink.example.org logged out, 829775 4450913100 53410957200 4945459 44509131 from 00:00:5E:00:53:62
+2026-09-08 10:12:55 pppoe,ppp,info <pppoe-ln006038@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:55 pppoe,ppp,info,account ln006038@ciaspolink.example.org logged out, 518012 17542476380 175424763800 19491640 146187303 from 00:00:5E:00:53:66
+2026-09-08 10:12:55 pppoe,ppp,info <pppoe-ln006045@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:55 pppoe,ppp,info,account ln006045@ciaspolink.example.org logged out, 254983 2548045119 12740225595 2831161 10616854 from 00:00:5E:00:53:6D
+2026-09-08 10:12:56 pppoe,ppp,info <pppoe-ln006020@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:56 pppoe,ppp,info,account ln006020@ciaspolink.example.org logged out, 545138 8637166472 86371664720 9596851 71976387 from 00:00:5E:00:53:54
+2026-09-08 10:12:56 pppoe,ppp,info <pppoe-ln006050@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:56 pppoe,ppp,info,account ln006050@ciaspolink.example.org logged out, 837445 9479877400 47399387000 10533197 39499489 from 00:00:5E:00:53:72
+2026-09-08 10:12:57 pppoe,ppp,info <pppoe-ln000201@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:57 pppoe,ppp,info,account ln000201@ciaspolink.example.org logged out, 133302 1308492432 13084924320 1453880 10904103 from 00:00:5E:00:53:01
+2026-09-08 10:12:57 pppoe,ppp,info <pppoe-ln006018@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:57 pppoe,ppp,info,account ln006018@ciaspolink.example.org logged out, 395564 7633198508 83965183588 8481331 69970986 from 00:00:5E:00:53:52
+2026-09-08 10:12:57 pppoe,ppp,info <pppoe-ln006030@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:57 pppoe,ppp,info,account ln006030@ciaspolink.example.org logged out, 680703 19293845832 173644612488 21437606 144703843 from 00:00:5E:00:53:5E
+2026-09-08 10:12:57 pppoe,ppp,info <pppoe-ln006048@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:57 pppoe,ppp,info,account ln006048@ciaspolink.example.org logged out, 775246 15788660036 142097940324 17542955 118414950 from 00:00:5E:00:53:70
+2026-09-08 10:12:58 pppoe,ppp,info <pppoe-ln006026@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:58 pppoe,ppp,info,account ln006026@ciaspolink.example.org logged out, 349308 4413855888 26483135328 4904284 22069279 from 00:00:5E:00:53:5A
+2026-09-08 10:12:58 pppoe,ppp,info <pppoe-ln006035@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:58 pppoe,ppp,info,account ln006035@ciaspolink.example.org logged out, 131253 978491115 8806420035 1087212 7338683 from 00:00:5E:00:53:63
+2026-09-08 10:12:58 pppoe,ppp,info <pppoe-ln006042@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:58 pppoe,ppp,info,account ln006042@ciaspolink.example.org logged out, 464796 17486555112 52459665336 19429505 43716387 from 00:00:5E:00:53:6A
+2026-09-08 10:12:58 pppoe,ppp,info <pppoe-ln006051@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:58 pppoe,ppp,info,account ln006051@ciaspolink.example.org logged out, 809673 24078055674 96312222696 26753395 80260185 from 00:00:5E:00:53:73
+2026-09-08 10:12:59 pppoe,ppp,info <pppoe-ln006014@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:59 pppoe,ppp,info,account ln006014@ciaspolink.example.org logged out, 260842 1574963996 14174675964 1749959 11812229 from 00:00:5E:00:53:4E
+2026-09-08 10:12:59 pppoe,ppp,info <pppoe-ln006039@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:12:59 pppoe,ppp,info,account ln006039@ciaspolink.example.org logged out, 846574 12632577228 126325772280 14036196 105271476 from 00:00:5E:00:53:67
+2026-09-08 10:13:00 pppoe,ppp,info <pppoe-ln006031@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:00 pppoe,ppp,info,account ln006031@ciaspolink.example.org logged out, 584175 20338636800 162709094400 22598485 135590912 from 00:00:5E:00:53:5F
+2026-09-08 10:13:00 pppoe,ppp,info <pppoe-ln006046@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:00 pppoe,ppp,info,account ln006046@ciaspolink.example.org logged out, 851114 26467943172 291147374892 29408825 242622812 from 00:00:5E:00:53:6E
+2026-09-08 10:13:01 pppoe,ppp,info <pppoe-ln006015@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:01 pppoe,ppp,info,account ln006015@ciaspolink.example.org logged out, 414818 11868357798 130551935778 13187064 108793279 from 00:00:5E:00:53:4F
+2026-09-08 10:13:01 pppoe,ppp,info <pppoe-ln006019@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:01 pppoe,ppp,info,account ln006019@ciaspolink.example.org logged out, 680954 23292031570 256212347270 25880035 213510289 from 00:00:5E:00:53:53
+2026-09-08 10:13:01 pppoe,ppp,info <pppoe-ln006023@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:01 pppoe,ppp,info,account ln006023@ciaspolink.example.org logged out, 644191 19323153236 77292612944 21470170 64410510 from 00:00:5E:00:53:57
+2026-09-08 10:13:01 pppoe,ppp,info <pppoe-ln006029@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:01 pppoe,ppp,info,account ln006029@ciaspolink.example.org logged out, 80474 701169962 7011699620 779077 5843083 from 00:00:5E:00:53:5D
+2026-09-08 10:13:02 pppoe,ppp,info <pppoe-ln006017@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:02 pppoe,ppp,info,account ln006017@ciaspolink.example.org logged out, 670476 16534608636 115742260452 18371787 96451883 from 00:00:5E:00:53:51
+2026-09-08 10:13:02 pppoe,ppp,info <pppoe-ln006036@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:02 pppoe,ppp,info,account ln006036@ciaspolink.example.org logged out, 791265 3323313000 19939878000 3692570 16616565 from 00:00:5E:00:53:64
+2026-09-08 10:13:03 pppoe,ppp,info <pppoe-ln006024@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:03 pppoe,ppp,info,account ln006024@ciaspolink.example.org logged out, 796131 20356273539 244275282468 22618081 203562735 from 00:00:5E:00:53:58
+2026-09-08 10:13:03 pppoe,ppp,info <pppoe-ln006037@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:03 pppoe,ppp,info,account ln006037@ciaspolink.example.org logged out, 752571 14382384381 71911921905 15980427 59926601 from 00:00:5E:00:53:65
+2026-09-08 10:13:04 pppoe,ppp,info <pppoe-ln006044@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:04 pppoe,ppp,info,account ln006044@ciaspolink.example.org logged out, 615958 16702317128 50106951384 18558130 41755792 from 00:00:5E:00:53:6C
+2026-09-08 10:13:04 pppoe,ppp,info <pppoe-ln006049@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:04 pppoe,ppp,info,account ln006049@ciaspolink.example.org logged out, 535913 12373695257 49494781028 13748550 41245650 from 00:00:5E:00:53:71
+2026-09-08 10:13:04 pppoe,ppp,info <pppoe-ln006043@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 10:13:04 pppoe,ppp,info,account ln006043@ciaspolink.example.org logged out, 55416 1639593192 13116745536 1821770 10930621 from 00:00:5E:00:53:6B
+2026-09-08 10:15:48 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:15:49 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:20:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:20:09 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:26:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:26:52 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:31:32 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:31:33 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:35:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:35:39 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:41:53 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:41:54 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:46:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:46:35 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:52:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:52:59 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 10:57:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 10:57:17 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:03:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:03:09 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:07:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:07:41 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:11:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:11:43 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:18:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:18:16 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:23:27 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:23:28 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:27:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:28:00 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:33:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:33:44 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:40:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:40:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:41:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:68>: authenticated
+2026-09-08 11:41:10 pppoe,ppp,info,account ln006040@ciaspolink.example.org logged in, 198.51.100.133 from 00:00:5E:00:53:68
+2026-09-08 11:41:10 pppoe,ppp,info <pppoe-ln006040@ciaspolink.example.org>: connected
+2026-09-08 11:41:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:69>: authenticated
+2026-09-08 11:41:11 pppoe,ppp,info,account ln006041@ciaspolink.example.org logged in, 198.51.100.134 from 00:00:5E:00:53:69
+2026-09-08 11:41:11 pppoe,ppp,info <pppoe-ln006041@ciaspolink.example.org>: connected
+2026-09-08 11:41:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:59>: authenticated
+2026-09-08 11:41:13 pppoe,ppp,info,account ln006025@ciaspolink.example.org logged in, 198.51.100.135 from 00:00:5E:00:53:59
+2026-09-08 11:41:13 pppoe,ppp,info <pppoe-ln006025@ciaspolink.example.org>: connected
+2026-09-08 11:41:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:72>: authenticated
+2026-09-08 11:41:28 pppoe,ppp,info,account ln006050@ciaspolink.example.org logged in, 198.51.100.136 from 00:00:5E:00:53:72
+2026-09-08 11:41:28 pppoe,ppp,info <pppoe-ln006050@ciaspolink.example.org>: connected
+2026-09-08 11:41:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:6C>: authenticated
+2026-09-08 11:41:34 pppoe,ppp,info,account ln006044@ciaspolink.example.org logged in, 198.51.100.137 from 00:00:5E:00:53:6C
+2026-09-08 11:41:34 pppoe,ppp,info <pppoe-ln006044@ciaspolink.example.org>: connected
+2026-09-08 11:41:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:58>: authenticated
+2026-09-08 11:41:37 pppoe,ppp,info,account ln006024@ciaspolink.example.org logged in, 198.51.100.138 from 00:00:5E:00:53:58
+2026-09-08 11:41:37 pppoe,ppp,info <pppoe-ln006024@ciaspolink.example.org>: connected
+2026-09-08 11:41:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:55>: authenticated
+2026-09-08 11:41:47 pppoe,ppp,info,account ln006021@ciaspolink.example.org logged in, 198.51.100.139 from 00:00:5E:00:53:55
+2026-09-08 11:41:47 pppoe,ppp,info <pppoe-ln006021@ciaspolink.example.org>: connected
+2026-09-08 11:41:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:4E>: authenticated
+2026-09-08 11:41:50 pppoe,ppp,info,account ln006014@ciaspolink.example.org logged in, 198.51.100.140 from 00:00:5E:00:53:4E
+2026-09-08 11:41:50 pppoe,ppp,info <pppoe-ln006014@ciaspolink.example.org>: connected
+2026-09-08 11:41:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:52>: authenticated
+2026-09-08 11:41:51 pppoe,ppp,info,account ln006018@ciaspolink.example.org logged in, 198.51.100.141 from 00:00:5E:00:53:52
+2026-09-08 11:41:51 pppoe,ppp,info <pppoe-ln006018@ciaspolink.example.org>: connected
+2026-09-08 11:41:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:62>: authenticated
+2026-09-08 11:41:51 pppoe,ppp,info,account ln006034@ciaspolink.example.org logged in, 198.51.100.142 from 00:00:5E:00:53:62
+2026-09-08 11:41:51 pppoe,ppp,info <pppoe-ln006034@ciaspolink.example.org>: connected
+2026-09-08 11:42:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:63>: authenticated
+2026-09-08 11:42:15 pppoe,ppp,info,account ln006035@ciaspolink.example.org logged in, 198.51.100.143 from 00:00:5E:00:53:63
+2026-09-08 11:42:15 pppoe,ppp,info <pppoe-ln006035@ciaspolink.example.org>: connected
+2026-09-08 11:42:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:57>: authenticated
+2026-09-08 11:42:16 pppoe,ppp,info,account ln006023@ciaspolink.example.org logged in, 198.51.100.144 from 00:00:5E:00:53:57
+2026-09-08 11:42:16 pppoe,ppp,info <pppoe-ln006023@ciaspolink.example.org>: connected
+2026-09-08 11:42:22 pppoe,ppp,info <pppoe-00:00:5E:00:53:5D>: authenticated
+2026-09-08 11:42:22 pppoe,ppp,info,account ln006029@ciaspolink.example.org logged in, 198.51.100.145 from 00:00:5E:00:53:5D
+2026-09-08 11:42:22 pppoe,ppp,info <pppoe-ln006029@ciaspolink.example.org>: connected
+2026-09-08 11:42:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:5B>: authenticated
+2026-09-08 11:42:29 pppoe,ppp,info,account ln006027@ciaspolink.example.org logged in, 198.51.100.146 from 00:00:5E:00:53:5B
+2026-09-08 11:42:29 pppoe,ppp,info <pppoe-ln006027@ciaspolink.example.org>: connected
+2026-09-08 11:42:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:53>: authenticated
+2026-09-08 11:42:35 pppoe,ppp,info,account ln006019@ciaspolink.example.org logged in, 198.51.100.147 from 00:00:5E:00:53:53
+2026-09-08 11:42:35 pppoe,ppp,info <pppoe-ln006019@ciaspolink.example.org>: connected
+2026-09-08 11:42:54 pppoe,ppp,info <pppoe-00:00:5E:00:53:74>: authenticated
+2026-09-08 11:42:54 pppoe,ppp,info,account ln006052@ciaspolink.example.org logged in, 198.51.100.148 from 00:00:5E:00:53:74
+2026-09-08 11:42:54 pppoe,ppp,info <pppoe-ln006052@ciaspolink.example.org>: connected
+2026-09-08 11:42:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:60>: authenticated
+2026-09-08 11:42:58 pppoe,ppp,info,account ln006032@ciaspolink.example.org logged in, 198.51.100.149 from 00:00:5E:00:53:60
+2026-09-08 11:42:58 pppoe,ppp,info <pppoe-ln006032@ciaspolink.example.org>: connected
+2026-09-08 11:43:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:56>: authenticated
+2026-09-08 11:43:20 pppoe,ppp,info,account ln006022@ciaspolink.example.org logged in, 198.51.100.150 from 00:00:5E:00:53:56
+2026-09-08 11:43:20 pppoe,ppp,info <pppoe-ln006022@ciaspolink.example.org>: connected
+2026-09-08 11:43:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:73>: authenticated
+2026-09-08 11:43:31 pppoe,ppp,info,account ln006051@ciaspolink.example.org logged in, 198.51.100.151 from 00:00:5E:00:53:73
+2026-09-08 11:43:31 pppoe,ppp,info <pppoe-ln006051@ciaspolink.example.org>: connected
+2026-09-08 11:43:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:5A>: authenticated
+2026-09-08 11:43:34 pppoe,ppp,info,account ln006026@ciaspolink.example.org logged in, 198.51.100.152 from 00:00:5E:00:53:5A
+2026-09-08 11:43:34 pppoe,ppp,info <pppoe-ln006026@ciaspolink.example.org>: connected
+2026-09-08 11:43:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:71>: authenticated
+2026-09-08 11:43:45 pppoe,ppp,info,account ln006049@ciaspolink.example.org logged in, 198.51.100.153 from 00:00:5E:00:53:71
+2026-09-08 11:43:45 pppoe,ppp,info <pppoe-ln006049@ciaspolink.example.org>: connected
+2026-09-08 11:43:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:6E>: authenticated
+2026-09-08 11:43:55 pppoe,ppp,info,account ln006046@ciaspolink.example.org logged in, 198.51.100.154 from 00:00:5E:00:53:6E
+2026-09-08 11:43:55 pppoe,ppp,info <pppoe-ln006046@ciaspolink.example.org>: connected
+2026-09-08 11:43:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:66>: authenticated
+2026-09-08 11:43:57 pppoe,ppp,info,account ln006038@ciaspolink.example.org logged in, 198.51.100.155 from 00:00:5E:00:53:66
+2026-09-08 11:43:57 pppoe,ppp,info <pppoe-ln006038@ciaspolink.example.org>: connected
+2026-09-08 11:44:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:5C>: authenticated
+2026-09-08 11:44:09 pppoe,ppp,info,account ln006028@ciaspolink.example.org logged in, 198.51.100.156 from 00:00:5E:00:53:5C
+2026-09-08 11:44:09 pppoe,ppp,info <pppoe-ln006028@ciaspolink.example.org>: connected
+2026-09-08 11:44:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:61>: authenticated
+2026-09-08 11:44:10 pppoe,ppp,info,account ln006033@ciaspolink.example.org logged in, 198.51.100.157 from 00:00:5E:00:53:61
+2026-09-08 11:44:10 pppoe,ppp,info <pppoe-ln006033@ciaspolink.example.org>: connected
+2026-09-08 11:44:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:4F>: authenticated
+2026-09-08 11:44:16 pppoe,ppp,info,account ln006015@ciaspolink.example.org logged in, 198.51.100.158 from 00:00:5E:00:53:4F
+2026-09-08 11:44:16 pppoe,ppp,info <pppoe-ln006015@ciaspolink.example.org>: connected
+2026-09-08 11:44:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:6B>: authenticated
+2026-09-08 11:44:19 pppoe,ppp,info,account ln006043@ciaspolink.example.org logged in, 198.51.100.159 from 00:00:5E:00:53:6B
+2026-09-08 11:44:19 pppoe,ppp,info <pppoe-ln006043@ciaspolink.example.org>: connected
+2026-09-08 11:44:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:70>: authenticated
+2026-09-08 11:44:25 pppoe,ppp,info,account ln006048@ciaspolink.example.org logged in, 198.51.100.160 from 00:00:5E:00:53:70
+2026-09-08 11:44:25 pppoe,ppp,info <pppoe-ln006048@ciaspolink.example.org>: connected
+2026-09-08 11:44:32 pppoe,ppp,info <pppoe-00:00:5E:00:53:50>: authenticated
+2026-09-08 11:44:32 pppoe,ppp,info,account ln006016@ciaspolink.example.org logged in, 198.51.100.161 from 00:00:5E:00:53:50
+2026-09-08 11:44:32 pppoe,ppp,info <pppoe-ln006016@ciaspolink.example.org>: connected
+2026-09-08 11:44:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:51>: authenticated
+2026-09-08 11:44:36 pppoe,ppp,info,account ln006017@ciaspolink.example.org logged in, 198.51.100.162 from 00:00:5E:00:53:51
+2026-09-08 11:44:36 pppoe,ppp,info <pppoe-ln006017@ciaspolink.example.org>: connected
+2026-09-08 11:44:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:67>: authenticated
+2026-09-08 11:44:36 pppoe,ppp,info,account ln006039@ciaspolink.example.org logged in, 198.51.100.163 from 00:00:5E:00:53:67
+2026-09-08 11:44:36 pppoe,ppp,info <pppoe-ln006039@ciaspolink.example.org>: connected
+2026-09-08 11:44:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:6A>: authenticated
+2026-09-08 11:44:39 pppoe,ppp,info,account ln006042@ciaspolink.example.org logged in, 198.51.100.164 from 00:00:5E:00:53:6A
+2026-09-08 11:44:39 pppoe,ppp,info <pppoe-ln006042@ciaspolink.example.org>: connected
+2026-09-08 11:44:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:65>: authenticated
+2026-09-08 11:44:51 pppoe,ppp,info,account ln006037@ciaspolink.example.org logged in, 198.51.100.165 from 00:00:5E:00:53:65
+2026-09-08 11:44:51 pppoe,ppp,info <pppoe-ln006037@ciaspolink.example.org>: connected
+2026-09-08 11:44:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:44:59 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:45:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:6F>: authenticated
+2026-09-08 11:45:00 pppoe,ppp,info,account ln006047@ciaspolink.example.org logged in, 198.51.100.166 from 00:00:5E:00:53:6F
+2026-09-08 11:45:00 pppoe,ppp,info <pppoe-ln006047@ciaspolink.example.org>: connected
+2026-09-08 11:45:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:5F>: authenticated
+2026-09-08 11:45:19 pppoe,ppp,info,account ln006031@ciaspolink.example.org logged in, 198.51.100.167 from 00:00:5E:00:53:5F
+2026-09-08 11:45:19 pppoe,ppp,info <pppoe-ln006031@ciaspolink.example.org>: connected
+2026-09-08 11:45:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:6D>: authenticated
+2026-09-08 11:45:19 pppoe,ppp,info,account ln006045@ciaspolink.example.org logged in, 198.51.100.168 from 00:00:5E:00:53:6D
+2026-09-08 11:45:19 pppoe,ppp,info <pppoe-ln006045@ciaspolink.example.org>: connected
+2026-09-08 11:45:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:5E>: authenticated
+2026-09-08 11:45:31 pppoe,ppp,info,account ln006030@ciaspolink.example.org logged in, 198.51.100.169 from 00:00:5E:00:53:5E
+2026-09-08 11:45:31 pppoe,ppp,info <pppoe-ln006030@ciaspolink.example.org>: connected
+2026-09-08 11:45:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:64>: authenticated
+2026-09-08 11:45:35 pppoe,ppp,info,account ln006036@ciaspolink.example.org logged in, 198.51.100.170 from 00:00:5E:00:53:64
+2026-09-08 11:45:35 pppoe,ppp,info <pppoe-ln006036@ciaspolink.example.org>: connected
+2026-09-08 11:45:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:01>: authenticated
+2026-09-08 11:45:45 pppoe,ppp,info,account ln000201@ciaspolink.example.org logged in, 198.51.100.171 from 00:00:5E:00:53:01
+2026-09-08 11:45:45 pppoe,ppp,info <pppoe-ln000201@ciaspolink.example.org>: connected
+2026-09-08 11:45:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:54>: authenticated
+2026-09-08 11:45:45 pppoe,ppp,info,account ln006020@ciaspolink.example.org logged in, 198.51.100.172 from 00:00:5E:00:53:54
+2026-09-08 11:45:45 pppoe,ppp,info <pppoe-ln006020@ciaspolink.example.org>: connected
+2026-09-08 11:51:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:51:52 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 11:57:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 11:57:19 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:02:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:02:58 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:08:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:08:03 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:14:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:14:21 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:21:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:21:07 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:27:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:27:24 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:33:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:33:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:37:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:37:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:42:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:42:07 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:48:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:48:16 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:54:48 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:54:49 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 12:59:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 12:59:29 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:05:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:05:02 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:08:18 pppoe,ppp,info <pppoe-ln006055@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 13:08:18 pppoe,ppp,info,account ln006055@ciaspolink.example.org logged out, 702438 9001742970 36006971880 10001936 30005809 from 00:00:5E:00:53:77
+2026-09-08 13:10:14 pppoe,ppp,info <pppoe-00:00:5E:00:53:77>: authenticated
+2026-09-08 13:10:14 pppoe,ppp,info,account ln006055@ciaspolink.example.org logged in, 198.51.100.173 from 00:00:5E:00:53:77
+2026-09-08 13:10:14 pppoe,ppp,info <pppoe-ln006055@ciaspolink.example.org>: connected
+2026-09-08 13:11:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:11:09 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:15:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:15:30 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:21:33 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:21:34 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:26:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:26:56 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:32:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:32:25 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:38:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:38:38 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:44:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:44:48 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:50:48 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:50:49 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 13:57:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 13:57:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:04:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:04:26 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:08:27 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:08:28 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:13:04 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:13:05 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:18:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:18:59 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:24:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:24:14 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:29:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:29:08 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:33:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:33:40 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:38:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:38:25 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:44:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:44:50 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:50:46 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:50:47 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:54:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:54:51 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 14:59:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 14:59:30 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 15:05:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: waiting for call...
+2026-09-08 15:05:30 pppoe,ppp,error <pppoe-00:00:5E:00:53:78>: user ln006056@ciaspolink.example.org authentication failed
+2026-09-08 15:12:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:78>: authenticated
+2026-09-08 15:12:40 pppoe,ppp,info,account ln006056@ciaspolink.example.org logged in, 198.51.100.174 from 00:00:5E:00:53:78
+2026-09-08 15:12:40 pppoe,ppp,info <pppoe-ln006056@ciaspolink.example.org>: connected
+2026-09-08 18:09:28 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 18:09:28 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 304025 1926606425 11559638550 2140673 9633032 from 00:00:5E:00:53:B2
+2026-09-08 18:12:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-08 18:12:15 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.175 from 00:00:5E:00:53:B2
+2026-09-08 18:12:15 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-08 18:19:16 pppoe,ppp,info <pppoe-ln006066@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 18:19:16 pppoe,ppp,info,account ln006066@ciaspolink.example.org logged out, 354462 11881211778 95049694224 13201346 79208078 from 00:00:5E:00:53:82
+2026-09-08 18:20:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:82>: authenticated
+2026-09-08 18:20:57 pppoe,ppp,info,account ln006066@ciaspolink.example.org logged in, 198.51.100.176 from 00:00:5E:00:53:82
+2026-09-08 18:20:57 pppoe,ppp,info <pppoe-ln006066@ciaspolink.example.org>: connected
+2026-09-08 18:52:56 pppoe,ppp,info <pppoe-ln006050@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 18:52:56 pppoe,ppp,info,account ln006050@ciaspolink.example.org logged out, 25888 532283168 5855114848 591425 4879262 from 00:00:5E:00:53:72
+2026-09-08 18:54:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:72>: authenticated
+2026-09-08 18:54:52 pppoe,ppp,info,account ln006050@ciaspolink.example.org logged in, 198.51.100.177 from 00:00:5E:00:53:72
+2026-09-08 18:54:52 pppoe,ppp,info <pppoe-ln006050@ciaspolink.example.org>: connected
+2026-09-08 19:19:25 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 19:19:25 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 331626 1955930148 23471161776 2173255 19559301 from 00:00:5E:00:53:B9
+2026-09-08 19:20:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-08 19:20:50 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.178 from 00:00:5E:00:53:B9
+2026-09-08 19:20:50 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-08 20:06:59 pppoe,ppp,info <pppoe-ln006062@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 20:06:59 pppoe,ppp,info,account ln006062@ciaspolink.example.org logged out, 514006 4918523414 14755570242 5465026 12296308 from 00:00:5E:00:53:7E
+2026-09-08 20:07:05 pppoe,ppp,info <pppoe-ln006074@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 20:07:05 pppoe,ppp,info,account ln006074@ciaspolink.example.org logged out, 482034 9053080554 99583886094 10058978 82986571 from 00:00:5E:00:53:8A
+2026-09-08 20:09:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:8A>: authenticated
+2026-09-08 20:09:08 pppoe,ppp,info,account ln006074@ciaspolink.example.org logged in, 198.51.100.179 from 00:00:5E:00:53:8A
+2026-09-08 20:09:08 pppoe,ppp,info <pppoe-ln006074@ciaspolink.example.org>: connected
+2026-09-08 20:09:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:7E>: authenticated
+2026-09-08 20:09:24 pppoe,ppp,info,account ln006062@ciaspolink.example.org logged in, 198.51.100.180 from 00:00:5E:00:53:7E
+2026-09-08 20:09:24 pppoe,ppp,info <pppoe-ln006062@ciaspolink.example.org>: connected
+2026-09-08 20:26:48 pppoe,ppp,info <pppoe-ln006077@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-08 20:26:48 pppoe,ppp,info,account ln006077@ciaspolink.example.org logged out, 716976 7683831792 38419158960 8537590 32015965 from 00:00:5E:00:53:8D
+2026-09-08 20:27:30 pppoe,ppp,info <pppoe-00:00:5E:00:53:8D>: authenticated
+2026-09-08 20:27:30 pppoe,ppp,info,account ln006077@ciaspolink.example.org logged in, 198.51.100.181 from 00:00:5E:00:53:8D
+2026-09-08 20:27:30 pppoe,ppp,info <pppoe-ln006077@ciaspolink.example.org>: connected
+2026-09-08 20:27:32 pppoe,ppp,info <pppoe-ln006071@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 20:27:32 pppoe,ppp,info,account ln006071@ciaspolink.example.org logged out, 869307 11933846496 59669232480 13259829 49724360 from 00:00:5E:00:53:87
+2026-09-08 20:28:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:87>: authenticated
+2026-09-08 20:28:24 pppoe,ppp,info,account ln006071@ciaspolink.example.org logged in, 198.51.100.182 from 00:00:5E:00:53:87
+2026-09-08 20:28:24 pppoe,ppp,info <pppoe-ln006071@ciaspolink.example.org>: connected
+2026-09-08 22:56:19 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-08 22:56:19 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 512810 12551537560 87860762920 13946152 73217302 from 00:00:5E:00:53:B6
+2026-09-08 22:58:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-08 22:58:31 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.183 from 00:00:5E:00:53:B6
+2026-09-08 22:58:31 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected

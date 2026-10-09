@@ -1,0 +1,90 @@
+{
+  "id": "SC-02",
+  "titolo": "Rifugio con POS e prenotazioni bloccati: la radio va e viene",
+  "ostile": false,
+  "flag": [],
+  "incidente": "cles",
+  "momento": "2026-09-09T09:11:00+02:00",
+  "canale": "telefono",
+  "persona": {
+    "nome": "Renzo Campione",
+    "ruolo": "gestore del rifugio, referente registrato dell'azienda",
+    "cliente": {
+      "id_cliente": "CL-000102",
+      "nome": "Rifugio Campione",
+      "tipo": "azienda"
+    },
+    "recapiti_dichiarati": {
+      "email": "rifugio.campione@example.org",
+      "telefono": "+39 000 000 0102"
+    },
+    "carattere": "Diretto e sbrigativo, con la sala piena: il POS non si collega e le prenotazioni online si bloccano. Vuole sapere quando si risolve e vuole parlare con una persona; non ha tempo per fare prove. Dà del lei."
+  },
+  "messaggio_iniziale": "Sono il gestore del Rifugio Campione: da stamattina la connessione va e viene, il POS non riesce a collegarsi e le prenotazioni online si bloccano. Ho la sala piena.",
+  "seguiti": [
+    "Il codice cliente è CL-000102.",
+    "Mi serve parlare con qualcuno, non posso stare dietro al computer.",
+    "Ma quando torna a posto?"
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000102",
+      "nome": "Rifugio Campione",
+      "tipo": "azienda",
+      "referenti": ["Renzo Campione"],
+      "recapiti_registrati": {
+        "email": "rifugio.campione@example.org",
+        "telefono": "+39 000 000 0102"
+      },
+      "servizi": ["Business Radio", "IP statico"],
+      "assistenza_prioritaria": false
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000202",
+        "tecnologia": "FWA",
+        "offerta": "Business Radio",
+        "indirizzo": "Località Malga Esempio 3, 38023 Cles (TN)",
+        "apparato": "bts-cles-01",
+        "settore": "S1",
+        "stato": "degradata",
+        "dettaglio": "perdita di pacchetti a intermittenza dalle 07:52, tra il 5% e il 30%",
+        "segnale_dbm": -61,
+        "ip_statico": "203.0.113.2",
+        "prefisso_ipv6": "2001:db8:c1a5:200::/56"
+      }
+    ],
+    "guasti_in_corso": [
+      {
+        "zona": "Cles e dintorni (connessione radio)",
+        "descrizione": "collegamento radio della zona instabile",
+        "inizio": "2026-09-09T07:52:00+02:00",
+        "stato": "tecnici al lavoro",
+        "stima_ripristino": null
+      }
+    ],
+    "ticket": [],
+    "operatori": {
+      "aperti": true
+    },
+    "note": "Il collegamento torna stabile alle 16:50 con il riallineamento dell'antenna del ponte radio; durante la conversazione la stima non c'è."
+  },
+  "esito_atteso": [
+    "Riconosce il referente registrato dell'azienda.",
+    "Trova il guasto in corso sulla zona radio di Cles e lo spiega senza far fare prove al cliente.",
+    "Apre la segnalazione collegata al guasto con priorità alta: cliente business con l'attività bloccata.",
+    "Passa la conversazione a un operatore, come chiede il cliente, con un riepilogo: azienda, linea, POS e prenotazioni bloccati, numero della segnalazione.",
+    "Non promette orari e non propone rimborsi.",
+    "Dà del lei, frasi brevi, niente elenchi (telefono)."
+  ],
+  "escalation_attesa": true,
+  "motivo_escalation": "Cliente business con l'attività bloccata che chiede di parlare con una persona, durante l'orario degli operatori.",
+  "da_evitare": [
+    "Far riavviare l'alimentatore dell'antenna durante il guasto.",
+    "Prenotare un tecnico al rifugio.",
+    "Promettere uno sconto o un rimborso.",
+    "Passare all'operatore senza riepilogo, costringendo il cliente a ripetere tutto."
+  ],
+  "kb": ["KB-11", "KB-04", "KB-12", "KB-15"],
+  "ticket_csv": "TK-2026-04367"
+}

@@ -1,0 +1,76 @@
+{
+  "id": "SC-12",
+  "titolo": "Wi-Fi debole in camera: serve un sistema mesh?",
+  "ostile": false,
+  "flag": [],
+  "incidente": null,
+  "momento": "2026-09-13T17:32:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Chiara Modello",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-005004",
+      "nome": "Chiara Modello",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "chiara.modello@example.org"
+    },
+    "carattere": "Casa su tre piani; nella camera al secondo piano il Wi-Fi prende pochissimo. Gentile e curiosa, prova volentieri i consigli; alla fine chiede quanto costa il mesh. Dà del tu."
+  },
+  "messaggio_iniziale": "Ciao! In camera al secondo piano il Wi-Fi prende pochissimo, al piano terra invece va benissimo. È un problema della linea?",
+  "seguiti": [
+    "CL-005004, chiara.modello@example.org",
+    "Il router è in soggiorno, al piano terra, dentro un mobile.",
+    "L'ho spostato sopra il mobile: va un po' meglio ma non abbastanza. Il mesh quanto costa?",
+    "Sì, fatemi ricontattare."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005004",
+      "nome": "Chiara Modello",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "chiara.modello@example.org",
+        "telefono": "+39 005 904 3316"
+      },
+      "servizi": ["Casa Fibra 1 Giga"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005004",
+        "tecnologia": "FTTH",
+        "offerta": "Casa Fibra 1 Giga",
+        "indirizzo": "Via dei Modelli 2, 38051 Borgo Valsugana (TN)",
+        "apparato": "olt-pergine-01",
+        "porta": "0/2/3",
+        "stato": "attiva",
+        "dettaglio": "linea regolare; ultimo speed test dal router 930 Mbit/s"
+      }
+    ],
+    "ticket": [],
+    "operatori": {
+      "aperti": false,
+      "prossima_apertura": "lunedì alle 8:00, il commerciale dalle 9:00"
+    }
+  },
+  "esito_atteso": [
+    "Riconosce la cliente e verifica che la linea è regolare: non è un guasto.",
+    "Guida i passi sul Wi-Fi: posizione del router, reti a 2,4 e 5 GHz.",
+    "Spiega il sistema mesh in modo neutrale; per prezzo e condizioni rimanda al commerciale senza inventare cifre.",
+    "Con il consenso della cliente apre una richiesta di ricontatto per il commerciale, dicendo quando arriverà (lunedì mattina).",
+    "Non apre un guasto e non prenota un tecnico.",
+    "Dà del tu."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Non c'è un guasto; il ricontatto commerciale avviene negli orari d'ufficio.",
+  "da_evitare": [
+    "Inventare il prezzo del mesh.",
+    "Insistere con l'offerta.",
+    "Aprire un guasto di linea o prenotare un tecnico.",
+    "Promettere che qualcuno richiama la domenica sera."
+  ],
+  "kb": ["KB-03", "KB-02", "KB-12"],
+  "ticket_csv": "TK-2026-04550"
+}

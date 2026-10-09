@@ -1,0 +1,106 @@
+{
+  "id": "GC-03",
+  "scenario": "SC-05",
+  "titolo": "Centralino fermo: il guasto della piattaforma e la deviazione d'emergenza",
+  "canale": "telefono",
+  "inizio": "2026-09-11T08:29:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Buongiorno, sono Franco Fittizio della Falegnameria Fittizia: tutti i telefoni dell'ufficio dicono «non registrato» e non entra nessuna chiamata. Internet invece funziona."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Buongiorno, signor Fittizio, sono l'assistente virtuale di CiaspoLink. Verifico subito. Per riconoscerla mi dice il codice cliente e l'e-mail registrata dell'azienda?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Il codice cliente è CL-000103; la mail registrata è falegnameria.fittizia@example.org."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_identita",
+          "argomenti": {"id_cliente": "CL-000103", "contatto": "falegnameria.fittizia@example.org", "persona": "Franco Fittizio"},
+          "risultato": {"esito": "riconosciuto", "id_cliente": "CL-000103", "nome": "Falegnameria Fittizia S.n.c.", "tipo": "azienda", "referente_registrato": true, "linee": ["LN-000203"]}
+        },
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-000203"},
+          "risultato": {
+            "id_linea": "LN-000203",
+            "stato": "attiva",
+            "dettaglio": "linea dati regolare",
+            "voce": {"servizio": "Centralino Cloud", "interni": 6, "interni_registrati": 0, "dettaglio": "registrazioni rifiutate dalla piattaforma voce dalle 08:04"},
+            "guasto_collettivo": {"zona": "tutti i clienti del Centralino Cloud", "descrizione": "i telefoni non riescono a registrarsi sulla piattaforma voce", "inizio": "2026-09-11T08:04:00+02:00", "stato": "tecnici al lavoro", "stima_ripristino": null}
+          }
+        },
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "id_cliente": "CL-000103",
+            "id_linea": "LN-000203",
+            "categoria": "telefonia_voip",
+            "priorita": "alta",
+            "collegato_a": "guasto piattaforma voce",
+            "oggetto": "Centralino Cloud non registrato",
+            "descrizione": "Tutti e sei gli interni «non registrato», nessuna chiamata in entrata; linea dati regolare. Collegato al guasto della piattaforma voce."
+          },
+          "risultato": {"id_ticket": "TK-2026-04477", "stato": "in lavorazione", "collegato_a": "guasto piattaforma voce"}
+        }
+      ],
+      "testo": "Grazie. Le spiego che cosa succede: da poco dopo le 8 c'è un problema sulla nostra piattaforma voce, e i telefoni dei clienti del Centralino Cloud non riescono a registrarsi. Non dipende dai vostri apparecchi né dalla vostra rete, quindi non serve riavviare i telefoni. I tecnici ci stanno già lavorando, e ho aperto la sua segnalazione collegata al guasto."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Come faccio a non perdere le chiamate dei clienti?"
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "cerca_kb",
+          "argomenti": {"domanda": "deviazione d'emergenza delle chiamate del Centralino Cloud"},
+          "risultato": [{"id": "KB-06", "titolo": "Centralino Cloud: interni «non registrato»", "estratto": "Portale del centralino → «Instradamento» → «Deviazione d'emergenza», inserire il numero e salvare. Si disattiva dallo stesso punto quando il servizio torna."}]
+        }
+      ],
+      "testo": "Può deviare le chiamate in arrivo su un cellulare dal portale del centralino. Lei è l'amministratore, quindi può farlo subito: entri nel portale del centralino e apra la voce Instradamento. Mi dica quando c'è."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Ci sono."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Bene. Ora apra Deviazione d'emergenza, inserisca il numero del cellulare e salvi. Mi dica quando ha fatto."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Fatto, ho messo il mio cellulare. Mi richiamate su questo numero quando è a posto? È il +39 003 870 4412."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "aggiorna_ticket",
+          "argomenti": {"id_ticket": "TK-2026-04477", "nota": "Deviazione d'emergenza attivata dal cliente sul cellulare. Richiamare al +39 003 870 4412 a guasto risolto."},
+          "risultato": {"id_ticket": "TK-2026-04477", "stato": "in lavorazione"}
+        }
+      ],
+      "testo": "Perfetto: da adesso le chiamate verso l'ufficio arrivano sul suo cellulare, e quando il servizio torna la deviazione si toglie dallo stesso punto. La segnalazione è la TK-2026-04477: T K, 2026, zero quattro quattro sette sette. La richiamiamo al numero che termina con 4412 appena il servizio è di nuovo regolare; un orario, per ora, non ce l'ho. Riepilogo: guasto sulla nostra piattaforma voce, chiamate deviate sul suo cellulare, richiamata a guasto risolto. Buon lavoro."
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04477",
+    "escalation": false,
+    "riassunto": "Interni del Centralino Cloud non registrati per il guasto della piattaforma voce: referente riconosciuto, segnalazione collegata subito, nessun riavvio inutile, deviazione d'emergenza guidata passo per passo, richiamata a guasto risolto."
+  },
+  "punti_chiave": [
+    "Riconosce il referente registrato dell'azienda.",
+    "Trova il guasto della piattaforma voce, apre subito la segnalazione collegata e non fa riavviare i telefoni.",
+    "Guida la deviazione d'emergenza un passo alla volta, con conferma, senza elenchi (telefono).",
+    "Registra nella segnalazione il recapito per la richiamata.",
+    "Non promette orari; scandisce il numero della segnalazione, maschera il recapito e ricapitola."
+  ]
+}

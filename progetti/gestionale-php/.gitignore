@@ -1,0 +1,11 @@
+# dipendenze installate da Composer
+/vendor/
+
+# database e file prodotti in esecuzione
+/var/
+*.sqlite
+*.sqlite-journal
+
+# cache degli strumenti
+/.phpunit.cache/
+/.phpcs-cache

@@ -1,0 +1,16 @@
+body { font-family: Arial, Helvetica, sans-serif; font-size: 14px; margin: 0; color: #222; }
+body.legacy { margin: 0 8px; }
+header { background: #335; color: #fff; padding: 8px 16px; }
+header a { color: #fff; margin-right: 12px; text-decoration: none; }
+header a:hover { text-decoration: underline; }
+main { padding: 8px 16px; }
+table.dati { border-collapse: collapse; margin: 8px 0; }
+table.dati th, table.dati td { border: 1px solid #bbb; padding: 4px 8px; text-align: left; }
+table.dati td.num { text-align: right; }
+form.filtri label { margin-right: 10px; }
+.messaggio { background: #dfd; padding: 6px; }
+.errore { background: #fdd; padding: 6px; }
+.riquadri { display: flex; gap: 12px; flex-wrap: wrap; }
+.riquadro { border: 1px solid #bbb; padding: 8px 14px; min-width: 140px; }
+.riquadro b { font-size: 22px; display: block; }
+.diverso { color: #a00; font-weight: bold; }

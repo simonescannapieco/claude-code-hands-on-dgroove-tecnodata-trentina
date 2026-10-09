@@ -1,0 +1,875 @@
+2026-09-09 08:00:34 pppoe,ppp,info <pppoe-ln006055@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 08:00:34 pppoe,ppp,info,account ln006055@ciaspolink.example.org logged out, 67820 166837200 1668372000 185374 1390310 from 00:00:5E:00:53:77
+2026-09-09 08:02:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:77>: authenticated
+2026-09-09 08:02:25 pppoe,ppp,info,account ln006055@ciaspolink.example.org logged in, 198.51.100.184 from 00:00:5E:00:53:77
+2026-09-09 08:02:25 pppoe,ppp,info <pppoe-ln006055@ciaspolink.example.org>: connected
+2026-09-09 09:41:23 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:23 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 568665 15633738180 140703643620 17370820 117253036 from 00:00:5E:00:53:B1
+2026-09-09 09:41:23 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:23 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 984237 34619552238 415434626856 38466169 346195522 from 00:00:5E:00:53:B3
+2026-09-09 09:41:23 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:23 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 703624 21578740832 172629926656 23976378 143858272 from 00:00:5E:00:53:C3
+2026-09-09 09:41:24 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:24 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 586178 8922215338 44611076690 9913572 37175897 from 00:00:5E:00:53:04
+2026-09-09 09:41:24 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:24 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 347191 4617293109 23086465545 5130325 19238721 from 00:00:5E:00:53:B8
+2026-09-09 09:41:24 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:24 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 322555 11651654265 93213234120 12946282 77677695 from 00:00:5E:00:53:BA
+2026-09-09 09:41:24 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:24 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 306405 3030651855 24245214840 3367390 20204345 from 00:00:5E:00:53:C1
+2026-09-09 09:41:24 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:24 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 38573 1296091373 7776548238 1440101 6480456 from 00:00:5E:00:53:B6
+2026-09-09 09:41:25 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:25 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 875496 20186311272 121117867632 22429234 100931556 from 00:00:5E:00:53:B7
+2026-09-09 09:41:25 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:25 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 862180 31220399980 156101999900 34689333 130084999 from 00:00:5E:00:53:BC
+2026-09-09 09:41:25 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:25 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 546215 18882106335 207703169685 20980118 173085974 from 00:00:5E:00:53:BE
+2026-09-09 09:41:25 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:25 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 529340 9305797200 83752174800 10339774 69793479 from 00:00:5E:00:53:C5
+2026-09-09 09:41:25 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:25 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 129739 1959448117 23513377404 2177164 19594481 from 00:00:5E:00:53:BF
+2026-09-09 09:41:26 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:26 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 942293 34544461380 310900152420 38382734 259083460 from 00:00:5E:00:53:B0
+2026-09-09 09:41:26 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:26 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 649802 19386842670 232642112040 21540936 193868426 from 00:00:5E:00:53:BB
+2026-09-09 09:41:26 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:26 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 864079 29287957705 175727746230 32542175 146439788 from 00:00:5E:00:53:C0
+2026-09-09 09:41:26 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:26 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 167810 5352803380 53528033800 5947559 44606694 from 00:00:5E:00:53:BD
+2026-09-09 09:41:26 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:26 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 51636 591800196 6509802156 657555 5424835 from 00:00:5E:00:53:B9
+2026-09-09 09:41:27 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:27 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 631400 5272190000 15816570000 5857988 13180475 from 00:00:5E:00:53:B4
+2026-09-09 09:41:27 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:27 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 868970 3513245710 35132457100 3903606 29277047 from 00:00:5E:00:53:B5
+2026-09-09 09:41:27 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:27 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 488353 15366027145 184392325740 17073363 153660271 from 00:00:5E:00:53:C2
+2026-09-09 09:41:27 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:27 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 55752 629830344 5038642752 699811 4198868 from 00:00:5E:00:53:B2
+2026-09-09 09:41:28 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:28 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 648346 7861195250 47167171500 8734661 39305976 from 00:00:5E:00:53:C4
+2026-09-09 09:41:28 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 09:41:28 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 396337 921087188 10131959068 1023430 8443299 from 00:00:5E:00:53:C6
+2026-09-09 09:42:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 09:42:56 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.185 from 00:00:5E:00:53:BC
+2026-09-09 09:42:56 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 09:42:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 09:42:58 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.186 from 00:00:5E:00:53:B3
+2026-09-09 09:42:58 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 09:43:00 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.187 from 00:00:5E:00:53:B0
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 09:43:00 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.188 from 00:00:5E:00:53:B7
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 09:43:00 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.189 from 00:00:5E:00:53:B8
+2026-09-09 09:43:00 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 09:43:03 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 09:43:03 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.190 from 00:00:5E:00:53:BF
+2026-09-09 09:43:03 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 09:43:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 09:43:10 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.2 from 00:00:5E:00:53:C4
+2026-09-09 09:43:10 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 09:43:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 09:43:13 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.3 from 00:00:5E:00:53:BB
+2026-09-09 09:43:13 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 09:43:14 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 09:43:14 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.10 from 00:00:5E:00:53:B2
+2026-09-09 09:43:14 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 09:43:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 09:43:18 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.19 from 00:00:5E:00:53:B5
+2026-09-09 09:43:18 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 09:43:22 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 09:43:22 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.20 from 00:00:5E:00:53:C0
+2026-09-09 09:43:22 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 09:43:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 09:43:23 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.21 from 00:00:5E:00:53:B4
+2026-09-09 09:43:23 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 09:43:24 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 09:43:24 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.22 from 00:00:5E:00:53:BA
+2026-09-09 09:43:24 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 09:43:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 09:43:25 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.23 from 00:00:5E:00:53:B9
+2026-09-09 09:43:25 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 09:43:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 09:43:31 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.24 from 00:00:5E:00:53:04
+2026-09-09 09:43:31 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 09:43:32 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 09:43:32 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.25 from 00:00:5E:00:53:BD
+2026-09-09 09:43:32 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 09:43:32 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 09:43:32 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.26 from 00:00:5E:00:53:C6
+2026-09-09 09:43:32 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 09:43:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 09:43:34 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.27 from 00:00:5E:00:53:BE
+2026-09-09 09:43:34 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 09:43:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 09:43:35 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.28 from 00:00:5E:00:53:C3
+2026-09-09 09:43:35 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 09:43:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 09:43:38 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.29 from 00:00:5E:00:53:C5
+2026-09-09 09:43:38 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 09:43:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 09:43:50 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.30 from 00:00:5E:00:53:B1
+2026-09-09 09:43:50 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 09:43:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 09:43:51 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.31 from 00:00:5E:00:53:C2
+2026-09-09 09:43:51 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 09:43:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 09:43:55 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.32 from 00:00:5E:00:53:B6
+2026-09-09 09:43:55 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 09:44:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 09:44:01 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.33 from 00:00:5E:00:53:C1
+2026-09-09 09:44:01 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 11:05:14 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:14 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 4934 17639050 158751450 19598 132292 from 00:00:5E:00:53:B8
+2026-09-09 11:05:14 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:14 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 4896 184055328 1288387296 204505 1073656 from 00:00:5E:00:53:C5
+2026-09-09 11:05:14 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:14 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 4883 139663566 1117308528 155181 931090 from 00:00:5E:00:53:C2
+2026-09-09 11:05:15 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:15 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 4913 65411682 588705138 72679 490587 from 00:00:5E:00:53:C0
+2026-09-09 11:05:15 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:15 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 4911 139973322 979813254 155525 816511 from 00:00:5E:00:53:BA
+2026-09-09 11:05:15 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:15 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 4903 82370400 658963200 91522 549136 from 00:00:5E:00:53:C6
+2026-09-09 11:05:16 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:16 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 4923 65544822 458813754 72827 382344 from 00:00:5E:00:53:BB
+2026-09-09 11:05:16 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:16 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 4905 133244325 1332443250 148049 1110369 from 00:00:5E:00:53:04
+2026-09-09 11:05:16 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:16 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 4881 89576112 627032784 99529 522527 from 00:00:5E:00:53:B6
+2026-09-09 11:05:16 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:16 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 4875 26568750 239118750 29520 199265 from 00:00:5E:00:53:C1
+2026-09-09 11:05:17 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:17 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 4934 15349674 92098044 17055 76748 from 00:00:5E:00:53:BF
+2026-09-09 11:05:17 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:17 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 4923 124738974 1372128714 138598 1143440 from 00:00:5E:00:53:B2
+2026-09-09 11:05:17 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:17 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 4914 132397902 1191581118 147108 992984 from 00:00:5E:00:53:B4
+2026-09-09 11:05:17 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:17 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 4902 11661858 128280438 12957 106900 from 00:00:5E:00:53:C3
+2026-09-09 11:05:17 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:17 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 4887 93038706 930387060 103376 775322 from 00:00:5E:00:53:B1
+2026-09-09 11:05:18 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:18 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 4942 85506484 769558356 95007 641298 from 00:00:5E:00:53:BC
+2026-09-09 11:05:18 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:18 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 4938 165585954 496757862 183984 413964 from 00:00:5E:00:53:B7
+2026-09-09 11:05:18 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:18 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 4920 130547280 391641840 145052 326368 from 00:00:5E:00:53:B5
+2026-09-09 11:05:18 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:18 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 4913 108498692 542493460 120554 452077 from 00:00:5E:00:53:B9
+2026-09-09 11:05:18 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:18 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 4904 63756904 701325944 70841 584438 from 00:00:5E:00:53:BE
+2026-09-09 11:05:19 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:19 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 4941 95336595 762692760 105929 635577 from 00:00:5E:00:53:B3
+2026-09-09 11:05:19 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:19 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 4939 12288232 61441160 13653 51200 from 00:00:5E:00:53:B0
+2026-09-09 11:05:19 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:19 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 4929 60089439 300447195 66766 250372 from 00:00:5E:00:53:C4
+2026-09-09 11:05:19 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 11:05:19 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 4907 193340707 1740066363 214823 1450055 from 00:00:5E:00:53:BD
+2026-09-09 11:07:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 11:07:36 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.34 from 00:00:5E:00:53:B6
+2026-09-09 11:07:36 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 11:07:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 11:07:38 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.35 from 00:00:5E:00:53:C3
+2026-09-09 11:07:38 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 11:07:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 11:07:39 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.36 from 00:00:5E:00:53:B3
+2026-09-09 11:07:39 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 11:07:45 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.37 from 00:00:5E:00:53:B8
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 11:07:45 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.38 from 00:00:5E:00:53:BD
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 11:07:45 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.39 from 00:00:5E:00:53:C4
+2026-09-09 11:07:45 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 11:07:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 11:07:47 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.40 from 00:00:5E:00:53:04
+2026-09-09 11:07:47 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 11:07:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 11:07:51 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.41 from 00:00:5E:00:53:BE
+2026-09-09 11:07:51 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 11:07:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 11:07:52 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.42 from 00:00:5E:00:53:B2
+2026-09-09 11:07:52 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 11:07:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 11:07:55 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.43 from 00:00:5E:00:53:B4
+2026-09-09 11:07:55 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 11:08:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 11:08:00 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.44 from 00:00:5E:00:53:BC
+2026-09-09 11:08:00 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 11:08:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 11:08:01 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.45 from 00:00:5E:00:53:B1
+2026-09-09 11:08:01 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 11:08:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 11:08:02 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.46 from 00:00:5E:00:53:BB
+2026-09-09 11:08:02 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 11:08:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 11:08:02 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.47 from 00:00:5E:00:53:C6
+2026-09-09 11:08:02 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 11:08:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 11:08:07 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.48 from 00:00:5E:00:53:BF
+2026-09-09 11:08:07 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 11:08:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 11:08:08 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.49 from 00:00:5E:00:53:BA
+2026-09-09 11:08:08 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 11:08:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 11:08:10 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.50 from 00:00:5E:00:53:B0
+2026-09-09 11:08:10 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 11:08:14 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 11:08:14 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.51 from 00:00:5E:00:53:C1
+2026-09-09 11:08:14 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 11:08:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 11:08:16 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.52 from 00:00:5E:00:53:C5
+2026-09-09 11:08:16 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 11:08:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 11:08:17 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.53 from 00:00:5E:00:53:B9
+2026-09-09 11:08:17 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 11:08:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 11:08:18 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.54 from 00:00:5E:00:53:C2
+2026-09-09 11:08:18 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 11:08:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 11:08:34 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.55 from 00:00:5E:00:53:C0
+2026-09-09 11:08:34 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 11:08:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 11:08:35 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.56 from 00:00:5E:00:53:B5
+2026-09-09 11:08:35 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 11:08:36 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 11:08:36 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.57 from 00:00:5E:00:53:B7
+2026-09-09 11:08:36 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 6056 62558480 250233920 69509 208528 from 00:00:5E:00:53:BD
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 6049 174326131 1045956786 193695 871630 from 00:00:5E:00:53:B2
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 6040 28255120 141275600 31394 117729 from 00:00:5E:00:53:B1
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 6039 50733639 608803668 56370 507336 from 00:00:5E:00:53:BB
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 6031 209112863 1463790041 232347 1219825 from 00:00:5E:00:53:B0
+2026-09-09 12:48:41 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:41 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 6006 143195052 429585156 159105 357987 from 00:00:5E:00:53:B5
+2026-09-09 12:48:42 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:42 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 6066 42771366 171085464 47523 142571 from 00:00:5E:00:53:B6
+2026-09-09 12:48:42 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:42 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 6057 39994371 119983113 44438 99985 from 00:00:5E:00:53:C4
+2026-09-09 12:48:42 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:42 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 6051 139221408 835328448 154690 696107 from 00:00:5E:00:53:BE
+2026-09-09 12:48:42 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:42 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 6035 164471855 657887420 182746 548239 from 00:00:5E:00:53:BF
+2026-09-09 12:48:43 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:43 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 6048 193421088 2321053056 214912 1934210 from 00:00:5E:00:53:B4
+2026-09-09 12:48:43 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:43 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 6026 152017902 1824214824 168908 1520179 from 00:00:5E:00:53:B9
+2026-09-09 12:48:44 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:44 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 6065 169340865 1016045190 188156 846704 from 00:00:5E:00:53:B3
+2026-09-09 12:48:44 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:44 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 6036 32449536 356944896 36055 297454 from 00:00:5E:00:53:BA
+2026-09-09 12:48:44 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:44 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 6010 101472840 710309880 112747 591924 from 00:00:5E:00:53:C0
+2026-09-09 12:48:45 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:45 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 6060 126847920 1395327120 140942 1162772 from 00:00:5E:00:53:B8
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 6068 97615916 1171390992 108462 976159 from 00:00:5E:00:53:C3
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 6059 233004904 1631034328 258894 1359195 from 00:00:5E:00:53:04
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 6046 240636846 1203184230 267374 1002653 from 00:00:5E:00:53:BC
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 6044 196611320 1376279240 218457 1146899 from 00:00:5E:00:53:C6
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 6032 208182416 2290006576 231313 1908338 from 00:00:5E:00:53:C1
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 6030 164582820 1152079740 182869 960066 from 00:00:5E:00:53:C5
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 6028 159772140 1917265680 177524 1597721 from 00:00:5E:00:53:C2
+2026-09-09 12:48:46 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 12:48:46 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 6010 219899890 2198998900 244333 1832499 from 00:00:5E:00:53:B7
+2026-09-09 12:49:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 12:49:07 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.60 from 00:00:5E:00:53:C3
+2026-09-09 12:49:07 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 12:49:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 12:49:08 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.61 from 00:00:5E:00:53:B1
+2026-09-09 12:49:08 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 12:49:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 12:49:08 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.64 from 00:00:5E:00:53:C0
+2026-09-09 12:49:08 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 12:49:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 12:49:11 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.67 from 00:00:5E:00:53:BB
+2026-09-09 12:49:11 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 12:49:21 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 12:49:21 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.71 from 00:00:5E:00:53:B3
+2026-09-09 12:49:21 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 12:49:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 12:49:23 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.76 from 00:00:5E:00:53:C2
+2026-09-09 12:49:23 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 12:49:26 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 12:49:26 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.79 from 00:00:5E:00:53:B6
+2026-09-09 12:49:26 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 12:49:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 12:49:31 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.82 from 00:00:5E:00:53:04
+2026-09-09 12:49:31 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 12:49:32 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 12:49:32 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.83 from 00:00:5E:00:53:C1
+2026-09-09 12:49:32 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 12:49:33 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 12:49:33 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.100 from 00:00:5E:00:53:BE
+2026-09-09 12:49:33 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 12:49:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 12:49:39 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.101 from 00:00:5E:00:53:BF
+2026-09-09 12:49:39 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 12:49:41 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 12:49:41 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.102 from 00:00:5E:00:53:B5
+2026-09-09 12:49:41 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 12:49:41 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 12:49:41 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.103 from 00:00:5E:00:53:B8
+2026-09-09 12:49:41 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 12:49:50 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 12:49:50 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.104 from 00:00:5E:00:53:B4
+2026-09-09 12:49:50 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 12:49:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 12:49:51 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.105 from 00:00:5E:00:53:B7
+2026-09-09 12:49:51 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 12:49:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 12:49:51 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.106 from 00:00:5E:00:53:B9
+2026-09-09 12:49:51 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 12:49:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 12:49:52 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.107 from 00:00:5E:00:53:BA
+2026-09-09 12:49:52 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 12:49:54 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 12:49:54 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.108 from 00:00:5E:00:53:C4
+2026-09-09 12:49:54 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 12:49:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 12:49:55 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.109 from 00:00:5E:00:53:BC
+2026-09-09 12:49:55 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 12:49:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 12:49:56 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.110 from 00:00:5E:00:53:B0
+2026-09-09 12:49:56 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 12:49:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 12:49:56 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.111 from 00:00:5E:00:53:BD
+2026-09-09 12:49:56 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 12:49:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 12:49:59 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.112 from 00:00:5E:00:53:C5
+2026-09-09 12:49:59 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 12:50:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 12:50:00 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.113 from 00:00:5E:00:53:B2
+2026-09-09 12:50:00 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 12:50:07 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 12:50:07 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.114 from 00:00:5E:00:53:C6
+2026-09-09 12:50:07 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 13:37:06 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:06 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 2878 11276004 90208032 12528 75173 from 00:00:5E:00:53:B1
+2026-09-09 13:37:06 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:06 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 2865 22172235 88688940 24635 73907 from 00:00:5E:00:53:B3
+2026-09-09 13:37:06 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:06 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 2860 33625020 201750120 37361 168125 from 00:00:5E:00:53:B6
+2026-09-09 13:37:06 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:06 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 2826 76691988 306767952 85213 255639 from 00:00:5E:00:53:B2
+2026-09-09 13:37:07 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:07 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 2879 104749536 733246752 116388 611038 from 00:00:5E:00:53:C0
+2026-09-09 13:37:07 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:07 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 2833 86321510 1035858120 95912 863215 from 00:00:5E:00:53:C4
+2026-09-09 13:37:08 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:08 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 2877 63590331 572312979 70655 476927 from 00:00:5E:00:53:BB
+2026-09-09 13:37:08 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:08 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 2837 23944280 287331360 26604 239442 from 00:00:5E:00:53:B7
+2026-09-09 13:37:08 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:08 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 2837 45003331 360026648 50003 300022 from 00:00:5E:00:53:B9
+2026-09-09 13:37:08 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:08 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 2821 64454208 515633664 71615 429694 from 00:00:5E:00:53:C6
+2026-09-09 13:37:09 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:09 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 2857 35681073 428172876 39645 356810 from 00:00:5E:00:53:C1
+2026-09-09 13:37:09 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:09 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 2850 59151750 591517500 65724 492931 from 00:00:5E:00:53:BF
+2026-09-09 13:37:09 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:09 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 2848 91212896 820916064 101347 684096 from 00:00:5E:00:53:B5
+2026-09-09 13:37:09 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:09 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 2837 87504428 525026568 97227 437522 from 00:00:5E:00:53:BA
+2026-09-09 13:37:09 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:09 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 2833 44948378 179793512 49942 149827 from 00:00:5E:00:53:B0
+2026-09-09 13:37:10 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:10 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 2859 19692792 118156752 21880 98463 from 00:00:5E:00:53:04
+2026-09-09 13:37:10 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:10 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 2857 58228517 582285170 64698 485237 from 00:00:5E:00:53:BE
+2026-09-09 13:37:10 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:10 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 2840 45079320 225396600 50088 187830 from 00:00:5E:00:53:B4
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 2884 65322600 718548600 72580 598790 from 00:00:5E:00:53:C3
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 2868 84583056 338332224 93981 281943 from 00:00:5E:00:53:C2
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 2850 106168200 955513800 117964 796261 from 00:00:5E:00:53:B8
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 2836 64816780 777801360 72018 648167 from 00:00:5E:00:53:BC
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 2835 66214260 595928340 73571 496606 from 00:00:5E:00:53:BD
+2026-09-09 13:37:11 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 13:37:11 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 2832 76871808 922461696 85413 768718 from 00:00:5E:00:53:C5
+2026-09-09 13:40:35 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 13:40:35 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.115 from 00:00:5E:00:53:C3
+2026-09-09 13:40:35 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 13:40:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 13:40:38 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.116 from 00:00:5E:00:53:B6
+2026-09-09 13:40:38 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 13:40:38 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 13:40:38 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.117 from 00:00:5E:00:53:BB
+2026-09-09 13:40:38 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 13:40:44 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 13:40:44 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.118 from 00:00:5E:00:53:C6
+2026-09-09 13:40:44 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 13:40:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 13:40:47 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.119 from 00:00:5E:00:53:04
+2026-09-09 13:40:47 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 13:40:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 13:40:49 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.120 from 00:00:5E:00:53:BE
+2026-09-09 13:40:49 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 13:40:55 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.121 from 00:00:5E:00:53:BA
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 13:40:55 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.122 from 00:00:5E:00:53:BD
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 13:40:55 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.123 from 00:00:5E:00:53:BF
+2026-09-09 13:40:55 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 13:40:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 13:40:58 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.124 from 00:00:5E:00:53:C4
+2026-09-09 13:40:58 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 13:41:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 13:41:00 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.125 from 00:00:5E:00:53:BC
+2026-09-09 13:41:00 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 13:41:03 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 13:41:03 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.131 from 00:00:5E:00:53:B0
+2026-09-09 13:41:03 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 13:41:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 13:41:08 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.136 from 00:00:5E:00:53:B2
+2026-09-09 13:41:08 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 13:41:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 13:41:10 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.173 from 00:00:5E:00:53:C2
+2026-09-09 13:41:10 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 13:41:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 13:41:18 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.175 from 00:00:5E:00:53:B7
+2026-09-09 13:41:18 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 13:41:26 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 13:41:26 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.178 from 00:00:5E:00:53:B4
+2026-09-09 13:41:26 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 13:41:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 13:41:28 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.183 from 00:00:5E:00:53:C1
+2026-09-09 13:41:28 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 13:41:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 13:41:28 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.185 from 00:00:5E:00:53:C5
+2026-09-09 13:41:28 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 13:41:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 13:41:29 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.186 from 00:00:5E:00:53:B3
+2026-09-09 13:41:29 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 13:41:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 13:41:31 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.187 from 00:00:5E:00:53:B8
+2026-09-09 13:41:31 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 13:41:33 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 13:41:33 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.188 from 00:00:5E:00:53:C0
+2026-09-09 13:41:33 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 13:41:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 13:41:34 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.189 from 00:00:5E:00:53:B1
+2026-09-09 13:41:34 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 13:41:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 13:41:37 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.190 from 00:00:5E:00:53:B5
+2026-09-09 13:41:37 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 13:41:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 13:41:37 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.2 from 00:00:5E:00:53:B9
+2026-09-09 13:41:37 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 14:52:21 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:21 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 4292 122631024 367893072 136256 306577 from 00:00:5E:00:53:BE
+2026-09-09 14:52:21 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:21 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 4253 91818017 367272068 102020 306060 from 00:00:5E:00:53:C1
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 4307 18218610 72874440 20242 60728 from 00:00:5E:00:53:C3
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 4304 59502800 416519600 66114 347099 from 00:00:5E:00:53:BB
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 4295 151652155 1061565085 168502 884637 from 00:00:5E:00:53:04
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 4282 57931178 521380602 64367 434483 from 00:00:5E:00:53:BC
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 4279 69465286 208395858 77183 173663 from 00:00:5E:00:53:B0
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 4274 61259242 245036968 68065 204197 from 00:00:5E:00:53:B2
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 4272 73281888 586255104 81424 488545 from 00:00:5E:00:53:C2
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 4264 61904752 742857024 68783 619047 from 00:00:5E:00:53:B7
+2026-09-09 14:52:22 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:22 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 4248 104934096 419736384 116593 349780 from 00:00:5E:00:53:B1
+2026-09-09 14:52:23 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:23 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 4288 23794112 190352896 26437 158627 from 00:00:5E:00:53:BA
+2026-09-09 14:52:23 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:23 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 4288 159607936 1915295232 177342 1596079 from 00:00:5E:00:53:BF
+2026-09-09 14:52:24 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:24 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 4289 101349070 1216188840 112610 1013490 from 00:00:5E:00:53:BD
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 4301 87890935 615236545 97656 512697 from 00:00:5E:00:53:C6
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 4287 13285413 79712478 14761 66427 from 00:00:5E:00:53:C4
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 4257 23417757 257595327 26019 214662 from 00:00:5E:00:53:C5
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 4256 147049056 1617539616 163387 1347949 from 00:00:5E:00:53:B3
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 4254 49393194 296359164 54881 246965 from 00:00:5E:00:53:B8
+2026-09-09 14:52:25 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:25 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 4248 101722608 813780864 113025 678150 from 00:00:5E:00:53:B5
+2026-09-09 14:52:26 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:26 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 4308 29837208 358046496 33152 298372 from 00:00:5E:00:53:B6
+2026-09-09 14:52:26 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:26 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 4260 133474320 400422960 148304 333685 from 00:00:5E:00:53:B4
+2026-09-09 14:52:26 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:26 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 4253 73530117 808831287 81700 674026 from 00:00:5E:00:53:C0
+2026-09-09 14:52:26 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:52:26 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 4249 66688055 400128330 74097 333440 from 00:00:5E:00:53:B9
+2026-09-09 14:53:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 14:53:39 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.3 from 00:00:5E:00:53:B2
+2026-09-09 14:53:39 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 14:53:40 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 14:53:40 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.10 from 00:00:5E:00:53:B1
+2026-09-09 14:53:40 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 14:53:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 14:53:42 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.19 from 00:00:5E:00:53:BA
+2026-09-09 14:53:42 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 14:53:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 14:53:43 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.20 from 00:00:5E:00:53:B9
+2026-09-09 14:53:43 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 14:53:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 14:53:47 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.21 from 00:00:5E:00:53:C3
+2026-09-09 14:53:47 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 14:53:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 14:53:49 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.22 from 00:00:5E:00:53:04
+2026-09-09 14:53:49 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 14:53:57 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 14:53:57 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.23 from 00:00:5E:00:53:C4
+2026-09-09 14:53:57 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 14:53:58 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 14:53:58 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.24 from 00:00:5E:00:53:BD
+2026-09-09 14:53:58 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 14:54:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 14:54:01 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.25 from 00:00:5E:00:53:BF
+2026-09-09 14:54:01 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 14:54:04 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 14:54:04 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.26 from 00:00:5E:00:53:C2
+2026-09-09 14:54:04 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 14:54:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 14:54:10 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.27 from 00:00:5E:00:53:C0
+2026-09-09 14:54:10 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 14:54:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 14:54:11 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.28 from 00:00:5E:00:53:C5
+2026-09-09 14:54:11 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 14:54:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 14:54:13 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.29 from 00:00:5E:00:53:BB
+2026-09-09 14:54:13 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 14:54:16 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 14:54:16 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.30 from 00:00:5E:00:53:B6
+2026-09-09 14:54:16 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 14:54:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 14:54:18 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.31 from 00:00:5E:00:53:C6
+2026-09-09 14:54:18 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 14:54:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 14:54:19 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.32 from 00:00:5E:00:53:B7
+2026-09-09 14:54:19 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 14:54:19 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 14:54:19 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.33 from 00:00:5E:00:53:B8
+2026-09-09 14:54:19 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 14:54:22 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 14:54:22 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.34 from 00:00:5E:00:53:C1
+2026-09-09 14:54:22 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 14:54:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 14:54:31 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.35 from 00:00:5E:00:53:B5
+2026-09-09 14:54:31 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 14:54:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 14:54:31 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.36 from 00:00:5E:00:53:BC
+2026-09-09 14:54:31 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 14:54:33 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 14:54:33 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.37 from 00:00:5E:00:53:BE
+2026-09-09 14:54:33 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 14:54:34 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.38 from 00:00:5E:00:53:B0
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 14:54:34 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.39 from 00:00:5E:00:53:B3
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 14:54:34 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.40 from 00:00:5E:00:53:B4
+2026-09-09 14:54:34 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 14:54:58 pppoe,ppp,info <pppoe-ln006070@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 14:54:58 pppoe,ppp,info,account ln006070@ciaspolink.example.org logged out, 417173 1705820397 8529101985 1895355 7107584 from 00:00:5E:00:53:86
+2026-09-09 14:57:26 pppoe,ppp,info <pppoe-00:00:5E:00:53:86>: authenticated
+2026-09-09 14:57:26 pppoe,ppp,info,account ln006070@ciaspolink.example.org logged in, 198.51.100.41 from 00:00:5E:00:53:86
+2026-09-09 14:57:26 pppoe,ppp,info <pppoe-ln006070@ciaspolink.example.org>: connected
+2026-09-09 16:09:24 pppoe,ppp,info <pppoe-ln006039@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:09:24 pppoe,ppp,info,account ln006039@ciaspolink.example.org logged out, 102288 3319245600 16596228000 3688050 13830190 from 00:00:5E:00:53:67
+2026-09-09 16:12:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:67>: authenticated
+2026-09-09 16:12:17 pppoe,ppp,info,account ln006039@ciaspolink.example.org logged in, 198.51.100.42 from 00:00:5E:00:53:67
+2026-09-09 16:12:17 pppoe,ppp,info <pppoe-ln006039@ciaspolink.example.org>: connected
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 5296 151592704 1515927040 168436 1263272 from 00:00:5E:00:53:B2
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 5292 176144220 880721100 195715 733934 from 00:00:5E:00:53:B9
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 5257 65507477 196522431 72786 163768 from 00:00:5E:00:53:C6
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 5244 203372808 813491232 225969 677909 from 00:00:5E:00:53:B5
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 5241 64972677 389836062 72191 324863 from 00:00:5E:00:53:B3
+2026-09-09 16:21:55 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:55 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 5241 96796029 967960290 107551 806633 from 00:00:5E:00:53:B4
+2026-09-09 16:21:56 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:56 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 5272 130460912 782765472 144956 652304 from 00:00:5E:00:53:C2
+2026-09-09 16:21:57 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:57 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 5288 184096432 1656867888 204551 1380723 from 00:00:5E:00:53:04
+2026-09-09 16:21:57 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:57 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 5280 124961760 499847040 138846 416539 from 00:00:5E:00:53:C4
+2026-09-09 16:21:57 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:57 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 5276 144061180 432183540 160067 360152 from 00:00:5E:00:53:BF
+2026-09-09 16:21:57 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:57 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 5266 56309338 450474704 62565 375395 from 00:00:5E:00:53:C5
+2026-09-09 16:21:58 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:58 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 5268 136272624 817635744 151414 681363 from 00:00:5E:00:53:C0
+2026-09-09 16:21:58 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:58 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 5262 64890984 454236888 72101 378530 from 00:00:5E:00:53:B6
+2026-09-09 16:21:58 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:58 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 5259 130659855 1045278840 145177 871065 from 00:00:5E:00:53:B8
+2026-09-09 16:21:58 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:58 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 5256 57726648 404086536 64140 336738 from 00:00:5E:00:53:C1
+2026-09-09 16:21:58 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:58 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 5247 86056047 946616517 95617 788847 from 00:00:5E:00:53:BC
+2026-09-09 16:21:59 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:59 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 5299 32901491 263211928 36557 219343 from 00:00:5E:00:53:B1
+2026-09-09 16:21:59 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:59 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 5292 62974800 188924400 69972 157437 from 00:00:5E:00:53:C3
+2026-09-09 16:21:59 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:59 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 5246 28470042 284700420 31633 237250 from 00:00:5E:00:53:BE
+2026-09-09 16:21:59 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:21:59 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 5245 197825665 593476995 219806 494564 from 00:00:5E:00:53:B0
+2026-09-09 16:22:00 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:22:00 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 5298 136243368 1226190312 151381 1021825 from 00:00:5E:00:53:BA
+2026-09-09 16:22:00 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:22:00 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 5282 101731320 508656600 113034 423880 from 00:00:5E:00:53:BD
+2026-09-09 16:22:00 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:22:00 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 5267 18181684 72726736 20201 60605 from 00:00:5E:00:53:BB
+2026-09-09 16:22:00 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 16:22:00 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 5261 145982228 1167857824 162202 973214 from 00:00:5E:00:53:B7
+2026-09-09 16:24:39 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 16:24:39 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.43 from 00:00:5E:00:53:B9
+2026-09-09 16:24:39 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 16:24:42 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 16:24:42 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.44 from 00:00:5E:00:53:B2
+2026-09-09 16:24:42 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 16:24:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 16:24:43 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.45 from 00:00:5E:00:53:04
+2026-09-09 16:24:43 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 16:24:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 16:24:43 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.46 from 00:00:5E:00:53:C0
+2026-09-09 16:24:43 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 16:24:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 16:24:45 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.47 from 00:00:5E:00:53:BC
+2026-09-09 16:24:45 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 16:24:45 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 16:24:45 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.48 from 00:00:5E:00:53:C3
+2026-09-09 16:24:45 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 16:24:46 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 16:24:46 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.49 from 00:00:5E:00:53:BF
+2026-09-09 16:24:46 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 16:24:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 16:24:49 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.50 from 00:00:5E:00:53:BD
+2026-09-09 16:24:49 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 16:24:51 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 16:24:51 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.51 from 00:00:5E:00:53:B0
+2026-09-09 16:24:51 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 16:24:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 16:24:52 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.52 from 00:00:5E:00:53:B8
+2026-09-09 16:24:52 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 16:24:54 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 16:24:54 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.53 from 00:00:5E:00:53:B3
+2026-09-09 16:24:54 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 16:25:02 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 16:25:02 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.54 from 00:00:5E:00:53:C4
+2026-09-09 16:25:02 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 16:25:04 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 16:25:04 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.55 from 00:00:5E:00:53:BA
+2026-09-09 16:25:04 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 16:25:04 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 16:25:04 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.56 from 00:00:5E:00:53:C1
+2026-09-09 16:25:04 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 16:25:09 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 16:25:09 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.57 from 00:00:5E:00:53:C2
+2026-09-09 16:25:09 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 16:25:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 16:25:10 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.60 from 00:00:5E:00:53:BE
+2026-09-09 16:25:10 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 16:25:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 16:25:13 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.61 from 00:00:5E:00:53:B6
+2026-09-09 16:25:13 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 16:25:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 16:25:17 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.64 from 00:00:5E:00:53:B4
+2026-09-09 16:25:17 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 16:25:20 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 16:25:20 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.67 from 00:00:5E:00:53:B5
+2026-09-09 16:25:20 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 16:25:23 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 16:25:23 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.71 from 00:00:5E:00:53:B1
+2026-09-09 16:25:23 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 16:25:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 16:25:29 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.75 from 00:00:5E:00:53:BB
+2026-09-09 16:25:29 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 16:25:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 16:25:29 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.76 from 00:00:5E:00:53:C6
+2026-09-09 16:25:29 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 16:25:31 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 16:25:31 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.79 from 00:00:5E:00:53:B7
+2026-09-09 16:25:31 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 16:25:34 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 16:25:34 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.82 from 00:00:5E:00:53:C5
+2026-09-09 16:25:34 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 17:18:13 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:13 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged out, 3208 75278928 301115712 83643 250929 from 00:00:5E:00:53:C3
+2026-09-09 17:18:14 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:14 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged out, 3211 18254535 200799885 20282 167333 from 00:00:5E:00:53:04
+2026-09-09 17:18:14 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:14 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged out, 3208 38232944 114698832 42481 95582 from 00:00:5E:00:53:BF
+2026-09-09 17:18:14 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:14 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged out, 3192 52329648 418637184 58144 348864 from 00:00:5E:00:53:C4
+2026-09-09 17:18:14 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:14 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 3174 72833778 218501334 80926 182084 from 00:00:5E:00:53:B5
+2026-09-09 17:18:14 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:14 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged out, 3163 115402055 692412330 128224 577010 from 00:00:5E:00:53:B7
+2026-09-09 17:18:15 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:15 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged out, 3210 13568670 122118030 15076 101765 from 00:00:5E:00:53:BC
+2026-09-09 17:18:15 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:15 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged out, 3206 96898144 872083296 107664 726736 from 00:00:5E:00:53:BD
+2026-09-09 17:18:15 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:15 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 3186 102573270 820586160 113970 683821 from 00:00:5E:00:53:C2
+2026-09-09 17:18:15 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:15 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged out, 3185 33643155 370074705 37381 308395 from 00:00:5E:00:53:BE
+2026-09-09 17:18:15 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:15 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged out, 3178 61227348 183682044 68030 153068 from 00:00:5E:00:53:B4
+2026-09-09 17:18:16 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:16 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged out, 3205 69394660 832735920 77105 693946 from 00:00:5E:00:53:B0
+2026-09-09 17:18:16 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:16 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged out, 3192 89535600 537213600 99484 447678 from 00:00:5E:00:53:C1
+2026-09-09 17:18:16 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:16 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged out, 3167 115877363 927018904 128752 772515 from 00:00:5E:00:53:C6
+2026-09-09 17:18:17 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:17 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged out, 3215 54854330 219417320 60949 182847 from 00:00:5E:00:53:B2
+2026-09-09 17:18:17 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:17 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged out, 3214 105650608 1267807296 117389 1056506 from 00:00:5E:00:53:C0
+2026-09-09 17:18:17 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:17 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged out, 3203 105314640 526573200 117016 438811 from 00:00:5E:00:53:B3
+2026-09-09 17:18:17 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:17 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged out, 3193 40330783 241984698 44811 201653 from 00:00:5E:00:53:BA
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged out, 3219 8935944 26807832 9928 22339 from 00:00:5E:00:53:B9
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged out, 3206 36032234 108096702 40035 90080 from 00:00:5E:00:53:B8
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged out, 3185 8290555 91196105 9211 75996 from 00:00:5E:00:53:B6
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged out, 3175 74545825 372729125 82828 310607 from 00:00:5E:00:53:B1
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged out, 3169 51420194 308521164 57133 257100 from 00:00:5E:00:53:BB
+2026-09-09 17:18:18 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 17:18:18 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged out, 3164 32383540 161917700 35981 134931 from 00:00:5E:00:53:C5
+2026-09-09 17:18:59 pppoe,ppp,info <pppoe-00:00:5E:00:53:BF>: authenticated
+2026-09-09 17:18:59 pppoe,ppp,info,account ln006127@ciaspolink.example.org logged in, 198.51.100.83 from 00:00:5E:00:53:BF
+2026-09-09 17:18:59 pppoe,ppp,info <pppoe-ln006127@ciaspolink.example.org>: connected
+2026-09-09 17:19:00 pppoe,ppp,info <pppoe-00:00:5E:00:53:B6>: authenticated
+2026-09-09 17:19:00 pppoe,ppp,info,account ln006118@ciaspolink.example.org logged in, 198.51.100.100 from 00:00:5E:00:53:B6
+2026-09-09 17:19:00 pppoe,ppp,info <pppoe-ln006118@ciaspolink.example.org>: connected
+2026-09-09 17:19:03 pppoe,ppp,info <pppoe-00:00:5E:00:53:B7>: authenticated
+2026-09-09 17:19:03 pppoe,ppp,info,account ln006119@ciaspolink.example.org logged in, 198.51.100.101 from 00:00:5E:00:53:B7
+2026-09-09 17:19:03 pppoe,ppp,info <pppoe-ln006119@ciaspolink.example.org>: connected
+2026-09-09 17:19:04 pppoe,ppp,info <pppoe-00:00:5E:00:53:C6>: authenticated
+2026-09-09 17:19:04 pppoe,ppp,info,account ln006134@ciaspolink.example.org logged in, 198.51.100.102 from 00:00:5E:00:53:C6
+2026-09-09 17:19:04 pppoe,ppp,info <pppoe-ln006134@ciaspolink.example.org>: connected
+2026-09-09 17:19:05 pppoe,ppp,info <pppoe-00:00:5E:00:53:B9>: authenticated
+2026-09-09 17:19:05 pppoe,ppp,info,account ln006121@ciaspolink.example.org logged in, 198.51.100.103 from 00:00:5E:00:53:B9
+2026-09-09 17:19:05 pppoe,ppp,info <pppoe-ln006121@ciaspolink.example.org>: connected
+2026-09-09 17:19:06 pppoe,ppp,info <pppoe-00:00:5E:00:53:BC>: authenticated
+2026-09-09 17:19:06 pppoe,ppp,info,account ln006124@ciaspolink.example.org logged in, 198.51.100.104 from 00:00:5E:00:53:BC
+2026-09-09 17:19:06 pppoe,ppp,info <pppoe-ln006124@ciaspolink.example.org>: connected
+2026-09-09 17:19:08 pppoe,ppp,info <pppoe-00:00:5E:00:53:BA>: authenticated
+2026-09-09 17:19:08 pppoe,ppp,info,account ln006122@ciaspolink.example.org logged in, 198.51.100.105 from 00:00:5E:00:53:BA
+2026-09-09 17:19:08 pppoe,ppp,info <pppoe-ln006122@ciaspolink.example.org>: connected
+2026-09-09 17:19:10 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 17:19:10 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.106 from 00:00:5E:00:53:C2
+2026-09-09 17:19:10 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 17:19:11 pppoe,ppp,info <pppoe-00:00:5E:00:53:BB>: authenticated
+2026-09-09 17:19:11 pppoe,ppp,info,account ln006123@ciaspolink.example.org logged in, 198.51.100.107 from 00:00:5E:00:53:BB
+2026-09-09 17:19:11 pppoe,ppp,info <pppoe-ln006123@ciaspolink.example.org>: connected
+2026-09-09 17:19:15 pppoe,ppp,info <pppoe-00:00:5E:00:53:C4>: authenticated
+2026-09-09 17:19:15 pppoe,ppp,info,account ln006132@ciaspolink.example.org logged in, 198.51.100.108 from 00:00:5E:00:53:C4
+2026-09-09 17:19:15 pppoe,ppp,info <pppoe-ln006132@ciaspolink.example.org>: connected
+2026-09-09 17:19:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:C1>: authenticated
+2026-09-09 17:19:17 pppoe,ppp,info,account ln006129@ciaspolink.example.org logged in, 198.51.100.109 from 00:00:5E:00:53:C1
+2026-09-09 17:19:17 pppoe,ppp,info <pppoe-ln006129@ciaspolink.example.org>: connected
+2026-09-09 17:19:21 pppoe,ppp,info <pppoe-00:00:5E:00:53:C0>: authenticated
+2026-09-09 17:19:21 pppoe,ppp,info,account ln006128@ciaspolink.example.org logged in, 198.51.100.110 from 00:00:5E:00:53:C0
+2026-09-09 17:19:21 pppoe,ppp,info <pppoe-ln006128@ciaspolink.example.org>: connected
+2026-09-09 17:19:25 pppoe,ppp,info <pppoe-00:00:5E:00:53:B0>: authenticated
+2026-09-09 17:19:25 pppoe,ppp,info,account ln006112@ciaspolink.example.org logged in, 198.51.100.111 from 00:00:5E:00:53:B0
+2026-09-09 17:19:25 pppoe,ppp,info <pppoe-ln006112@ciaspolink.example.org>: connected
+2026-09-09 17:19:26 pppoe,ppp,info <pppoe-00:00:5E:00:53:C5>: authenticated
+2026-09-09 17:19:26 pppoe,ppp,info,account ln006133@ciaspolink.example.org logged in, 198.51.100.112 from 00:00:5E:00:53:C5
+2026-09-09 17:19:26 pppoe,ppp,info <pppoe-ln006133@ciaspolink.example.org>: connected
+2026-09-09 17:19:28 pppoe,ppp,info <pppoe-00:00:5E:00:53:B8>: authenticated
+2026-09-09 17:19:28 pppoe,ppp,info,account ln006120@ciaspolink.example.org logged in, 198.51.100.113 from 00:00:5E:00:53:B8
+2026-09-09 17:19:28 pppoe,ppp,info <pppoe-ln006120@ciaspolink.example.org>: connected
+2026-09-09 17:19:29 pppoe,ppp,info <pppoe-00:00:5E:00:53:B1>: authenticated
+2026-09-09 17:19:29 pppoe,ppp,info,account ln006113@ciaspolink.example.org logged in, 198.51.100.114 from 00:00:5E:00:53:B1
+2026-09-09 17:19:29 pppoe,ppp,info <pppoe-ln006113@ciaspolink.example.org>: connected
+2026-09-09 17:19:37 pppoe,ppp,info <pppoe-00:00:5E:00:53:B3>: authenticated
+2026-09-09 17:19:37 pppoe,ppp,info,account ln006115@ciaspolink.example.org logged in, 198.51.100.115 from 00:00:5E:00:53:B3
+2026-09-09 17:19:37 pppoe,ppp,info <pppoe-ln006115@ciaspolink.example.org>: connected
+2026-09-09 17:19:41 pppoe,ppp,info <pppoe-00:00:5E:00:53:B2>: authenticated
+2026-09-09 17:19:41 pppoe,ppp,info,account ln006114@ciaspolink.example.org logged in, 198.51.100.116 from 00:00:5E:00:53:B2
+2026-09-09 17:19:41 pppoe,ppp,info <pppoe-ln006114@ciaspolink.example.org>: connected
+2026-09-09 17:19:43 pppoe,ppp,info <pppoe-00:00:5E:00:53:04>: authenticated
+2026-09-09 17:19:43 pppoe,ppp,info,account ln000204@ciaspolink.example.org logged in, 198.51.100.117 from 00:00:5E:00:53:04
+2026-09-09 17:19:43 pppoe,ppp,info <pppoe-ln000204@ciaspolink.example.org>: connected
+2026-09-09 17:19:47 pppoe,ppp,info <pppoe-00:00:5E:00:53:BE>: authenticated
+2026-09-09 17:19:47 pppoe,ppp,info,account ln006126@ciaspolink.example.org logged in, 198.51.100.118 from 00:00:5E:00:53:BE
+2026-09-09 17:19:47 pppoe,ppp,info <pppoe-ln006126@ciaspolink.example.org>: connected
+2026-09-09 17:19:49 pppoe,ppp,info <pppoe-00:00:5E:00:53:BD>: authenticated
+2026-09-09 17:19:49 pppoe,ppp,info,account ln006125@ciaspolink.example.org logged in, 198.51.100.119 from 00:00:5E:00:53:BD
+2026-09-09 17:19:49 pppoe,ppp,info <pppoe-ln006125@ciaspolink.example.org>: connected
+2026-09-09 17:19:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:B4>: authenticated
+2026-09-09 17:19:52 pppoe,ppp,info,account ln006116@ciaspolink.example.org logged in, 198.51.100.120 from 00:00:5E:00:53:B4
+2026-09-09 17:19:52 pppoe,ppp,info <pppoe-ln006116@ciaspolink.example.org>: connected
+2026-09-09 17:19:52 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 17:19:52 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.121 from 00:00:5E:00:53:B5
+2026-09-09 17:19:52 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected
+2026-09-09 17:19:56 pppoe,ppp,info <pppoe-00:00:5E:00:53:C3>: authenticated
+2026-09-09 17:19:56 pppoe,ppp,info,account ln006131@ciaspolink.example.org logged in, 198.51.100.122 from 00:00:5E:00:53:C3
+2026-09-09 17:19:56 pppoe,ppp,info <pppoe-ln006131@ciaspolink.example.org>: connected
+2026-09-09 21:10:58 pppoe,ppp,info <pppoe-ln006047@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 21:10:58 pppoe,ppp,info,account ln006047@ciaspolink.example.org logged out, 120358 570135846 6271494306 633484 5226245 from 00:00:5E:00:53:6F
+2026-09-09 21:12:17 pppoe,ppp,info <pppoe-00:00:5E:00:53:6F>: authenticated
+2026-09-09 21:12:17 pppoe,ppp,info,account ln006047@ciaspolink.example.org logged in, 198.51.100.123 from 00:00:5E:00:53:6F
+2026-09-09 21:12:17 pppoe,ppp,info <pppoe-ln006047@ciaspolink.example.org>: connected
+2026-09-09 21:24:33 pppoe,ppp,info <pppoe-ln006094@ciaspolink.example.org>: terminating... - disconnect request from peer
+2026-09-09 21:24:33 pppoe,ppp,info,account ln006094@ciaspolink.example.org logged out, 523339 3929229212 19646146060 4365810 16371788 from 00:00:5E:00:53:9E
+2026-09-09 21:25:13 pppoe,ppp,info <pppoe-00:00:5E:00:53:9E>: authenticated
+2026-09-09 21:25:13 pppoe,ppp,info,account ln006094@ciaspolink.example.org logged in, 198.51.100.124 from 00:00:5E:00:53:9E
+2026-09-09 21:25:13 pppoe,ppp,info <pppoe-ln006094@ciaspolink.example.org>: connected
+2026-09-09 22:04:57 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 22:04:57 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged out, 17147 364562367 2187374202 405069 1822811 from 00:00:5E:00:53:C2
+2026-09-09 22:06:01 pppoe,ppp,info <pppoe-00:00:5E:00:53:C2>: authenticated
+2026-09-09 22:06:01 pppoe,ppp,info,account ln006130@ciaspolink.example.org logged in, 198.51.100.125 from 00:00:5E:00:53:C2
+2026-09-09 22:06:01 pppoe,ppp,info <pppoe-ln006130@ciaspolink.example.org>: connected
+2026-09-09 23:09:04 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: terminating... - peer is not responding
+2026-09-09 23:09:04 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged out, 20952 778513464 3892567320 865014 3243806 from 00:00:5E:00:53:B5
+2026-09-09 23:10:18 pppoe,ppp,info <pppoe-00:00:5E:00:53:B5>: authenticated
+2026-09-09 23:10:18 pppoe,ppp,info,account ln006117@ciaspolink.example.org logged in, 198.51.100.131 from 00:00:5E:00:53:B5
+2026-09-09 23:10:18 pppoe,ppp,info <pppoe-ln006117@ciaspolink.example.org>: connected

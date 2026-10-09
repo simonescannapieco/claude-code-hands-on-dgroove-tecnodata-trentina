@@ -1,0 +1,210 @@
+2026-09-11T00:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 37%
+2026-09-10T22:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 95% capacity 393/381 Mbps
+2026-09-11T00:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 97% capacity 392/380 Mbps
+2026-09-11T00:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T00:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 22%
+2026-09-10T22:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 94% capacity 410/398 Mbps
+2026-09-11T00:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 95% capacity 399/387 Mbps
+2026-09-11T00:45:43+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T01:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 44%
+2026-09-10T23:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 94% capacity 385/373 Mbps
+2026-09-11T01:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 97% capacity 385/373 Mbps
+2026-09-11T01:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T01:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T01:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 51%
+2026-09-10T23:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 97% capacity 406/394 Mbps
+2026-09-11T01:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 96% capacity 409/397 Mbps
+2026-09-11T02:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 22%
+2026-09-11T00:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 95% capacity 408/396 Mbps
+2026-09-11T02:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 95% capacity 408/396 Mbps
+2026-09-11T02:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T02:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 31%
+2026-09-11T00:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 96% capacity 389/377 Mbps
+2026-09-11T02:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 94% capacity 397/385 Mbps
+2026-09-11T02:45:43+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T03:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 43%
+2026-09-11T01:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 96% capacity 399/387 Mbps
+2026-09-11T03:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 95% capacity 395/383 Mbps
+2026-09-11T03:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T03:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 27%
+2026-09-11T01:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 96% capacity 410/398 Mbps
+2026-09-11T03:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 94% capacity 390/378 Mbps
+2026-09-11T04:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 34%
+2026-09-11T02:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 94% capacity 385/373 Mbps
+2026-09-11T04:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 94% capacity 400/388 Mbps
+2026-09-11T04:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T04:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 51%
+2026-09-11T02:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 97% capacity 402/390 Mbps
+2026-09-11T04:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 94% capacity 387/375 Mbps
+2026-09-11T04:45:44+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T05:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 28%
+2026-09-11T03:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 96% capacity 395/383 Mbps
+2026-09-11T05:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 97% capacity 401/389 Mbps
+2026-09-11T05:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T05:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T05:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 23%
+2026-09-11T03:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 97% capacity 402/390 Mbps
+2026-09-11T05:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 97% capacity 401/389 Mbps
+2026-09-11T06:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 41%
+2026-09-11T04:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 96% capacity 404/392 Mbps
+2026-09-11T06:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 95% capacity 387/375 Mbps
+2026-09-11T06:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T06:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 51%
+2026-09-11T04:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 94% capacity 409/397 Mbps
+2026-09-11T06:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 96% capacity 389/377 Mbps
+2026-09-11T06:45:44+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T07:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 46%
+2026-09-11T05:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 96% capacity 407/395 Mbps
+2026-09-11T07:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 95% capacity 402/390 Mbps
+2026-09-11T07:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T07:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 37%
+2026-09-11T05:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 96% capacity 401/389 Mbps
+2026-09-11T07:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 97% capacity 396/384 Mbps
+2026-09-11T08:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 51%
+2026-09-11T06:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 96% capacity 396/384 Mbps
+2026-09-11T08:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 96% capacity 394/382 Mbps
+2026-09-11T08:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T08:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 25%
+2026-09-11T06:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 97% capacity 405/393 Mbps
+2026-09-11T08:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 95% capacity 404/392 Mbps
+2026-09-11T08:33:04+02:00 rtr-pergine-01 system,info,account user noc logged in from 192.0.2.50 via ssh
+2026-09-11T08:45:45+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T08:56:51+02:00 rtr-pergine-01 system,info configuration changed by noc
+2026-09-11T09:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 24%
+2026-09-11T07:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 95% capacity 404/392 Mbps
+2026-09-11T09:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 95% capacity 394/382 Mbps
+2026-09-11T09:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T09:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T09:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 23%
+2026-09-11T07:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 94% capacity 390/378 Mbps
+2026-09-11T09:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 95% capacity 391/379 Mbps
+2026-09-11T10:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 43%
+2026-09-11T08:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 96% capacity 386/374 Mbps
+2026-09-11T10:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 95% capacity 405/393 Mbps
+2026-09-11T10:06:36+02:00 ptp-trento-01 dropbear[5323]: Pubkey auth succeeded for 'noc' from 192.0.2.50:45323
+2026-09-11T10:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T10:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 52%
+2026-09-11T08:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 96% capacity 394/382 Mbps
+2026-09-11T10:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 96% capacity 403/391 Mbps
+2026-09-11T10:45:46+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T11:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 44%
+2026-09-11T09:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 96% capacity 393/381 Mbps
+2026-09-11T11:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 97% capacity 389/377 Mbps
+2026-09-11T09:16:32+02:00 bdr-trento-01 sshd[4506]: Accepted publickey for noc from 192.0.2.50 port 44506 ssh2
+2026-09-11T11:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T11:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 27%
+2026-09-11T09:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 95% capacity 402/390 Mbps
+2026-09-11T11:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 94% capacity 386/374 Mbps
+2026-09-11T12:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 29%
+2026-09-11T10:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 94% capacity 395/383 Mbps
+2026-09-11T12:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 94% capacity 393/381 Mbps
+2026-09-11T12:13:57+02:00 ptp-trento-01 dropbear[7988]: Pubkey auth succeeded for 'noc' from 192.0.2.50:47988
+2026-09-11T12:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T12:27:48+02:00 ptp-trento-01 system: configuration applied by noc
+2026-09-11T12:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 50%
+2026-09-11T10:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 97% capacity 402/390 Mbps
+2026-09-11T12:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 95% capacity 404/392 Mbps
+2026-09-11T12:45:46+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T12:57:35+02:00 sw-trento-01 %SEC_LOGIN-5-LOGIN_SUCCESS: Login Success [user: noc] [Source: 192.0.2.50] [localport: 22] at 12:57:35 CEST Fri Sep 11 2026
+2026-09-11T13:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 49%
+2026-09-11T11:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 95% capacity 391/379 Mbps
+2026-09-11T13:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -52 dBm noise -93 dBm ccq 94% capacity 396/384 Mbps
+2026-09-11T13:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T13:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T13:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 40%
+2026-09-11T11:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 95% capacity 401/389 Mbps
+2026-09-11T13:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 96% capacity 404/392 Mbps
+2026-09-11T13:34:30+02:00 core-trento-01 %SEC_LOGIN-5-LOGIN_SUCCESS: Login Success [user: noc] [Source: 192.0.2.50] [localport: 22] at 13:34:30 CEST Fri Sep 11 2026
+2026-09-11T13:44:49+02:00 core-trento-01 %SEC_LOGIN-5-LOGIN_SUCCESS: Login Success [user: noc] [Source: 192.0.2.50] [localport: 22] at 13:44:49 CEST Fri Sep 11 2026
+2026-09-11T13:57:51+02:00 core-trento-01 %SYS-5-CONFIG_I: Configured from console by noc on vty0 (192.0.2.50)
+2026-09-11T13:59:31+02:00 core-trento-01 %SYS-5-CONFIG_I: Configured from console by noc on vty0 (192.0.2.50)
+2026-09-11T14:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 28%
+2026-09-11T12:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 97% capacity 409/397 Mbps
+2026-09-11T14:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 94% capacity 406/394 Mbps
+2026-09-11T14:06:20+02:00 bts-cles-01 system,info,account user noc logged in from 192.0.2.50 via ssh
+2026-09-11T14:09:07+02:00 bts-cles-01 system,info configuration changed by noc
+2026-09-11T14:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T14:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 29%
+2026-09-11T12:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 97% capacity 400/388 Mbps
+2026-09-11T14:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 97% capacity 398/386 Mbps
+2026-09-11T14:45:47+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T15:00:20+02:00 olt-trento-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 7 ONT 0 SN CSLKA118E452 offline, cause dying-gasp
+2026-09-11T15:01:09+02:00 olt-trento-01 %%GPON/5/ONT_ONLINE: frame 0 slot 1 port 7 ONT 0 SN CSLKA118E452 online
+2026-09-11T15:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 35%
+2026-09-11T13:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 95% capacity 385/373 Mbps
+2026-09-11T15:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 94% capacity 387/375 Mbps
+2026-09-11T15:05:06+02:00 bts-cavareno-01 dropbear[4482]: Pubkey auth succeeded for 'noc' from 192.0.2.50:44482
+2026-09-11T15:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T15:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 43%
+2026-09-11T13:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 95% capacity 393/381 Mbps
+2026-09-11T15:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 96% capacity 400/388 Mbps
+2026-09-11T15:56:22+02:00 core-rovereto-01 %SEC_LOGIN-5-LOGIN_SUCCESS: Login Success [user: noc] [Source: 192.0.2.50] [localport: 22] at 15:56:22 CEST Fri Sep 11 2026
+2026-09-11T16:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 23%
+2026-09-11T14:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 95% capacity 404/392 Mbps
+2026-09-11T16:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 95% capacity 402/390 Mbps
+2026-09-11T16:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T16:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 25%
+2026-09-11T14:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 95% capacity 410/398 Mbps
+2026-09-11T16:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 96% capacity 410/398 Mbps
+2026-09-11T16:41:09+02:00 olt-pergine-01 %%SYSTEM/5/LOGIN: user noc logged in from 192.0.2.50 via SSH
+2026-09-11T16:45:47+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T17:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 28%
+2026-09-11T15:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 96% capacity 392/380 Mbps
+2026-09-11T17:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 96% capacity 404/392 Mbps
+2026-09-11T17:12:04+02:00 olt-pergine-01 %%SYSTEM/5/LOGIN: user noc logged in from 192.0.2.50 via SSH
+2026-09-11T15:18:06+02:00 bdr-trento-01 sshd[3043]: Accepted publickey for noc from 192.0.2.50 port 43043 ssh2
+2026-09-11T17:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T17:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T17:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 31%
+2026-09-11T15:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 97% capacity 398/386 Mbps
+2026-09-11T17:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 95% capacity 402/390 Mbps
+2026-09-11T18:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 46%
+2026-09-11T16:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 96% capacity 403/391 Mbps
+2026-09-11T18:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 96% capacity 389/377 Mbps
+2026-09-11T18:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T18:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 48%
+2026-09-11T16:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 94% capacity 396/384 Mbps
+2026-09-11T18:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 96% capacity 395/383 Mbps
+2026-09-11T18:45:48+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T19:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 33%
+2026-09-11T17:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -52 dBm noise -93 dBm ccq 94% capacity 395/383 Mbps
+2026-09-11T19:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 97% capacity 385/373 Mbps
+2026-09-11T19:19:41+02:00 olt-rovereto-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 1 ONT 1 SN CSLKA3DFA3B8 offline, cause dying-gasp
+2026-09-11T19:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T19:20:53+02:00 olt-rovereto-01 %%GPON/5/ONT_ONLINE: frame 0 slot 1 port 1 ONT 1 SN CSLKA3DFA3B8 online
+2026-09-11T19:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 38%
+2026-09-11T17:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 94% capacity 396/384 Mbps
+2026-09-11T19:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 97% capacity 390/378 Mbps
+2026-09-11T20:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 52%
+2026-09-11T18:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 94% capacity 393/381 Mbps
+2026-09-11T20:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -53 dBm noise -93 dBm ccq 96% capacity 394/382 Mbps
+2026-09-11T20:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T20:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 46%
+2026-09-11T18:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -53 dBm noise -93 dBm ccq 95% capacity 391/379 Mbps
+2026-09-11T20:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 94% capacity 385/373 Mbps
+2026-09-11T20:45:49+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T21:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 24%
+2026-09-11T19:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 97% capacity 397/385 Mbps
+2026-09-11T21:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 95% capacity 405/393 Mbps
+2026-09-11T21:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T21:26:51+02:00 olt-rovereto-01 %%SYSTEM/4/IP_CONFLICT: IP address 192.0.2.13 on vlanif999 conflicts with host 00:00:5E:00:53:28
+2026-09-11T21:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 50%
+2026-09-11T19:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 96% capacity 391/379 Mbps
+2026-09-11T21:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -54 dBm noise -93 dBm ccq 94% capacity 398/386 Mbps
+2026-09-11T21:47:29+02:00 olt-rovereto-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 1 ONT 7 SN CSLKA3E05D52 offline, cause dying-gasp
+2026-09-11T21:50:14+02:00 olt-rovereto-01 %%GPON/5/ONT_ONLINE: frame 0 slot 1 port 1 ONT 7 SN CSLKA3E05D52 online
+2026-09-11T22:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 37%
+2026-09-11T20:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 96% capacity 395/383 Mbps
+2026-09-11T22:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 97% capacity 397/385 Mbps
+2026-09-11T22:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T22:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 37%
+2026-09-11T20:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -55 dBm noise -93 dBm ccq 94% capacity 401/389 Mbps
+2026-09-11T22:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 95% capacity 399/387 Mbps
+2026-09-11T22:45:49+02:00 olt-trento-01 %%NTP/4/SOURCE_LOST: NTP server 192.0.2.244 unreachable, clock not synchronized
+2026-09-11T23:00:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 31%
+2026-09-11T21:00:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 95% capacity 402/390 Mbps
+2026-09-11T23:00:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 95% capacity 410/398 Mbps
+2026-09-11T23:20:11+02:00 sw-trento-01 %CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on TenGigabitEthernet1/1/2 (999), with sw-rovereto-01 TenGigabitEthernet1/1/1 (1).
+2026-09-11T23:30:47+02:00 bts-cavareno-01 airstats: stations 7 noise -91 dBm airtime 22%
+2026-09-11T21:30:47+02:00 ptp-cles-01 airstats: link 00:00:5E:00:53:11 signal -54 dBm noise -93 dBm ccq 97% capacity 406/394 Mbps
+2026-09-11T23:30:47+02:00 ptp-trento-01 airstats: link 00:00:5E:00:53:12 signal -55 dBm noise -93 dBm ccq 94% capacity 387/375 Mbps

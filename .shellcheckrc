@@ -1,0 +1,7 @@
+# shellcheck 0.9.0 per tutti gli script del repository (tools/, tests/,
+# progetti/, elementi dei moduli): graffe su ogni variabile e [[ … ]] invece
+# di [ … ], come chiedono le regole bash del progetto; i `source` si
+# risolvono dalla cartella dello script che li contiene.
+enable=require-variable-braces
+enable=require-double-brackets
+source-path=SCRIPTDIR

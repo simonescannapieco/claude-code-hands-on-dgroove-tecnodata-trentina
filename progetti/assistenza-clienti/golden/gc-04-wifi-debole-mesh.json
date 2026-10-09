@@ -1,0 +1,96 @@
+{
+  "id": "GC-04",
+  "scenario": "SC-12",
+  "titolo": "Non è un guasto: consigli sul Wi-Fi e ricontatto commerciale senza insistere",
+  "canale": "chat",
+  "inizio": "2026-09-13T17:32:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Ciao! In camera al secondo piano il Wi-Fi prende pochissimo, al piano terra invece va benissimo. È un problema della linea?"
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Ciao! Vediamo subito. Per controllare la linea mi scrivi il codice cliente e l'e-mail che hai registrato?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "CL-005004, chiara.modello@example.org"
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_identita",
+          "argomenti": {"id_cliente": "CL-005004", "contatto": "chiara.modello@example.org"},
+          "risultato": {"esito": "riconosciuto", "id_cliente": "CL-005004", "nome": "Chiara Modello", "tipo": "privato", "linee": ["LN-005004"]}
+        },
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-005004"},
+          "risultato": {"id_linea": "LN-005004", "stato": "attiva", "dettaglio": "linea regolare; ultimo speed test dal router 930 Mbit/s"}
+        }
+      ],
+      "testo": "Grazie Chiara. La linea è a posto: al router arrivano 930 Mbit/s, quindi il problema è il Wi-Fi, che fatica a salire fino al secondo piano. Dov'è il router?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Il router è in soggiorno, al piano terra, dentro un mobile."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "cerca_kb",
+          "argomenti": {"domanda": "Wi-Fi debole ai piani superiori"},
+          "risultato": [{"id": "KB-03", "titolo": "Il Wi-Fi di casa e i sistemi mesh", "estratto": "In alto, in un punto centrale della casa, fuori da mobili chiusi… i dispositivi lontani vanno sulla 2,4 GHz."}]
+        }
+      ],
+      "testo": "Il mobile frena parecchio il segnale. Prova così:\n\n1. sposta il router fuori dal mobile, il più in alto possibile;\n2. in camera collega il telefono alla rete a 2,4 GHz, che arriva più lontano della 5 GHz.\n\nPoi dimmi come va."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "L'ho spostato sopra il mobile: va un po' meglio ma non abbastanza. Il mesh quanto costa?"
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Con tre piani è normale che un router solo non basti. Un sistema mesh aggiunge uno o due punti di accesso che formano un'unica rete Wi-Fi in tutta la casa: con un punto al primo piano, la camera sarebbe coperta. Abbiamo l'opzione Wi-Fi Casa Mesh, con installazione compresa; prezzo e condizioni te li dà il commerciale. Vuoi che ti faccia ricontattare?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Sì, fatemi ricontattare."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "id_cliente": "CL-005004",
+            "id_linea": "LN-005004",
+            "categoria": "wifi",
+            "priorita": "bassa",
+            "destinatario": "commerciale",
+            "oggetto": "Wi-Fi debole in camera - interesse per Wi-Fi Casa Mesh",
+            "descrizione": "Linea regolare (930 Mbit/s al router). Wi-Fi debole nella camera al secondo piano; date le indicazioni sulla posizione del router e sulla rete a 2,4 GHz. La cliente chiede di essere ricontattata per il Wi-Fi Casa Mesh.",
+            "ricontatto": {"recapito": "registrato", "quando": "lunedì in mattinata"}
+          },
+          "risultato": {"id_ticket": "TK-2026-04550", "stato": "aperto", "assegnata_a": "commerciale"}
+        }
+      ],
+      "testo": "Fatto: richiesta TK-2026-04550. Il commerciale lavora dal lunedì al venerdì, quindi ti ricontatta lunedì in mattinata ai recapiti che hai registrato. Intanto il router fuori dal mobile e la rete a 2,4 GHz in camera ti aiutano già. Buona serata!"
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04550",
+    "escalation": false,
+    "riassunto": "Linea regolare, Wi-Fi debole al secondo piano: consigli dalla base di conoscenza, spiegazione neutrale del sistema mesh senza prezzi inventati, ricontatto commerciale fissato con un orario vero."
+  },
+  "punti_chiave": [
+    "Verifica la linea prima di parlare di Wi-Fi: non è un guasto e lo dice.",
+    "Dà consigli pratici, un passo alla volta, presi dalla base di conoscenza.",
+    "Spiega il mesh in modo neutrale e non inventa il prezzo: lo darà il commerciale.",
+    "Il ricontatto è fissato con il consenso della cliente e con un orario reale (lunedì), non «a breve».",
+    "Non apre guasti né prenota tecnici; dà del tu."
+  ]
+}

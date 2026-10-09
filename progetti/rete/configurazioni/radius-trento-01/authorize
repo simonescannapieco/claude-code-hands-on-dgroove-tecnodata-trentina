@@ -1,0 +1,13 @@
+# mods-config/files/authorize - regole comuni
+# le utenze PPPoE stanno nel database; qui solo i default
+
+DEFAULT Framed-Protocol == PPP
+	Service-Type = Framed-User,
+	Framed-Protocol = PPP,
+	Framed-MTU = 1492,
+	Acct-Interim-Interval = 43200,
+	Fall-Through = Yes
+
+DEFAULT Huntgroup-Name == "apparati"
+	Service-Type = Administrative-User,
+	Fall-Through = No

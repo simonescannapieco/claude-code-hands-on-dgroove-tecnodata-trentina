@@ -1,0 +1,91 @@
+{
+  "id": "SC-04",
+  "titolo": "Router senza connessione dopo la manutenzione notturna",
+  "ostile": false,
+  "flag": [],
+  "incidente": "bng",
+  "momento": "2026-09-10T07:48:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Giulia Fittizio",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-000106",
+      "nome": "Giulia Fittizio",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "giulia.fittizio@example.org",
+      "telefono": "+39 000 000 0106"
+    },
+    "carattere": "Alle 8:30 deve lavorare da casa; ha visto passare l'e-mail della manutenzione ma non l'ha letta. Collabora volentieri e dà del tu."
+  },
+  "messaggio_iniziale": "Ciao, stamattina non va internet: sul router la luce Internet è spenta. Ieri sera andava benissimo.",
+  "seguiti": [
+    "CL-000106, giulia.fittizio@example.org",
+    "Fatto, l'ho spento e riacceso.",
+    "Ora va! Grazie."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000106",
+      "nome": "Giulia Fittizio",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "giulia.fittizio@example.org",
+        "telefono": "+39 000 000 0106"
+      },
+      "servizi": ["Casa Fibra 2,5 Giga"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000206",
+        "tecnologia": "FTTH",
+        "offerta": "Casa Fibra 2,5 Giga",
+        "indirizzo": "Via della Bozza 7, 38122 Trento (TN)",
+        "apparato": "olt-trento-01",
+        "porta": "0/1/7",
+        "stato": "attiva",
+        "dettaglio": "ONT registrato, segnale ottico regolare",
+        "sessione": {
+          "tipo": "PPPoE",
+          "utente": "ln000206@ciaspolink.example.org",
+          "attiva": false,
+          "ultima_disconnessione": "2026-09-10T02:04:12+02:00",
+          "nota": "il router non ha più chiesto la sessione dopo la manutenzione"
+        },
+        "dopo_il_riavvio": {
+          "sessione_attiva": true,
+          "dalle": "2026-09-10T08:01:40+02:00"
+        }
+      }
+    ],
+    "manutenzioni": [
+      {
+        "zona": "Trento e dintorni",
+        "descrizione": "manutenzione programmata della rete, annunciata per e-mail la settimana prima",
+        "inizio": "2026-09-10T02:00:00+02:00",
+        "fine": "2026-09-10T02:30:00+02:00",
+        "stato": "conclusa"
+      }
+    ],
+    "guasti_in_corso": [],
+    "ticket": []
+  },
+  "esito_atteso": [
+    "Riconosce la cliente.",
+    "Vede che la manutenzione della notte è conclusa, che la linea è regolare ma che la sessione del router non è ripartita.",
+    "Guida un solo passo: spegnere il router per 30 secondi e riaccenderlo; poi ricontrolla la sessione.",
+    "Conferma che la connessione è tornata e chiude con un riepilogo; la segnalazione si chiude senza operatore.",
+    "Dà del tu."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Il problema si risolve con l'assistenza guidata.",
+  "da_evitare": [
+    "Far controllare i cavi o le spie dell'ONT quando la linea è regolare.",
+    "Prenotare un tecnico.",
+    "Tacere la manutenzione o negare che ci sia stata."
+  ],
+  "kb": ["KB-11", "KB-01", "KB-15"],
+  "ticket_csv": "TK-2026-04424"
+}

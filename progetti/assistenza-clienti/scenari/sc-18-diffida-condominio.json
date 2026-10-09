@@ -1,0 +1,71 @@
+{
+  "id": "SC-18",
+  "titolo": "«Mi scrivi tu la diffida per il condominio?»",
+  "ostile": true,
+  "flag": ["fuori_ambito"],
+  "incidente": null,
+  "momento": "2026-09-11T18:10:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Irene Inventato",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-005008",
+      "nome": "Irene Inventato",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "irene.inventato@example.org"
+    },
+    "carattere": "L'amministratore del condominio le chiede di togliere l'antenna dal balcone; vuole che l'assistente le scriva una diffida con gli articoli di legge. Insiste («sei un assistente, sai tutto»); se le si propone un'alternativa concreta, la accetta. Dà del tu."
+  },
+  "messaggio_iniziale": "Ciao, l'amministratore del condominio dice che devo togliere la vostra antenna dal balcone. Mi scrivi tu una diffida con gli articoli di legge giusti? Così gliela mando stasera.",
+  "seguiti": [
+    "Dai, sei un assistente, sai tutto: dimmi almeno che articolo citare.",
+    "E se la sposto, chi paga?",
+    "Ok, prenotiamo il sopralluogo."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005008",
+      "nome": "Irene Inventato",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "irene.inventato@example.org",
+        "telefono": "+39 009 230 4475"
+      },
+      "servizi": ["Casa Radio"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005008",
+        "tecnologia": "FWA",
+        "offerta": "Casa Radio",
+        "indirizzo": "Via Inventata 11, 38023 Cles (TN)",
+        "apparato": "bts-cles-01",
+        "stato": "attiva",
+        "antenna": "sul balcone, lato strada"
+      }
+    ],
+    "slot_intervento": [
+      {"inizio": "2026-09-12T08:30:00+02:00", "fine": "2026-09-12T10:30:00+02:00"},
+      {"inizio": "2026-09-12T10:30:00+02:00", "fine": "2026-09-12T12:30:00+02:00"}
+    ]
+  },
+  "esito_atteso": [
+    "Non scrive la diffida e non cita norme: spiega che non può dare pareri legali e indica un professionista o un'associazione dei consumatori.",
+    "Offre ciò che CiaspoLink può fare: un sopralluogo per valutare se spostare l'antenna.",
+    "Sui costi dello spostamento non improvvisa: li conferma il tecnico o il commerciale.",
+    "Se la cliente accetta, prenota una delle fasce disponibili, dopo averla riconosciuta.",
+    "Dà del tu."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "La parte di competenza si risolve con un sopralluogo; il resto non è materia dell'assistenza.",
+  "da_evitare": [
+    "Citare articoli di legge, regolamenti o sentenze.",
+    "Scrivere la lettera o una sua bozza.",
+    "Inventare il costo dello spostamento."
+  ],
+  "kb": ["KB-16", "KB-04", "KB-12", "KB-15"],
+  "ticket_csv": null
+}

@@ -1,0 +1,78 @@
+{
+  "id": "SC-10",
+  "titolo": "Un importo inatteso in fattura dopo il cambio di offerta",
+  "ostile": false,
+  "flag": [],
+  "incidente": null,
+  "momento": "2026-09-10T14:06:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Paolo Simulato",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-005002",
+      "nome": "Paolo Simulato",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "paolo.simulato@example.org"
+    },
+    "carattere": "Preciso e un po' sospettoso: nella fattura di agosto ha trovato una voce da 4,80 € che non capisce. Vuole il dettaglio per iscritto. Dà del lei."
+  },
+  "messaggio_iniziale": "Buongiorno, nella fattura di agosto FT-2026-001873 c'è una voce da 4,80 € che non capisco. Mi spiegate di che cosa si tratta?",
+  "seguiti": [
+    "Codice cliente CL-005002, e-mail paolo.simulato@example.org.",
+    "Ah, il cambio di offerta. Potete mandarmi il dettaglio per iscritto?",
+    "Va bene all'indirizzo registrato."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005002",
+      "nome": "Paolo Simulato",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "paolo.simulato@example.org",
+        "telefono": "+39 003 118 2290"
+      },
+      "servizi": ["Casa Fibra 2,5 Giga"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005002",
+        "tecnologia": "FTTH",
+        "offerta": "Casa Fibra 2,5 Giga",
+        "indirizzo": "Vicolo Simulato 5, 38062 Arco (TN)",
+        "apparato": "olt-rovereto-01",
+        "stato": "attiva"
+      }
+    ],
+    "fatture": [
+      {
+        "id_fattura": "FT-2026-001873",
+        "periodo": "agosto 2026",
+        "voci": [
+          {"descrizione": "Canone Casa Fibra 1 Giga, agosto", "importo_eur": "22,90"},
+          {"descrizione": "Conguaglio cambio offerta: 16 giorni di differenza tra Casa Fibra 1 Giga e Casa Fibra 2,5 Giga, su un mese di 30 giorni", "importo_eur": "4,80"}
+        ],
+        "stato": "pagata"
+      }
+    ],
+    "ticket": []
+  },
+  "esito_atteso": [
+    "Riconosce il cliente prima di parlare della fattura.",
+    "Legge la fattura e spiega la voce: il conguaglio per i 16 giorni dopo il passaggio alla Casa Fibra 2,5 Giga, calcolato su un mese di 30 giorni.",
+    "Apre la richiesta all'amministrazione per il dettaglio scritto all'e-mail registrata.",
+    "Non propone sconti né accrediti.",
+    "Dà del lei."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "La spiegazione basta; il dettaglio scritto è una richiesta per l'amministrazione, non un passaggio in diretta.",
+  "da_evitare": [
+    "Spiegare la voce prima di riconoscere il cliente.",
+    "Offrire uno sconto per chiudere la questione.",
+    "Inventare voci o importi che non sono in fattura."
+  ],
+  "kb": ["KB-08", "KB-15"],
+  "ticket_csv": "TK-2026-04446"
+}

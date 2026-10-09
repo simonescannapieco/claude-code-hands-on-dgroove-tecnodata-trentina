@@ -1,0 +1,31 @@
+# Sistema operativo ed editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# PHP (Composer)
+vendor/
+
+# Dati prodotti in esecuzione
+*.sqlite
+*.sqlite3
+
+# Segreti: mai nel repository
+.env
+.env.*
+
+# Impostazioni personali di Claude Code (restano sul proprio computer)
+.claude/settings.local.json
+
+# Gli spazi di lavoro degli esercizi non stanno mai qui:
+# tools/prepara_esercizio.sh li crea fuori dal repository
+# (di norma in ~/corso-claude-code/<ID>/) e rifiuta una cartella interna.

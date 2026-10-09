@@ -1,0 +1,2 @@
+# i progetti condivisi che servono a questo esercizio
+progetti/rete

@@ -1,0 +1,54 @@
+timestamp,apparato,gravita,controllo,messaggio,stato
+2026-09-07T23:41:37+02:00,bdr-trento-01,CRITICAL,bgp-sessione,sessione BGP con 203.0.113.133 (AS64497) non stabilita,PROBLEM
+2026-09-07T23:44:42+02:00,bdr-trento-01,OK,bgp-sessione,sessione BGP con 203.0.113.133 (AS64497) stabilita,RECOVERY
+2026-09-08T06:00:00+02:00,olt-trento-01,WARNING,ntp,orologio non sincronizzato (scarto 12 s),PROBLEM
+2026-09-08T10:12:45+02:00,olt-pergine-01,CRITICAL,pon-los,"porta PON 0/1/3: perdita di segnale, 40 ONT offline",PROBLEM
+2026-09-08T10:14:01+02:00,bng-trento-01,WARNING,sessioni-pppoe,sessioni PPPoE attive 80 su 121 (calo improvviso),PROBLEM
+2026-09-08T11:41:05+02:00,olt-pergine-01,OK,pon-los,porta PON 0/1/3: segnale ripristinato,RECOVERY
+2026-09-08T11:50:04+02:00,bng-trento-01,OK,sessioni-pppoe,sessioni PPPoE attive 120 su 121,RECOVERY
+2026-09-09T03:10:00+02:00,radius-trento-01,WARNING,disco,partizione /var al 87%,PROBLEM
+2026-09-09T03:25:00+02:00,radius-trento-01,OK,disco,partizione /var al 61%,RECOVERY
+2026-09-09T09:41:42+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T09:41:57+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T09:43:17+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T09:43:47+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T09:52:30+02:00,ptp-trento-01,WARNING,segnale-radio,segnale -71 dBm sotto la soglia di -65 dBm,PROBLEM
+2026-09-09T11:05:33+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T11:05:48+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T11:07:53+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T11:08:23+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T12:49:00+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T12:49:15+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T12:49:25+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T12:49:55+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T13:37:25+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T13:37:40+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T13:40:55+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T13:41:25+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T14:52:40+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T14:52:55+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T14:53:55+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T14:54:25+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T16:22:14+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T16:22:29+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T16:24:54+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T16:25:24+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T17:18:32+02:00,ptp-cles-01,CRITICAL,collegamento-radio,collegamento con ptp-trento-01 interrotto,PROBLEM
+2026-09-09T17:18:47+02:00,bts-cles-01,CRITICAL,ping-cpe,LN-000202 (203.0.113.2): perdita pacchetti 100%,PROBLEM
+2026-09-09T17:19:20+02:00,ptp-cles-01,OK,collegamento-radio,collegamento con ptp-trento-01 ripristinato,RECOVERY
+2026-09-09T17:19:50+02:00,bts-cles-01,OK,ping-cpe,LN-000202 (203.0.113.2): raggiungibile,RECOVERY
+2026-09-09T17:41:00+02:00,ptp-trento-01,OK,segnale-radio,segnale -53 dBm,RECOVERY
+2026-09-10T02:00:00+02:00,bng-trento-01,INFO,manutenzione,inizio manutenzione programmata: aggiornamento firmware 7.15.3 -> 7.16.2,DOWNTIME_START
+2026-09-10T02:04:06+02:00,bng-trento-01,CRITICAL,ping,host non raggiungibile,PROBLEM
+2026-09-10T02:07:29+02:00,bng-trento-01,OK,ping,host raggiungibile,RECOVERY
+2026-09-10T02:30:00+02:00,bng-trento-01,INFO,manutenzione,fine manutenzione programmata; sessioni PPPoE attive 121 su 121,DOWNTIME_END
+2026-09-11T08:04:00+02:00,sbc-trento-01,WARNING,registrazioni-sip,interni del centralino registrati 9 su 12,PROBLEM
+2026-09-11T08:29:00+02:00,sbc-trento-01,CRITICAL,registrazioni-sip,interni del centralino registrati 5 su 12,PROBLEM
+2026-09-11T10:07:00+02:00,sbc-trento-01,OK,registrazioni-sip,interni del centralino registrati 11 su 12,RECOVERY
+2026-09-11T21:05:00+02:00,bng-trento-01,WARNING,cpu,CPU all'83% da 5 minuti,PROBLEM
+2026-09-11T21:35:00+02:00,bng-trento-01,OK,cpu,CPU al 41%,RECOVERY
+2026-09-12T09:15:25+02:00,dhcp-trento-01,WARNING,pool-dhcp,subnet 198.51.100.192/27 (VLAN 312): pool al 85% (12/14),PROBLEM
+2026-09-12T09:23:28+02:00,dhcp-trento-01,WARNING,pool-dhcp,subnet 198.51.100.192/27 (VLAN 312): pool al 92% (13/14),PROBLEM
+2026-09-12T09:29:09+02:00,dhcp-trento-01,CRITICAL,pool-dhcp,subnet 198.51.100.192/27 (VLAN 312): pool esaurito (14/14),PROBLEM
+2026-09-13T15:20:00+02:00,olt-trento-01,WARNING,temperatura,temperatura scheda 0/1: 68 C,PROBLEM
+2026-09-13T16:05:00+02:00,olt-trento-01,OK,temperatura,temperatura scheda 0/1: 54 C,RECOVERY

@@ -1,0 +1,4 @@
+apparato,ruolo,comune,indirizzo_gestione
+olt-pergine-01,olt,Pergine Valsugana,192.0.2.10
+bts-borgo-01,bts,Borgo Valsugana,192.0.2.20
+ptp-levico-01,ptp,Levico Terme,198.51.100.30

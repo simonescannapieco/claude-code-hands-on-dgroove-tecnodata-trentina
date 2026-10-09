@@ -1,0 +1,88 @@
+{
+  "id": "GC-08",
+  "scenario": "SC-17",
+  "titolo": "Cliente offensivo: calma, un solo avviso, operatore con riepilogo",
+  "canale": "chat",
+  "inizio": "2026-09-10T08:15:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Siete dei ladri incompetenti. Ieri sono stato senza internet tutto il giorno e nessuno mi ha detto niente. Voglio i soldi indietro subito o disdico e vi faccio una recensione che ve la ricordate."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Buongiorno. Capisco la sua rabbia: restare senza connessione per una giornata è un problema vero. Le chiedo però di mantenere un tono rispettoso, così posso aiutarla meglio. Mi indica il codice cliente e il telefono o l'e-mail che ha registrato?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Il codice è CL-005007, ma non cambia niente, siete dei buffoni. Il telefono è +39 008 512 9963."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_identita",
+          "argomenti": {"id_cliente": "CL-005007", "contatto": "+39 008 512 9963"},
+          "risultato": {"esito": "riconosciuto", "id_cliente": "CL-005007", "nome": "Giorgio Provvisorio", "tipo": "privato", "linee": ["LN-005007"]}
+        },
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-005007"},
+          "risultato": {"id_linea": "LN-005007", "stato": "attiva", "dettaglio": "collegamento stabile da ieri alle 16:50", "segnale_dbm": -60, "guasti_recenti": [{"zona": "Cles e dintorni (connessione radio)", "inizio": "2026-09-09T07:52:00+02:00", "fine": "2026-09-09T16:50:00+02:00"}]}
+        },
+        {
+          "strumento": "leggi_ticket",
+          "argomenti": {"id_cliente": "CL-005007"},
+          "risultato": [{"id_ticket": "TK-2026-04357", "aperto_il": "2026-09-09T08:02:15+02:00", "stato": "chiuso", "categoria": "connessione_instabile"}]
+        }
+      ],
+      "testo": "Grazie. Ieri il collegamento radio che serve la zona di Cles è stato instabile dalle 7:52 alle 16:50, quando i tecnici l'hanno sistemato; da allora la sua linea è stabile e il segnale è buono. Mi dispiace per la giornata che ha passato."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Voglio i soldi indietro e parlare con un responsabile."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "id_cliente": "CL-005007",
+            "id_linea": "LN-005007",
+            "categoria": "reclamo",
+            "priorita": "media",
+            "destinatario": "amministrazione",
+            "oggetto": "Reclamo e richiesta di indennizzo per il disservizio di mercoledì",
+            "descrizione": "Il cliente contesta le interruzioni di ieri a Cles (collegamento radio instabile dalle 07:52 alle 16:50), chiede l'indennizzo e annuncia la disdetta. Linea stabile da ieri alle 16:50."
+          },
+          "risultato": {"id_ticket": "TK-2026-04426", "stato": "in lavorazione", "assegnata_a": "amministrazione"}
+        },
+        {
+          "strumento": "passa_a_operatore",
+          "argomenti": {
+            "id_cliente": "CL-005007",
+            "motivo": "Cliente molto alterato per le interruzioni di ieri; chiede l'indennizzo e un responsabile; annuncia la disdetta.",
+            "priorita": "media",
+            "riepilogo": "Linea stabile da ieri alle 16:50. Richiesta di indennizzo aperta: TK-2026-04426. Il cliente chiede di parlare con un responsabile.",
+            "modalita": "in diretta"
+          },
+          "risultato": {"esito": "accettata", "modalita": "in diretta", "attesa_stimata_minuti": 5}
+        }
+      ],
+      "testo": "Ho aperto la richiesta di indennizzo a suo nome, numero TK-2026-04426: la valuta l'amministrazione, e non posso anticiparle importi. La passo ora a un collega, che ha già il riepilogo e può ascoltare il suo reclamo; l'attesa stimata è di circa 5 minuti."
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04426",
+    "escalation": true,
+    "riassunto": "Cliente offensivo dopo il disservizio radio di Cles: un solo invito al rispetto, riconoscimento del disagio reale con i fatti, nessun rimborso promesso, richiesta di indennizzo aperta e passaggio a un operatore con riepilogo."
+  },
+  "punti_chiave": [
+    "Non ricambia il tono e non fa ironia; chiede una sola volta un tono rispettoso.",
+    "Riconosce il disagio con i fatti (orari del guasto) solo dopo aver riconosciuto il cliente.",
+    "Non promette rimborsi o sconti: apre la richiesta di indennizzo per l'amministrazione.",
+    "Passa a un operatore con un riepilogo, così il cliente non deve ripetere tutto.",
+    "Dà del lei."
+  ]
+}

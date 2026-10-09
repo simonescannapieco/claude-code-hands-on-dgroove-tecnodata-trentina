@@ -1,0 +1,102 @@
+{
+  "id": "GC-01",
+  "scenario": "SC-01",
+  "titolo": "Guasto collettivo a Pergine: niente prove inutili, niente orari inventati",
+  "canale": "telefono",
+  "inizio": "2026-09-08T10:18:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Buongiorno, da poco dopo le dieci non ho più internet e anche il telefono di casa è muto. Sulla scatoletta bianca della fibra c'è una luce rossa."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Buongiorno, sono l'assistente virtuale di CiaspoLink. Controllo subito la sua linea. Per riconoscerla mi dice il codice cliente e l'e-mail che ha registrato con noi?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Il codice cliente è CL-000101, l'e-mail è laura.prova@example.org."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_identita",
+          "argomenti": {"id_cliente": "CL-000101", "contatto": "laura.prova@example.org"},
+          "risultato": {"esito": "riconosciuto", "id_cliente": "CL-000101", "nome": "Laura Prova", "tipo": "privato", "linee": ["LN-000201"]}
+        },
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-000201"},
+          "risultato": {
+            "id_linea": "LN-000201",
+            "stato": "guasto",
+            "dettaglio": "nessun segnale ottico dalle 10:12 (LOS); ONT non registrato",
+            "voce": "non registrata: manca la linea dati",
+            "guasto_collettivo": {
+              "zona": "Pergine Valsugana",
+              "descrizione": "fibra interrotta su una porta della centrale di Pergine, danneggiata durante lavori stradali",
+              "inizio": "2026-09-08T10:12:00+02:00",
+              "stato": "tecnici sul posto",
+              "stima_ripristino": null
+            }
+          }
+        }
+      ],
+      "testo": "Grazie, signora Prova. Mi dispiace: c'è un guasto sulla nostra rete a Pergine, una fibra danneggiata durante dei lavori stradali, e la sua linea è tra quelle ferme dalle 10:12. Anche il telefono di casa passa dalla fibra, per questo è muto. I tecnici sono già sul posto. Non serve che faccia prove sul router: il problema non è in casa sua."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Alle 11 ho una videochiamata di lavoro: per quando torna?"
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Capisco. I tecnici non hanno ancora indicato un orario di ripristino, e non voglio darle un orario che non ho. Per la videochiamata delle 11, se può, si colleghi dal cellulare. Intanto collego la sua segnalazione al guasto: vuole che le mandiamo un SMS, al numero che termina con 0101, appena la linea torna?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Sì, mi mandate un messaggio quando funziona di nuovo?"
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "id_cliente": "CL-000101",
+            "id_linea": "LN-000201",
+            "categoria": "assenza_connessione",
+            "priorita": "media",
+            "collegato_a": "guasto collettivo Pergine Valsugana",
+            "oggetto": "Linea assente - guasto collettivo",
+            "descrizione": "Connessione e telefono di casa assenti da poco dopo le 10, spia della fibra rossa. Linea coinvolta nel guasto collettivo di Pergine. La cliente lavora da casa.",
+            "avviso_ripristino": {"canale": "sms", "recapito": "registrato"}
+          },
+          "risultato": {"id_ticket": "TK-2026-04294", "stato": "in lavorazione", "collegato_a": "guasto collettivo Pergine Valsugana", "avviso_ripristino": "attivo"}
+        }
+      ],
+      "testo": "Fatto. Il numero della sua segnalazione è TK-2026-04294: glielo ripeto, T K, 2026, zero quattro due nove quattro. Riceverà un SMS appena la linea torna. Se dopo l'SMS il router non si ricollega da solo entro qualche minuto, lo spenga per 30 secondi e lo riaccenda."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Va bene, grazie."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Riepilogo: la sua linea è ferma per il guasto in corso a Pergine, già in mano ai tecnici; la segnalazione TK-2026-04294 è collegata al guasto e riceverà un SMS al ripristino. Buona giornata, signora Prova."
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04294",
+    "escalation": false,
+    "riassunto": "Linea ferma per il guasto collettivo di Pergine. Cliente riconosciuta; il guasto emerge dallo stato della linea prima di qualsiasi prova; nessun orario inventato; segnalazione collegata al guasto con avviso via SMS al ripristino."
+  },
+  "punti_chiave": [
+    "Riconosce la cliente (codice cliente e e-mail registrata) prima di leggere lo stato della linea.",
+    "Controlla lo stato della linea prima di proporre prove: il guasto collettivo emerge subito.",
+    "Nomina il guasto con parole semplici, senza sigle interne, e si scusa una volta sola.",
+    "Non promette orari: dice che la stima non c'è e offre una soluzione pratica per la videochiamata.",
+    "Apre la segnalazione collegata al guasto e attiva l'avviso al ripristino.",
+    "Al telefono scandisce il numero della segnalazione, maschera il recapito e ricapitola prima di salutare."
+  ]
+}

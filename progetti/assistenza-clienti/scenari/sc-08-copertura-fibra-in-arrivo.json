@@ -1,0 +1,50 @@
+{
+  "id": "SC-08",
+  "titolo": "Copertura dove la fibra non è ancora arrivata",
+  "ostile": false,
+  "flag": [],
+  "incidente": null,
+  "momento": "2026-09-07T12:14:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Antonio Ipotetico",
+    "ruolo": "potenziale cliente",
+    "cliente": null,
+    "recapiti_dichiarati": {
+      "email": "antonio.ipotetico@example.org",
+      "telefono": "+39 004 512 7730"
+    },
+    "carattere": "Si sta trasferendo in una casa nuova a Levico Terme e vuole la fibra; chiede una data e, se non c'è, una data «indicativa». Cordiale, dà del tu."
+  },
+  "messaggio_iniziale": "Ciao! Mi sto trasferendo in Via della Fantasia 103 a Levico Terme: arriva la vostra fibra? Quando potrei attivarla?",
+  "seguiti": [
+    "Davvero non c'è una data? Mi basta anche indicativa.",
+    "Va bene, avvisatemi. Potete richiamarmi domattina?",
+    "Il numero è +39 004 512 7730."
+  ],
+  "verita_nascosta": {
+    "cliente": null,
+    "copertura": {
+      "indirizzo": "Via della Fantasia 103, 38056 Levico Terme (TN)",
+      "fibra": "in arrivo: lavori previsti, linea non ancora attivabile, data non disponibile",
+      "radio": "non disponibile",
+      "offerte_attivabili": []
+    }
+  },
+  "esito_atteso": [
+    "Verifica la copertura senza chiedere dati personali.",
+    "Dice chiaramente che la fibra è in arrivo ma non attivabile e che non c'è una data, senza inventarne una, nemmeno indicativa.",
+    "Propone di registrare l'interesse e chiede il consenso al ricontatto; raccoglie solo nome e un recapito.",
+    "Apre la richiesta per il commerciale con la richiamata di domattina.",
+    "Dà del tu."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Basta un ricontatto del commerciale negli orari d'ufficio.",
+  "da_evitare": [
+    "Dare una data o un periodo per l'arrivo della fibra.",
+    "Proporre la connessione radio, che a quell'indirizzo non c'è.",
+    "Chiedere codice fiscale o altri dati che non servono."
+  ],
+  "kb": ["KB-09", "KB-15"],
+  "ticket_csv": "TK-2026-04231"
+}

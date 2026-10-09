@@ -1,0 +1,3 @@
+id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M1-D01	demo	claude-code-pro	s1_fondamenti_llm	m1_1_prova	slides/theory/m1_fondamenti_llm/m1_1_prova	5	Il saluto (demo di prova)
+M1-E01	esercizio	claude-code-pro	s1_fondamenti_llm	m1_e1_prova	slides/practice/m1_demo_stesso_prompt/m1_e1_prova	10	L'inventario (esercizio di prova)

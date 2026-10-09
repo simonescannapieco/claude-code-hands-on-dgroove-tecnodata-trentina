@@ -1,0 +1,92 @@
+{
+  "id": "SC-07",
+  "titolo": "Hotspot ospiti fuori orario: la pagina di accesso non compare",
+  "ostile": false,
+  "flag": [],
+  "incidente": null,
+  "momento": "2026-09-07T19:42:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Paola Modello",
+    "ruolo": "direttrice dell'albergo, referente registrata",
+    "cliente": {
+      "id_cliente": "CL-000105",
+      "nome": "Albergo Modello",
+      "tipo": "azienda"
+    },
+    "recapiti_dichiarati": {
+      "email": "albergo.modello@example.org",
+      "telefono": "+39 000 000 0105"
+    },
+    "carattere": "Cortese ma preoccupata: un gruppo di ospiti della dépendance si lamenta. Ha già spento e riacceso lo switch della dépendance. Dà del lei."
+  },
+  "messaggio_iniziale": "Buonasera, gli ospiti della dépendance non vedono più la pagina di accesso del Wi-Fi da questo pomeriggio. Nell'edificio principale funziona.",
+  "seguiti": [
+    "Il codice cliente è CL-000105.",
+    "Lo switch nel locale tecnico della dépendance ha le luci accese, l'ho già spento e riacceso.",
+    "Domattina tra le 9 e le 11 va bene."
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-000105",
+      "nome": "Albergo Modello",
+      "tipo": "azienda",
+      "referenti": ["Paola Modello"],
+      "recapiti_registrati": {
+        "email": "albergo.modello@example.org",
+        "telefono": "+39 000 000 0105"
+      },
+      "servizi": ["Business Fibra 1 Giga", "Hotspot Wi-Fi", "IP statico"],
+      "assistenza_prioritaria": false
+    },
+    "linee": [
+      {
+        "id_linea": "LN-000205",
+        "tecnologia": "FTTH",
+        "offerta": "Business Fibra 1 Giga",
+        "indirizzo": "Viale Ipotetico 21, 38066 Riva del Garda (TN)",
+        "apparato": "olt-rovereto-01",
+        "porta": "0/2/5",
+        "stato": "attiva",
+        "dettaglio": "linea regolare",
+        "ip_statico": "203.0.113.5",
+        "hotspot": {
+          "punti_di_accesso": [
+            {"nome": "AP-reception", "stato": "collegato"},
+            {"nome": "AP-sala-colazioni", "stato": "collegato"},
+            {"nome": "AP-dependance-1", "stato": "scollegato dalle 16:10"},
+            {"nome": "AP-dependance-2", "stato": "scollegato dalle 16:10"}
+          ]
+        }
+      }
+    ],
+    "guasti_in_corso": [],
+    "ticket": [],
+    "slot_intervento": [
+      {"inizio": "2026-09-08T09:00:00+02:00", "fine": "2026-09-08T11:00:00+02:00"},
+      {"inizio": "2026-09-08T14:00:00+02:00", "fine": "2026-09-08T16:00:00+02:00"}
+    ],
+    "operatori": {
+      "aperti": false,
+      "prossima_apertura": "2026-09-08T08:00:00+02:00"
+    }
+  },
+  "esito_atteso": [
+    "Riconosce la referente.",
+    "Verifica la linea (regolare) e i punti di accesso: due scollegati nella dépendance.",
+    "Visto che lo switch è già stato riavviato, propone il tecnico nella prima fascia libera (domani 9–11) e la prenota quando la cliente accetta.",
+    "Apre la segnalazione con priorità alta per i servizi IT.",
+    "Dice la verità sugli orari: gli operatori rispondono di nuovo domattina dalle 8; fissa la richiamata all'apertura.",
+    "Non indica il numero dell'Assistenza Prioritaria: il cliente non ce l'ha.",
+    "Dà del lei."
+  ],
+  "escalation_attesa": true,
+  "motivo_escalation": "Servizio degradato per un cliente business: passaggio ai servizi IT con richiamata all'apertura, perché è fuori orario.",
+  "da_evitare": [
+    "Dire che un operatore richiama subito.",
+    "Prenotare una fascia che non è tra quelle disponibili, o promettere un intervento in serata.",
+    "Proporre altri riavvii già fatti."
+  ],
+  "kb": ["KB-07", "KB-12", "KB-15"],
+  "ticket_csv": "TK-2026-04266"
+}

@@ -1,0 +1,74 @@
+{
+  "id": "SC-09",
+  "titolo": "Trasloco da Trento a Lavis tenendo il numero di casa",
+  "ostile": false,
+  "flag": [],
+  "incidente": null,
+  "momento": "2026-09-08T16:31:00+02:00",
+  "canale": "chat",
+  "persona": {
+    "nome": "Elena Bozza",
+    "ruolo": "titolare del contratto",
+    "cliente": {
+      "id_cliente": "CL-005001",
+      "nome": "Elena Bozza",
+      "tipo": "privato"
+    },
+    "recapiti_dichiarati": {
+      "email": "elena.bozza@example.org",
+      "telefono": "+39 002 731 0458"
+    },
+    "carattere": "Organizzata: a fine mese si trasferisce da Trento a Lavis e vuole tenere il numero di casa. Chiede anche quanto costa. Dà del tu."
+  },
+  "messaggio_iniziale": "Ciao, a fine mese mi trasferisco da Trento a Lavis, in Via dei Modelli 3: posso portare la linea e tenere il numero di casa?",
+  "seguiti": [
+    "CL-005001, elena.bozza@example.org",
+    "Il trasloco è tra circa tre settimane.",
+    "Quanto costa?"
+  ],
+  "verita_nascosta": {
+    "cliente": {
+      "id_cliente": "CL-005001",
+      "nome": "Elena Bozza",
+      "tipo": "privato",
+      "recapiti_registrati": {
+        "email": "elena.bozza@example.org",
+        "telefono": "+39 002 731 0458"
+      },
+      "servizi": ["Casa Fibra 1 Giga", "Linea voce di casa"]
+    },
+    "linee": [
+      {
+        "id_linea": "LN-005001",
+        "tecnologia": "FTTH",
+        "offerta": "Casa Fibra 1 Giga",
+        "indirizzo": "Largo Provvisorio 21, 38122 Trento (TN)",
+        "apparato": "olt-trento-01",
+        "stato": "attiva"
+      }
+    ],
+    "copertura": {
+      "indirizzo": "Via dei Modelli 3, 38015 Lavis (TN)",
+      "fibra": "attivabile, fino a 1 Gbit/s",
+      "radio": "non disponibile"
+    },
+    "ticket": []
+  },
+  "esito_atteso": [
+    "Riconosce la cliente.",
+    "Verifica la copertura al nuovo indirizzo: fibra attivabile.",
+    "Spiega il preavviso di almeno 15 giorni e i passi del trasloco; sul numero di casa dice che in genere si tiene e che lo conferma il commerciale.",
+    "Non improvvisa i costi: li comunica il commerciale.",
+    "Apre la richiesta di trasloco per il commerciale.",
+    "Dà del tu."
+  ],
+  "escalation_attesa": false,
+  "motivo_escalation": "Il trasloco segue la procedura con il commerciale, senza bisogno di un operatore in diretta.",
+  "da_evitare": [
+    "Inventare il costo del trasloco.",
+    "Garantire con certezza il mantenimento del numero.",
+    "Fissare una data di installazione senza la verifica del commerciale."
+  ],
+  "kb": ["KB-10", "KB-09", "KB-15"],
+  "ticket_csv": "TK-2026-04336"
+}

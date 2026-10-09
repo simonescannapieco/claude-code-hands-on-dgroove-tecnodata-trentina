@@ -1,0 +1,97 @@
+{
+  "id": "GC-02",
+  "scenario": "SC-04",
+  "titolo": "Dopo la manutenzione notturna: un passo guidato, la verifica, la chiusura",
+  "canale": "chat",
+  "inizio": "2026-09-10T07:48:00+02:00",
+  "turni": [
+    {
+      "ruolo": "cliente",
+      "testo": "Ciao, stamattina non va internet: sul router la luce Internet è spenta. Ieri sera andava benissimo."
+    },
+    {
+      "ruolo": "assistente",
+      "testo": "Ciao! Controllo subito la tua linea. Mi scrivi il codice cliente e l'e-mail che hai registrato con noi?"
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "CL-000106, giulia.fittizio@example.org"
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "verifica_identita",
+          "argomenti": {"id_cliente": "CL-000106", "contatto": "giulia.fittizio@example.org"},
+          "risultato": {"esito": "riconosciuto", "id_cliente": "CL-000106", "nome": "Giulia Fittizio", "tipo": "privato", "linee": ["LN-000206"]}
+        },
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-000206"},
+          "risultato": {
+            "id_linea": "LN-000206",
+            "stato": "attiva",
+            "dettaglio": "ONT registrato, segnale ottico regolare",
+            "sessione": {"tipo": "PPPoE", "attiva": false, "ultima_disconnessione": "2026-09-10T02:04:12+02:00"},
+            "manutenzione": {"descrizione": "manutenzione programmata della rete, annunciata per e-mail la settimana prima", "inizio": "2026-09-10T02:00:00+02:00", "fine": "2026-09-10T02:30:00+02:00", "stato": "conclusa"}
+          }
+        },
+        {
+          "strumento": "apri_ticket",
+          "argomenti": {
+            "id_cliente": "CL-000106",
+            "id_linea": "LN-000206",
+            "categoria": "assenza_connessione",
+            "priorita": "media",
+            "oggetto": "Nessuna connessione dopo la manutenzione notturna",
+            "descrizione": "Router senza connessione dopo la manutenzione programmata della notte; linea e fibra regolari, sessione non ripartita."
+          },
+          "risultato": {"id_ticket": "TK-2026-04424", "stato": "aperto"}
+        }
+      ],
+      "testo": "Grazie Giulia. Stanotte tra le 2 e le 2:30 c'è stata una manutenzione programmata della nostra rete, annunciata per e-mail la settimana scorsa: la fibra arriva regolarmente, ma il tuo router non si è ricollegato. Spegnilo per 30 secondi e riaccendilo, poi scrivimi quando hai fatto."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Fatto, l'ho spento e riacceso."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "stato_linea",
+          "argomenti": {"id_linea": "LN-000206"},
+          "risultato": {"id_linea": "LN-000206", "stato": "attiva", "sessione": {"tipo": "PPPoE", "attiva": true, "dalle": "2026-09-10T08:01:40+02:00"}}
+        }
+      ],
+      "testo": "Perfetto: la connessione risulta di nuovo attiva dalle 8:01. Prova pure a navigare."
+    },
+    {
+      "ruolo": "cliente",
+      "testo": "Ora va! Grazie."
+    },
+    {
+      "ruolo": "assistente",
+      "azioni": [
+        {
+          "strumento": "aggiorna_ticket",
+          "argomenti": {"id_ticket": "TK-2026-04424", "stato": "chiuso", "nota": "Router non ricollegato dopo la manutenzione notturna; risolto con il riavvio guidato, connessione verificata alle 08:02."},
+          "risultato": {"id_ticket": "TK-2026-04424", "stato": "chiuso"}
+        }
+      ],
+      "testo": "Bene! Riepilogo: dopo la manutenzione di stanotte il router non si era ricollegato; l'abbiamo riavviato e la linea è attiva. Ho chiuso la segnalazione TK-2026-04424. Se dovesse ricapitare, scrivici qui."
+    }
+  ],
+  "esito": {
+    "ticket": "TK-2026-04424",
+    "escalation": false,
+    "riassunto": "Router non ricollegato dopo la manutenzione notturna annunciata: un solo passo guidato, verifica della sessione, segnalazione chiusa dall'assistente."
+  },
+  "punti_chiave": [
+    "Riconosce la cliente prima di leggere la linea.",
+    "Riconosce la manutenzione conclusa e la sessione non ripartita: non fa controllare cavi e spie inutilmente.",
+    "Chiede un solo passo (riavvio di 30 secondi) e poi verifica davvero la sessione.",
+    "Chiude con un riepilogo e il numero della segnalazione; nessun tecnico prenotato.",
+    "Dà del tu, messaggi brevi."
+  ]
+}
