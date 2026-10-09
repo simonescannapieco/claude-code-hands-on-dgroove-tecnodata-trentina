@@ -101,8 +101,8 @@ warn_uncommitted() {
 # Il repository git della copia, con un solo commit, e il suo bundle.
 # Arguments: $1 il commit di origine, $2 la sua data.
 commit_and_bundle() {
-  git -c init.defaultBranch=main -C "${DEST}" init -q \
-    && git -C "${DEST}" symbolic-ref HEAD refs/heads/main \
+  git -c init.defaultBranch=master -C "${DEST}" init -q \
+    && git -C "${DEST}" symbolic-ref HEAD refs/heads/master \
     && git -C "${DEST}" add -A \
     && GIT_AUTHOR_DATE="$2" GIT_COMMITTER_DATE="$2" git -C "${DEST}" \
       -c user.name="${HANDSON_GIT_NAME}" -c user.email="${HANDSON_GIT_EMAIL}" \

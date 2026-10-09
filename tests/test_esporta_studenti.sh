@@ -126,7 +126,7 @@ t_copia() {
   check "niente da committare" \
     same_text "$(git -C "${e}" status --porcelain)" ""
   run git -C "${e}" bundle verify "${e}.bundle"
-  expect "il bundle si verifica" 0 "refs/heads/main"
+  expect "il bundle si verifica" 0 "refs/heads/master"
   run git clone -q "${e}.bundle" "${TMP}/clonata"
   expect "il bundle si clona" 0 ""
   check "la copia clonata non ha soluzioni" no_trainer_dirs "${TMP}/clonata"
