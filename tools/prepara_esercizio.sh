@@ -36,10 +36,14 @@ EOF
 }
 
 # Il riepilogo per chi parte: dove andare, che cosa leggere, come
-# verificare e come ricominciare.
+# verificare e come ricominciare.  Un esercizio parte con claude; una
+# demo con i comandi del README (spesso `claude -p' in un ciclo, non una
+# sessione interattiva); un elemento su claude.ai non lascia file nello
+# spazio di lavoro, e la verifica, quando c'è, è del rifacimento in
+# Claude Code che il README propone.
 # Globals: HANDSON_WORKSPACE, HANDSON_ITEM_*, HANDSON_ROOT, HANDSON_ARG_RADICE.
 print_next_steps() {
-  local cartella radice='' readme
+  local cartella radice='' readme verifica='Alla fine:        '
   handson::quote_into cartella "${HANDSON_WORKSPACE}"
   if [[ -n "${HANDSON_ARG_RADICE}" ]]; then
     handson::quote_into radice "${HANDSON_WORKSPACE_ROOT}"
@@ -48,18 +52,23 @@ print_next_steps() {
   readme="${HANDSON_ITEM_DIR#"${HANDSON_ROOT}"/}/README.md"
   printf 'Spazio di lavoro pronto per %s (%s): %s\n\n' "${HANDSON_ITEM_ID}" \
     "${HANDSON_ITEM_KIND}" "${HANDSON_WORKSPACE}"
-  case "${HANDSON_ITEM_ENV}" in
-    claude-ai-pro)
+  case "${HANDSON_ITEM_ENV}:${HANDSON_ITEM_KIND}" in
+    claude-ai-pro:*)
       printf 'Questo elemento si svolge su claude.ai; i file di partenza\n'
-      printf 'sono nella cartella qui sopra.\n' ;;
-    trainer-api)
+      printf 'sono nella cartella qui sopra.\n'
+      verifica='La verifica riguarda il rifacimento in Claude Code,'
+      verifica+=$' se il README lo prevede:\n  ' ;;
+    trainer-api:*)
       printf "Elemento del docente con l'API: lo esegue il docente.\n" ;;
+    *:demo)
+      printf '  cd %s\n  # poi i comandi del README, nel terminale\n' \
+        "${cartella}" ;;
     *)
       printf '  cd %s\n  claude\n' "${cartella}" ;;
   esac
   printf "\nI passi da seguire sono nel README dell'elemento:\n  %s\n" \
     "${readme}"
-  printf 'Alla fine:        tools/verifica.sh %s%s\n' "${HANDSON_ITEM_ID}" \
+  printf '%stools/verifica.sh %s%s\n' "${verifica}" "${HANDSON_ITEM_ID}" \
     "${radice}"
   printf 'Per ricominciare: tools/reset_esercizio.sh %s%s\n' \
     "${HANDSON_ITEM_ID}" "${radice}"

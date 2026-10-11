@@ -2,12 +2,14 @@
 #
 # esegui_test.sh -- tutte le prove del repository, in due passi:
 #   1. ogni tests/test_*.sh presente -- degli strumenti, dei progetti
-#      condivisi, quelle che arrivano con i moduli -- uno dopo l'altro, con
-#      STDIN da /dev/null; una suite senza il bit di esecuzione conta come
-#      fallita;
-#   2. shellcheck -x su ogni *.sh di tools/, tests/ e progetti/ che git
-#      consegna (non vendor/ né gli altri file ignorati), un file per
-#      invocazione, con le regole di .shellcheckrc.
+#      condivisi -- poi ogni suite di modulo, m<N>_*/_docente/test_*.sh
+#      (materiale del docente: la copia dei partecipanti non la porta), uno
+#      dopo l'altro, con STDIN da /dev/null; una suite senza il bit di
+#      esecuzione conta come fallita;
+#   2. shellcheck -x su ogni *.sh di tools/, tests/, progetti/ e dei moduli
+#      m<N>_*/ che git consegna (non vendor/ né gli altri file ignorati;
+#      dei moduli non esercizio/, demo/ e soluzione/ degli elementi), un
+#      file per invocazione, con le regole di .shellcheckrc.
 # Per ogni suite stampa la sua ultima riga (il suo riepilogo); per una
 # suite fallita anche le ultime righe della sua uscita.
 # Volutamente autonomo, senza librerie: deve poter dire che cosa non va
@@ -51,14 +53,19 @@ coda() {
   done < <(printf '%s\n' "$1" | tail -n "$2")
 }
 
-# Il passo 1: le suite. Globals: ROOT, N_SUITE, N_SUITE_KO.
+# Il passo 1: le suite; una di tests/ si chiama per nome, una di modulo
+# per percorso. Globals: ROOT, N_SUITE, N_SUITE_KO.
 run_suites() {
-  local s out rc ultima
-  for s in "${ROOT}/tests/"test_*.sh; do
+  local s nome out rc ultima
+  local -a suite=("${ROOT}/tests/"test_*.sh
+    "${ROOT}/"m[1-9]_*/_docente/test_*.sh)
+  for s in "${suite[@]}"; do
     [[ -f "${s}" ]] || continue
     N_SUITE=$((N_SUITE + 1))
+    nome="${s#"${ROOT}/"}"
+    nome="${nome#tests/}"
     if [[ ! -x "${s}" ]]; then
-      printf '  KO  %-34s non eseguibile (chmod +x)\n' "${s##*/}"
+      printf '  KO  %-34s non eseguibile (chmod +x)\n' "${nome}"
       N_SUITE_KO=$((N_SUITE_KO + 1))
       continue
     fi
@@ -66,9 +73,9 @@ run_suites() {
     rc=$?
     if (( rc == 0 )); then
       ultima="${out##*"${NL}"}"
-      printf '  ok  %-34s %s\n' "${s##*/}" "${ultima}"
+      printf '  ok  %-34s %s\n' "${nome}" "${ultima}"
     else
-      printf '  KO  %-34s uscita %d\n' "${s##*/}" "${rc}"
+      printf '  KO  %-34s uscita %d\n' "${nome}" "${rc}"
       coda "${out}" 25
       N_SUITE_KO=$((N_SUITE_KO + 1))
     fi
@@ -79,12 +86,20 @@ run_suites() {
 # Globals: ROOT, ELENCO, N_FILE, N_FILE_KO.
 run_shellcheck() {
   local f out
+  # m[1-9]_* è un pathspec di git: lì * attraversa anche le /.
   if ! git -C "${ROOT}" ls-files -z --cached --others --exclude-standard \
-      -- tools tests progetti > "${ELENCO}"; then
+      -- tools tests progetti 'm[1-9]_*' > "${ELENCO}"; then
     die "git non elenca i file di ${ROOT}: è un repository git?"
   fi
   while IFS= read -r -d '' f; do
     [[ "${f}" == *.sh && -f "${ROOT}/${f}" ]] || continue
+    # I contenuti degli elementi di un modulo restano fuori, come in
+    # handson::check_scripts: lì uno script può essere materia
+    # dell'esercizio (uno script da correggere, per esempio).
+    case "/${f}" in
+      /m[1-9]_*/esercizio/*|/m[1-9]_*/demo/*|/m[1-9]_*/soluzione/*)
+        continue ;;
+    esac
     N_FILE=$((N_FILE + 1))
     if ! out="$(cd "${ROOT}" && shellcheck -x -- "${f}" 2>&1)"; then
       printf '  KO  shellcheck %s\n' "${f}"
@@ -110,7 +125,8 @@ main() {
   trap cleanup EXIT
   echo "Suite di test:"
   run_suites
-  (( N_SUITE > 0 )) || die "nessuna suite tests/test_*.sh in ${ROOT}"
+  (( N_SUITE > 0 )) || die "nessuna suite (tests/test_*.sh," \
+    "m<N>_*/_docente/test_*.sh) in ${ROOT}"
   echo "shellcheck:"
   run_shellcheck
   local esito=OK

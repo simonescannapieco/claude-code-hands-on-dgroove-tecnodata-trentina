@@ -4,9 +4,11 @@
 # getta con suite e script finti: tutto verde (uscita 0, l'ultima riga di
 # ogni suite); una suite che fallisce, una suite non eseguibile, uno script
 # con una segnalazione di shellcheck (uscita 1); vendor/ ignorato da git
-# resta fuori; alle suite non arriva PN_HANDSON_ROOT e lo STDIN è chiuso;
-# le precondizioni (nessuna suite, shellcheck mancante, fuori da git,
-# argomenti) danno 2.
+# resta fuori; le suite dei moduli (m<N>_*/_docente/test_*.sh) girano e
+# gli script dei moduli passano da shellcheck, tranne esercizio/, demo/ e
+# soluzione/ degli elementi; alle suite non arriva PN_HANDSON_ROOT e lo
+# STDIN è chiuso; le precondizioni (nessuna suite, shellcheck mancante,
+# fuori da git, argomenti) danno 2.
 #
 # Uso:    tests/test_esegui_test.sh
 # Uscita: 0 = tutti i test passano · 1 = almeno un test fallito
@@ -116,6 +118,40 @@ t_rossi() {
   expect "uno script con una segnalazione" 1 "KO  shellcheck tools/sporco.sh"
 }
 
+# Le suite dei moduli, m<N>_*/_docente/test_*.sh, girano come quelle di
+# tests/ e shellcheck guarda anche gli script dei moduli; una cartella che
+# non è un modulo resta fuori, e così i contenuti degli elementi
+# (esercizio/, demo/, soluzione/: lì uno script può essere materia
+# dell'esercizio, come in handson::check_scripts).
+# shellcheck disable=SC2016  # le righe sono codice degli script finti
+t_moduli() {
+  local a="${TMP}/moduli" s='m1_prova/_docente/test_m1_prova.sh'
+  local v='m1_prova/s1/M1-D01_x/verifica.sh' e='m1_prova/s1/M1-E01_y' c
+  albero "${a}"
+  script "${a}/${s}" 755 'echo "PASS=7 FAIL=0"'
+  script "${a}/${v}" 755 'echo "pulito"'
+  script "${a}/altro/_docente/test_fuori.sh" 755 'echo $1'
+  for c in esercizio demo soluzione; do
+    script "${a}/${e}/${c}/da_correggere_${c}.sh" 755 'echo $1'
+  done
+  runner "${a}"
+  expect "la suite di un modulo gira" 0 "ok  ${s}"
+  expect "con la sua ultima riga" 0 "PASS=7 FAIL=0"
+  expect "suite e script del modulo contati" 0 \
+    "3 suite, 0 KO · shellcheck: 5 file, 0 con segnalazioni"
+  expect_absent "una cartella che non è un modulo resta fuori" "test_fuori"
+  expect_absent "esercizio/, demo/ e soluzione/ restano fuori" \
+    "da_correggere"
+  a="${TMP}/moduli2"
+  albero "${a}"
+  script "${a}/${s}" 755 'echo "FAIL: nel modulo"' 'exit 1'
+  script "${a}/${v}" 755 'echo $1'
+  runner "${a}"
+  expect "la suite di un modulo che fallisce" 1 "KO  ${s}"
+  expect "con le sue ultime righe" 1 "| FAIL: nel modulo"
+  expect "uno script del modulo con una segnalazione" 1 "KO  shellcheck ${v}"
+}
+
 t_precondizioni() {
   local a="${TMP}/vuoto" corto="${TMP}/corto"
   mkdir -p "${a}/tests"
@@ -147,6 +183,7 @@ main() {
   echo "test_esegui_test.sh"
   t_verde
   t_rossi
+  t_moduli
   t_precondizioni
   echo "PASS=${PASS} FAIL=${FAIL}"
   (( FAIL == 0 )) || exit 1

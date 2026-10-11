@@ -4,7 +4,8 @@
 # dell'albero di prova (tests/fixtures/handson/): che cosa entra nello
 # spazio di lavoro e che cosa no (soluzione/, _docente/, anche quello dei
 # progetti), git con un primo commit e il segno, le impostazioni prudenti
-# di .claude/, le opzioni e la radice di default, e ogni rifiuto con
+# di .claude/, le opzioni e la radice di default, il riepilogo finale
+# secondo il tipo e l'ambiente dell'elemento, e ogni rifiuto con
 # uscita 2 (spazio di lavoro già presente, ID sconosciuti o ripetuti,
 # cartelle doppie, righe non valide, progetti.txt sbagliato, collegamenti
 # simbolici, radici non ammesse, git mancante).
@@ -137,6 +138,50 @@ t_contenuto() {
   expect "prepara una demo" 0 "(demo)"
   check "copia il punto di partenza demo/" \
     is_file "${r}/ws/M1-D01/istruzioni.md"
+}
+
+# Una riga di OUT esattamente uguale, o nessuna. Arguments: $1 la riga.
+has_line() { grep -qxF -- "$1" <<< "${OUT}"; }
+lacks_line() { ! has_line "$1"; }
+
+# Il riepilogo dice che cosa fare dopo, secondo il tipo e l'ambiente
+# dell'elemento: un esercizio parte con claude; una demo rimanda ai
+# comandi del README, nel terminale (spesso `claude -p' in un ciclo);
+# un elemento su claude.ai non produce file nello spazio di lavoro, e la
+# verifica riguarda il rifacimento in Claude Code, se il README lo
+# prevede; un elemento con l'API lo esegue il docente.
+t_suggerimenti() {
+  local r="${TMP}/suggerimenti" man
+  make_repo "${r}/repo" || { fail "albero di prova (suggerimenti)"; return; }
+  prepara "${r}/repo" "${r}/ws" M1-E01
+  expect "esercizio: il riepilogo" 0 "Alla fine:"
+  check "esercizio: si parte con claude" has_line "  claude"
+  prepara "${r}/repo" "${r}/ws" M1-D01
+  expect "demo: i comandi del README, nel terminale" 0 \
+    "i comandi del README, nel terminale"
+  check "demo: nessun claude interattivo" lacks_line "  claude"
+  man="${r}/repo/m1_fondamenti_llm/manifest.tsv"
+  sed -i 's/^\(M1-D01\tdemo\t\)claude-code-pro/\1claude-ai-pro/' "${man}"
+  if ! grep -qF -- $'M1-D01\tdemo\tclaude-ai-pro\t' "${man}"; then
+    fail "il manifest di prova non è passato a claude-ai-pro"
+    return
+  fi
+  prepara "${r}/repo" "${r}/ws2" M1-D01
+  expect "claude.ai: si svolge su claude.ai" 0 "si svolge su claude.ai"
+  expect "claude.ai: la verifica è del rifacimento in Claude Code" 0 \
+    "rifacimento in Claude Code, se il README lo prevede"
+  expect_absent "claude.ai: niente «Alla fine» senza condizioni" \
+    "Alla fine:"
+  sed -i 's/^\(M1-D01\tdemo\t\)claude-ai-pro/\1trainer-api/' "${man}"
+  if ! grep -qF -- $'M1-D01\tdemo\ttrainer-api\t' "${man}"; then
+    fail "il manifest di prova non è passato a trainer-api"
+    return
+  fi
+  prepara "${r}/repo" "${r}/ws3" M1-D01
+  expect "API: lo esegue il docente" 0 "lo esegue il docente"
+  check "API: nessun claude interattivo" lacks_line "  claude"
+  expect_absent "API: nessun rimando ai comandi del README" \
+    "i comandi del README, nel terminale"
 }
 
 t_impostazioni_prudenti() {
@@ -303,6 +348,7 @@ main() {
   [[ -d "${FIXTURE}" ]] || { echo "manca ${FIXTURE}" >&2; exit 2; }
   echo "test_prepara_esercizio.sh"
   t_contenuto
+  t_suggerimenti
   t_impostazioni_prudenti
   t_radici
   t_radice_config
