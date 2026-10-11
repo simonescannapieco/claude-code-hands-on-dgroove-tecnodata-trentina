@@ -1,0 +1,13 @@
+modello	domanda	risposta
+haiku	conta	4
+haiku	conta	4
+haiku	conta	5
+haiku	compitata	i n t e r c o n n e s s i o n e Le **n** sono **4**.
+sonnet	conta	4
+sonnet	conta	4
+sonnet	conta	4
+sonnet	compitata	Ecco la parola "interconnessione" una lettera per riga: ``` i n t e r c o n n e s s i o n e ``` Le **n** si trovano alla 2ª, 8ª, 9ª e 15ª riga. In totale le **n** sono **4**.
+opus	conta	interconnessione: i-n-t-e-r-c-o-n-n-e-s-s-i-o-n-e. n at positions 2, 8, 9, 15 → 4. 4
+opus	conta	4
+opus	conta	4
+opus	compitata	i n t e r c o n n e s s i o n e Nella parola **interconnessione** ci sono **4** lettere **n**, nelle posizioni 2, 8, 9 e 15.

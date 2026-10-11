@@ -1,0 +1,1 @@
+Continua la frase con una sola parola, senza punteggiatura. Rispondi solo con quella parola.
