@@ -1,7 +1,7 @@
 # M1-D01 — La prossima parola
 
-Demo del Modulo 1, nella parte «Che cosa è un LLM». In aula la esegue il
-docente; dopo la sessione potete rifarla da soli.
+Demo del Modulo 1, nella parte «Cosa fanno, cosa leggono, come imparano».
+In aula la esegue il docente; dopo la sessione potete rifarla da soli.
 
 ## Obiettivo
 

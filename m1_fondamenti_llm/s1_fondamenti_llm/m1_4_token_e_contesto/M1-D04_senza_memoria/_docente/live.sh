@@ -17,7 +17,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D04_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_4_…/M1-D04_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 readonly CONTROLLO="${SELF%/_docente/*}/verifica.sh"
 # shellcheck source=../../../../../tools/lib_handson.sh
@@ -80,7 +80,7 @@ main() {
   handson::tmpfile json_b
   handson::tmpfile json_c
   handson::banner M1-D04 "Ogni chiamata riparte da zero" \
-    "Modulo 1, «Token, attention e contesto»: tre chiamate a ${MODELLO}"
+    "Modulo 1, «Token e finestra di contesto»: tre chiamate a ${MODELLO}"
   printf 'chiamata\ttoken_entrata\trisposta\n' > catena.tsv
   handson::step "A: una sessione nuova, salvata"
   { chiama primo.txt "${json_a}" && riga A "${json_a}"; } \

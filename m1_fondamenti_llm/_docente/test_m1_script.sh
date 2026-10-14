@@ -28,11 +28,11 @@ SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
 readonly MOD="${SELF%/_docente/*}"
 readonly S1="${MOD}/s1_fondamenti_llm"
-readonly D01="${S1}/m1_2_che_cosa_e_un_llm/M1-D01_prossima_parola"
-readonly D02="${S1}/m1_3_token_attention_contesto/M1-D02_conta_lettere"
-readonly D03="${S1}/m1_3_token_attention_contesto/M1-D03_token_lingue"
-readonly D04="${S1}/m1_3_token_attention_contesto/M1-D04_senza_memoria"
-readonly D05="${S1}/m1_4_forze_e_limiti/M1-D05_circolare"
+readonly D01="${S1}/m1_3_cosa_fanno_leggono_imparano/M1-D01_prossima_parola"
+readonly D02="${S1}/m1_4_token_e_contesto/M1-D02_conta_lettere"
+readonly D03="${S1}/m1_4_token_e_contesto/M1-D03_token_lingue"
+readonly D04="${S1}/m1_4_token_e_contesto/M1-D04_senza_memoria"
+readonly D05="${S1}/m1_5_forze_e_limiti/M1-D05_circolare"
 readonly E01="${S1}/m1_e2_stesso_prompt_tre_modelli/M1-E01_stesso_prompt"
 readonly ELEMENTI=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${E01}")
 # Per ogni elemento, nello stesso ordine: il file dei risultati, la frase

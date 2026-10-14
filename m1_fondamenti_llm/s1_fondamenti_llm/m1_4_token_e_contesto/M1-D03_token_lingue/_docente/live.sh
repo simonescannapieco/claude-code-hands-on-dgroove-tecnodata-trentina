@@ -19,7 +19,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D03_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_4_…/M1-D03_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
@@ -78,7 +78,7 @@ main() {
   frase_it="$(cat frase_it.txt)"
   frase_en="$(cat frase_en.txt)"
   handson::banner M1-D03 "Stessa frase, due lingue" \
-    "Modulo 1, «Token, attention e contesto»: i token secondo Claude"
+    "Modulo 1, «Token e finestra di contesto»: i token secondo Claude"
   printf 'modello\ttesto\ttoken_entrata\n' > conteggi.tsv
   for m in "${modelli[@]}"; do
     handson::step "${m}"

@@ -16,13 +16,14 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_2_…/M1-D01_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D01_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
 
 readonly MODELLI=(haiku sonnet opus)
 readonly RIPETIZIONI="${PN_RIPETIZIONI:-3}"
+readonly PARTE="Modulo 1, «Cosa fanno, cosa leggono, come imparano»"
 
 # Una chiamata: il JSON di claude nel file $2. Va chiamata nella shell
 # dello script, non dentro $(…): così una precondizione di
@@ -59,7 +60,7 @@ main() {
   handson::need_claude
   handson::tmpfile json
   handson::banner M1-D01 "La prossima parola" \
-    "Modulo 1, «Che cosa è un LLM»: ${RIPETIZIONI} chiamate per modello"
+    "${PARTE}: ${RIPETIZIONI} chiamate per modello"
   printf 'modello\tparola\n' > risultati.tsv
   for m in "${MODELLI[@]}"; do
     handson::step "${m}"

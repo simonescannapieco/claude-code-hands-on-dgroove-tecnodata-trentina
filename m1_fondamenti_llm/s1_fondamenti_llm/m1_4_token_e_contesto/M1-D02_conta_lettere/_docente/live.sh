@@ -17,7 +17,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D02_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_4_…/M1-D02_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
@@ -76,7 +76,7 @@ main() {
   handson::need_claude
   handson::tmpfile json
   handson::banner M1-D02 "Quante n in «interconnessione»?" \
-    "Modulo 1, «Token, attention e contesto»: le n sono 4"
+    "Modulo 1, «Token e finestra di contesto»: le n sono 4"
   printf 'modello\tdomanda\trisposta\n' > risposte.tsv
   for m in "${MODELLI[@]}"; do
     handson::step "${m}"

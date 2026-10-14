@@ -1,6 +1,6 @@
 # M1-D03 — Stessa frase, due lingue
 
-Demo del Modulo 1, nella parte «Token, attention e contesto». In aula la
+Demo del Modulo 1, nella parte «Token e finestra di contesto». In aula la
 esegue il docente; dopo la sessione potete rifarla da soli.
 
 ## Obiettivo

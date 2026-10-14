@@ -1,6 +1,6 @@
 # M1-D04 — Ogni chiamata riparte da zero
 
-Demo del Modulo 1, nella parte «Token, attention e contesto». In aula la
+Demo del Modulo 1, nella parte «Token e finestra di contesto». In aula la
 esegue il docente; dopo la sessione potete rifarla da soli.
 
 ## Obiettivo

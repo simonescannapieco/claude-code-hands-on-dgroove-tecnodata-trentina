@@ -1,6 +1,6 @@
 # M1-D02 — Quante n in «interconnessione»?
 
-Demo del Modulo 1, nella parte «Token, attention e contesto». In aula si fa
+Demo del Modulo 1, nella parte «Token e finestra di contesto». In aula si fa
 in claude.ai: ognuno pone la domanda al proprio Claude e scrive la
 risposta nella chat del corso. Il docente la ripete in Claude Code sui tre
 modelli.

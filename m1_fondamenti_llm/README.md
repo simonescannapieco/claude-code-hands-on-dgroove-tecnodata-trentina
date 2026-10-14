@@ -21,6 +21,7 @@ voi, nel browser. L'esercitazione M1-E01 è il vostro primo lavoro in Claude
 Code: prima, `tools/verifica_ambiente.sh` deve essere tutto verde.
 
 Le cartelle: `s1_fondamenti_llm/` (la sessione S1), poi una cartella per
-ogni parte del modulo, con il nome del sotto-deck delle slide
-(`m1_2_che_cosa_e_un_llm/`, `m1_3_token_attention_contesto/`,
-`m1_4_forze_e_limiti/`, `m1_e2_stesso_prompt_tre_modelli/`).
+ogni parte del modulo che ha demo o esercitazioni, con il nome del
+sotto-deck delle slide (`m1_3_cosa_fanno_leggono_imparano/`,
+`m1_4_token_e_contesto/`, `m1_5_forze_e_limiti/`,
+`m1_e2_stesso_prompt_tre_modelli/`).
