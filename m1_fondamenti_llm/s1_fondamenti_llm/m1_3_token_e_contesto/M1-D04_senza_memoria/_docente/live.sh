@@ -17,7 +17,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_4_…/M1-D04_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D04_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 readonly CONTROLLO="${SELF%/_docente/*}/verifica.sh"
 # shellcheck source=../../../../../tools/lib_handson.sh
