@@ -15,24 +15,27 @@
 #   - i sei _docente/live.sh con un claude finto: una precondizione di
 #     handson::claude_p esce 2 senza chiamare claude, una chiamata fallita
 #     esce 1, le risposte complete escono 0;
+#   - il manifest.tsv del modulo: la cartella e il deck_path di ogni
+#     elemento sono quelli della sua riga;
 #   - shellcheck -x su ogni script del modulo e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
 # repository non cambia.
 #
 # Uso:    m1_fondamenti_llm/_docente/test_m1_script.sh
 # Uscita: 0 = tutte le prove passano · 1 = almeno una fallita
-#         2 = precondizione (manca jq, python3, shellcheck o iconv)
+#         2 = precondizione (manca jq, python3, shellcheck, iconv o
+#             sha256sum, o la cartella di un elemento)
 set -uo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
 readonly MOD="${SELF%/_docente/*}"
 readonly S1="${MOD}/s1_fondamenti_llm"
-readonly D01="${S1}/m1_3_cosa_fanno_leggono_imparano/M1-D01_prossima_parola"
-readonly D02="${S1}/m1_4_token_e_contesto/M1-D02_conta_lettere"
-readonly D03="${S1}/m1_4_token_e_contesto/M1-D03_token_lingue"
-readonly D04="${S1}/m1_4_token_e_contesto/M1-D04_senza_memoria"
-readonly D05="${S1}/m1_5_forze_e_limiti/M1-D05_circolare"
+readonly D01="${S1}/m1_2_cosa_fanno_leggono_imparano/M1-D01_prossima_parola"
+readonly D02="${S1}/m1_3_token_e_contesto/M1-D02_conta_lettere"
+readonly D03="${S1}/m1_3_token_e_contesto/M1-D03_token_lingue"
+readonly D04="${S1}/m1_3_token_e_contesto/M1-D04_senza_memoria"
+readonly D05="${S1}/m1_4_forze_e_limiti/M1-D05_circolare"
 readonly E01="${S1}/m1_e2_stesso_prompt_tre_modelli/M1-E01_stesso_prompt"
 readonly ELEMENTI=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${E01}")
 # Per ogni elemento, nello stesso ordine: il file dei risultati, la frase
@@ -355,6 +358,33 @@ t_live() {
   expect "M1-D05 live.sh: sei risposte, uscita 0" 0 "Ciao"
 }
 
+# Il manifest.tsv del modulo e le cartelle: ogni elemento sta dove la sua
+# riga dice (section_dir/subdeck_dir), e il suo deck_path finisce con
+# quel sotto-deck.
+t_manifest() {
+  local e id dove sez sub deck
+  for e in "${ELEMENTI[@]}"; do
+    id="${e##*/}"
+    id="${id%%_*}"
+    dove="${e%/*}"
+    dove="${dove#"${MOD}"/}"
+    sez='' sub='' deck=''
+    IFS="${T}" read -r sez sub deck < <(awk -F'\t' -v id="${id}" \
+      'NR > 1 && $1 == id { print $4 "\t" $5 "\t" $6 }' \
+      "${MOD}/manifest.tsv")
+    if [[ -n "${sub}" && "${sez}/${sub}" == "${dove}" ]]; then
+      pass "manifest: ${id} sta in ${dove}"
+    else
+      fail "manifest: ${id} nomina «${sez}/${sub}», non ${dove}"
+    fi
+    if [[ -n "${sub}" && "${deck}" == */"${sub}" ]]; then
+      pass "manifest: il deck_path di ${id} finisce con ${sub}"
+    else
+      fail "manifest: il deck_path di ${id} è «${deck}»"
+    fi
+  done
+}
+
 t_shellcheck() {
   local e f
   for e in "${ELEMENTI[@]}"; do
@@ -376,10 +406,16 @@ t_shellcheck() {
 }
 
 main() {
-  local t
+  local t e
   for t in jq python3 shellcheck iconv sha256sum; do
     if ! command -v "${t}" > /dev/null 2>&1; then
       echo "test_m1_script.sh: manca lo strumento ${t}" >&2
+      exit 2
+    fi
+  done
+  for e in "${ELEMENTI[@]}"; do
+    if [[ ! -d "${e}" ]]; then
+      echo "test_m1_script.sh: manca la cartella ${e#"${MOD}"/}" >&2
       exit 2
     fi
   done
@@ -391,6 +427,7 @@ main() {
     PN_PROMPT
   claude_finto
   echo "test_m1_script.sh"
+  t_manifest
   t_verifiche_base
   t_casi_d01_d02
   t_casi_d03
