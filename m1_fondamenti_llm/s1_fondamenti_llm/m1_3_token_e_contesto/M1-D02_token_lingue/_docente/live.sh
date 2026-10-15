@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# live.sh di M1-D03 -- la demo del docente: quanti token pesa per Claude
+# live.sh di M1-D02 -- la demo del docente: quanti token pesa per Claude
 # la stessa frase in italiano e in inglese. Per ogni modello quattro
 # chiamate con claude -p, senza strumenti né server MCP: la frase
 # italiana, la stessa ripetuta due volte, poi l'inglese, singola e doppia.
@@ -19,7 +19,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D03_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D02_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
@@ -77,7 +77,7 @@ main() {
   local frase_it frase_en
   frase_it="$(cat frase_it.txt)"
   frase_en="$(cat frase_en.txt)"
-  handson::banner M1-D03 "Stessa frase, due lingue" \
+  handson::banner M1-D02 "Stessa frase, due lingue" \
     "Modulo 1, «Token e finestra di contesto»: i token secondo Claude"
   printf 'modello\ttesto\ttoken_entrata\n' > conteggi.tsv
   for m in "${modelli[@]}"; do

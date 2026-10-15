@@ -17,15 +17,19 @@ l'abbonamento Pro, strumenti e controllo finale.
 
 ## Ottenere il repository e aggiornarlo
 
-Il docente comunica l'indirizzo del repository online. Si clona una volta:
+Il repository è online, su GitHub. Si clona una volta:
 
-    git clone <indirizzo comunicato dal docente> esercitazioni
+    git clone https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina esercitazioni
     cd esercitazioni
 
 Quando arrivano le demo e gli esercizi di un modulo, si aggiorna dalla
 stessa cartella con
 
     git pull
+
+Le dispense delle slide, in PDF, di ogni modulo e di ogni sua parte,
+teoria e pratica, sono allegate all'ultima release del repository:
+https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina/releases/latest
 
 Il lavoro degli esercizi sta negli spazi di lavoro, fuori dal repository
 (vedi sotto): `git pull` non lo tocca, e lo cancella solo
@@ -147,9 +151,10 @@ modello, effort, turni attesi, subagent.
     tools/check_handson.sh                  # struttura, manifest, README degli elementi
     tools/run_all.sh [--live] [ID ...]      # ogni elemento: la verifica fallisce sul punto di partenza e passa con la soluzione
     tests/esegui_test.sh                    # le suite di test e shellcheck
-    tools/esporta_studenti.sh <cartella>    # la copia per i partecipanti e il suo bundle
+    tools/esporta_studenti.sh <cartella>    # una copia senza soluzioni, e il suo bundle
 
 Le soluzioni (`soluzione/`) e il materiale del docente (`_docente/`) stanno
-in questo repository e restano fuori dalla copia per i partecipanti, che
-`tools/esporta_studenti.sh` prepara come repository git a sé (con un
-bundle): è quella da pubblicare come repository online del corso.
+in questo repository, che i partecipanti clonano così com'è da GitHub.
+`tools/esporta_studenti.sh` resta disponibile: prepara una copia senza
+soluzioni né materiale del docente, come repository git a sé (con un
+bundle), se mai servisse distribuirla a parte.

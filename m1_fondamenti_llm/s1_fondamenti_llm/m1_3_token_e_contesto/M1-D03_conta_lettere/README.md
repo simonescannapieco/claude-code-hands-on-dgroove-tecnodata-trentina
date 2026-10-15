@@ -1,9 +1,8 @@
-# M1-D02 — Quante n in «interconnessione»?
+# M1-D03 — Quante n in «interconnessione»?
 
 Demo del Modulo 1, nella parte «Token e finestra di contesto». In aula si fa
-in claude.ai: ognuno pone la domanda al proprio Claude e scrive la
-risposta nella chat del corso. Il docente la ripete in Claude Code sui tre
-modelli.
+in claude.ai: ognuno pone la domanda al proprio Claude e dice la risposta
+a voce. Il docente la ripete in Claude Code sui tre modelli.
 
 ## Obiettivo
 
@@ -14,7 +13,7 @@ contare, il conteggio torna.
 
 ## Tempo
 
-4 minuti in aula; circa 5 per rifarla in Claude Code.
+3 minuti in aula; circa 5 per rifarla in Claude Code.
 
 ## Prerequisiti
 
@@ -22,9 +21,9 @@ contare, il conteggio torna.
 - Per rifarla in Claude Code: Claude Code installato e collegato al piano
   Pro, con `tools/verifica_ambiente.sh` tutto verde (`PRIMA_DEL_CORSO.md`).
 
-## Punto di partenza (tools/prepara_esercizio.sh M1-D02)
+## Punto di partenza (tools/prepara_esercizio.sh M1-D03)
 
-Lo spazio di lavoro `~/corso-claude-code/M1-D02/` con tre file:
+Lo spazio di lavoro `~/corso-claude-code/M1-D03/` con tre file:
 
 - `conta.txt`: «Quante n ci sono nella parola interconnessione? Rispondi
   solo con il numero.»;
@@ -42,7 +41,7 @@ In aula, in claude.ai:
 
        Quante n ci sono nella parola interconnessione? Rispondi solo con il numero.
 
-3. Scrivete nella chat del corso la risposta e il modello che avete usato.
+3. Dite a voce la risposta e il modello che avete usato.
 4. Nella stessa conversazione di claude.ai, chiedete:
 
        Scrivi la parola interconnessione una lettera per riga, poi conta le n e dimmi quante sono.
@@ -50,8 +49,8 @@ In aula, in claude.ai:
 Per rifarla in Claude Code, sui tre modelli, dalla cartella
 `esercitazioni`:
 
-    tools/prepara_esercizio.sh M1-D02
-    cd ~/corso-claude-code/M1-D02
+    tools/prepara_esercizio.sh M1-D03
+    cd ~/corso-claude-code/M1-D03
     printf 'modello\tdomanda\trisposta\n' > risposte.tsv
     for m in haiku sonnet opus; do
       for d in conta compitata; do
@@ -80,12 +79,11 @@ connettore, nessuna sessione salvata.
   tutti e tre hanno risposto 4.
 - Il caso famoso, le r di «strawberry», oggi non fa più cadere i modelli:
   nelle stesse registrazioni, 3 su ogni modello, ogni volta.
-- In aula: quante risposte diverse sono arrivate in chat? Su quali
-  modelli?
+- In aula: quante risposte diverse avete sentito? Su quali modelli?
 - Per chi scrive codice: un conteggio di lettere si fa senza modello, e
   senza sbagliare, con `grep -o n <<< interconnessione | wc -l`.
 
-## Verifica (tools/verifica.sh M1-D02)
+## Verifica (tools/verifica.sh M1-D03)
 
 `risposte.tsv` contiene, per ciascuno dei tre modelli, almeno una risposta
 alla domanda `conta` e una alla domanda `compitata`. La verifica mostra
@@ -99,7 +97,7 @@ osservare.
   dalla memoria: è normale che in aula arrivino risposte diverse.
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
-- Per ricominciare da capo: `tools/reset_esercizio.sh M1-D02`.
+- Per ricominciare da capo: `tools/reset_esercizio.sh M1-D03`.
 
 ## Impronta d'uso sul piano Pro
 

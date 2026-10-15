@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # test_m1_script.sh -- le prove degli script del modulo 1, per il docente
-# (sta in _docente/: non va nella copia dei partecipanti):
+# (sta in _docente/, il materiale del docente, che resta fuori dalla copia
+# senza soluzioni di tools/esporta_studenti.sh):
 #   - i sei verifica.sh: spazio di lavoro assente e file che non si legge
 #     (uscita 2), la soluzione dell'elemento (0, senza segnalazioni), i casi
 #     da segnalare (1) e quelli limite: a capo CRLF, numeri con lo zero
@@ -32,25 +33,25 @@ readonly SELF
 readonly MOD="${SELF%/_docente/*}"
 readonly S1="${MOD}/s1_fondamenti_llm"
 readonly D01="${S1}/m1_2_cosa_fanno_leggono_imparano/M1-D01_prossima_parola"
-readonly D02="${S1}/m1_3_token_e_contesto/M1-D02_conta_lettere"
-readonly D03="${S1}/m1_3_token_e_contesto/M1-D03_token_lingue"
+readonly D02="${S1}/m1_3_token_e_contesto/M1-D02_token_lingue"
+readonly D03="${S1}/m1_3_token_e_contesto/M1-D03_conta_lettere"
 readonly D04="${S1}/m1_3_token_e_contesto/M1-D04_senza_memoria"
 readonly D05="${S1}/m1_4_forze_e_limiti/M1-D05_circolare"
 readonly E01="${S1}/m1_e2_stesso_prompt_tre_modelli/M1-E01_stesso_prompt"
 readonly ELEMENTI=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${E01}")
 # Per ogni elemento, nello stesso ordine: il file dei risultati, la frase
 # della verifica riuscita, una parola delle sue segnalazioni.
-readonly DATI=(risultati.tsv risposte.tsv conteggi.tsv catena.tsv
+readonly DATI=(risultati.tsv conteggi.tsv risposte.tsv catena.tsv
   risposte.tsv confronto.md)
 readonly OK_PAROLE=('Le risposte dei tre modelli ci sono.'
-  'Le risposte dei tre modelli ci sono (le n sono 4).'
   'La frase italiana pesa più della sua traduzione inglese.'
+  'Le risposte dei tre modelli ci sono (le n sono 4).'
   'Esito come nelle registrazioni del corso.'
   'Le risposte ci sono: rifiutano o inventano?'
   'Confronto compilato e coerente')
-readonly KO_PAROLE=('Nessuna risposta' 'Nessuna risposta' 'atteso italiano'
+readonly KO_PAROLE=('Nessuna risposta' 'atteso italiano' 'Nessuna risposta'
   'dovrebbe' 'Manca la risposta' 'Da sistemare')
-readonly LJ="${D03}/demo/leggi_json.py"
+readonly LJ="${D02}/demo/leggi_json.py"
 readonly T=$'\t'
 readonly U2011=$'\xe2\x80\x91'
 RISPOSTA='{"type":"result","is_error":false,"result":"Ciao",'
@@ -185,7 +186,7 @@ t_verifiche_base() {
   done
 }
 
-t_casi_d01_d02() {
+t_casi_d01_d03() {
   local w
   ws w
   tsv "${w}/risultati.tsv" 'haiku|La'
@@ -199,33 +200,33 @@ t_casi_d01_d02() {
   expect "M1-D01: «1 risposta», al singolare" 0 "haiku: 1 risposta --"
   tsv "${w}/risposte.tsv" 'modello|domanda|risposta' 'haiku|conta|4' \
     'haiku|compitata|4' 'sonnet|conta|3' 'opus|conta|4' 'opus|compitata|4'
-  run "${D02}/verifica.sh" "${w}"
-  expect "M1-D02: una domanda senza risposta" 1 \
+  run "${D03}/verifica.sh" "${w}"
+  expect "M1-D03: una domanda senza risposta" 1 \
     "Nessuna risposta di sonnet alla domanda «compitata»"
   tsv "${w}/risposte.tsv" 'modello|domanda|risposta' \
     'haiku|conta|uno due tre quattro cinque sei sette otto nove dieci undici' \
     'haiku|compitata|4' 'sonnet|conta|3' 'sonnet|compitata|4' \
     'opus|conta|4' 'opus|compitata|4'
-  run "${D02}/verifica.sh" "${w}"
-  expect "M1-D02: di una risposta lunga, le prime dieci parole" 0 \
+  run "${D03}/verifica.sh" "${w}"
+  expect "M1-D03: di una risposta lunga, le prime dieci parole" 0 \
     "«uno due tre quattro cinque sei sette otto nove dieci …»"
 }
 
-t_casi_d03() {
+t_casi_d02() {
   local w
   ws w
   tsv "${w}/conteggi.tsv" 'modello|testo|token_entrata' 'haiku|it|100' \
     'haiku|it-doppia|127' 'haiku|en|90' 'haiku|en-doppia|107'
   sed -i 's/$/\r/' "${w}/conteggi.tsv"
-  run "${D03}/verifica.sh" "${w}"
-  expect "M1-D03: righe CRLF" 0 "haiku: italiano 27 token, inglese 17"
+  run "${D02}/verifica.sh" "${w}"
+  expect "M1-D02: righe CRLF" 0 "haiku: italiano 27 token, inglese 17"
   tsv "${w}/conteggi.tsv" 'modello|testo|token_entrata' 'haiku|it|100' \
     'haiku|it-doppia|110' 'haiku|en|90' 'haiku|en-doppia|107'
-  run "${D03}/verifica.sh" "${w}"
-  expect "M1-D03: l'inglese pesa di più" 1 "atteso italiano > inglese > 0"
+  run "${D02}/verifica.sh" "${w}"
+  expect "M1-D02: l'inglese pesa di più" 1 "atteso italiano > inglese > 0"
   tsv "${w}/conteggi.tsv" 'modello|testo|token_entrata' 'haiku|it|100'
-  run "${D03}/verifica.sh" "${w}"
-  expect "M1-D03: nessun modello completo" 1 "Nessun modello con i quattro"
+  run "${D02}/verifica.sh" "${w}"
+  expect "M1-D02: nessun modello completo" 1 "Nessun modello con i quattro"
 }
 
 t_casi_d04() {
@@ -429,8 +430,8 @@ main() {
   echo "test_m1_script.sh"
   t_manifest
   t_verifiche_base
-  t_casi_d01_d02
-  t_casi_d03
+  t_casi_d01_d03
+  t_casi_d02
   t_casi_d04
   t_casi_d05
   t_casi_e01

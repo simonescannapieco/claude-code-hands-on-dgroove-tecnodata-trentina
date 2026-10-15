@@ -1,7 +1,7 @@
-# M1-D03 — Stessa frase, due lingue
+# M1-D02 — Stessa frase, due lingue
 
 Demo del Modulo 1, nella parte «Token e finestra di contesto». In aula la
-esegue il docente; dopo la sessione potete rifarla da soli.
+esegue il docente; potete rifarla da soli quando volete.
 
 ## Obiettivo
 
@@ -20,9 +20,9 @@ Claude Code installato e collegato al piano Pro, con
 `tools/verifica_ambiente.sh` tutto verde (`PRIMA_DEL_CORSO.md`); Python 3,
 che lo stesso controllo verifica.
 
-## Punto di partenza (tools/prepara_esercizio.sh M1-D03)
+## Punto di partenza (tools/prepara_esercizio.sh M1-D02)
 
-Lo spazio di lavoro `~/corso-claude-code/M1-D03/` con quattro file:
+Lo spazio di lavoro `~/corso-claude-code/M1-D02/` con quattro file:
 
 - `frase_it.txt`: «La riunione è stata rinviata a causa dello sciopero dei
   trasporti.»;
@@ -42,8 +42,8 @@ stessa frase due volte: la differenza è la frase.
 1. Preparate lo spazio di lavoro ed entrateci, dalla cartella
    `esercitazioni`:
 
-       tools/prepara_esercizio.sh M1-D03
-       cd ~/corso-claude-code/M1-D03
+       tools/prepara_esercizio.sh M1-D02
+       cd ~/corso-claude-code/M1-D02
 
 2. Una previsione: quanti token pesa la frase italiana? E l'inglese?
 
@@ -80,7 +80,7 @@ stessa frase due volte: la differenza è la frase.
 - Quanti token produce lo stesso testo dipende dal tokenizer del modello:
   il tokenizer di un altro produttore dà altri numeri.
 
-## Verifica (tools/verifica.sh M1-D03)
+## Verifica (tools/verifica.sh M1-D02)
 
 `conteggi.tsv` contiene i quattro conteggi di almeno un modello, e per
 ciascun modello completo la frase italiana pesa più di quella inglese, che
@@ -92,7 +92,7 @@ pesa più di zero. La verifica stampa i due pesi.
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Un conteggio vuoto: rilanciate solo quella chiamata, senza
   `| python3 leggi_json.py token_entrata`, e guardate il JSON.
-- Per ricominciare da capo: `tools/reset_esercizio.sh M1-D03`.
+- Per ricominciare da capo: `tools/reset_esercizio.sh M1-D02`.
 
 ## Impronta d'uso sul piano Pro
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# verifica.sh di M1-D02 -- quante n in «interconnessione»: risposte.tsv
+# verifica.sh di M1-D03 -- quante n in «interconnessione»: risposte.tsv
 # (intestazione «modello<TAB>domanda<TAB>risposta») contiene, per
 # ciascuno dei tre modelli, almeno una risposta alla domanda «conta» e una
 # alla domanda «compitata». Le n sono 4: la verifica mostra l'inizio di

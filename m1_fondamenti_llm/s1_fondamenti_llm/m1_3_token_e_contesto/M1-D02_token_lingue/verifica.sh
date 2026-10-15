@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# verifica.sh di M1-D03 -- stessa frase, due lingue: conteggi.tsv
+# verifica.sh di M1-D02 -- stessa frase, due lingue: conteggi.tsv
 # (intestazione «modello<TAB>testo<TAB>token_entrata») contiene, per
 # almeno un modello, i token in entrata dei quattro testi it, it-doppia,
 # en, en-doppia. I token di una frase sono la crescita dal testo singolo

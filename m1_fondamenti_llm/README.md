@@ -10,8 +10,8 @@ del repository.
 | elemento | che cosa | dove |
 |---|---|---|
 | M1-D01 | La prossima parola: la stessa frase, più volte, a tre modelli | demo in Claude Code |
-| M1-D02 | Quante n in «interconnessione»? | demo in claude.ai, poi in Claude Code |
-| M1-D03 | Stessa frase, due lingue: i token secondo Claude | demo in Claude Code |
+| M1-D02 | Stessa frase, due lingue: i token secondo Claude | demo in Claude Code |
+| M1-D03 | Quante n in «interconnessione»? | demo in claude.ai, poi in Claude Code |
 | M1-D04 | Ogni chiamata riparte da zero | demo in Claude Code |
 | M1-D05 | La circolare che non esiste | demo in claude.ai, poi in Claude Code |
 | M1-E01 | Lo stesso prompt su tre modelli | esercitazione in Claude Code |

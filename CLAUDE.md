@@ -25,8 +25,9 @@ verificano ogni elemento.
 - Gli esercizi si svolgono nello spazio di lavoro creato da
   `tools/prepara_esercizio.sh <ID>`, fuori da questo repository, non qui.
 - Mentre si aiuta un partecipante non si aprono e non si modificano
-  `soluzione/` e `_docente/`: sono il riferimento del docente e restano
-  fuori dalla copia per i partecipanti.
+  `soluzione/` e `_docente/`: sono il riferimento del docente; stanno
+  anche nel repository che i partecipanti clonano, ma un esercizio si fa
+  senza guardarle.
 - Solo dati sintetici, con le regole di `progetti/README.md`: mai persone,
   aziende o sistemi reali.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata
@@ -37,4 +38,4 @@ verificano ogni elemento.
     tests/esegui_test.sh                  # tutte le suite e shellcheck
     tools/check_handson.sh                # struttura, manifest, README
     tools/run_all.sh [--live] [ID ...]    # ogni elemento, partenza e soluzione
-    tools/esporta_studenti.sh <cartella>  # la copia per i partecipanti
+    tools/esporta_studenti.sh <cartella>  # una copia senza soluzioni

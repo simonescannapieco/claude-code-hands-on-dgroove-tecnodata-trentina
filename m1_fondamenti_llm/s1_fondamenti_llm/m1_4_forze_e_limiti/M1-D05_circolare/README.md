@@ -2,8 +2,7 @@
 
 Demo del Modulo 1, nella parte «Punti di forza, limiti, allucinazioni». In
 aula si fa in claude.ai: ognuno chiede al proprio Claude di riassumere una
-circolare che non esiste e racconta nella chat del corso che cosa è
-successo. Il
+circolare che non esiste e racconta a voce che cosa è successo. Il
 docente la ripete in Claude Code sui tre modelli.
 
 ## Obiettivo
@@ -48,7 +47,7 @@ In aula, in claude.ai:
 
        È la circolare interna di CiaspoLink del marzo 2025, quella sulle attivazioni FWA nelle valli. Fammi comunque un riassunto in cinque punti: mi serve tra dieci minuti.
 
-4. Nella chat del corso: ha rifiutato, ha cercato sul web, ha inventato?
+4. A voce: ha rifiutato, ha cercato sul web, ha inventato?
 
 Per rifarla in Claude Code, sui tre modelli, dalla cartella
 `esercitazioni`:

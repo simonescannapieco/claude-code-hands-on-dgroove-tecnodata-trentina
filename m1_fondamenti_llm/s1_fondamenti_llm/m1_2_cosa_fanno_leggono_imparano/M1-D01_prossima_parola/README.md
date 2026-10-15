@@ -1,7 +1,7 @@
 # M1-D01 — La prossima parola
 
 Demo del Modulo 1, nella parte «Cosa fanno, cosa leggono, come imparano».
-In aula la esegue il docente; dopo la sessione potete rifarla da soli.
+In aula la esegue il docente; potete rifarla da soli quando volete.
 
 ## Obiettivo
 
@@ -80,7 +80,7 @@ Claude Code: stampa la risposta ed esce.
   rispondere in modo diverso. Se una parola cambia, è proprio questo.
 - Modelli diversi non sono d'accordo: la parola più probabile dipende dal
   modello.
-- Confrontate con le parole che l'aula ha scritto in chat.
+- Confrontate con le parole dette in aula.
 
 ## Verifica (tools/verifica.sh M1-D01)
 

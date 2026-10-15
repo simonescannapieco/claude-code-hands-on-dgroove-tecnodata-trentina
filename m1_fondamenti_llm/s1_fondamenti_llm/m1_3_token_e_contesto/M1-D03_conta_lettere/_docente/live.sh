@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# live.sh di M1-D02 -- la parte del docente in Claude Code: a ciascun
+# live.sh di M1-D03 -- la parte del docente in Claude Code: a ciascun
 # modello (haiku, sonnet, opus) la domanda di conta.txt, N volte, poi
 # quella di compitata.txt (scrivere la parola una lettera per riga, poi
 # contare), con claude -p, senza strumenti né server MCP. Le risposte a
@@ -17,7 +17,7 @@ set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
-# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D02_…/_docente/
+# lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D03_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
@@ -75,7 +75,7 @@ main() {
   handson::need_file istruzione.txt
   handson::need_claude
   handson::tmpfile json
-  handson::banner M1-D02 "Quante n in «interconnessione»?" \
+  handson::banner M1-D03 "Quante n in «interconnessione»?" \
     "Modulo 1, «Token e finestra di contesto»: le n sono 4"
   printf 'modello\tdomanda\trisposta\n' > risposte.tsv
   for m in "${MODELLI[@]}"; do

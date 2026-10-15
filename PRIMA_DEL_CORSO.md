@@ -91,10 +91,10 @@ del corso. Installateli seguendo le istruzioni ufficiali di ciascuno.
 
 ## Il repository delle esercitazioni
 
-Il docente vi comunica l'indirizzo del repository online delle
-esercitazioni. Clonatelo ed entrate nella sua cartella:
+Il repository delle esercitazioni è online, su GitHub. Clonatelo ed
+entrate nella sua cartella:
 
-    git clone <indirizzo comunicato dal docente> esercitazioni
+    git clone https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina esercitazioni
     cd esercitazioni
 
 In WSL 2 clonatelo nella cartella di casa della distribuzione (prima un
