@@ -1,0 +1,5 @@
+file	json_valido	blocco_codice	telefono	schema_valido
+solo-json-haiku.json	sì	no	sì	sì
+solo-json-sonnet.json	sì	no	sì	sì
+solo-json-opus.json	sì	no	sì	sì
+schema-haiku.json	sì	—	sì	sì

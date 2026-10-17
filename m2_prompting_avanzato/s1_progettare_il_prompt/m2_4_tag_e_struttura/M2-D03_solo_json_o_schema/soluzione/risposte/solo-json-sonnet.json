@@ -1,0 +1,19 @@
+{
+ "type": "result",
+ "subtype": "success",
+ "is_error": false,
+ "result": "{\"tipo_cliente\":\"azienda\",\"servizio\":\"Centralino telefonico (telefonia VoIP) e connettività di rete\",\"problema\":\"Venerdì mattina dalle 8 alle 10:30-11 il centralino non funzionava: tutti e sei i telefoni risultavano «non registrato» e non arrivavano chiamate, con perdita di almeno due ordini. Numero di segnalazione all'assistenza (TK-...) non reperibile. Sabato i due tablet del magazzino non si collegavano alla rete, problema risolto autonomamente.\",\"urgenza\":\"media\",\"azione_richiesta\":\"Verificare il diritto a un indennizzo per il disservizio di venerdì, attivare una linea di riserva per il centralino e richiamare Franco Fittizio al +39 000 000 0103 la mattina.\"}",
+ "structured_output": null,
+ "usage": {
+  "cache_creation_input_tokens": 1055,
+  "cache_read_input_tokens": 0,
+  "input_tokens": 2,
+  "output_tokens": 284,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  }
+ },
+ "modelUsage": {
+  "claude-sonnet-5-5": {}
+ }
+}

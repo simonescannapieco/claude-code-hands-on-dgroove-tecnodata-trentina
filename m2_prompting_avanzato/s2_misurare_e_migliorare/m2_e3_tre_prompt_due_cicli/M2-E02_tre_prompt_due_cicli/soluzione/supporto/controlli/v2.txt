@@ -1,0 +1,4 @@
+OK	al massimo 130 parole	106 parole
+OK	nessun segnaposto tra parentesi quadre da completare	
+OK	nessun punto esclamativo	
+totale	3/3

@@ -1,0 +1,4 @@
+tipo	valore	descrizione
+parole_max	130	al massimo 130 parole
+assente	\[[^]\n]{2,60}\]	nessun segnaposto tra parentesi quadre da completare
+assente	!	nessun punto esclamativo

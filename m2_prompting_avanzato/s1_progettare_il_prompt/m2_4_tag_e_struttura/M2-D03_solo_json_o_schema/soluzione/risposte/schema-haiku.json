@@ -1,0 +1,25 @@
+{
+ "type": "result",
+ "subtype": "success",
+ "is_error": false,
+ "result": "{\"tipo_cliente\":\"azienda\",\"servizio\":\"Centralino telefonico\",\"problema\":\"Venerdì mattina (dalle 8 alle 10:30-11 circa) il centralino non funzionava: i sei telefoni dell'ufficio mostravano «non registrato» e non entrava nessuna chiamata. Persi almeno due ordini, uno di un cliente di Arco che ha protestato. Il cliente ha ricevuto un numero di segnalazione TK-... (assistenza) che non riesce a ritrovare. Sabato i due tablet nuovi del magazzino non si collegavano alla rete; il problema sembra essersi risolto da solo (secondo il cliente, grazie al figlio).\",\"urgenza\":\"alta\",\"azione_richiesta\":\"1) Recuperare la segnalazione TK- aperta venerdì e comunicarne il numero al cliente. 2) Verificare le cause del guasto del centralino di venerdì e valutare se spetta un indennizzo. 3) Predisporre una linea di riserva per il centralino, dato che l'attività è bloccata senza telefonia. 4) Verificare la causa dei tablet non connessi di sabato, per escludere problemi ricorrenti. 5) Richiamare il cliente al +39 000 000 0103 in orario mattutino.\"}",
+ "structured_output": {
+  "azione_richiesta": "1) Recuperare la segnalazione TK- aperta venerdì e comunicarne il numero al cliente. 2) Verificare le cause del guasto del centralino di venerdì e valutare se spetta un indennizzo. 3) Predisporre una linea di riserva per il centralino, dato che l'attività è bloccata senza telefonia. 4) Verificare la causa dei tablet non connessi di sabato, per escludere problemi ricorrenti. 5) Richiamare il cliente al +39 000 000 0103 in orario mattutino.",
+  "problema": "Venerdì mattina (dalle 8 alle 10:30-11 circa) il centralino non funzionava: i sei telefoni dell'ufficio mostravano «non registrato» e non entrava nessuna chiamata. Persi almeno due ordini, uno di un cliente di Arco che ha protestato. Il cliente ha ricevuto un numero di segnalazione TK-... (assistenza) che non riesce a ritrovare. Sabato i due tablet nuovi del magazzino non si collegavano alla rete; il problema sembra essersi risolto da solo (secondo il cliente, grazie al figlio).",
+  "servizio": "Centralino telefonico",
+  "tipo_cliente": "azienda",
+  "urgenza": "alta"
+ },
+ "usage": {
+  "cache_creation_input_tokens": 1690,
+  "cache_read_input_tokens": 0,
+  "input_tokens": 2,
+  "output_tokens": 1070,
+  "output_tokens_details": {
+   "thinking_tokens": 516
+  }
+ },
+ "modelUsage": {
+  "claude-haiku-5-5": {}
+ }
+}

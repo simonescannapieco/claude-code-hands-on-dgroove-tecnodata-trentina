@@ -1,0 +1,4 @@
+tipo	valore	descrizione
+righe_max	8	al massimo 8 righe
+presente	0/1/3|porta? 3\b	nomina la porta della OLT
+presente	\b40\b	dice il numero di ONT coinvolte

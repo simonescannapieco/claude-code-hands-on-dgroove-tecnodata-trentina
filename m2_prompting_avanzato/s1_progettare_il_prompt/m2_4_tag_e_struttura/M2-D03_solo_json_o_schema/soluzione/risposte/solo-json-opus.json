@@ -1,0 +1,19 @@
+{
+ "type": "result",
+ "subtype": "success",
+ "is_error": false,
+ "result": "{\"tipo_cliente\": \"azienda\", \"servizio\": \"centralino telefonico VoIP (6 telefoni d'ufficio)\", \"problema\": \"Venerdì mattina, dalle 8 fino alle 10:30-11 circa, il centralino non ha funzionato: tutti e sei i telefoni risultavano «non registrato» e non entravano chiamate. Sono andati persi almeno due ordini. Il numero di segnalazione (TK-...) è andato perso. Sabato i due nuovi tablet del magazzino non si collegavano alla rete, problema probabilmente già risolto internamente.\", \"urgenza\": \"alta\", \"azione_richiesta\": \"Verificare se spetta un indennizzo per il disservizio di venerdì, valutare l'attivazione di una linea di riserva per il centralino e richiamare il cliente (Franco Fittizio) al +39 000 000 0103 in mattinata\"}",
+ "structured_output": null,
+ "usage": {
+  "cache_creation_input_tokens": 1051,
+  "cache_read_input_tokens": 0,
+  "input_tokens": 2,
+  "output_tokens": 313,
+  "output_tokens_details": {
+   "thinking_tokens": 0
+  }
+ },
+ "modelUsage": {
+  "claude-opus-5-5": {}
+ }
+}

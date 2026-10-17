@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""claude_finto.py -- un claude finto per le prove del Modulo 2.
+
+Lo copia test_m2_script.sh, con il nome «claude», davanti nel PATH: così i
+live.sh e misura.sh girano per intero senza consumare il piano.
+
+Gli argomenti: prima le opzioni che usano gli script del modulo (OPZIONI,
+con i loro valori), poi il prompt, dopo «--» oppure come unico argomento
+che non comincia con «-». Una parola che comincia con «-», prima di «--»,
+e non è un'opzione che conosce la rifiuta («error: unknown option»,
+uscita 1): così le prove vedono un prompt che comincia con «-» passato
+senza «--» davanti.
+
+Risponde come claude -p --output-format json, con risposte scritte qui,
+scelte dal prompt e dalle opzioni:
+  --version              una versione finta;
+  --agent giudice        un giudizio strutturato: ogni affermazione della
+                         rubrica è rispettata se la risposta non contiene il
+                         telefono del cliente;
+  --json-schema          l'oggetto dello schema di M2-D03 in
+                         structured_output;
+  altrimenti             una risposta che dipende dal prompt (le demo e le
+                         esercitazioni del modulo).
+I token in entrata sono finti: una base (500 con --system-prompt,
+altrimenti 3000) più un quarto dei caratteri del prompt e dei system prompt
+passati con --system-prompt e --append-system-prompt.
+
+Ogni chiamata (non --version) aggiunge una riga a FINTO_LOG. Con
+FINTO_ESITO=ko esce 1 senza stampare nulla. Con FINTO_RISPOSTA=<testo>
+risponde a ogni chiamata con quel testo e senza structured_output: un esito
+diverso da quello registrato. Se ANTHROPIC_API_KEY è nel suo ambiente lo
+scrive nel registro («CHIAVE»), così le prove vedono se è stata tolta.
+
+Uscita: 0 risposta · 1 FINTO_ESITO=ko, o un argomento che rifiuta
+"""
+import json
+import os
+import re
+import sys
+from typing import Dict, List, Tuple
+
+TEL = "+39 000 000 0103"
+# Le opzioni che il finto conosce, con quanti valori prendono.
+OPZIONI = {"-p": 0, "--print": 0, "--strict-mcp-config": 0,
+           "--no-session-persistence": 0, "--verbose": 0, "--model": 1,
+           "--effort": 1, "--tools": 1, "--allowedTools": 1,
+           "--system-prompt": 1, "--append-system-prompt": 1,
+           "--json-schema": 1, "--agent": 1, "--output-format": 1,
+           "--permission-mode": 1, "--permission-prompts": 1,
+           "--setting-sources": 1, "--resume": 1}
+
+
+class Rifiutato(Exception):
+    """Argomenti che il finto non accetta: il messaggio d'errore."""
+
+
+def argomenti(argv: List[str]) -> Tuple[Dict[str, str], str]:
+    """(le opzioni con i loro valori, il prompt) degli argomenti."""
+    opzioni: Dict[str, str] = {}
+    operandi: List[str] = []
+    i = 0
+    while i < len(argv):
+        parola = argv[i]
+        if parola == "--":
+            operandi += argv[i + 1:]
+            break
+        if not parola.startswith("-"):
+            operandi.append(parola)
+            i += 1
+            continue
+        if parola not in OPZIONI:
+            raise Rifiutato("error: unknown option '%s'" % parola)
+        valori = OPZIONI[parola]
+        if i + valori >= len(argv):
+            raise Rifiutato("error: option '%s' argument missing" % parola)
+        opzioni[parola] = argv[i + 1] if valori else ""
+        i += 1 + valori
+    if len(operandi) != 1:
+        raise Rifiutato("error: %s" % (
+            "too many arguments" if operandi else "missing prompt"))
+    return opzioni, operandi[0]
+
+
+def risposta(prompt: str) -> str:
+    """La risposta finta a un prompt delle demo o delle esercitazioni."""
+    if "Classificazione:" in prompt and "segui gli esempi" in prompt.lower():
+        return "lentezza | media | noc"
+    if "Classificazione:" in prompt:
+        return "Prestazioni | Media | Rete"
+    if "sportelli" in prompt:
+        return "Si parte alle 9:00 e l'ultima persona esce alle 9:36."
+    if "linee ferme" in prompt:
+        return "15:30"
+    if "Non menzionare" in prompt:
+        return "Gentile cliente, ci scusiamo per il disservizio di venerdì."
+    if "Sull'indennizzo" in prompt:
+        return "Gentile cliente, l'indennizzo lo valuta l'amministrazione."
+    if "Come ti ho detto ieri" in prompt:
+        return "Non ho accesso alla conversazione di ieri: me la incolla?"
+    if "Formato:" in prompt and "<messaggio>" in prompt:
+        return ("| Problema | Quando |\n|---|---|\n| centralino | venerdì |\n\n"
+                "L'assistenza clienti di CiaspoLink")
+    if "<messaggio>" in prompt or "<codice>" in prompt or "<log>" in prompt:
+        return ("Gentile signor Fittizio, la porta 0/1/3 e le 40 ONT.\n"
+                "```php\n$gg_mese = (int) date('t');\n```\n"
+                "L'assistenza clienti di CiaspoLink")
+    return "Riassunto: Franco Fittizio, telefono %s. [Nome]" % TEL
+
+
+def giudizio(prompt: str) -> dict:
+    """Il giudizio strutturato: rispettato se il telefono non c'è."""
+    rubrica = re.search(r"<rubrica>(.*?)</rubrica>", prompt, re.S)
+    testo = re.search(r"<risposta>(.*?)</risposta>", prompt, re.S)
+    ids = re.findall(r"^- ([a-z][a-z0-9_]*):", rubrica.group(1) if rubrica
+                     else "", re.M)
+    buona = TEL not in (testo.group(1) if testo else "")
+    return {"criteri": [{"id": i, "motivo": "giudizio finto",
+                         "rispettato": buona} for i in ids]}
+
+
+def main(argv: List[str]) -> int:
+    if argv[:1] == ["--version"]:
+        print("0.0.0 (Claude Code, finto)")
+        return 0
+    log = os.environ.get("FINTO_LOG")
+    if log:
+        with open(log, "a", encoding="utf-8") as fh:
+            fh.write("chiamata %s\n" % (
+                "CHIAVE" if os.environ.get("ANTHROPIC_API_KEY") else "-"))
+    try:
+        opzioni, prompt = argomenti(argv)
+    except Rifiutato as exc:
+        sys.stderr.write("%s\n" % exc)
+        return 1
+    if os.environ.get("FINTO_ESITO", "ok") != "ok":
+        return 1
+    sistema = opzioni.get("--system-prompt")
+    caratteri = (len(prompt) + len(sistema or "")
+                 + len(opzioni.get("--append-system-prompt", "")))
+    doc = {"type": "result", "subtype": "success", "is_error": False,
+           "session_id": "sessione-finta",
+           "usage": {"input_tokens": 3, "cache_creation_input_tokens":
+                     (3000 if sistema is None else 500) + caratteri // 4,
+                     "cache_read_input_tokens": 0, "output_tokens": 50,
+                     "output_tokens_details": {"thinking_tokens": 0}},
+           "modelUsage": {"claude-finto": {}}}
+    fissa = os.environ.get("FINTO_RISPOSTA")
+    if fissa:
+        doc["result"] = fissa
+    elif "--agent" in opzioni:
+        doc["structured_output"] = giudizio(prompt)
+        doc["result"] = json.dumps(doc["structured_output"])
+    elif "--json-schema" in opzioni:
+        doc["structured_output"] = {
+            "tipo_cliente": "azienda", "servizio": "centralino",
+            "problema": "centralino fermo", "urgenza": "alta",
+            "azione_richiesta": "richiamare al " + TEL}
+        doc["result"] = json.dumps(doc["structured_output"])
+    elif "SOLO un JSON" in prompt:
+        doc["result"] = json.dumps({"tipo_cliente": "azienda"})
+    else:
+        doc["result"] = risposta(prompt)
+    print(json.dumps(doc, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

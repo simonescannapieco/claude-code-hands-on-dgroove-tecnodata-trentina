@@ -1,1 +1,9 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M2-D01	demo	claude-code-pro	s1_progettare_il_prompt	m2_1_cambiato_solo_il_prompt	slides/theory/m2_prompting_avanzato/m2_1_cambiato_solo_il_prompt	3	Prompt A contro prompt B
+M2-D02	demo	claude-code-pro	s1_progettare_il_prompt	m2_3_ruoli_dei_messaggi	slides/theory/m2_prompting_avanzato/m2_3_ruoli_dei_messaggi	2	Il system prompt che non vedete
+M2-D03	demo	claude-code-pro	s1_progettare_il_prompt	m2_4_tag_e_struttura	slides/theory/m2_prompting_avanzato/m2_4_tag_e_struttura	3	Solo JSON, o uno schema
+M2-D04	demo	claude-ai-pro	s1_progettare_il_prompt	m2_5_esempi	slides/theory/m2_prompting_avanzato/m2_5_esempi	3	Zero-shot contro few-shot
+M2-D05	demo	claude-code-pro	s1_progettare_il_prompt	m2_6_ragionamento	slides/theory/m2_prompting_avanzato/m2_6_ragionamento	3	Ragionare, oggi
+M2-D06	demo	claude-code-pro	s2_misurare_e_migliorare	m2_7_galleria_degli_orrori	slides/theory/m2_prompting_avanzato/m2_7_galleria_degli_orrori	8	La galleria degli orrori
+M2-E01	esercizio	claude-code-pro	s1_progettare_il_prompt	m2_e2_prompt_pessimo	slides/practice/m2_esercitazione_prompt/m2_e2_prompt_pessimo	30	Il prompt pessimo: misura, riscrivi, rimisura
+M2-E02	esercizio	claude-code-pro	s2_misurare_e_migliorare	m2_e3_tre_prompt_due_cicli	slides/practice/m2_esercitazione_prompt/m2_e3_tre_prompt_due_cicli	80	Tre prompt, due cicli

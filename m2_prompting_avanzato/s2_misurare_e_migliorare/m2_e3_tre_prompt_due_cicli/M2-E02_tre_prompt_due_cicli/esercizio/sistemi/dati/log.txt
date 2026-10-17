@@ -1,0 +1,10 @@
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/2/PON_LOS: frame 0 slot 1 port 3 loss of signal, 40 ONT affected
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 14 SN CSLKA3D844C5 offline, cause LOS
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 20 SN CSLKA3D8FE5F offline, cause LOS
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 26 SN CSLKA3D9B7F9 offline, cause LOS
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 3 SN CSLKA3D6F080 offline, cause LOS
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 4 SN CSLKA3D70F6F offline, cause LOS
+2026-09-08T10:12:31+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 5 SN CSLKA3D72E5E offline, cause LOS
+2026-09-08T10:12:32+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 0 SN CSLKA11849A7 offline, cause LOS
+2026-09-08T10:12:32+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 1 SN CSLKA3D6B2A2 offline, cause LOS
+2026-09-08T10:12:32+02:00 olt-pergine-01 %%GPON/4/ONT_OFFLINE: frame 0 slot 1 port 3 ONT 12 SN CSLKA3D806E7 offline, cause LOS

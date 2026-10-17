@@ -1,0 +1,4 @@
+OK	al massimo 8 righe	4 righe
+OK	nomina la porta della OLT	
+OK	dice il numero di ONT coinvolte	
+totale	3/3

@@ -1,0 +1,3 @@
+OK	contiene il codice della correzione	
+KO	al massimo 300 parole	390 parole
+totale	1/2
