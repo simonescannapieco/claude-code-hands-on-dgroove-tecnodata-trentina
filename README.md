@@ -27,9 +27,11 @@ stessa cartella con
 
     git pull
 
-Le dispense delle slide, in PDF, di ogni modulo e di ogni sua parte,
-teoria e pratica, sono allegate all'ultima release del repository:
-https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina/releases/latest
+Le dispense delle slide, in PDF, di ogni parte di ogni modulo, teoria e
+pratica, sono in due posti: allegate all'ultima release del repository,
+https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina/releases/latest,
+e nella cartella `dispense/`, divisa in `theory/` e `practice/`:
+https://github.com/simonescannapieco/claude-code-hands-on-dgroove-tecnodata-trentina/tree/master/dispense
 
 Il lavoro degli esercizi sta negli spazi di lavoro, fuori dal repository
 (vedi sotto): `git pull` non lo tocca, e lo cancella solo
