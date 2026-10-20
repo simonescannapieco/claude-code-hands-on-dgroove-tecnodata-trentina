@@ -17,7 +17,8 @@
 #                    prompt/sviluppo.md, prompt/supporto.md)
 #         e le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, …)
 # Uscita: 0 = verifica.sh passa · 1 = una chiamata fallita o la verifica
-#         non passa · 2 = precondizione
+#         non passa · 2 = precondizione, anche di verifica.sh (uscita 2 o
+#         più: la verifica non ha potuto girare)
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -96,11 +97,7 @@ main() {
   handson::step "La verifica"
   out="$("${CONTROLLO}" "${ws}" 2>&1)" || rc=$?
   printf '%s\n' "${out}"
-  if (( rc == 0 )); then
-    handson::verdict ok "verifica.sh dell'elemento"
-  else
-    handson::verdict ko "verifica.sh dell'elemento (uscita ${rc})"
-  fi
+  handson::verdict_rc "${rc}" "verifica.sh dell'elemento"
   handson::finish
 }
 

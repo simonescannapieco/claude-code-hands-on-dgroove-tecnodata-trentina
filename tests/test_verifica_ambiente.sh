@@ -6,9 +6,11 @@
 # claude vero viene lanciato: tutto presente (uscita 0); ogni pezzo che
 # manca o non basta (uscita 1, con il paragrafo di PRIMA_DEL_CORSO.md);
 # ANTHROPIC_API_KEY impostata (uscita 1, valore mai stampato); PHP o Docker
-# in alternativa; Python 3.8+; i sistemi operativi (macOS, Linux, WSL 2,
-# WSL 1, Git Bash, altri); claude chiamato solo con --version; argomenti
-# non validi (uscita 2).
+# in alternativa; python3 con Python 3.8+, il comando che lanciano le
+# esercitazioni (python da solo, o accanto a un python3 troppo vecchio,
+# non basta); i sistemi operativi (macOS, Linux, WSL 2, WSL 1, Git Bash,
+# altri); claude chiamato solo con --version; argomenti non validi
+# (uscita 2).
 #
 # Uso:    tests/test_verifica_ambiente.sh
 # Uscita: 0 = tutti i test passano · 1 = almeno un test fallito
@@ -148,8 +150,20 @@ t_python() {
     PN_PROC_VERSION="${PROC}" FINTO_PY3=3.7.9 "${TOOL}" 2>&1)"
   RC=$?
   expect "Python 3.7 non basta" 1 "serve Python 3.8"
+  ambiente solo_python3
+  expect "python3 con Python 3.12: in ordine" 0 \
+    "[ok]        Python: Python 3.12.1 (python3)"
   ambiente solo_python
-  expect "python al posto di python3" 0 "Python 3.11.4 (python)"
+  expect "python senza python3: da sistemare" 1 \
+    "c'è il comando python, ma non python3"
+  expect "e dice che cosa fare" 1 "in modo che risponda python3 --version"
+  expect_absent "python da solo non è in ordine" "[ok]        Python"
+  OUT="$(env PATH="${TMP}/python3_vecchio_e_python" FINTO_LOG="${LOG}" \
+    PN_PROC_VERSION="${PROC}" FINTO_PY3=3.7.9 "${TOOL}" 2>&1)"
+  RC=$?
+  expect "python3 3.7 accanto a python 3.11: conta python3" 1 \
+    "serve Python 3.8"
+  expect_absent "e python non prende il suo posto" "(python)"
 }
 
 # Lo strumento con un sistema finto e tutto il resto presente.
@@ -215,6 +229,7 @@ main() {
   bin php_senza_docker uname claude git php composer python3 uv
   bin solo_python3 uname claude git docker python3 uv
   bin solo_python uname claude git docker python uv
+  bin python3_vecchio_e_python uname claude git docker python3 python uv
   t_tutto
   t_mancanze
   t_php_docker

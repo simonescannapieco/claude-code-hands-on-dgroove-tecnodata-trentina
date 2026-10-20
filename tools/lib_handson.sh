@@ -10,8 +10,8 @@
 #   1. il contratto d'aula delle demo: il comando si vede PRIMA di girare
 #      e la riga stampata è lo stesso array che viene eseguito
 #      (handson::run); le pause solo su un terminale; l'esito 0/1/2
-#      (handson::check, handson::finish); handson::claude_p per Claude
-#      Code in modalità non interattiva;
+#      (handson::check, handson::verdict_rc, handson::finish);
+#      handson::claude_p per Claude Code in modalità non interattiva;
 #   2. gli elementi: la ricerca nei manifest dei moduli e gli spazi di
 #      lavoro (prepararli, trovarli, cancellarli);
 #   3. i controlli della struttura di tools/check_handson.sh.
@@ -113,6 +113,7 @@ fi
 # Lo stato: contatori, temporanei, l'elemento trovato e lo spazio di
 # lavoro. Le HANDSON_ARG_* e HANDSON_ITEM_* le leggono gli strumenti.
 HANDSON_KO=0
+HANDSON_PRECOND=0
 HANDSON_FINDINGS=0
 HANDSON_TMP=''
 HANDSON_TMPDIRS=()
@@ -263,23 +264,70 @@ handson::verdict() {
   fi
 }
 
-# Esegue un controllo deterministico dell'esito (un comando che esce 0 se
-# l'esito è quello registrato) e ne stampa il verdetto, senza fermarsi.
-# Arguments: $1 la descrizione, poi il comando del controllo.
-handson::check() {
-  local descrizione="$1"
-  shift
-  if "$@" >/dev/null 2>&1; then
-    handson::verdict ok "${descrizione}"
-  else
-    handson::verdict ko "${descrizione}"
+# Il verdetto di un controllo dell'esito dall'uscita che ha dato: 0 OK; 1
+# KO (ha girato, ma l'esito è diverso); 2 o più KO e una precondizione
+# contata a parte (il controllo non ha potuto girare: una precondizione,
+# un comando che manca, un segnale), che fa uscire handson::finish con 2
+# (RU-01.8). Il verdetto KO porta l'uscita. La usano handson::check e gli
+# script che eseguono il controllo da sé.
+# Globals: HANDSON_KO (via handson::verdict), HANDSON_PRECOND.
+# Arguments: $1 l'uscita del controllo, $2 la descrizione.
+# Returns: 0; un'uscita che non è un numero esce 2.
+handson::verdict_rc() {
+  [[ "$1" =~ ^[0-9]+$ ]] \
+    || handson::die "handson::verdict_rc: «$1» non è un'uscita"
+  if (( 10#$1 == 0 )); then
+    handson::verdict ok "$2"
+    return 0
   fi
+  if (( 10#$1 >= 2 )); then
+    HANDSON_PRECOND=$((HANDSON_PRECOND + 1))
+  fi
+  handson::verdict ko "$2 (uscita $1)"
 }
 
-# Chiude una demo: esce 1 se un controllo è andato KO (ha girato, ma
-# l'esito è diverso da quello registrato), altrimenti 0.
-# Globals: HANDSON_KO.
+# Esegue un controllo deterministico dell'esito (un comando che esce 0 se
+# l'esito è quello registrato, 1 se è diverso) e ne stampa il verdetto con
+# handson::verdict_rc, senza fermarsi: un'uscita di 2 o più vale come
+# precondizione. Su un OK il controllo resta muto. Su un KO stampa prima
+# ciò che il controllo ha scritto, ogni canale sul suo (lo STDOUT, dove
+# verifica.sh dice che cosa non torna, su STDOUT; lo STDERR su STDERR).
+# Le variabili locali hanno il prefisso __c_, perché un controllo che è
+# una funzione veda quelle di chi lo chiama.
+# Globals: HANDSON_KO, HANDSON_PRECOND (via handson::verdict_rc),
+#   HANDSON_TMP (via handson::tmpfile). Arguments: $1 la descrizione, poi
+#   il comando del controllo (senza comando esce 2). Outputs: su un KO
+#   l'uscita del controllo; il verdetto su STDOUT.
+handson::check() {
+  (( $# >= 2 )) \
+    || handson::die "handson::check: servono la descrizione e il comando" \
+      "del controllo"
+  local __c_desc="$1" __c_err __c_out __c_rc=0
+  shift
+  handson::tmpfile __c_err
+  __c_out="$("$@" 2> "${__c_err}")" || __c_rc=$?
+  if (( __c_rc != 0 )); then
+    if [[ -n "${__c_out}" ]]; then
+      printf '%s\n' "${__c_out}"
+    fi
+    if [[ -s "${__c_err}" ]]; then
+      cat -- "${__c_err}" >&2
+    fi
+  fi
+  handson::verdict_rc "${__c_rc}" "${__c_desc}"
+}
+
+# Chiude una demo: esce 2 se un controllo non ha potuto girare (è uscito
+# con 2 o più: una precondizione), 1 se un controllo è andato KO (ha
+# girato, ma l'esito è diverso da quello registrato), altrimenti 0.
+# Globals: HANDSON_PRECOND, HANDSON_KO.
 handson::finish() {
+  if (( HANDSON_PRECOND > 0 )); then
+    handson::err "FATALE: ${HANDSON_PRECOND} controllo/i dell'esito non" \
+      "hanno potuto girare (uscita 2 o più): una precondizione, non un" \
+      "esito diverso"
+    exit 2
+  fi
   if (( HANDSON_KO > 0 )); then
     handson::err "esito diverso da quello registrato:" \
       "${HANDSON_KO} controllo/i KO"
@@ -306,20 +354,31 @@ handson::need_api_key() {
       "ANTHROPIC_API_KEY non è impostata"
 }
 
-# Rifiuta un argomento per claude che salterebbe i controlli dei permessi,
-# che handson::claude_p imposta da sé, o che contiene quella che sembra
-# una chiave API: una chiave non va mai sulla riga di comando, e non viene
-# stampata nemmeno qui.
+# Rifiuta un argomento per claude che contiene quella che sembra una
+# chiave API: una chiave non va mai sulla riga di comando, nemmeno nel
+# prompt, e non viene stampata nemmeno qui.
 # Arguments: $1 l'argomento. Returns: 0 se accettato; altrimenti esce 2.
-handson::_claude_arg_ok() {
+handson::_claude_key_ok() {
   if [[ "$1" == *"${HANDSON_KEY_PREFIX}"* ]]; then
     handson::die "un argomento per claude contiene quella che sembra" \
       "una chiave API: rifiutato (non lo stampo)"
   fi
+  return 0
+}
+
+# Rifiuta un argomento per claude prima di «--» (il modello, gli
+# strumenti, gli argomenti in più) che salterebbe i controlli dei
+# permessi, che handson::claude_p imposta da sé («--» compreso), o che
+# contiene quella che sembra una chiave API. Il prompt non passa di qui:
+# arriva dopo «--», non è mai un'opzione, e passa soltanto
+# handson::_claude_key_ok.
+# Arguments: $1 l'argomento. Returns: 0 se accettato; altrimenti esce 2.
+handson::_claude_arg_ok() {
+  handson::_claude_key_ok "$1"
   case "$1" in
     *dangerously*|*bypassPermissions*)
       handson::die "argomento rifiutato: «$1» salta i controlli dei permessi" ;;
-    -p|--print|--model|--model=*|--output-format*|--permission-mode*)
+    --|-p|--print|--model|--model=*|--output-format*|--permission-mode*)
       handson::die "argomento rifiutato: «$1» lo imposta handson::claude_p" ;;
     --permission-prompt*|--allowedTools*|--allowed-tools*|--setting-sources*)
       handson::die "argomento rifiutato: «$1» lo imposta handson::claude_p" ;;
@@ -332,9 +391,9 @@ handson::_claude_arg_ok() {
 }
 
 # Esegue Claude Code in modalità non interattiva come lo fanno le demo e
-# le esecuzioni dal vivo: `claude -p <prompt>` con l'elenco esplicito
-# degli strumenti consentiti (sintassi delle regole di permesso, per
-# esempio 'Read,Edit,Bash(git diff *)'), il modello esplicito, la modalità
+# le esecuzioni dal vivo: `claude -p` con l'elenco esplicito degli
+# strumenti consentiti (sintassi delle regole di permesso, per esempio
+# 'Read,Edit,Bash(git diff *)'), il modello esplicito, la modalità
 # di permesso esplicita (in -p, se nessuno la imposta, si può partire da
 # auto), --permission-prompts none (ciò che chiederebbe un permesso viene
 # negato e Claude non riprova) e --output-format json (un JSON con
@@ -342,6 +401,14 @@ handson::_claude_arg_ok() {
 # --dangerously-skip-permissions, mai bypassPermissions, mai auto (lì le
 # azioni le rivede un classificatore al posto dell'utente): gira solo ciò
 # che l'elenco consente.
+# Prima tutte le opzioni, poi «--» e per ultimo il prompt: un prompt che
+# comincia con «-» (un elenco puntato, per esempio), passato come
+# argomento senza «--» davanti, claude lo legge come un'opzione
+# sconosciuta ed esce con 1; dopo «--» lo stesso testo è il prompt
+# (provato il 2026-10-17 con Claude Code 2.1.302). Così il prompt può
+# cominciare con «-» o citare un'opzione: le opzioni vietate si cercano
+# soltanto nel modello, negli strumenti e negli argomenti in più, dove
+# anche un «--» è rifiutato; nel prompt si cerca soltanto una chiave API.
 # Sempre --setting-sources project,local (claude --help 2.1.295: «list of
 # setting sources to load (user, project, local)»): regola nostra, perché
 # un elemento non dipenda dalle impostazioni personali di chi lo esegue;
@@ -351,9 +418,10 @@ handson::_claude_arg_ok() {
 # dell'abbonamento. Non stampa mai un segreto.
 # Globals: HANDSON_ENV, HANDSON_PERMISSION_MODE (lette).
 # Arguments: $1 il modello (alias o nome completo), $2 gli strumenti
-#   consentiti separati da virgole ("" = nessuno), $3 il prompt; gli
-#   argomenti seguenti passano a claude così come sono (per esempio
-#   --resume <ID di sessione> per continuare, --effort low).
+#   consentiti separati da virgole ("" = nessuno), $3 il prompt (non
+#   vuoto); gli argomenti seguenti passano a claude così come sono, prima
+#   di «--» (per esempio --resume <ID di sessione> per continuare,
+#   --effort low).
 #   Convenzione nostra per $2, osservata il 2026-10-09 con Claude Code
 #   2.1.295 in dontAsk: --allowedTools Edit non ha autorizzato lo strumento
 #   Write, --allowedTools Write sì. Un elemento che crea file elenca Write,
@@ -367,10 +435,11 @@ handson::claude_p() {
   shift 3
   handson::need_tools claude
   handson::_claude_p_checks "${modello}" "${prompt}"
-  for arg in "${modello}" "${strumenti}" "${prompt}" "$@"; do
+  handson::_claude_key_ok "${prompt}"
+  for arg in "${modello}" "${strumenti}" "$@"; do
     handson::_claude_arg_ok "${arg}"
   done
-  local -a argv=(claude -p "${prompt}")
+  local -a argv=(claude -p)
   if [[ -n "${strumenti}" ]]; then
     argv+=(--allowedTools "${strumenti}")
   fi
@@ -380,6 +449,7 @@ handson::claude_p() {
   if (( $# > 0 )); then
     argv+=("$@")
   fi
+  argv+=(-- "${prompt}")
   if [[ "${HANDSON_ENV}" == "trainer-api" ]]; then
     handson::run "${argv[@]}"
     return
@@ -394,17 +464,17 @@ handson::claude_p() {
   )
 }
 
-# Le precondizioni di handson::claude_p: modello e prompt, modalità di
-# permesso, ambiente; niente Fable fuori dagli elementi trainer-api (sul
-# piano Pro gira solo con gli usage credits a pagamento, e in -p
-# l'addebito avviene senza conferma).
+# Le precondizioni di handson::claude_p: modello e prompt non vuoti (il
+# prompt può cominciare con «-»: arriva dopo «--»), modalità di permesso,
+# ambiente; niente Fable fuori dagli elementi trainer-api (sul piano Pro
+# gira solo con gli usage credits a pagamento, e in -p l'addebito avviene
+# senza conferma).
 # Arguments: $1 il modello, $2 il prompt. Returns: 0; altrimenti esce 2.
 handson::_claude_p_checks() {
   [[ -n "$1" ]] \
     || handson::die "handson::claude_p: il modello va indicato esplicitamente"
-  [[ -n "$2" && "$2" != -* ]] \
-    || handson::die "handson::claude_p: il prompt non può essere vuoto" \
-      "né cominciare con -"
+  [[ -n "$2" ]] \
+    || handson::die "handson::claude_p: il prompt non può essere vuoto"
   [[ "${HANDSON_PERMISSION_MODES}" == *" ${HANDSON_PERMISSION_MODE} "* ]] \
     || handson::die "modalità di permesso non ammessa:" \
       "«${HANDSON_PERMISSION_MODE}» (ammesse:${HANDSON_PERMISSION_MODES})"

@@ -13,6 +13,9 @@
 #     consegna al giudice, il giudizio incompleto, il confronto; l'uscita di
 #     controlla (0 tutto superato, 1 un controllo no, 2 un errore); i
 #     formati rifiutati; mai un traceback su un dato rovinato;
+#   - le versioni: misura.sh, kit.py e verifica.py ammettono soltanto vN
+#     (^v(0|[1-9][0-9]*)$): v2b e v01 li rifiutano misura.sh e kit.py,
+#     verifica.py non li conta né come ultima versione né come ciclo;
 #   - verifica.py: le regole delle due esercitazioni (prompt uguale, nessun
 #     miglioramento, telefono ripetuto, registro vuoto, famiglia mancante,
 #     due cicli, peggioramento, una famiglia sola che migliora); una misura
@@ -21,9 +24,15 @@
 #   - i live.sh e misura.sh con il claude finto (_docente/claude_finto.py):
 #     le precondizioni escono 2 senza chiamare claude, una chiamata fallita
 #     esce 1 (le demo si fermano lì) e su un esito diverso si legge il
-#     messaggio di verifica.sh, le risposte complete escono 0;
+#     messaggio di verifica.sh (le sei demo lo stampano con handson::check
+#     della libreria, senza una copia locale), le risposte complete
+#     escono 0;
 #     ANTHROPIC_API_KEY non arriva a claude; il prompt dopo «--», il limite
 #     dei 100000 byte, le opzioni di misura.sh;
+#   - i live.sh delle due esercitazioni con una verifica.sh finta, in una
+#     copia dell'elemento: se la verifica esce 2 la prova esce 2 (una
+#     precondizione, su STDERR), se esce 1 resta un KO, se esce 0 passa e
+#     ne stampa l'uscita;
 #   - il frontmatter del giudice, le parole che i partecipanti leggono;
 #   - shellcheck -x su ogni script del modulo e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
@@ -166,6 +175,26 @@ json.dump({"type": "result", "is_error": False, "result": testo,
            "modelUsage": {"claude-finto": {}}},
           open(percorso, "w", encoding="utf-8"))
 PY
+}
+
+# Una copia dell'elemento $2 con la libreria accanto, come nel repository,
+# in cui verifica.sh è finta: stampa una riga per canale ed esce con
+# STUB_USCITA (default 2). L'albero del repository non cambia.
+# Arguments: $1 la variabile da assegnare (l'elemento nella copia), $2
+# l'elemento.
+albero_finto() {
+  local __a_copia __a_rel="${2#"${RADICE}"/}"
+  __a_copia="$(mktemp -d "${TMP}/albero.XXXXXX")" \
+    || { echo "mktemp" >&2; exit 2; }
+  mkdir -p "${__a_copia}/tools" "${__a_copia}/${__a_rel}"
+  cp "${RADICE}/tools/lib_handson.sh" "${__a_copia}/tools/"
+  cp -R "$2/." "${__a_copia}/${__a_rel}/"
+  # shellcheck disable=SC2016  # il corpo è della verifica finta
+  printf '%s\n' '#!/bin/bash' 'echo "riga della verifica finta"' \
+    'echo "verifica: precondizione finta" >&2' \
+    'exit "${STUB_USCITA:-2}"' > "${__a_copia}/${__a_rel}/verifica.sh"
+  chmod 755 "${__a_copia}/${__a_rel}/verifica.sh"
+  printf -v "$1" '%s' "${__a_copia}/${__a_rel}"
 }
 
 # --- I test ---------------------------------------------------------------
@@ -449,6 +478,29 @@ t_live_esercitazioni() {
   done
 }
 
+# Le due esercitazioni con una verifica.sh finta: se la verifica esce 2
+# (una precondizione) la prova esce 2, con la riga FATALE su STDERR; se
+# esce 1 resta un KO; se esce 0 passa e ne stampa l'uscita, come prima.
+t_live_verifica() {
+  local e c w
+  for e in "${E01}" "${E02}"; do
+    albero_finto c "${e}"
+    ws w "$(partenza "${e}")"
+    finto_err "${c}/_docente/live.sh" "${w}"
+    expect "${e##*/}: la verifica esce 2, la prova esce 2 (STDERR)" 2 \
+      "una precondizione, non un esito diverso"
+    ws w "$(partenza "${e}")"
+    finto STUB_USCITA=1 "${c}/_docente/live.sh" "${w}"
+    expect "${e##*/}: la verifica esce 1, resta un KO" 1 \
+      "VERIFICA KO   verifica.sh dell'elemento (uscita 1)"
+    expect_absent "${e##*/}: e nessuna precondizione" "FATALE"
+    ws w "$(partenza "${e}")"
+    finto STUB_USCITA=0 "${c}/_docente/live.sh" "${w}"
+    expect "${e##*/}: la verifica esce 0, la sua uscita si stampa" 0 \
+      "riga della verifica finta"
+  done
+}
+
 # Il prompt arriva a claude come operando, dopo «--»: un prompt che
 # comincia con «- » si misura; un testo oltre i 100000 byte si ferma prima
 # di ogni chiamata, con un messaggio che nomina i file.
@@ -683,7 +735,8 @@ t_rami_live() {
 
 # Le sei demo: alla prima chiamata fallita si fermano (una chiamata sola);
 # su un esito diverso stampano il messaggio di verifica.sh, non soltanto la
-# riga del verdetto. L'esito diverso: FINTO_RISPOSTA per cinque demo, per
+# riga del verdetto, con handson::check della libreria e senza una copia
+# locale di esito(). L'esito diverso: FINTO_RISPOSTA per cinque demo, per
 # M2-D02 un system prompt lungo, che pesa più della metà.
 t_demo() {
   local i e w v
@@ -695,6 +748,12 @@ t_demo() {
     "La cura: attesa una risposta che parli dell'indennizzo")
   for i in "${!DEMO[@]}"; do
     e="${DEMO[i]}"
+    if grep -q '^esito()' "${e}/_docente/live.sh" \
+        || ! grep -qF 'handson::check "' "${e}/_docente/live.sh"; then
+      fail "${e##*/}: il controllo dell'esito in una copia locale"
+    else
+      pass "${e##*/}: il controllo dell'esito con handson::check"
+    fi
     ws w "$(partenza "${e}")"
     finto FINTO_ESITO=ko "${e}/_docente/live.sh" "${w}"
     v="$(chiamate)"
@@ -710,7 +769,80 @@ t_demo() {
       finto FINTO_RISPOSTA='Non lo so.' "${e}/_docente/live.sh" "${w}"
     fi
     expect "${e##*/}: su un KO il messaggio di verifica.sh" 1 "${frase[i]}"
+    expect "${e##*/}: e il verdetto con l'uscita del controllo" 1 \
+      "(uscita 1)"
   done
+}
+
+# Le versioni: misura.sh, kit.py e verifica.py ammettono soltanto vN
+# (^v(0|[1-9][0-9]*)$). Un nome come v2b misura.sh e kit.py lo rifiutano
+# (uscita 2); verifica.py non lo conta: in M2-E01 una misura v1b peggiore
+# non diventa l'ultima versione, in M2-E02 una misura v1b non è un secondo
+# ciclo.
+t_versioni() {
+  local w f d
+  ws w "${E01}/esercizio"
+  cp "${w}/prompt/v0.md" "${w}/prompt/v2b.md"
+  precondizione "misura.sh: una versione con una lettera, v2b" \
+    "versione «v2b» non valida" "${w}/misura.sh" v2b
+  run python3 -B "${w}/strumenti/kit.py" componi "${w}" v2b
+  expect "kit: una versione con una lettera, v2b" 2 \
+    "versione «v2b» non valida"
+  ws w "${E01}/esercizio" "${E01}/soluzione"
+  for f in risposte/v0.json risposte/v0.md controlli/v0.txt \
+      giudizi/v0.json; do
+    cp "${w}/${f}" "${w}/${f/v0/v1b}"
+  done
+  run "${E01}/verifica.sh" "${w}"
+  expect "verifica: una misura v1b non è l'ultima versione (E01)" 0 \
+    "Fatto: le misure ci sono"
+  expect_absent "verifica: e non compare" "v1b"
+  ws w "${E02}/esercizio" "${E02}/soluzione"
+  for d in sviluppo supporto; do
+    rm -f "${w}/${d}/risposte/v2.json"
+    for f in risposte/v1.json risposte/v1.md controlli/v1.txt \
+        giudizi/v1.json; do
+      cp "${w}/${d}/${f}" "${w}/${d}/${f/v1/v1b}"
+    done
+  done
+  run "${E02}/verifica.sh" "${w}"
+  expect "verifica: una misura v1b non è un secondo ciclo (E02)" 1 \
+    "famiglie con due cicli (v2): 1 su tre; ne servono almeno due"
+}
+
+# Uno zero davanti, v01: misura.sh e kit.py lo rifiutano (uscita 2) e
+# verifica.py non lo conta. Con ^v[0-9]+$ v01 pareggiava con v1 (quale
+# delle due fosse l'ultima dipendeva dall'ordine dei file) e in M2-E02
+# contava come secondo ciclo.
+t_versioni_zeri() {
+  local w f d
+  ws w "${E01}/esercizio"
+  cp "${w}/prompt/v0.md" "${w}/prompt/v01.md"
+  precondizione "misura.sh: una versione con uno zero davanti, v01" \
+    "versione «v01» non valida" "${w}/misura.sh" v01
+  run python3 -B "${w}/strumenti/kit.py" componi "${w}" v01
+  expect "kit: una versione con uno zero davanti, v01" 2 \
+    "versione «v01» non valida"
+  ws w "${E01}/esercizio" "${E01}/soluzione"
+  for f in risposte/v0.json risposte/v0.md controlli/v0.txt \
+      giudizi/v0.json; do
+    cp "${w}/${f}" "${w}/${f/v0/v01}"
+  done
+  run "${E01}/verifica.sh" "${w}"
+  expect "verifica: una misura v01 non pareggia con v1 (E01)" 0 \
+    "Fatto: le misure ci sono"
+  expect_absent "verifica: e v01 non compare" "v01"
+  ws w "${E02}/esercizio" "${E02}/soluzione"
+  for d in sviluppo supporto; do
+    rm -f "${w}/${d}/risposte/v2.json"
+    for f in risposte/v1.json risposte/v1.md controlli/v1.txt \
+        giudizi/v1.json; do
+      cp "${w}/${d}/${f}" "${w}/${d}/${f/v1/v01}"
+    done
+  done
+  run "${E02}/verifica.sh" "${w}"
+  expect "verifica: una misura v01 non è un secondo ciclo (E02)" 1 \
+    "famiglie con due cicli (v2): 1 su tre; ne servono almeno due"
 }
 
 # Le parole che i partecipanti leggono: il controllo di M2-E02 sul blocco
@@ -867,6 +999,7 @@ main() {
   t_controlla_json
   t_finti
   t_live_esercitazioni
+  t_live_verifica
   t_operando
   t_contratto_kit
   t_contratto_misura
@@ -875,6 +1008,8 @@ main() {
   t_rami
   t_rami_live
   t_misura_nuova
+  t_versioni
+  t_versioni_zeri
   t_prima_della_chiamata
   t_giudice
   t_demo

@@ -4,14 +4,24 @@
 # la riga stampata da handson::run, incollata in bash, rifà esattamente ciò
 # che è stato eseguito (stesso array, apici e $ compresi, anche su più
 # righe); HANDSON_SHOW_CMD=0 zittisce; le pause non scattano senza
-# terminale; handson::check/finish danno 0 o 1; le precondizioni danno 2.
+# terminale; handson::check/finish danno 0 o 1, e su un KO handson::check
+# stampa l'uscita del controllo, il suo STDOUT su STDOUT e il suo STDERR su
+# STDERR, con l'uscita nel verdetto; su un OK il controllo resta muto; un
+# controllo che esce con 2 o più (una precondizione, un comando che manca)
+# fa uscire handson::finish con 2, e handson::verdict_rc fa lo stesso con
+# un'uscita già presa; handson::check senza comando esce 2;
+# con set -e lo script prosegue dopo un controllo KO; un controllo che è
+# una funzione vede le variabili out e rc di chi lo chiama; le altre
+# precondizioni danno 2.
 # Poi handson::claude_p con un claude finto: l'argv esatto (-p, strumenti
 # consentiti, modello, modalità di permesso, --permission-prompts none,
-# --output-format json, gli argomenti in più), ANTHROPIC_API_KEY tolta fuori
-# dagli elementi trainer-api e passata a quelli, mai stampata; i rifiuti
-# (bypassPermissions, auto, --dangerously-skip-permissions, argomenti che
-# il helper imposta da sé, Fable, --bare, una chiave sulla riga di comando,
-# prompt che comincia con -, claude assente). Infine json_field e
+# --output-format json, gli argomenti in più, poi «--» e per ultimo il
+# prompt, anche quando comincia con «-» o cita un'opzione),
+# ANTHROPIC_API_KEY tolta fuori dagli elementi trainer-api e passata a
+# quelli, mai stampata; i rifiuti (bypassPermissions, auto,
+# --dangerously-skip-permissions, anche dentro il valore di un argomento in
+# più, argomenti che il helper imposta da sé, «--» compreso, Fable, --bare,
+# una chiave nel prompt, prompt vuoto, claude assente). Infine json_field e
 # json_keys (con jq), tmpdir, la doppia source e la libreria non eseguibile.
 # Il file fa anche da pilota: con --scenario <nome> carica la libreria ed
 # esegue lo scenario, così il codice degli scenari passa per shellcheck.
@@ -32,12 +42,20 @@ PASS=0
 FAIL=0
 RC=0
 OUT=''
+ERR=''
 
 pass() { echo "  PASS: $1"; PASS=$((PASS + 1)); }
 fail() { echo "  FAIL: $1"; FAIL=$((FAIL + 1)); }
 
 # Esegue un comando; RC e OUT (STDOUT e STDERR insieme) per expect.
 run() { OUT="$("$@" 2>&1)"; RC=$?; }
+
+# Come run, ma con i due canali separati: OUT lo STDOUT, ERR lo STDERR.
+run_separati() {
+  OUT="$("$@" 2> "${TMP}/stderr.txt")"
+  RC=$?
+  ERR="$(< "${TMP}/stderr.txt")"
+}
 
 # Uno scenario di questo stesso file, con il claude finto nel PATH.
 # Arguments: le variabili d'ambiente (NOME=valore), poi -- , poi lo
@@ -77,6 +95,21 @@ argv_finto() { grep '^ARG:' <<< "${OUT}" | tr '\n' ' '; }
 
 # --- Gli scenari (eseguiti con la libreria caricata) ---------------------
 
+# Un controllo che scrive una riga su ciascun canale ed esce con $1.
+# shellcheck disable=SC2317  # la chiama handson::check, indirettamente
+controllo_rumoroso() {
+  echo "riga-out del controllo"
+  echo "riga-err del controllo" >&2
+  return "$1"
+}
+
+# Un controllo che legge le variabili out e rc di chi lo chiama: esce 0
+# solo se vede i loro valori, non quelli di handson::check.
+# shellcheck disable=SC2317  # la chiama handson::check, indirettamente
+controllo_globali() {
+  [[ "${out:-}" == "globale-out" && "${rc:-}" == "globale-rc" ]]
+}
+
 # shellcheck disable=SC2016  # 'x$y' è un token letterale, di proposito
 scenario_run() {
   case "$1" in
@@ -89,11 +122,33 @@ scenario_run() {
 
 scenario_varie() {
   local d q
+  local -a nessuno=()
   case "$1" in
     pausa) handson::pause; echo "dopo" ;;
     check_ko) handson::check vero true; handson::check falso false
               handson::finish ;;
     check_ok) handson::check vero true; handson::finish ;;
+    check_flussi) handson::check flussi controllo_rumoroso 1
+                  handson::finish ;;
+    check_muto) handson::check muto controllo_rumoroso 0; handson::finish ;;
+    check_vuoto) handson::check "senza comando"; handson::finish ;;
+    check_array) handson::check "array vuoto" ${nessuno[@]+"${nessuno[@]}"}
+                 handson::finish ;;
+    check_globali) out='globale-out' rc='globale-rc'
+                   handson::check globali controllo_globali
+                   handson::finish ;;
+    check_set_e) set -e
+                 handson::check fallito false
+                 echo "riga dopo il controllo"
+                 handson::finish ;;
+    verdict_rc) handson::verdict_rc 0 a; handson::verdict_rc 1 b
+                handson::verdict_rc 3 c; handson::finish ;;
+    verdict_rc_rotto) handson::verdict_rc x d ;;
+    check_precond) handson::check precondizione controllo_rumoroso 2
+                   handson::check esito controllo_rumoroso 1
+                   handson::finish ;;
+    check_assente) handson::check assente comando-che-non-esiste-qui
+                   handson::finish ;;
     manca) handson::need_tools comando-che-non-esiste-qui ;;
     tmpdir) handson::tmpdir d; printf 'DIR:%s\n' "${d}"
             if [[ -d "${d}" ]]; then echo "esiste"; fi ;;
@@ -198,21 +253,82 @@ t_contratto() {
   scenario -- check_ok
   expect "tutti i controlli OK: uscita 0" 0 "VERIFICA OK   vero"
   expect_absent "e nessun KO" "KO"
+  run_separati bash "${SELF}" --scenario check_flussi
+  if (( RC == 1 )) && grep -qF 'riga-out del controllo' <<< "${OUT}" \
+      && grep -qF 'VERIFICA KO   flussi (uscita 1)' <<< "${OUT}"; then
+    pass "un controllo KO: il suo STDOUT e il verdetto, con l'uscita, su STDOUT"
+  else
+    fail "controllo KO, STDOUT (rc=${RC}): ${OUT:0:300}"
+  fi
+  if grep -qF 'riga-err del controllo' <<< "${ERR}" \
+      && ! grep -qF 'riga-err' <<< "${OUT}" \
+      && ! grep -qF 'riga-out' <<< "${ERR}"; then
+    pass "e il suo STDERR su STDERR"
+  else
+    fail "controllo KO, STDERR «${ERR:0:200}», STDOUT «${OUT:0:200}»"
+  fi
+  scenario -- check_muto
+  expect "un controllo OK: il verdetto" 0 "VERIFICA OK   muto"
+  expect_absent "e il controllo resta muto" "riga-"
   scenario -- manca
   expect "strumento mancante: uscita 2" 2 \
     "manca lo strumento: comando-che-non-esiste-qui"
 }
 
+# I casi limite di handson::check: senza comando, un controllo che è una
+# funzione, set -e, un controllo che non ha potuto girare (uscita 2 o più).
+t_contratto_check() {
+  local s
+  for s in check_vuoto check_array; do
+    scenario -- "${s}"
+    expect "${s}: handson::check senza comando esce 2" 2 \
+      "handson::check: servono la descrizione e il comando del controllo"
+    expect_absent "${s}: e nessun VERIFICA OK" "VERIFICA OK"
+  done
+  scenario -- check_globali
+  expect "un controllo funzione vede out e rc di chi lo chiama" 0 \
+    "VERIFICA OK   globali"
+  scenario -- check_set_e
+  expect "con set -e un controllo KO non ferma lo script" 1 \
+    "riga dopo il controllo"
+  expect "e il verdetto KO ha l'uscita del controllo" 1 \
+    "VERIFICA KO   fallito (uscita 1)"
+  run_separati bash "${SELF}" --scenario check_precond
+  if (( RC == 2 )) \
+      && grep -qF 'VERIFICA KO   precondizione (uscita 2)' <<< "${OUT}" \
+      && grep -qF 'VERIFICA KO   esito (uscita 1)' <<< "${OUT}"; then
+    pass "un controllo uscito con 2: il verdetto con l'uscita, e finish esce 2"
+  else
+    fail "controllo uscito con 2 (rc=${RC}): ${OUT:0:300}"
+  fi
+  if grep -qF 'non hanno potuto girare' <<< "${ERR}"; then
+    pass "e su STDERR dice che è una precondizione"
+  else
+    fail "controllo uscito con 2, STDERR: «${ERR:0:300}»"
+  fi
+  scenario -- check_assente
+  expect "un controllo che non c'è (uscita 127): finish esce 2" 2 \
+    "VERIFICA KO   assente (uscita 127)"
+  scenario -- verdict_rc
+  expect "verdict_rc: 0 è OK" 2 "VERIFICA OK   a"
+  expect "verdict_rc: 1 è un KO, con l'uscita" 2 "VERIFICA KO   b (uscita 1)"
+  expect "verdict_rc: 3 è un KO e una precondizione, finish esce 2" 2 \
+    "VERIFICA KO   c (uscita 3)"
+  scenario -- verdict_rc_rotto
+  expect "verdict_rc: un'uscita che non è un numero esce 2" 2 \
+    "handson::verdict_rc: «x» non è un'uscita"
+}
+
 t_claude_argv() {
-  local atteso='ARG:-p ARG:Riassumi il file ARG:--allowedTools ARG:Read,Glob '
+  local atteso='ARG:-p ARG:--allowedTools ARG:Read,Glob '
   atteso+='ARG:--model ARG:sonnet ARG:--permission-mode ARG:dontAsk '
   atteso+='ARG:--permission-prompts ARG:none ARG:--output-format ARG:json '
   atteso+='ARG:--setting-sources ARG:project,local '
-  atteso+='ARG:--resume ARG:abc123 '
+  atteso+='ARG:--resume ARG:abc123 ARG:-- ARG:Riassumi il file '
   scenario ANTHROPIC_API_KEY="${CHIAVE_FINTA}" -- \
     claude sonnet 'Read,Glob' 'Riassumi il file' --resume abc123
   if (( RC == 0 )) && [[ "$(argv_finto)" == "${atteso}" ]]; then
-    pass "argv di claude -p esatto, nell'ordine"
+    pass "argv di claude -p esatto: le opzioni, poi «--» e il prompt"
   else
     fail "argv: «$(argv_finto)» (rc=${RC})"
   fi
@@ -230,6 +346,20 @@ t_claude_argv() {
   expect_absent "con strumenti vuoti niente --allowedTools" "ARG:--allowedTools"
   scenario HANDSON_PERMISSION_MODE=acceptEdits -- claude haiku Edit 'Correggi'
   expect "acceptEdits ammessa" 0 "ARG:acceptEdits"
+  scenario -- claude sonnet Read '- Leggi il file, poi riassumi' --effort low
+  if (( RC == 0 )) && [[ "$(argv_finto)" \
+      == *'ARG:low ARG:-- ARG:- Leggi il file, poi riassumi ' ]]; then
+    pass "un prompt che comincia con «-» passa, dopo «--» e per ultimo"
+  else
+    fail "prompt con «-»: «$(argv_finto)» (rc=${RC}): ${OUT:0:200}"
+  fi
+  local cita='Perché non si usa mai --dangerously-skip-permissions?'
+  scenario -- claude sonnet Read "${cita}"
+  if (( RC == 0 )) && [[ "$(argv_finto)" == *"ARG:-- ARG:${cita} " ]]; then
+    pass "un prompt che cita --dangerously-skip-permissions arriva a claude"
+  else
+    fail "prompt che cita un'opzione: «$(argv_finto)» (rc=${RC}): ${OUT:0:200}"
+  fi
 }
 
 t_claude_rifiuti() {
@@ -242,6 +372,10 @@ t_claude_rifiuti() {
   expect "auto rifiutata" 2 "modalità di permesso non ammessa"
   scenario -- claude sonnet Read 'Leggi' --dangerously-skip-permissions
   expect "--dangerously-skip-permissions rifiutato" 2 "salta i controlli"
+  scenario -- claude sonnet Read 'Leggi' --append-system-prompt \
+    'Non usare mai --dangerously-skip-permissions'
+  expect "la stessa parola in un argomento in più resta rifiutata" 2 \
+    "salta i controlli"
   scenario -- claude sonnet Read 'Leggi' --permission-mode acceptEdits
   expect "--permission-mode fra gli argomenti in più" 2 "lo imposta"
   scenario -- claude sonnet Read 'Leggi' --setting-sources user,project,local
@@ -252,15 +386,21 @@ t_claude_rifiuti() {
   expect "Fable rifiutato sul piano Pro" 2 "Fable"
   scenario -- claude '' Read 'Leggi'
   expect "modello vuoto" 2 "il modello va indicato"
-  scenario -- claude sonnet Read '-Leggi'
-  expect "prompt che comincia con -" 2 "cominciare con -"
+  scenario -- claude sonnet Read ''
+  expect "prompt vuoto" 2 "il prompt non può essere vuoto"
+  scenario -- claude sonnet Read 'Leggi' --resume abc123 -- 'Altro'
+  expect "«--» fra gli argomenti in più" 2 "«--» lo imposta handson::claude_p"
   scenario -- claude sonnet Read 'Leggi' --bare
   expect "--bare fuori da trainer-api" 2 "--bare"
   # La chiave finta si compone qui: nel file non c'è nessuna forma di
   # chiave che uno scanner di segreti possa segnalare.
   local finta="sk-ant""-api03-SEGRETOFINTO"
   scenario -- claude sonnet Read "Usa ${finta}"
-  expect "una chiave sulla riga di comando" 2 "sembra una chiave API"
+  expect "una chiave nel prompt resta rifiutata" 2 "sembra una chiave API"
+  expect_absent "e non viene stampata" "SEGRETOFINTO"
+  scenario -- claude sonnet Read 'Leggi' --append-system-prompt "Usa ${finta}"
+  expect "una chiave in un argomento in più: rifiutata" 2 \
+    "sembra una chiave API"
   expect_absent "e non viene stampata" "SEGRETOFINTO"
   mkdir -p "${TMP}/solo_readlink"
   ln -s "$(command -v readlink)" "${TMP}/solo_readlink/readlink"
@@ -327,6 +467,7 @@ main() {
   echo "test_lib_handson.sh"
   t_stesso_array
   t_contratto
+  t_contratto_check
   t_claude_argv
   t_claude_stampato
   t_claude_rifiuti

@@ -12,7 +12,9 @@
 #   - git;
 #   - PHP 8.3 o successivo con Composer, oppure Docker con il servizio
 #     attivo (tools/php.sh usa l'uno o l'altro);
-#   - Python 3.8 o successivo, e uv.
+#   - python3, il comando con cui le esercitazioni lanciano Python, con
+#     Python 3.8 o successivo (un comando python senza python3 non basta),
+#     e uv.
 # Di Claude Code esegue soltanto claude --version: nessun prompt, nessuna
 # richiesta al modello.
 # Volutamente autonomo, senza librerie: è il primo script che si lancia, e
@@ -109,17 +111,25 @@ check_php_docker() {
   fi
 }
 
+# Python: conta soltanto python3, il comando che lanciano gli script delle
+# esercitazioni; un python accanto non lo sostituisce.
 check_python() {
-  local cmd v=''
-  for cmd in python3 python; do
-    if command -v "${cmd}" >/dev/null 2>&1 \
-        && v="$("${cmd}" --version 2>&1)" && [[ "${v}" =~ ${PY_RE} ]] \
-        && (( BASH_REMATCH[1] >= MIN_PY_MINOR )); then
-      ok "Python" "${v} (${cmd})"
-      return 0
-    fi
-  done
-  da_fare "Python" "serve Python 3.8 o successivo (${GUIDA}, «Python e uv»)"
+  local v=''
+  if command -v python3 >/dev/null 2>&1 \
+      && v="$(python3 --version 2>&1)" && [[ "${v}" =~ ${PY_RE} ]] \
+      && (( BASH_REMATCH[1] >= MIN_PY_MINOR )); then
+    ok "Python" "${v} (python3)"
+  elif command -v python3 >/dev/null 2>&1; then
+    da_fare "Python" "python3 c'è, ma serve Python 3.8 o successivo" \
+      "(${GUIDA}, «Python e uv»)"
+  elif command -v python >/dev/null 2>&1; then
+    da_fare "Python" "c'è il comando python, ma non python3, quello che" \
+      "lanciano le esercitazioni: installate Python 3.8 o successivo in" \
+      "modo che risponda python3 --version (${GUIDA}, «Python e uv»)"
+  else
+    da_fare "Python" "serve Python 3.8 o successivo, con il comando python3" \
+      "(${GUIDA}, «Python e uv»)"
+  fi
 }
 
 main() {

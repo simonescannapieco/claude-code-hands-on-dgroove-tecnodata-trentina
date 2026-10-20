@@ -30,6 +30,8 @@ readonly KIT="${BASE}/strumenti/kit.py"
 readonly SCHEMA="${BASE}/schema-giudizio.json"
 readonly AGENTE="${BASE}/.claude/agents/giudice.md"
 readonly SISTEMA='Rispondi in italiano.'
+# Una versione è «v» e un numero senza zeri davanti: v0, v1, v2, ..., v10.
+readonly VERSIONE_RE='^v(0|[1-9][0-9]*)$'
 readonly COMUNI=(--strict-mcp-config --setting-sources 'project,local'
   --permission-mode dontAsk --permission-prompts none
   --output-format json --no-session-persistence)
@@ -140,7 +142,7 @@ main() {
   esac
   [[ "${cartella}" != /* && "${cartella}" != *..* && -d "${cartella}" ]] \
     || die "cartella «${cartella}» assente o fuori dall'esercizio"
-  [[ "${versione}" =~ ^v[0-9]+$ ]] \
+  [[ "${versione}" =~ ${VERSIONE_RE} ]] \
     || die "versione «${versione}» non valida: si scrive v0, v1, v2, ..."
   [[ -f "${cartella}/prompt/${versione}.md" ]] \
     || die "manca ${cartella}/prompt/${versione}.md"

@@ -71,20 +71,6 @@ prova() {
   riga "$@" || handson::verdict ko "$1, $2, $3: nessun orario nella risposta"
 }
 
-# Il controllo dell'esito con verifica.sh, e il suo verdetto; su un KO
-# stampa anche il messaggio di verifica.sh, che dice che cosa non torna.
-# Arguments: $1 la descrizione, $2 lo spazio di lavoro.
-esito() {
-  local out rc=0
-  out="$("${CONTROLLO}" "$2" 2>&1)" || rc=$?
-  if (( rc == 0 )); then
-    handson::verdict ok "$1"
-    return 0
-  fi
-  printf '%s\n' "${out}"
-  handson::verdict ko "$1 (uscita ${rc})"
-}
-
 main() {
   local ws="${1:-}" m v json
   [[ -n "${ws}" && -d "${ws}" ]] \
@@ -112,7 +98,8 @@ main() {
     prova squadre "${m}" di-getto "${json}"
   done
   handson::step "Il controllo dell'esito"
-  esito "tutte le risposte giuste: 9:36 e 15:30" "${ws}"
+  handson::check "tutte le risposte giuste: 9:36 e 15:30" "${CONTROLLO}" \
+    "${ws}"
   handson::finish
 }
 

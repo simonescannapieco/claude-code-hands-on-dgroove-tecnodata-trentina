@@ -13,9 +13,19 @@
 #     colonna in più; «Haiku 4.5» e «5,6 sec» accettati;
 #   - leggi_json.py: le tre copie identiche, JSON vuoto, non valido o non
 #     oggetto (1), uso sbagliato (2), token null contati come zero;
-#   - i sei _docente/live.sh con un claude finto: una precondizione di
+#   - il claude finto legge gli argomenti come la CLI vera: le opzioni,
+#     poi «--» e il prompt; un prompt che comincia con «-» passato prima
+#     di «--» è un'opzione sconosciuta (uscita 1);
+#   - i sei _docente/live.sh con il claude finto: una precondizione di
 #     handson::claude_p esce 2 senza chiamare claude, una chiamata fallita
-#     esce 1, le risposte complete escono 0;
+#     esce 1, le risposte complete escono 0; su un esito diverso M1-D04
+#     stampa il messaggio di verifica.sh; il controllo di M1-D02, una
+#     funzione, va KO con token uguali e OK con i token presi dai byte del
+#     prompt; un prompt che comincia con «-» arriva a claude;
+#   - il live.sh di M1-E01 con una verifica.sh finta, in una copia
+#     dell'elemento: se la verifica esce 2 la prova esce 2 (una
+#     precondizione), se esce 1 resta un KO, se esce 0 passa e ne stampa
+#     l'uscita;
 #   - il manifest.tsv del modulo: la cartella e il deck_path di ogni
 #     elemento sono quelli della sua riga;
 #   - shellcheck -x su ogni script del modulo e su questo.
@@ -113,6 +123,27 @@ tsv() {
   done
 }
 
+# Una copia dell'elemento $2 con la libreria accanto, come nel repository,
+# in cui verifica.sh è finta: stampa una riga per canale ed esce con
+# STUB_USCITA (default 2). L'albero del repository non cambia.
+# Arguments: $1 la variabile da assegnare (l'elemento nella copia), $2
+# l'elemento.
+albero_finto() {
+  local __a_radice="${MOD%/*}" __a_copia __a_rel
+  __a_rel="${2#"${__a_radice}"/}"
+  __a_copia="$(mktemp -d "${TMP}/albero.XXXXXX")" \
+    || { echo "mktemp" >&2; exit 2; }
+  mkdir -p "${__a_copia}/tools" "${__a_copia}/${__a_rel}"
+  cp "${__a_radice}/tools/lib_handson.sh" "${__a_copia}/tools/"
+  cp -R "$2/." "${__a_copia}/${__a_rel}/"
+  # shellcheck disable=SC2016  # il corpo è della verifica finta
+  printf '%s\n' '#!/bin/bash' 'echo "riga della verifica finta"' \
+    'echo "verifica: precondizione finta" >&2' \
+    'exit "${STUB_USCITA:-2}"' > "${__a_copia}/${__a_rel}/verifica.sh"
+  chmod 755 "${__a_copia}/${__a_rel}/verifica.sh"
+  printf -v "$1" '%s' "${__a_copia}/${__a_rel}"
+}
+
 # Cambia un campo di primo livello di un JSON: «-» lo toglie, altrimenti
 # il valore è un letterale JSON (anche NaN). Arguments: $1 il file, $2 il
 # campo, $3 il valore.
@@ -148,16 +179,59 @@ live() {
 }
 
 # Il claude finto: --version risponde; ogni altra chiamata va nel
-# registro e, salvo FINTO_ESITO=ko, stampa RISPOSTA.
+# registro, poi il finto legge gli argomenti come la CLI vera: le opzioni
+# che usano i live.sh del modulo (con i loro valori), poi il prompt, dopo
+# «--» oppure come unico argomento che non comincia con «-». Una parola
+# che comincia con «-», prima di «--», e non è un'opzione che conosce la
+# rifiuta («error: unknown option», uscita 1), come un prompt che manca o
+# un secondo prompt. Salvo FINTO_ESITO=ko stampa RISPOSTA; con
+# FINTO_TOKEN=byte i token in entrata sono i byte del prompt (la frase
+# italiana di M1-D02 ne ha più di quella inglese).
 claude_finto() {
   mkdir -p "${TMP}/bin"
   printf '%s\n' "${RISPOSTA}" > "${TMP}/bin/risposta.json"
-  # shellcheck disable=SC2016  # il corpo è del claude finto
-  printf '%s\n' '#!/bin/bash' \
-    'if [[ "${1:-}" == "--version" ]]; then echo "0.0.0 (finto)"; exit 0; fi' \
-    'echo "chiamata" >> "${FINTO_LOG:?}"' \
-    'if [[ "${FINTO_ESITO:-ok}" != "ok" ]]; then exit 1; fi' \
-    'cat "${0%/*}/risposta.json"' > "${TMP}/bin/claude"
+  cat > "${TMP}/bin/claude" <<'FINTO'
+#!/bin/bash
+set -uo pipefail
+SENZA_VALORE=' -p --print --strict-mcp-config --no-session-persistence '
+CON_VALORE=' --model --effort --tools --allowedTools --system-prompt'
+CON_VALORE+=' --output-format --permission-mode --permission-prompts'
+CON_VALORE+=' --setting-sources --resume '
+if [[ "${1:-}" == "--version" ]]; then echo "0.0.0 (finto)"; exit 0; fi
+echo "chiamata" >> "${FINTO_LOG:?}"
+prompt=()
+while (( $# > 0 )); do
+  if [[ "$1" == "--" ]]; then
+    shift
+    prompt+=("$@")
+    break
+  elif [[ "$1" != -* ]]; then
+    prompt+=("$1")
+  elif [[ "${CON_VALORE}" == *" $1 "* ]]; then
+    if (( $# < 2 )); then
+      echo "error: option '$1' argument missing" >&2
+      exit 1
+    fi
+    shift
+  elif [[ "${SENZA_VALORE}" != *" $1 "* ]]; then
+    echo "error: unknown option '$1'" >&2
+    exit 1
+  fi
+  shift
+done
+if (( ${#prompt[@]} != 1 )); then
+  echo "error: atteso un prompt, ricevuti ${#prompt[@]}" >&2
+  exit 1
+fi
+if [[ "${FINTO_ESITO:-ok}" != "ok" ]]; then exit 1; fi
+if [[ "${FINTO_TOKEN:-}" == "byte" ]]; then
+  n="$(printf '%s' "${prompt[0]}" | wc -c)"
+  jq -c --argjson n "$(( n ))" '.usage.input_tokens = $n' \
+    "${0%/*}/risposta.json"
+else
+  cat "${0%/*}/risposta.json"
+fi
+FINTO
   chmod 755 "${TMP}/bin/claude"
 }
 
@@ -326,9 +400,23 @@ t_leggi_json() {
   expect "leggi_json.py: uso sbagliato" 2 "Uso:"
 }
 
+# Il claude finto legge gli argomenti come la CLI vera: «- prova» prima di
+# «--» è un'opzione sconosciuta (uscita 1), dopo «--» è il prompt; senza
+# prompt esce 1.
+t_finto() {
+  local c="${TMP}/bin/claude"
+  run env FINTO_LOG="${TMP}/finto.log" "${c}" -p --model haiku '- prova'
+  expect "claude finto: «- prova» prima di «--» è un'opzione sconosciuta" 1 \
+    "error: unknown option '- prova'"
+  run env FINTO_LOG="${TMP}/finto.log" "${c}" -p --model haiku -- '- prova'
+  expect "claude finto: dopo «--» «- prova» è il prompt" 0 '"result":"Ciao"'
+  run env FINTO_LOG="${TMP}/finto.log" "${c}" -p --tools '' --model haiku
+  expect "claude finto: senza prompt esce 1" 1 "atteso un prompt"
+}
+
 # I live.sh con il claude finto (R5-8: il contratto d'uscita).
 t_live() {
-  local e w partenza
+  local e w partenza frase
   for e in "${ELEMENTI[@]}"; do
     partenza="${e}/demo"
     [[ -d "${partenza}" ]] || partenza="${e}/esercizio"
@@ -350,13 +438,60 @@ t_live() {
     "${OK_PAROLE[0]}"
   live "${D01}" "${w}" PN_RIPETIZIONI=1 FINTO_ESITO=ko
   expect "M1-D01 live.sh: chiamate fallite, uscita 1" 1 "VERIFICA KO"
+  ws w "${D01}/demo"
+  frase="$(cat "${w}/frase.txt")"
+  printf -- '- %s\n' "${frase}" > "${w}/frase.txt"
+  live "${D01}" "${w}" PN_RIPETIZIONI=1
+  expect "M1-D01 live.sh: un prompt che comincia con «-» arriva a claude" 0 \
+    "Ciao"
+  expect_absent "M1-D01 live.sh: e nessun rifiuto" "cominciare con -"
+  ws w "${D02}/demo"
+  live "${D02}" "${w}"
+  expect "M1-D02 live.sh: token uguali, il controllo (una funzione) è KO" 1 \
+    "VERIFICA KO   haiku: italiano > inglese > 0 (uscita 1)"
+  ws w "${D02}/demo"
+  live "${D02}" "${w}" FINTO_TOKEN=byte
+  expect "M1-D02 live.sh: l'italiano pesa di più, il controllo è OK" 0 \
+    "VERIFICA OK   haiku: italiano > inglese > 0"
+  run "${D02}/verifica.sh" "${w}"
+  expect "M1-D02: il conteggi.tsv di live.sh passa la verifica" 0 \
+    "${OK_PAROLE[1]}"
   ws w "${D04}/demo"
   live "${D04}" "${w}" FINTO_ESITO=ko
   expect "M1-D04 live.sh: chiamata A fallita, uscita 1" 1 \
     "la chiamata A non ha dato una risposta"
+  ws w "${D04}/demo"
+  live "${D04}" "${w}"
+  expect "M1-D04 live.sh: su un esito diverso il messaggio di verifica.sh" 1 \
+    "C non nomina LN-000204: la sessione ripresa dovrebbe ricordarla."
+  expect "M1-D04 live.sh: e il verdetto con l'uscita del controllo" 1 \
+    "C sì; C manda più token di A (uscita 1)"
   ws w "${D05}/demo"
   live "${D05}" "${w}"
   expect "M1-D05 live.sh: sei risposte, uscita 0" 0 "Ciao"
+}
+
+# Il live.sh di M1-E01 con una verifica.sh finta: se la verifica esce 2
+# (una precondizione) la prova esce 2, con la riga FATALE; se esce 1 resta
+# un KO; se esce 0 passa e ne stampa l'uscita, come prima.
+t_live_verifica() {
+  local c w
+  albero_finto c "${E01}"
+  ws w "${E01}/esercizio"
+  live "${c}" "${w}"
+  expect "M1-E01 live.sh: la verifica esce 2, la prova esce 2" 2 \
+    "una precondizione, non un esito diverso"
+  expect "M1-E01 live.sh: e il verdetto con l'uscita della verifica" 2 \
+    "VERIFICA KO   verifica.sh dell'elemento (uscita 2)"
+  ws w "${E01}/esercizio"
+  live "${c}" "${w}" STUB_USCITA=1
+  expect "M1-E01 live.sh: la verifica esce 1, resta un KO" 1 \
+    "VERIFICA KO   verifica.sh dell'elemento (uscita 1)"
+  expect_absent "M1-E01 live.sh: e nessuna precondizione" "FATALE"
+  ws w "${E01}/esercizio"
+  live "${c}" "${w}" STUB_USCITA=0
+  expect "M1-E01 live.sh: la verifica esce 0, la sua uscita si stampa" 0 \
+    "riga della verifica finta"
 }
 
 # Il manifest.tsv del modulo e le cartelle: ogni elemento sta dove la sua
@@ -436,7 +571,9 @@ main() {
   t_casi_d05
   t_casi_e01
   t_leggi_json
+  t_finto
   t_live
+  t_live_verifica
   t_shellcheck
   echo "PASS=${PASS} FAIL=${FAIL}"
   (( FAIL == 0 )) || exit 1

@@ -53,20 +53,6 @@ fallita() {
   handson::finish
 }
 
-# Il controllo dell'esito con verifica.sh, e il suo verdetto; su un KO
-# stampa anche il messaggio di verifica.sh, che dice che cosa non torna.
-# Arguments: $1 la descrizione, $2 lo spazio di lavoro.
-esito() {
-  local out rc=0
-  out="$("${CONTROLLO}" "$2" 2>&1)" || rc=$?
-  if (( rc == 0 )); then
-    handson::verdict ok "$1"
-    return 0
-  fi
-  printf '%s\n' "${out}"
-  handson::verdict ko "$1 (uscita ${rc})"
-}
-
 main() {
   local ws="${1:-}" json_p json_a json_s riga_istr
   [[ -n "${ws}" && -d "${ws}" ]] \
@@ -99,7 +85,8 @@ main() {
       && riga sostituito "${json_s}"; } \
     || fallita "la chiamata sostituito non ha dato una risposta"
   handson::step "Il controllo dell'esito"
-  esito "il system prompt sostituito pesa meno della metà" "${ws}"
+  handson::check "il system prompt sostituito pesa meno della metà" \
+    "${CONTROLLO}" "${ws}"
   handson::finish
 }
 

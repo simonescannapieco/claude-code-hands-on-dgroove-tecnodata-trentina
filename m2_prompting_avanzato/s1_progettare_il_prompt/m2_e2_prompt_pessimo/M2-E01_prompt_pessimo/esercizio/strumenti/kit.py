@@ -56,7 +56,7 @@ from typing import Dict, List, NoReturn, Optional, Tuple
 
 PLACEHOLDER = re.compile(r"\{\{([a-z][a-z0-9_]*)\}\}")
 CLAIM = re.compile(r"^- \*\*([a-z][a-z0-9_]*)\*\*:\s+(\S.*)$")
-VERSIONE = re.compile(r"v[0-9]+[a-z]?")     # con fullmatch
+VERSIONE = re.compile(r"v(?:0|[1-9][0-9]*)")  # con fullmatch
 NUMERO = re.compile(r"[0-9]+")              # con fullmatch: cifre ASCII
 TIPI = ("assente", "presente", "parole_max", "parole_min", "righe_max")
 # I conteggi di usage che kit.py legge: i primi tre fanno l'entrata.
@@ -102,7 +102,8 @@ def scrivi(percorso: str, testo: str) -> None:
 
 
 def controlla_versione(versione: str) -> None:
-    """Rifiuta un nome di versione diverso da v0, v1, v2, v2b, ..."""
+    """Rifiuta un nome di versione diverso da v0, v1, v2, ...: «v» e un
+    numero senza zeri davanti, come in misura.sh."""
     if not VERSIONE.fullmatch(versione):
         raise Errore("versione «%s» non valida: si scrive v0, v1, v2, ..."
                      % versione)

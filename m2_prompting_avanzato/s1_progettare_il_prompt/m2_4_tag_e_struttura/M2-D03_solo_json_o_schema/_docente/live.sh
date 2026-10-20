@@ -43,20 +43,6 @@ fallita() {
   handson::finish
 }
 
-# Il controllo dell'esito con verifica.sh, e il suo verdetto; su un KO
-# stampa anche il messaggio di verifica.sh, che dice che cosa non torna.
-# Arguments: $1 la descrizione, $2 lo spazio di lavoro.
-esito() {
-  local out rc=0
-  out="$("${CONTROLLO}" "$2" 2>&1)" || rc=$?
-  if (( rc == 0 )); then
-    handson::verdict ok "$1"
-    return 0
-  fi
-  printf '%s\n' "${out}"
-  handson::verdict ko "$1 (uscita ${rc})"
-}
-
 main() {
   local ws="${1:-}" m schema
   [[ -n "${ws}" && -d "${ws}" ]] \
@@ -84,7 +70,8 @@ main() {
   python3 -B controlla_json.py \
     || handson::verdict ko "controlla_json.py non ha scritto esiti.tsv"
   handson::step "Il controllo dell'esito"
-  esito "lo schema dà un oggetto valido; le tre risposte ci sono" "${ws}"
+  handson::check "lo schema dà un oggetto valido; le tre risposte ci sono" \
+    "${CONTROLLO}" "${ws}"
   handson::finish
 }
 

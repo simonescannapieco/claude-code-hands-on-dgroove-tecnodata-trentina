@@ -4,7 +4,9 @@
 Lo chiama verifica.sh, accanto; il file è lo stesso nei due elementi.
 Le cartelle di prompt dello spazio di lavoro sono quelle che contengono
 prompt/v0.md: la cartella stessa in M2-E01, le famiglie sviluppo, supporto
-e sistemi in M2-E02. Per ciascuna controlla:
+e sistemi in M2-E02. Una versione è «v» e un numero senza zeri davanti
+(v0, v1, v2, ...), come la vuole misura.sh: un file di misura con un altro
+nome (v2b, v01) non conta. Per ciascuna cartella controlla:
   - v0 e almeno v1 misurate: risposte/<v>.json (claude -p senza errori,
     con una risposta e i conteggi di usage in numeri), controlli/<v>.txt
     con il suo totale, giudizi/<v>.json con il giudizio strutturato e un
@@ -36,7 +38,7 @@ import sys
 from typing import Dict, List, Optional, Tuple
 
 FAMIGLIE = ("sviluppo", "supporto", "sistemi")
-VERSIONE = re.compile(r"^(v[0-9]+[a-z]?)\.json$")
+VERSIONE = re.compile(r"(v(?:0|[1-9][0-9]*))\.json")  # con fullmatch
 CLAIM = re.compile(r"^- \*\*([a-z][a-z0-9_]*)\*\*:\s+\S")
 TOTALE = re.compile(r"^totale\t([0-9]+)/([0-9]+)$", re.M)
 TELEFONO = re.compile(r"000[ .]?000[ .]?0103")
@@ -79,10 +81,10 @@ def leggi(percorso: str) -> Optional[str]:
         raise non_si_legge(percorso, exc)
 
 
-def ordine(versione: str) -> Tuple[int, str]:
-    """La chiave d'ordine di v0, v1, v2, v2b, ..."""
-    m = re.match(r"^v([0-9]+)([a-z]?)$", versione)
-    return (int(m.group(1)), m.group(2)) if m else (-1, "")
+def ordine(versione: str) -> int:
+    """La chiave d'ordine di v0, v1, v2, ...: il numero dopo la «v»."""
+    m = re.fullmatch(r"v(0|[1-9][0-9]*)", versione)
+    return int(m.group(1)) if m else -1
 
 
 def misurate(cartella: str) -> List[str]:
@@ -95,7 +97,7 @@ def misurate(cartella: str) -> List[str]:
         return []
     except OSError as exc:
         raise non_si_legge(base, exc)
-    trovate = [m.group(1) for m in map(VERSIONE.match, nomi) if m]
+    trovate = [m.group(1) for m in map(VERSIONE.fullmatch, nomi) if m]
     return sorted(trovate, key=ordine)
 
 
@@ -264,7 +266,7 @@ def controlla(ws: str, cartella: str, famiglia: Optional[str],
         if not registro_ok(ws, famiglia, v):
             problemi.append("registro.md: compilate la riga di %s%s" % (
                 v, " di " + famiglia if famiglia else ""))
-    cicli = sum(1 for v in versioni if ordine(v)[0] >= 1)
+    cicli = sum(1 for v in versioni if ordine(v) >= 1)
     if famiglia is None and TELEFONO.search(dopo[1]):
         problemi.append("la risposta di %s ripete il numero di telefono del "
                         "cliente" % ultima)
