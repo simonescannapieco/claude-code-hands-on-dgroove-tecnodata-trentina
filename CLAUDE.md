@@ -30,6 +30,25 @@ verificano ogni elemento.
   senza guardarle.
 - Solo dati sintetici, con le regole di `progetti/README.md`: mai persone,
   aziende o sistemi reali.
+- Ogni demo o esercitazione in cui risponde Claude mette alla prova
+  un'affermazione che Anthropic fa nella sua documentazione. Il README la
+  cita con il link, in «Che cosa osservare». Le esecuzioni confrontate
+  differiscono in una cosa sola, e uno script legge il JSON di ogni
+  esecuzione e dice se l'affermazione è confermata. Del comportamento del
+  modello si scrive solo ciò che Anthropic afferma e ciò che il controllo
+  ha trovato nella registrazione del corso: quante volte su quante, e la
+  data. Una garanzia del prodotto deve valere a ogni esecuzione.
+- Il controllo decide ciò che l'affermazione dice, non di più.
+  - Un'affermazione comparativa («più precisamente … migliore», «invece di
+    … prova …») si decide confrontando le due esecuzioni che differiscono
+    in quella cosa.
+  - Una sola esecuzione non smentisce un «può» o un «di solito», e nessun
+    esito dice «smentita».
+  - Una soglia che l'affermazione non contiene (ogni criterio, zero
+    elementi, un token per lettera) si stampa come dato, mai come esito né
+    come codice d'uscita.
+  - Il controllo legge le esecuzioni, mai un file di esiti scritto prima.
+  - Un oggetto che il controllo costruisce da sé è una dimostrazione.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata
   in testata, shellcheck pulito; le librerie `lib_*.sh` non sono eseguibili.
 
