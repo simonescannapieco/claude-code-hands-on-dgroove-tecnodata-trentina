@@ -1,0 +1,13 @@
+file	modello	immagine	esecuzione	lettura	critici	apparati	critici_giusti	apparati_giusti
+grande-haiku-1.json	haiku	grande	1	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-haiku-1.json	haiku	piccola	1	non leggibile	—	—	—	—
+grande-haiku-2.json	haiku	grande	2	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-haiku-2.json	haiku	piccola	2	non leggibile	—	—	—	—
+grande-haiku-3.json	haiku	grande	3	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-haiku-3.json	haiku	piccola	3	non leggibile	—	—	—	—
+grande-sonnet-1.json	sonnet	grande	1	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-sonnet-1.json	sonnet	piccola	1	non leggibile	—	—	—	—
+grande-sonnet-2.json	sonnet	grande	2	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-sonnet-2.json	sonnet	piccola	2	non leggibile	—	—	—	—
+grande-sonnet-3.json	sonnet	grande	3	valori	3	olt-pergine-01, ptp-cles-01, sbc-trento-01	sì	sì
+piccola-sonnet-3.json	sonnet	piccola	3	non leggibile	—	—	—	—

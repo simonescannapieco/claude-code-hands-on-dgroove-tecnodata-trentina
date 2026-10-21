@@ -1,0 +1,47 @@
+{
+  "type": "object",
+  "properties": {
+    "segnalazioni": {"type": "integer", "minimum": 0},
+    "per_giorno": {
+      "type": "object",
+      "properties": {
+        "lun": {"type": "integer", "minimum": 0},
+        "mar": {"type": "integer", "minimum": 0},
+        "mer": {"type": "integer", "minimum": 0},
+        "gio": {"type": "integer", "minimum": 0},
+        "ven": {"type": "integer", "minimum": 0},
+        "sab": {"type": "integer", "minimum": 0},
+        "dom": {"type": "integer", "minimum": 0}
+      },
+      "required": ["lun", "mar", "mer", "gio", "ven", "sab", "dom"],
+      "additionalProperties": false
+    },
+    "aperte_fine_settimana": {"type": "integer", "minimum": 0},
+    "annullate": {"type": "integer", "minimum": 0},
+    "per_categoria": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "mediana_minuti_prima_risposta": {"type": "number"},
+    "media_minuti_risoluzione_per_tecnologia": {
+      "type": "object",
+      "additionalProperties": {"type": "number"}
+    },
+    "voti": {"type": "integer", "minimum": 0},
+    "soddisfazione_media": {"type": "number"},
+    "clienti_ricorrenti": {"type": "integer", "minimum": 0}
+  },
+  "required": [
+    "segnalazioni",
+    "per_giorno",
+    "aperte_fine_settimana",
+    "annullate",
+    "per_categoria",
+    "mediana_minuti_prima_risposta",
+    "media_minuti_risoluzione_per_tecnologia",
+    "voti",
+    "soddisfazione_media",
+    "clienti_ricorrenti"
+  ],
+  "additionalProperties": false
+}

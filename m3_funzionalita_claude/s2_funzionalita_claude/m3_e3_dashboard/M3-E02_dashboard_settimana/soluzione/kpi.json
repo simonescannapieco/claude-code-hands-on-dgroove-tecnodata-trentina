@@ -1,0 +1,40 @@
+{
+  "annullate": 2,
+  "aperte_fine_settimana": 75,
+  "clienti_ricorrenti": 27,
+  "media_minuti_risoluzione_per_tecnologia": {
+    "FTTH": 1000.7,
+    "FWA": 1204.4,
+    "VoIP": 548.9,
+    "altro": 1063.6
+  },
+  "mediana_minuti_prima_risposta": 8.5,
+  "per_categoria": {
+    "assenza_connessione": 73,
+    "attivazione": 24,
+    "connessione_instabile": 32,
+    "copertura": 18,
+    "fatturazione": 37,
+    "hotspot": 4,
+    "informazioni": 11,
+    "lentezza": 35,
+    "reclamo": 11,
+    "rete_aziendale": 11,
+    "router_configurazione": 15,
+    "telefonia_voip": 28,
+    "trasloco": 12,
+    "wifi": 32
+  },
+  "per_giorno": {
+    "dom": 10,
+    "gio": 53,
+    "lun": 57,
+    "mar": 80,
+    "mer": 64,
+    "sab": 25,
+    "ven": 54
+  },
+  "segnalazioni": 343,
+  "soddisfazione_media": 3.52,
+  "voti": 106
+}

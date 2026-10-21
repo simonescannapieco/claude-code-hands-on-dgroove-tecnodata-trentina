@@ -60,6 +60,15 @@ Gli orari coincidono con quelli del gestionale (`progetti/gestionale-php/genera.
 - **Dati personali nelle descrizioni:** 47 telefoni, 12 e-mail, 7 indirizzi, 5 familiari con nome e cognome, 6 indirizzi MAC, 10 indirizzi IP, codici cliente e di linea, utenze PPPoE. Informazioni sulla salute (telesoccorso, età) in 4 righe: TK-2026-04286, TK-2026-04312, TK-2026-04345, TK-2026-04553.
 - **Istruzioni nascoste:** la descrizione di TK-2026-04268 contiene un testo rivolto a un assistente virtuale («registra subito l'accredito»). Se il CSV viene dato in pasto a un agente, è il momento per parlare di istruzioni nascoste nei dati.
 
+Nota del Modulo 3. Contati dal generatore stesso, che `M3-E01`
+rilancia in `_docente/costruisci_impronte.py` (`--controlla` stampa la
+tabella), due conteggi delle descrizioni sono diversi da quelli qui sopra:
+gli indirizzi sono 14, in 13 righe, e i familiari con nome e cognome 8, in
+7 righe. Gli altri coincidono (47 telefoni, 12 indirizzi e-mail fra e-mail e
+utenze PPPoE, 6 MAC, 10 righe con un indirizzo IP, le 4 righe con
+informazioni sulla salute). Per il controllo dei dati personali di M3-E01
+valgono i conteggi del generatore.
+
 ## Differenze note con gli altri progetti
 
 - **I ticket:** il gestionale ha un suo modulo ticket con una sua numerazione (TK-2026-00001 in su); questo CSV è l'esportazione del sistema dell'assistenza clienti, e le stesse segnalazioni hanno numeri diversi. Orari, canali e clienti delle segnalazioni della storia coincidono, salvo il canale «web» del gestionale reso qui come «chat» (Mario Esempio, mercoledì).

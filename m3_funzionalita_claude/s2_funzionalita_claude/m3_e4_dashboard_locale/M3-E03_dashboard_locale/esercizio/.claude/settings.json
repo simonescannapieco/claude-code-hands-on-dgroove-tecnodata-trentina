@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python3 genera_dashboard.py)",
+      "Bash(python3 controlla_dashboard.py)",
+      "Bash(python3 controlla_dashboard.py *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(./anonimo/ticket-anonimi.csv)",
+      "Edit(./controlla_dashboard.py)"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+Un guasto di rete è stato causato da un’interruzione nel collegamento tra i dispositivi, che ha impedito la comunicazione tra i sistemi coinvolti e reso temporaneamente irraggiungibili i servizi.

@@ -1,0 +1,1 @@
+Un guasto di rete ha interrotto la connessione tra i dispositivi, impedendo l’accesso a internet e alle risorse condivise fino al ripristino del collegamento.

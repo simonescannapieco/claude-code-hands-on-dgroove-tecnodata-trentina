@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(./allarmi.html)",
+      "Read(./verita.json)",
+      "Read(./esiti.tsv)",
+      "Read(./risposte/**)"
+    ]
+  }
+}

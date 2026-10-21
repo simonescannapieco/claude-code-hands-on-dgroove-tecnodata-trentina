@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Allarmi della settimana — NOC</title>
+<!--
+  La sorgente delle due immagini di M3-D01: _docente/genera_immagini.sh la
+  impagina a 1600×1000 (allarmi.png) e la stessa pagina rimpicciolita dieci
+  volte (allarmi-piccola.png, 160×100). Dati sintetici: gli allarmi sono
+  un estratto di progetti/rete/allarmi.csv, la settimana inventata di
+  CiaspoLink; tre righe hanno gravità «critico».
+-->
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1600px;
+    height: 1000px;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-family: "DejaVu Sans", "Liberation Sans", Arial, Helvetica, sans-serif;
+  }
+  header { padding: 44px 56px 22px; }
+  h1 { margin: 0; font-size: 46px; }
+  p.sotto { margin: 12px 0 0; font-size: 25px; color: #4a4a4a; }
+  table {
+    margin: 8px 56px 0;
+    width: 1488px;
+    border-collapse: collapse;
+    font-size: 27px;
+  }
+  th {
+    text-align: left;
+    background: #263238;
+    color: #ffffff;
+    padding: 14px 18px;
+  }
+  td { padding: 13px 18px; border-bottom: 1px solid #c8ccce; }
+  tbody tr:nth-child(even) td { background: #f2f4f5; }
+  .g {
+    display: inline-block;
+    min-width: 128px;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .critico { background: #c62828; color: #ffffff; }
+  .maggiore { background: #e65100; color: #ffffff; }
+  .minore { background: #f6d24a; color: #1a1a1a; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Allarmi della settimana — NOC</h1>
+  <p class="sotto">CiaspoLink · 7–13 settembre 2026 · estratto dal monitoraggio</p>
+</header>
+<table>
+  <thead>
+    <tr><th>data e ora</th><th>apparato</th><th>gravità</th><th>descrizione</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>08/09 06:00</td><td>olt-trento-01</td><td><span class="g minore">minore</span></td><td>Orologio non sincronizzato (scarto 12 s)</td></tr>
+    <tr><td>08/09 10:12</td><td>olt-pergine-01</td><td><span class="g critico">critico</span></td><td>Porta PON 0/1/3: perdita di segnale, 40 ONT offline</td></tr>
+    <tr><td>08/09 10:14</td><td>bng-trento-01</td><td><span class="g maggiore">maggiore</span></td><td>Sessioni PPPoE attive 80 su 121 (calo improvviso)</td></tr>
+    <tr><td>09/09 03:10</td><td>radius-trento-01</td><td><span class="g minore">minore</span></td><td>Partizione /var all'87%</td></tr>
+    <tr><td>09/09 09:41</td><td>ptp-cles-01</td><td><span class="g critico">critico</span></td><td>Collegamento radio interrotto</td></tr>
+    <tr><td>09/09 09:52</td><td>ptp-trento-01</td><td><span class="g maggiore">maggiore</span></td><td>Segnale a -71 dBm, sotto la soglia di -65 dBm</td></tr>
+    <tr><td>11/09 08:04</td><td>sbc-trento-01</td><td><span class="g maggiore">maggiore</span></td><td>Interni del centralino registrati 9 su 12</td></tr>
+    <tr><td>11/09 08:29</td><td>sbc-trento-01</td><td><span class="g critico">critico</span></td><td>Interni del centralino registrati 5 su 12</td></tr>
+    <tr><td>11/09 21:05</td><td>bng-trento-01</td><td><span class="g minore">minore</span></td><td>CPU all'83% da 5 minuti</td></tr>
+    <tr><td>12/09 09:15</td><td>dhcp-trento-01</td><td><span class="g maggiore">maggiore</span></td><td>Pool DHCP della VLAN 312 all'85% (12 su 14)</td></tr>
+  </tbody>
+</table>
+</body>
+</html>

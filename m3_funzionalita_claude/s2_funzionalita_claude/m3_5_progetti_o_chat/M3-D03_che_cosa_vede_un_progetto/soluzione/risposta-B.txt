@@ -1,0 +1,1 @@
+MARMOTTA-9103 Un guasto di rete è un’interruzione o un malfunzionamento di uno o più componenti (cavi, switch, router, server) che impedisce ai dispositivi collegati di comunicare tra loro o con internet.

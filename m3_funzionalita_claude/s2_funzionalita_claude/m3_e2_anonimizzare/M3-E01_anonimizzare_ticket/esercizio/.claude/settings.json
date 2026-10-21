@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python3 anonimizza.py)",
+      "Bash(python3 controlla_pii.py)",
+      "Bash(python3 controlla_pii.py *)",
+      "Bash(python3 profilo.py)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(./dati/ticket-settimana.csv)",
+      "Read(./anonimo/ticket-anonimi.csv)",
+      "Edit(./controlla_pii.py)",
+      "Edit(./impronte.json)"
+    ]
+  }
+}

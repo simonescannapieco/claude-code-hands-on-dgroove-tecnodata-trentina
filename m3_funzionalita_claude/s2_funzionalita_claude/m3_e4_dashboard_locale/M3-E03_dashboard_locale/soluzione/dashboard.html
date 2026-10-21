@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La settimana dell'assistenza clienti</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 2rem; color: #1f2933;
+       background: #f5f7fa; }
+h1 { font-size: 1.6rem; margin: 0 0 .25rem; }
+h2 { font-size: 1.1rem; margin: 0 0 .75rem; }
+.sotto { color: #52606d; margin: 0 0 1.5rem; }
+.riquadri { display: grid; gap: 1rem; margin-bottom: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
+.riquadro, section { background: #fff; border: 1px solid #d9e2ec;
+                     border-radius: .5rem; padding: 1rem 1.25rem; }
+section { margin-bottom: 1.5rem; }
+.numero { font-size: 1.8rem; font-weight: 600; }
+.etichetta { color: #52606d; font-size: .9rem; }
+svg text { font-size: 12px; fill: #1f2933; }
+.barra { fill: #3e7cb1; }
+</style>
+</head>
+<body>
+<h1>La settimana dell'assistenza clienti</h1>
+<p class="sotto">343 segnalazioni, dal file anonimo della settimana.</p>
+<div class="riquadri">
+<div class="riquadro"><div class="numero">343</div><div class="etichetta">segnalazioni</div></div>
+<div class="riquadro"><div class="numero">75</div><div class="etichetta">aperte a fine settimana</div></div>
+<div class="riquadro"><div class="numero">2</div><div class="etichetta">annullate</div></div>
+<div class="riquadro"><div class="numero">8,5</div><div class="etichetta">minuti alla prima risposta (mediana)</div></div>
+<div class="riquadro"><div class="numero">3,52</div><div class="etichetta">soddisfazione media, su 106 voti</div></div>
+<div class="riquadro"><div class="numero">27</div><div class="etichetta">clienti ricorrenti (almeno 3 segnalazioni)</div></div>
+</div>
+<section>
+<h2>Segnalazioni per giorno</h2>
+<svg role="img" aria-label="segnalazioni per giorno" width="402" height="212">
+<rect class="barra" x="10" y="76" width="40" height="114"/>
+<text x="30" y="72" text-anchor="middle">57</text>
+<text x="30" y="206" text-anchor="middle">lun</text>
+<rect class="barra" x="66" y="30" width="40" height="160"/>
+<text x="86" y="26" text-anchor="middle">80</text>
+<text x="86" y="206" text-anchor="middle">mar</text>
+<rect class="barra" x="122" y="62" width="40" height="128"/>
+<text x="142" y="58" text-anchor="middle">64</text>
+<text x="142" y="206" text-anchor="middle">mer</text>
+<rect class="barra" x="178" y="84" width="40" height="106"/>
+<text x="198" y="80" text-anchor="middle">53</text>
+<text x="198" y="206" text-anchor="middle">gio</text>
+<rect class="barra" x="234" y="82" width="40" height="108"/>
+<text x="254" y="78" text-anchor="middle">54</text>
+<text x="254" y="206" text-anchor="middle">ven</text>
+<rect class="barra" x="290" y="140" width="40" height="50"/>
+<text x="310" y="136" text-anchor="middle">25</text>
+<text x="310" y="206" text-anchor="middle">sab</text>
+<rect class="barra" x="346" y="170" width="40" height="20"/>
+<text x="366" y="166" text-anchor="middle">10</text>
+<text x="366" y="206" text-anchor="middle">dom</text>
+</svg>
+</section>
+<section>
+<h2>Segnalazioni per categoria</h2>
+<svg role="img" aria-label="segnalazioni per categoria" width="570" height="342">
+<text x="192" y="18" text-anchor="end">assenza_connessione</text>
+<rect class="barra" x="200" y="6" width="300" height="16"/>
+<text x="506" y="18">73</text>
+<text x="192" y="42" text-anchor="end">fatturazione</text>
+<rect class="barra" x="200" y="30" width="152" height="16"/>
+<text x="358" y="42">37</text>
+<text x="192" y="66" text-anchor="end">lentezza</text>
+<rect class="barra" x="200" y="54" width="144" height="16"/>
+<text x="350" y="66">35</text>
+<text x="192" y="90" text-anchor="end">connessione_instabile</text>
+<rect class="barra" x="200" y="78" width="132" height="16"/>
+<text x="338" y="90">32</text>
+<text x="192" y="114" text-anchor="end">wifi</text>
+<rect class="barra" x="200" y="102" width="132" height="16"/>
+<text x="338" y="114">32</text>
+<text x="192" y="138" text-anchor="end">telefonia_voip</text>
+<rect class="barra" x="200" y="126" width="115" height="16"/>
+<text x="321" y="138">28</text>
+<text x="192" y="162" text-anchor="end">attivazione</text>
+<rect class="barra" x="200" y="150" width="99" height="16"/>
+<text x="305" y="162">24</text>
+<text x="192" y="186" text-anchor="end">copertura</text>
+<rect class="barra" x="200" y="174" width="74" height="16"/>
+<text x="280" y="186">18</text>
+<text x="192" y="210" text-anchor="end">router_configurazione</text>
+<rect class="barra" x="200" y="198" width="62" height="16"/>
+<text x="268" y="210">15</text>
+<text x="192" y="234" text-anchor="end">trasloco</text>
+<rect class="barra" x="200" y="222" width="49" height="16"/>
+<text x="255" y="234">12</text>
+<text x="192" y="258" text-anchor="end">informazioni</text>
+<rect class="barra" x="200" y="246" width="45" height="16"/>
+<text x="251" y="258">11</text>
+<text x="192" y="282" text-anchor="end">reclamo</text>
+<rect class="barra" x="200" y="270" width="45" height="16"/>
+<text x="251" y="282">11</text>
+<text x="192" y="306" text-anchor="end">rete_aziendale</text>
+<rect class="barra" x="200" y="294" width="45" height="16"/>
+<text x="251" y="306">11</text>
+<text x="192" y="330" text-anchor="end">hotspot</text>
+<rect class="barra" x="200" y="318" width="16" height="16"/>
+<text x="222" y="330">4</text>
+</svg>
+</section>
+<section>
+<h2>Minuti di risoluzione per tecnologia (media)</h2>
+<svg role="img" aria-label="minuti di risoluzione per tecnologia" width="570" height="102">
+<text x="192" y="18" text-anchor="end">FTTH</text>
+<rect class="barra" x="200" y="6" width="249" height="16"/>
+<text x="455" y="18">1000,7</text>
+<text x="192" y="42" text-anchor="end">FWA</text>
+<rect class="barra" x="200" y="30" width="300" height="16"/>
+<text x="506" y="42">1204,4</text>
+<text x="192" y="66" text-anchor="end">VoIP</text>
+<rect class="barra" x="200" y="54" width="137" height="16"/>
+<text x="343" y="66">548,9</text>
+<text x="192" y="90" text-anchor="end">altro</text>
+<rect class="barra" x="200" y="78" width="265" height="16"/>
+<text x="471" y="90">1063,6</text>
+</svg>
+</section>
+<script type="application/json" id="kpi">
+{
+  "annullate": 2,
+  "aperte_fine_settimana": 75,
+  "clienti_ricorrenti": 27,
+  "media_minuti_risoluzione_per_tecnologia": {
+    "FTTH": 1000.7,
+    "FWA": 1204.4,
+    "VoIP": 548.9,
+    "altro": 1063.6
+  },
+  "mediana_minuti_prima_risposta": 8.5,
+  "per_categoria": {
+    "assenza_connessione": 73,
+    "attivazione": 24,
+    "connessione_instabile": 32,
+    "copertura": 18,
+    "fatturazione": 37,
+    "hotspot": 4,
+    "informazioni": 11,
+    "lentezza": 35,
+    "reclamo": 11,
+    "rete_aziendale": 11,
+    "router_configurazione": 15,
+    "telefonia_voip": 28,
+    "trasloco": 12,
+    "wifi": 32
+  },
+  "per_giorno": {
+    "dom": 10,
+    "gio": 53,
+    "lun": 57,
+    "mar": 80,
+    "mer": 64,
+    "sab": 25,
+    "ven": 54
+  },
+  "segnalazioni": 343,
+  "soddisfazione_media": 3.52,
+  "voti": 106
+}
+</script>
+</body>
+</html>

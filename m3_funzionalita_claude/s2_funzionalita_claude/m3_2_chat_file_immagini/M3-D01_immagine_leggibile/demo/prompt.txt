@@ -1,0 +1,5 @@
+Leggi l'immagine IMMAGINE: è una tabella di allarmi di rete.
+Rispondi con due righe e nient'altro:
+critici: <quanti allarmi hanno gravità «critico»>
+apparati: <i nomi degli apparati di quegli allarmi, separati da virgola>
+Se non riesci a leggere l'immagine, rispondi soltanto: non leggibile

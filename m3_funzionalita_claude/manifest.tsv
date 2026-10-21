@@ -1,1 +1,8 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M3-D01	demo	claude-code-pro	s2_funzionalita_claude	m3_2_chat_file_immagini	slides/theory/m3_funzionalita_claude/m3_2_chat_file_immagini	4	Un'immagine leggibile
+M3-D02	demo	claude-code-pro	s2_funzionalita_claude	m3_4_ricerca_codice_file	slides/theory/m3_funzionalita_claude/m3_4_ricerca_codice_file	4	Quando Claude cerca sul web
+M3-D03	demo	claude-ai-pro	s2_funzionalita_claude	m3_5_progetti_o_chat	slides/theory/m3_funzionalita_claude/m3_5_progetti_o_chat	7	Che cosa vede Claude in un progetto
+M3-D04	demo	claude-ai-pro	s2_funzionalita_claude	m3_6_memoria_e_dati	slides/theory/m3_funzionalita_claude/m3_6_memoria_e_dati	5	Una chat senza memoria
+M3-E01	esercizio	claude-code-pro	s2_funzionalita_claude	m3_e2_anonimizzare	slides/practice/m3_esercitazione_artifact/m3_e2_anonimizzare	16	Anonimizzare la settimana di ticket
+M3-E02	esercizio	claude-ai-pro	s2_funzionalita_claude	m3_e3_dashboard	slides/practice/m3_esercitazione_artifact/m3_e3_dashboard	19	La dashboard della settimana
+M3-E03	esercizio	claude-code-pro	s2_funzionalita_claude	m3_e4_dashboard_locale	slides/practice/m3_esercitazione_artifact/m3_e4_dashboard_locale	12	La stessa dashboard in Claude Code
