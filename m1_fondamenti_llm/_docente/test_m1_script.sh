@@ -4,24 +4,31 @@
 # (sta in _docente/, il materiale del docente, che resta fuori dalla copia
 # senza soluzioni di tools/esporta_studenti.sh):
 #   - i sei verifica.sh: spazio di lavoro assente e file che non si legge
-#     (uscita 2), la soluzione dell'elemento (0, senza segnalazioni), i casi
-#     da segnalare (1) e quelli limite: a capo CRLF, numeri con lo zero
-#     davanti, il trattino U+2011, la linea scritta in minuscolo, l'inizio
-#     di una risposta tagliato a parole anche con LC_ALL=C;
+#     (uscita 2, saltata da root), la soluzione dell'elemento (0, senza
+#     segnalazioni), i casi da segnalare (1) e quelli limite: a capo CRLF,
+#     numeri con lo zero davanti, il trattino U+2011, la linea scritta in
+#     minuscolo, l'intestazione di M1-D04 con un BOM, un suo conteggio di
+#     30 cifre (1, mai l'aritmetica di bash); in M1-D02 il verso
+#     della differenza è un dato, non l'uscita; nessuna riga oltre le 80
+#     colonne; i controlli delle demo ricostruite hanno le loro suite
+#     (test_m1_d01_d02_e01.sh, test_m1_d03.sh, test_m1_d05.sh);
 #   - verifica.py di M1-E01: un JSON con errore, senza modelUsage o con una
 #     durata non numerica, numeri della tabella diversi dal JSON, una
 #     colonna in più; «Haiku 4.5» e «5,6 sec» accettati;
-#   - leggi_json.py: le tre copie identiche, JSON vuoto, non valido o non
-#     oggetto (1), uso sbagliato (2), token null contati come zero;
+#   - leggi_json.py: le quattro copie identiche, JSON vuoto, non valido,
+#     annidato oltre il limite di Python o non oggetto (1), uso sbagliato
+#     (2), token null contati come zero, un «usage» senza nessuno dei tre
+#     campi dei token in entrata (1);
 #   - il claude finto legge gli argomenti come la CLI vera: le opzioni,
 #     poi «--» e il prompt; un prompt che comincia con «-» passato prima
 #     di «--» è un'opzione sconosciuta (uscita 1);
 #   - i sei _docente/live.sh con il claude finto: una precondizione di
 #     handson::claude_p esce 2 senza chiamare claude, una chiamata fallita
 #     esce 1, le risposte complete escono 0; su un esito diverso M1-D04
-#     stampa il messaggio di verifica.sh; il controllo di M1-D02, una
-#     funzione, va KO con token uguali e OK con i token presi dai byte del
-#     prompt; un prompt che comincia con «-» arriva a claude;
+#     stampa il messaggio di verifica.sh; M1-D02 e M1-D04 lasciano l'esito
+#     alla loro verifica.sh: M1-D02 va KO con token uguali (pesi zero, da
+#     rifare) e OK con i token presi dai byte del prompt; un prompt che
+#     comincia con «-» arriva a claude;
 #   - il live.sh di M1-E01 con una verifica.sh finta, in una copia
 #     dell'elemento: se la verifica esce 2 la prova esce 2 (una
 #     precondizione), se esce 1 resta un KO, se esce 0 passa e ne stampa
@@ -30,12 +37,14 @@
 #     elemento sono quelli della sua riga;
 #   - shellcheck -x su ogni script del modulo e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
-# repository non cambia.
+# repository non cambia. Il numero di prove eseguite (anche quelle
+# saltate) deve essere CASES.
 #
 # Uso:    m1_fondamenti_llm/_docente/test_m1_script.sh
 # Uscita: 0 = tutte le prove passano · 1 = almeno una fallita
-#         2 = precondizione (manca jq, python3, shellcheck, iconv o
-#             sha256sum, o la cartella di un elemento)
+#         2 = precondizione (manca jq, python3, shellcheck o sha256sum,
+#             o la cartella di un elemento), oppure le prove eseguite non
+#             sono CASES
 set -uo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -49,18 +58,16 @@ readonly D04="${S1}/m1_3_token_e_contesto/M1-D04_senza_memoria"
 readonly D05="${S1}/m1_4_forze_e_limiti/M1-D05_circolare"
 readonly E01="${S1}/m1_e2_stesso_prompt_tre_modelli/M1-E01_stesso_prompt"
 readonly ELEMENTI=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${E01}")
+readonly CASES=111
 # Per ogni elemento, nello stesso ordine: il file dei risultati, la frase
 # della verifica riuscita, una parola delle sue segnalazioni.
-readonly DATI=(risultati.tsv conteggi.tsv risposte.tsv catena.tsv
-  risposte.tsv confronto.md)
-readonly OK_PAROLE=('Le risposte dei tre modelli ci sono.'
-  'La frase italiana pesa più della sua traduzione inglese.'
-  'Le risposte dei tre modelli ci sono (le n sono 4).'
-  'Esito come nelle registrazioni del corso.'
-  'Le risposte ci sono: rifiutano o inventano?'
-  'Confronto compilato e coerente')
-readonly KO_PAROLE=('Nessuna risposta' 'atteso italiano' 'Nessuna risposta'
-  'dovrebbe' 'Manca la risposta' 'Da sistemare')
+readonly FATTO='Fatto: ogni affermazione è stata messa alla prova'
+readonly DATI=(risultati.tsv conteggi.tsv conteggi.tsv catena.tsv
+  risposte confronto.md)
+readonly OK_PAROLE=("${FATTO}" "${FATTO}" "${FATTO}" "${FATTO}" "${FATTO}"
+  "${FATTO}")
+readonly KO_PAROLE=('Nessuna risposta' 'Da rifare' 'non confermata'
+  'in questa esecuzione no' 'Da completare' 'Da sistemare')
 readonly LJ="${D02}/demo/leggi_json.py"
 readonly T=$'\t'
 readonly U2011=$'\xe2\x80\x91'
@@ -72,11 +79,13 @@ readonly RISPOSTA
 TMP=''
 PASS=0
 FAIL=0
+SKIP=0
 RC=0
 OUT=''
 
 pass() { echo "  PASS: $1"; PASS=$((PASS + 1)); }
 fail() { echo "  FAIL: $1"; FAIL=$((FAIL + 1)); }
+skip() { echo "  SKIP: $1"; SKIP=$((SKIP + 1)); }
 
 # Esegue un comando; RC e OUT (STDOUT e STDERR insieme) per expect.
 run() { OUT="$("$@" 2>&1)"; RC=$?; }
@@ -240,18 +249,23 @@ FINTO
 # Ogni verifica.sh: spazio di lavoro assente (2), la soluzione (0, senza
 # segnalazioni), il file dei risultati che non si legge (2).
 t_verifiche_base() {
-  local i e nome w
+  local i e nome w p
   for i in "${!ELEMENTI[@]}"; do
     e="${ELEMENTI[i]}"
     nome="${e##*/}"
     run "${e}/verifica.sh" "${TMP}/assente"
     expect "${nome}: spazio di lavoro assente" 2 "spazio di lavoro assente"
-    ws w "${e}/soluzione"
+    # il punto di partenza e poi la soluzione, come tools/run_all.sh: una
+    # verifica può leggere anche i testi della partenza (M1-D02, M1-D03)
+    p="${e}/demo"
+    [[ -d "${p}" ]] || p="${e}/esercizio"
+    ws w "${p}"
+    cp -R "${e}/soluzione/." "${w}/"
     run "${e}/verifica.sh" "${w}"
     expect "${nome}: la soluzione passa" 0 "${OK_PAROLE[i]}"
     expect_absent "${nome}: la soluzione non ha segnalazioni" "${KO_PAROLE[i]}"
     if (( EUID == 0 )); then
-      echo "  SKIP: ${nome}: da root ogni file si legge"
+      skip "${nome}: ${DATI[i]} che non si legge (da root ogni file si legge)"
       continue
     fi
     chmod 000 "${w}/${DATI[i]}"
@@ -260,7 +274,7 @@ t_verifiche_base() {
   done
 }
 
-t_casi_d01_d03() {
+t_casi_d01() {
   local w
   ws w
   tsv "${w}/risultati.tsv" 'haiku|La'
@@ -272,18 +286,6 @@ t_casi_d01_d03() {
   tsv "${w}/risultati.tsv" 'modello|parola' 'haiku|La' 'sonnet|Il' 'opus|La'
   run "${D01}/verifica.sh" "${w}"
   expect "M1-D01: «1 risposta», al singolare" 0 "haiku: 1 risposta --"
-  tsv "${w}/risposte.tsv" 'modello|domanda|risposta' 'haiku|conta|4' \
-    'haiku|compitata|4' 'sonnet|conta|3' 'opus|conta|4' 'opus|compitata|4'
-  run "${D03}/verifica.sh" "${w}"
-  expect "M1-D03: una domanda senza risposta" 1 \
-    "Nessuna risposta di sonnet alla domanda «compitata»"
-  tsv "${w}/risposte.tsv" 'modello|domanda|risposta' \
-    'haiku|conta|uno due tre quattro cinque sei sette otto nove dieci undici' \
-    'haiku|compitata|4' 'sonnet|conta|3' 'sonnet|compitata|4' \
-    'opus|conta|4' 'opus|compitata|4'
-  run "${D03}/verifica.sh" "${w}"
-  expect "M1-D03: di una risposta lunga, le prime dieci parole" 0 \
-    "«uno due tre quattro cinque sei sette otto nove dieci …»"
 }
 
 t_casi_d02() {
@@ -297,7 +299,8 @@ t_casi_d02() {
   tsv "${w}/conteggi.tsv" 'modello|testo|token_entrata' 'haiku|it|100' \
     'haiku|it-doppia|110' 'haiku|en|90' 'haiku|en-doppia|107'
   run "${D02}/verifica.sh" "${w}"
-  expect "M1-D02: l'inglese pesa di più" 1 "atteso italiano > inglese > 0"
+  expect "M1-D02: l'inglese pesa di più, un dato: la verifica passa" 0 \
+    "(27 contro 17): in questa esecuzione no"
   tsv "${w}/conteggi.tsv" 'modello|testo|token_entrata' 'haiku|it|100'
   run "${D02}/verifica.sh" "${w}"
   expect "M1-D02: nessun modello completo" 1 "Nessun modello con i quattro"
@@ -309,7 +312,7 @@ t_casi_d04() {
   tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|0950|Ricevuto.' \
     'B|0577|Quale linea?' "C|1000|La linea LN${U2011}000204 ha un guasto."
   run "${D04}/verifica.sh" "${w}"
-  expect "M1-D04: zeri davanti e trattino U+2011" 0 "Esito come nelle"
+  expect "M1-D04: zeri davanti e trattino U+2011" 0 "Fatto: ogni affermazione"
   tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|950|Ricevuto.' \
     'B|577|Forse la ln-000204?' 'C|1000|La linea LN-000204.'
   run "${D04}/verifica.sh" "${w}"
@@ -317,31 +320,59 @@ t_casi_d04() {
   tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|950|Ricevuto.' \
     'B|577|Quale linea?' 'C|900|La linea LN-000204.'
   run "${D04}/verifica.sh" "${w}"
-  expect "M1-D04: C non manda più token di A" 1 "attesi più token per C"
+  expect "M1-D04: C non manda più token di A" 1 \
+    "la cronologia rimandata a ogni richiesta; in questa esecuzione no"
+  tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|950|Ricevuto.' \
+    'B|577|Quale linea?' 'C|1000|Non lo so.'
+  run "${D04}/verifica.sh" "${w}"
+  expect "M1-D04: C non nomina la linea, un consiglio: esce 0" 0 \
+    "C nomina LN-000204: non confermata in questa esecuzione"
+  tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|950|Ricevuto.' \
+    'B|577|Quale linea?' 'C|1000|La linea LN-000204.'
+  sed -i -e '1s/^/\xef\xbb\xbf/' -e 's/$/\r/' "${w}/catena.tsv"
+  run "${D04}/verifica.sh" "${w}"
+  expect "M1-D04: l'intestazione con un BOM, righe CRLF" 0 \
+    "Fatto: ogni affermazione"
+  # 30 nove: l'aritmetica di bash li riduce in silenzio a un altro numero
+  tsv "${w}/catena.tsv" 'chiamata|token_entrata|risposta' 'A|950|Ricevuto.' \
+    'B|577|Quale linea?' \
+    "C|$(printf '%30s' '' | tr ' ' 9)|La linea LN-000204."
+  run "${D04}/verifica.sh" "${w}"
+  expect "M1-D04: un conteggio di 30 cifre non è un numero, uscita 1" 1 \
+    "Token in entrata di A o di C mancanti o non numerici."
+}
+
+# Le righe dei sei verifica.sh: al più 80 colonne (RU-01.14), contate in
+# caratteri.
+t_colonne() {
+  local e
+  local -a script=()
+  for e in "${ELEMENTI[@]}"; do
+    script+=("${e}/verifica.sh")
+  done
+  run python3 -B -I - "${script[@]}" <<'PY'
+import sys
+
+lunghe = []
+for path in sys.argv[1:]:
+    with open(path, encoding="utf-8") as fh:
+        for numero, riga in enumerate(fh, 1):
+            if len(riga.rstrip("\n")) > 80:
+                lunghe.append("%s:%d" % (path.rsplit("/", 2)[-2], numero))
+print(" ".join(lunghe) or "ok")
+sys.exit(1 if lunghe else 0)
+PY
+  expect "i sei verifica.sh: nessuna riga oltre le 80 colonne" 0 ok
 }
 
 t_casi_d05() {
-  local w lunga
-  ws w
-  tsv "${w}/risposte.tsv" 'modello|turno|risposta' 'haiku|richiesta|No.' \
-    'haiku|insisto|No.' 'sonnet|richiesta|No.' 'sonnet|insisto|No.' \
-    'opus|richiesta|No.'
+  local w
+  ws w "${D05}/demo"
+  cp -R "${D05}/soluzione/." "${w}/"
+  rm -f -- "${w}/risposte/B-regole-opus.json"
   run "${D05}/verifica.sh" "${w}"
-  expect "M1-D05: un turno senza risposta" 1 \
-    "Manca la risposta di opus al turno «insisto»"
-  lunga='Non posso farlo perché la circolare non è nei documenti: è più'
-  lunga+=' prudente così, perché città e attività cambiano, però verificherò'
-  tsv "${w}/risposte.tsv" 'modello|turno|risposta' "haiku|richiesta|${lunga}" \
-    'haiku|insisto|No.' 'sonnet|richiesta|No.' 'sonnet|insisto|No.' \
-    'opus|richiesta|No.' 'opus|insisto|No.'
-  run env LC_ALL=C "${D05}/verifica.sh" "${w}"
-  expect "M1-D05: risposta lunga con LC_ALL=C, tagliata a parole" 0 \
-    "e attività …"
-  if iconv -f UTF-8 -t UTF-8 <<< "${OUT}" > /dev/null 2>&1; then
-    pass "M1-D05: l'inizio tagliato resta UTF-8 valido"
-  else
-    fail "M1-D05: UTF-8 spezzato: ${OUT:0:200}"
-  fi
+  expect "M1-D05: una risposta che manca" 1 \
+    "Da completare: manca risposte/B-regole-opus.json"
 }
 
 # verifica.py di M1-E01, attraverso verifica.sh: ogni caso parte da una
@@ -378,10 +409,11 @@ t_casi_e01() {
 
 t_leggi_json() {
   local copie
-  copie="$(sha256sum "${LJ}" "${D04}/demo/leggi_json.py" \
-    "${D05}/demo/leggi_json.py" | cut -d' ' -f1 | sort -u | wc -l)"
+  copie="$(sha256sum "${LJ}" "${D03}/demo/leggi_json.py" \
+    "${D04}/demo/leggi_json.py" "${D05}/demo/leggi_json.py" \
+    | cut -d' ' -f1 | sort -u | wc -l)"
   if (( copie == 1 )); then
-    pass "leggi_json.py: le tre copie sono identiche"
+    pass "leggi_json.py: le quattro copie sono identiche"
   else
     fail "leggi_json.py: ${copie} versioni diverse"
   fi
@@ -389,6 +421,10 @@ t_leggi_json() {
   expect "leggi_json.py: ingresso vuoto" 1 "nessun JSON in ingresso"
   lj_run 'x' result
   expect "leggi_json.py: JSON non valido" 1 "non è un JSON valido"
+  # 100000 «[»: RecursionError su ogni python3, dal 3.8 al 3.14
+  lj_run "$(printf '%100000s' '' | tr ' ' '[')" result
+  expect "leggi_json.py: JSON annidato oltre il limite, uscita 1" 1 \
+    "il testo in ingresso non è un JSON valido"
   lj_run '[1]' result
   expect "leggi_json.py: JSON non oggetto" 1 "non è quello di claude -p"
   lj_run '{"is_error":true,"result":"x"}' result
@@ -396,6 +432,13 @@ t_leggi_json() {
   lj_run '{"usage":{"input_tokens":2,"cache_creation_input_tokens":null,
     "cache_read_input_tokens":5}}' token_entrata
   expect "leggi_json.py: token null contati come zero" 0 "7"
+  lj_run '{"usage":{"output_tokens":1}}' token_entrata
+  expect "leggi_json.py: «usage» senza i tre campi in entrata, uscita 1" 1 \
+    "«usage» non contiene i token in entrata"
+  lj_run '{"usage":{"input_tokens":null,"cache_read_input_tokens":null}}' \
+    token_entrata
+  expect "leggi_json.py: i tre campi assenti o null, uscita 1" 1 \
+    "«usage» non contiene i token in entrata"
   lj_run '{}' nessuno
   expect "leggi_json.py: uso sbagliato" 2 "Uso:"
 }
@@ -447,12 +490,12 @@ t_live() {
   expect_absent "M1-D01 live.sh: e nessun rifiuto" "cominciare con -"
   ws w "${D02}/demo"
   live "${D02}" "${w}"
-  expect "M1-D02 live.sh: token uguali, il controllo (una funzione) è KO" 1 \
-    "VERIFICA KO   haiku: italiano > inglese > 0 (uscita 1)"
+  expect "M1-D02 live.sh: token uguali, pesi zero da rifare, KO" 1 \
+    "VERIFICA KO   le due affermazioni (verifica.sh) (uscita 1)"
   ws w "${D02}/demo"
   live "${D02}" "${w}" FINTO_TOKEN=byte
-  expect "M1-D02 live.sh: l'italiano pesa di più, il controllo è OK" 0 \
-    "VERIFICA OK   haiku: italiano > inglese > 0"
+  expect "M1-D02 live.sh: pesi positivi, la sua verifica.sh è OK" 0 \
+    "VERIFICA OK   le due affermazioni (verifica.sh)"
   run "${D02}/verifica.sh" "${w}"
   expect "M1-D02: il conteggi.tsv di live.sh passa la verifica" 0 \
     "${OK_PAROLE[1]}"
@@ -463,12 +506,12 @@ t_live() {
   ws w "${D04}/demo"
   live "${D04}" "${w}"
   expect "M1-D04 live.sh: su un esito diverso il messaggio di verifica.sh" 1 \
-    "C non nomina LN-000204: la sessione ripresa dovrebbe ricordarla."
+    "la cronologia rimandata a ogni richiesta; in questa esecuzione no"
   expect "M1-D04 live.sh: e il verdetto con l'uscita del controllo" 1 \
-    "C sì; C manda più token di A (uscita 1)"
+    "VERIFICA KO   le due garanzie (verifica.sh) (uscita 1)"
   ws w "${D05}/demo"
   live "${D05}" "${w}"
-  expect "M1-D05 live.sh: sei risposte, uscita 0" 0 "Ciao"
+  expect "M1-D05 live.sh: dodici risposte, uscita 0" 0 "Ciao"
 }
 
 # Il live.sh di M1-E01 con una verifica.sh finta: se la verifica esce 2
@@ -543,7 +586,7 @@ t_shellcheck() {
 
 main() {
   local t e
-  for t in jq python3 shellcheck iconv sha256sum; do
+  for t in jq python3 shellcheck sha256sum; do
     if ! command -v "${t}" > /dev/null 2>&1; then
       echo "test_m1_script.sh: manca lo strumento ${t}" >&2
       exit 2
@@ -557,7 +600,8 @@ main() {
   done
   TMP="$(mktemp -d)" || { echo "mktemp non riesce" >&2; exit 2; }
   readonly TMP
-  trap 'rm -rf -- "${TMP}"' EXIT
+  # chmod prima di rm: t_verifiche_base toglie i permessi a risposte/
+  trap 'chmod -R u+rwx -- "${TMP}" 2> /dev/null; rm -rf -- "${TMP}"' EXIT
   unset ANTHROPIC_API_KEY HANDSON_ENV HANDSON_PERMISSION_MODE \
     HANDSON_SHOW_CMD HANDSON_NO_PAUSE PN_RIPETIZIONI PN_MODELLI PN_MODELLO \
     PN_PROMPT
@@ -565,9 +609,10 @@ main() {
   echo "test_m1_script.sh"
   t_manifest
   t_verifiche_base
-  t_casi_d01_d03
+  t_casi_d01
   t_casi_d02
   t_casi_d04
+  t_colonne
   t_casi_d05
   t_casi_e01
   t_leggi_json
@@ -575,7 +620,12 @@ main() {
   t_live
   t_live_verifica
   t_shellcheck
-  echo "PASS=${PASS} FAIL=${FAIL}"
+  echo "PASS=${PASS} FAIL=${FAIL} SKIP=${SKIP}"
+  if (( PASS + FAIL + SKIP != CASES )); then
+    echo "test_m1_script.sh: eseguite $((PASS + FAIL + SKIP)) prove," \
+      "attese ${CASES}: una prova manca o è in più" >&2
+    exit 2
+  fi
   (( FAIL == 0 )) || exit 1
 }
 

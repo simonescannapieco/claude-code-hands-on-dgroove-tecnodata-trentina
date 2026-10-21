@@ -1,1 +1,1 @@
-Scrivi la parola interconnessione una lettera per riga, poi conta le n e dimmi quante sono.
+i n t e r c o n n e s s i o n e

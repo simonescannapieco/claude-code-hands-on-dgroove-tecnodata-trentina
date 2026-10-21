@@ -11,13 +11,13 @@ del repository.
 |---|---|---|
 | M1-D01 | La prossima parola: la stessa frase, più volte, a tre modelli | demo in Claude Code |
 | M1-D02 | Stessa frase, due lingue: i token secondo Claude | demo in Claude Code |
-| M1-D03 | Quante n in «interconnessione»? | demo in claude.ai, poi in Claude Code |
+| M1-D03 | Contare le lettere: quanti token pesa una parola, e scritta lettera per lettera | demo in Claude Code |
 | M1-D04 | Ogni chiamata riparte da zero | demo in Claude Code |
 | M1-D05 | La circolare che non esiste | demo in claude.ai, poi in Claude Code |
 | M1-E01 | Lo stesso prompt su tre modelli | esercitazione in Claude Code |
 
-In aula le demo le esegue il docente, e le due in claude.ai le fate anche
-voi, nel browser. L'esercitazione M1-E01 è il vostro primo lavoro in Claude
+In aula le demo le esegue il docente, e quella in claude.ai (M1-D05) la
+fate anche voi, nel browser. L'esercitazione M1-E01 è il vostro primo lavoro in Claude
 Code: prima, `tools/verifica_ambiente.sh` deve essere tutto verde.
 
 Le cartelle: `s1_fondamenti_llm/` (la sessione S1), poi una cartella per

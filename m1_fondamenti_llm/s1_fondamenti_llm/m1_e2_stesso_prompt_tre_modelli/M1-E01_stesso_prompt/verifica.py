@@ -15,12 +15,20 @@ verifica.sh, accanto.
    token in uscita (output_tokens), secondi (duration_ms / 1000, con uno di
    tolleranza). Chi li ha scritti, voi o Claude, va verificato.
 
+Stampa i secondi e i token di ogni modello, poi il verdetto
+sull'affermazione di Anthropic che riguarda i tempi, la latenza comparata
+dei tre modelli (Haiku la più veloce, poi Sonnet, poi Opus): sempre non
+distinguibile, perché una chiamata per modello non la misura, e la
+latenza effettiva dipende anche dalla lunghezza dell'output e dall'effort.
+Su un esito riuscito l'ultima riga è la frase FATTO.
+
 Scritto per il python3 dei partecipanti, dalla 3.8 in su.
 
 Uso:    python3 -B -I verifica.py <spazio di lavoro>
 Uscita: 0 = tutto compilato e coerente · 1 = qualcosa manca o non torna
-        2 = un file che c'è ma non si legge (permessi, codifica), o un
-            argomento sbagliato
+        2 = un file che c'è ma non si legge (permessi, codifica), un
+            argomento sbagliato, o un errore che il controllo non prevede
+            (una riga, mai un traceback)
 """
 from __future__ import annotations
 
@@ -38,6 +46,16 @@ CAMPI_ENTRATA = ("input_tokens", "cache_creation_input_tokens",
                  "cache_read_input_tokens")
 SECONDI = re.compile(r"^\s*([0-9]+(?:[.,][0-9]+)?)\s*(?:s|sec|secondi)?\s*$",
                      re.IGNORECASE)
+# Un numero di token: cifre ASCII, al più 12. isdigit() accetterebbe anche
+# le cifre in apice («²»), che int() rifiuta.
+TOKEN_CELLA = re.compile(r"[0-9]{1,12}")
+# Un numero del JSON (token, millisecondi) sta sotto 10**12, come le celle.
+MASSIMO = 10 ** 12
+LATENZA = ("Latenza comparata secondo Anthropic, Haiku la più veloce, poi "
+           "Sonnet, poi Opus: non distinguibile (una chiamata per modello "
+           "non la misura)")
+FATTO = ("Fatto: ogni affermazione è stata messa alla prova; gli esiti sono "
+         "qui sopra.")
 
 
 class Illeggibile(Exception):
@@ -57,10 +75,13 @@ def leggi_testo(path: str, nome: str) -> str:
 
 
 def intero_json(valore: object) -> Optional[int]:
-    """Un numero del JSON come intero non negativo; None se non lo è."""
+    """Un numero del JSON come intero non negativo sotto MASSIMO; None se
+    non lo è. isfinite solo sui float: un intero enorme non si converte."""
     if isinstance(valore, bool) or not isinstance(valore, (int, float)):
         return None
-    if not math.isfinite(valore) or valore < 0 or int(valore) != valore:
+    if isinstance(valore, float) and not math.isfinite(valore):
+        return None
+    if valore < 0 or valore >= MASSIMO or int(valore) != valore:
         return None
     return int(valore)
 
@@ -75,7 +96,8 @@ def leggi_json(ws: str, modello: str,
         return None
     try:
         dati = json.loads(leggi_testo(path, nome))
-    except ValueError as exc:
+    except (ValueError, RecursionError) as exc:
+        # RecursionError: un JSON annidato oltre il limite di Python.
         problemi.append("%s non è un JSON valido (%s): rifate la sua "
                         "chiamata del passo 3" % (nome, exc))
         return None
@@ -117,7 +139,7 @@ def leggi_json(ws: str, modello: str,
 def intero(cella: str) -> Optional[int]:
     """Un numero di token, anche scritto con i separatori delle migliaia."""
     pulita = re.sub(r"[\s.,'’]", "", cella)
-    return int(pulita) if pulita.isdigit() else None
+    return int(pulita) if TOKEN_CELLA.fullmatch(pulita) else None
 
 
 def decimale(cella: str) -> Optional[float]:
@@ -200,6 +222,8 @@ def controlla_confronto(testo: str, numeri: Dict[str, Optional[dict]],
 
 
 def main(argv: List[str]) -> int:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
     if len(argv) != 1 or not os.path.isdir(argv[0]):
         sys.stderr.write("verifica.py: serve lo spazio di lavoro\n")
         return 2
@@ -221,12 +245,26 @@ def main(argv: List[str]) -> int:
         if n:
             print("%-6s %5.1f s  %6d token in entrata  %5d in uscita"
                   % (modello, n["secondi"], n["entrata"], n["uscita"]))
+    print(LATENZA)
     if problemi:
         print("\n".join("Da sistemare: " + p for p in problemi))
         return 1
     print("Confronto compilato e coerente con le tre risposte.")
+    print(FATTO)
     return 0
 
 
+def principale(argv: List[str]) -> int:
+    """main, con un errore che il controllo non prevede detto in una riga
+    e l'uscita 2: mai un traceback, che uscirebbe 1 come un «non ancora»."""
+    try:
+        return main(argv)
+    except Exception as exc:  # ogni errore che il controllo non prevede
+        sys.stderr.write("verifica.py: errore inatteso del controllo (%s: "
+                         "%s): segnalatelo al docente\n"
+                         % (type(exc).__name__, str(exc)[:200]))
+        return 2
+
+
 if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(principale(sys.argv[1:]))

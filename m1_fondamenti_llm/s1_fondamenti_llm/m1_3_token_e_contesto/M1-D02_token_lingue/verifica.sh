@@ -1,86 +1,56 @@
 #!/bin/bash
 #
-# verifica.sh di M1-D02 -- stessa frase, due lingue: conteggi.tsv
-# (intestazione «modello<TAB>testo<TAB>token_entrata») contiene, per
-# almeno un modello, i token in entrata dei quattro testi it, it-doppia,
-# en, en-doppia. I token di una frase sono la crescita dal testo singolo
-# al testo doppio; la verifica chiede che la frase italiana pesi più della
-# sua traduzione inglese, che pesi più di zero: l'esito registrato dal
-# corso (27 token contro 17, su Haiku, Sonnet e Opus).
+# verifica.sh di M1-D02 -- stessa frase, due lingue. I controlli stanno in
+# verifica.py, accanto a questo file (python3, già richiesto dal corso):
+# legge conteggi.tsv (intestazione «modello<TAB>testo<TAB>token_entrata»)
+# e, per ogni modello con i quattro testi it, it-doppia, en, en-doppia,
+# stampa il peso delle due frasi (la crescita dal testo singolo al doppio)
+# e i caratteri per token, contati in frase_it.txt e frase_en.txt. Poi un
+# verdetto per ciascuna affermazione di Anthropic che la demo mette alla
+# prova: il numero di token dello stesso testo dipende dalla lingua (i
+# prezzi), quanti caratteri vale un token dipende dalla lingua (il
+# glossario). Le due dicono «dipende», senza un verso: il confronto con la
+# registrazione del corso (la frase italiana più pesante, 27 token contro
+# 17, su Haiku, Sonnet e Opus) si stampa, sì o no, e non decide l'uscita.
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = per ogni modello completo, italiano > inglese > 0
+# Uscita: 0 = almeno un modello con i quattro conteggi, e ogni modello
+#             completo con i due pesi positivi
 #         1 = conteggi.tsv assente, senza intestazione, senza un modello
-#             completo, oppure un esito diverso
-#         2 = precondizione (spazio di lavoro assente, conteggi.tsv che non
-#             si legge)
+#             completo, oppure un peso che non è positivo (da rifare)
+#         2 = precondizione (spazio di lavoro assente, python3 mancante,
+#             conteggi.tsv o una delle due frasi che c'è ma non si legge),
+#             oppure il controllo uscito in un altro modo (un segnale, un
+#             errore)
 set -euo pipefail
 
-readonly FILE='conteggi.tsv'
-readonly INTESTAZIONE=$'modello\ttesto\ttoken_entrata'
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SELF
+readonly CONTROLLI="${SELF%/*}/verifica.py"
 
 main() {
-  local ws="${1:-}" prima='' esito riga completi=0 ko=0
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
   fi
-  if [[ ! -f "${ws}/${FILE}" ]]; then
-    echo "Manca ${FILE}: eseguite i passi del README."
-    exit 1
-  fi
-  if [[ ! -r "${ws}/${FILE}" ]]; then
-    echo "verifica: ${FILE} non si legge" >&2
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "verifica: manca python3 (PRIMA_DEL_CORSO.md, «Python e uv»)" >&2
     exit 2
   fi
-  if ! IFS= read -r prima < "${ws}/${FILE}"; then
-    : # file vuoto, o una riga senza a capo finale: «prima» tiene ciò che c'è
+  if [[ ! -r "${CONTROLLI}" ]]; then
+    echo "verifica: manca ${CONTROLLI}" >&2
+    exit 2
   fi
-  if [[ "${prima%$'\r'}" != "${INTESTAZIONE}" ]]; then
-    echo "${FILE}: la prima riga deve essere l'intestazione" \
-      "«modello<TAB>testo<TAB>token_entrata»."
-    exit 1
-  fi
-  # Per ogni modello con i quattro testi: i token delle due frasi e il
-  # confronto; l'ultima riga, «#esito <completi> <ko>», il conto. Un
-  # file salvato con a capo CRLF vale come uno con LF.
-  esito="$(awk -F'\t' '
-    { sub(/\r$/, "") }
-    NR > 1 && $3 ~ /^[0-9]+$/ { t[$1, $2] = $3; m[$1] = 1 }
-    END {
-      completi = 0; ko = 0
-      for (x in m) {
-        if (!((x, "it") in t && (x, "it-doppia") in t \
-            && (x, "en") in t && (x, "en-doppia") in t)) { continue }
-        completi++
-        it = t[x, "it-doppia"] - t[x, "it"]
-        en = t[x, "en-doppia"] - t[x, "en"]
-        if (it > en && en > 0) {
-          printf "%s: italiano %d token, inglese %d (+%d %%)\n", \
-            x, it, en, int((it - en) * 100 / en + 0.5)
-        } else {
-          printf "%s: italiano %d token, inglese %d: atteso italiano" \
-            " > inglese > 0\n", x, it, en
-          ko++
-        }
-      }
-      printf "#esito %d %d\n", completi, ko
-    }' "${ws}/${FILE}")"
-  while IFS= read -r riga; do
-    if [[ "${riga}" == '#esito '* ]]; then
-      read -r completi ko <<< "${riga#'#esito '}"
-    else
-      printf '%s\n' "${riga}"
-    fi
-  done <<< "${esito}"
-  if (( completi == 0 )); then
-    echo "Nessun modello con i quattro testi it, it-doppia, en, en-doppia."
-    exit 1
-  fi
-  if (( ko > 0 )); then
-    exit 1
-  fi
-  echo "La frase italiana pesa più della sua traduzione inglese."
+  python3 -B -I "${CONTROLLI}" "${ws}" || rc=$?
+  case "${rc}" in
+    0|1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: il controllo è uscito con ${rc}: un errore, non un" \
+        "esito" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

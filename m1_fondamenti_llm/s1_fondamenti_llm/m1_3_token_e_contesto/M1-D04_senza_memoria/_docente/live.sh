@@ -11,8 +11,8 @@
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    PN_MODELLO  il modello (default haiku; ammessi haiku, sonnet, opus)
 #         e le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, …)
-# Uscita: 0 = esito come registrato · 1 = una chiamata fallita o un esito
-#         diverso · 2 = precondizione
+# Uscita: 0 = le due garanzie valgono (verifica.sh esce 0) · 1 = una
+#         chiamata fallita, o verifica.sh esce 1 · 2 = precondizione
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -96,8 +96,7 @@ main() {
       && riga C "${json_c}"; } \
     || fallita "la chiamata C non ha dato una risposta"
   handson::step "Il controllo dell'esito"
-  handson::check "B non conosce la linea, C sì; C manda più token di A" \
-    "${CONTROLLO}" "${ws}"
+  handson::check "le due garanzie (verifica.sh)" "${CONTROLLO}" "${ws}"
   handson::finish
 }
 

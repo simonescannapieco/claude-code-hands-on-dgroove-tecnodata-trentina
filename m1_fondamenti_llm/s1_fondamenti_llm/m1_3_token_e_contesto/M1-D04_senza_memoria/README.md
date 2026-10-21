@@ -65,19 +65,40 @@ La linea e il guasto sono inventati, come tutti i dati del corso.
 
 ## Che cosa osservare
 
-- B, una sessione nuova, non sa quale linea seguite: le manca il contesto.
-- C, la sessione di A ripresa, risponde con la linea e il guasto.
-- I token in entrata di C sono più di quelli di A: nella sessione ripresa
-  il modello riceve di nuovo anche la conversazione precedente. Nelle
-  registrazioni del corso: A 608, B 577, C 660. Sulla vostra macchina i
-  numeri possono cambiare di qualche token; conta che C ne riceva più di A.
+### Che cosa dice Anthropic
+
+- «La Messages API è stateless (senza stato), il che significa che invii
+  sempre l'intera cronologia della conversazione all'API» (la guida
+  «Utilizzo della Messages API»:
+  https://platform.claude.com/docs/it/build-with-claude/working-with-messages).
+- In Claude Code, `claude -r "<session>"` (la forma lunga è `--resume`):
+  «Riprendi sessione per ID o nome» (il riferimento della CLI:
+  https://code.claude.com/docs/it/cli-reference).
 - Lo stesso vale per una chat: è il programma che rimanda la cronologia a
   ogni turno, non il modello che si ricorda.
 
+### Che cosa misura il controllo
+
+`verifica.sh` legge `catena.tsv` e dà un verdetto per affermazione:
+
+- B, una sessione nuova, non nomina LN-000204: non può conoscerla, perché
+  la chiamata non riceve la conversazione di A. È garantito: se B la
+  nomina, la verifica lo segnala ed esce con 1.
+- C, la sessione di A ripresa, manda al modello più token in entrata di A:
+  la cronologia viene rimandata. Anche questo è garantito.
+- C nomina la linea: è l'esito della prova, stampato; non fa fallire la
+  verifica.
+
+Nella registrazione del corso dell'11 ottobre 2026 (Claude Code 2.1.296,
+Haiku): A 608 token in entrata, B 577, C 660; B non conosce la linea, C la
+nomina. Sulla vostra macchina i numeri possono cambiare di qualche token;
+conta che C ne riceva più di A.
+
 ## Verifica (tools/verifica.sh M1-D04)
 
-In `catena.tsv`: la risposta di B non nomina LN-000204, quella di C sì, e
-C manda al modello più token di A.
+In `catena.tsv`: la risposta di B non nomina LN-000204 e C manda al
+modello più token di A, le due garanzie; se C nomina la linea, la verifica
+lo stampa.
 
 ## Se qualcosa va storto
 

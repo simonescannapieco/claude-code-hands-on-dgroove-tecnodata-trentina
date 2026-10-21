@@ -70,8 +70,11 @@ inventati.
    millisecondi (`duration_ms`), i token (`usage`) e il modello che ha
    risposto (`modelUsage`). Le opzioni sono quelle delle demo: un modello
    per chiamata, effort low, nessuno strumento, l'istruzione di sistema,
-   nessun server MCP né connettore. Checkpoint, a metà tempo: i tre file in
-   `risposte/`.
+   nessun server MCP né connettore. Fra le tre chiamate cambia soltanto il
+   modello: l'effort resta low, e per Anthropic «Regolare l'effort è
+   spesso una leva migliore rispetto al cambio di modello»
+   (https://platform.claude.com/docs/it/about-claude/models/choosing-a-model).
+   Checkpoint, a metà tempo: i tre file in `risposte/`.
 
 4. Aprite una sessione interattiva su Sonnet, nello spazio di lavoro:
 
@@ -81,7 +84,17 @@ inventati.
 
        Mostrami, uno dopo l'altro, il campo result di risposte/haiku.json, risposte/sonnet.json e risposte/opus.json, senza commentarli.
 
-   Leggete voi le tre risposte: dove differiscono?
+   Leggete voi le tre risposte: dove differiscono, non quanto sono lunghe.
+   Hanno colto il punto? Che cosa manca? Che cosa è sbagliato? Che cosa
+   cercare nei tre compiti del percorso B:
+   - sviluppo: un'attivazione il 31 del mese conta zero giorni; una
+     cessazione il 31 fa pagare 31/30 del canone; se la linea è attivata e
+     cessata nello stesso mese, conta solo la cessazione;
+   - sistemi: tutte le ONT della stessa porta PON sono cadute nel giro di
+     un secondo per perdita di segnale: il guasto è uno solo, a monte (la
+     fibra o lo splitter della porta), non quaranta guasti dei clienti;
+   - supporto: il «lei», una scusa sola e specifica, che cosa facciamo e
+     che cosa deve fare il cliente, nessun orario inventato.
 
 5. Nella stessa sessione incollate il testo di `consegna_confronto.txt` (lo
    copiate aprendo il file nel vostro editor): Claude scrive in
@@ -104,32 +117,48 @@ inventati.
 
 ## Che cosa osservare
 
-- Dove le risposte differiscono, non quanto sono lunghe: hanno colto il
-  punto? Che cosa manca? Che cosa è sbagliato?
-- Che cosa cercare nei tre compiti del percorso B:
-  - sviluppo: un'attivazione il 31 del mese conta zero giorni; una
-    cessazione il 31 fa pagare 31/30 del canone; se la linea è attivata e
-    cessata nello stesso mese, conta solo la cessazione;
-  - sistemi: tutte le ONT della stessa porta PON sono cadute nel giro di un
-    secondo per perdita di segnale: il guasto è uno solo, a monte (la fibra
-    o lo splitter della porta), non quaranta guasti dei clienti;
-  - supporto: il «lei», una scusa sola e specifica, che cosa facciamo e che
-    cosa deve fare il cliente, nessun orario inventato.
-- Il tempo e i token: chi ha scritto di più? Chi ha risposto prima?
-- I numeri che Claude ha scritto in `confronto.md` sono giusti? La verifica
-  li confronta con i JSON e, se non tornano, ve lo dice.
-- Una sola esecuzione non è una misura: rilanciate un modello salvando la
-  risposta in un file nuovo, per esempio `risposte/haiku-2.json` (i tre
-  file del passo 3 restano quelli della verifica), e confrontate le due
-  risposte.
-- Il modello non è l'unica leva: anche l'effort cambia tempi e risposte.
+### Che cosa dice Anthropic
+
+- La panoramica dei modelli confronta la latenza dei tre: Opus 5.5
+  «moderata», Sonnet 5.5 «veloce», Haiku 5.5 «la più veloce». E precisa:
+  «Rispetto alla gamma attuale. La latenza effettiva dipende dalla
+  lunghezza del prompt, dalla lunghezza dell'output e dall'effort di
+  ragionamento.» (traduzione nostra: nella pagina italiana la tabella e la
+  sua nota sono in inglese; https://platform.claude.com/docs/it/models/overview)
+
+Nell'esercizio il prompt e l'effort sono gli stessi per i tre modelli; la
+lunghezza dell'output no: è quella della risposta di ciascun modello.
+
+### Che cosa misura il controllo
+
+`verifica.sh` controlla i tre JSON di `risposte/`: senza errori, con una
+risposta, ciascuno dal suo modello (`modelUsage`). Poi `confronto.md`:
+tutto compilato, uno dei tre modelli scelto, e i numeri della tabella
+uguali a quelli dei JSON, i token in entrata e in uscita e i secondi, con
+un secondo di tolleranza. Chi li ha scritti, voi o Claude, va verificato:
+se i numeri non tornano, la verifica ve lo dice. Stampa i secondi e i
+token di ogni modello e, sulla latenza comparata, «non distinguibile»: una
+chiamata per modello non la misura, perché ogni tempo comprende la
+risposta di quel modello, con la sua lunghezza.
+
+Nella prova del docente dell'11 ottobre 2026 (Claude Code 2.1.296, il
+prompt `prompt/sistemi.md`): Haiku 5,6 s con 926 token in uscita, Sonnet
+5,6 s con 562, Opus 5,5 s con 393. Tempi quasi uguali, e Opus il più
+rapido: Anthropic indica Haiku come il più veloce, poi Sonnet, poi Opus,
+ma la latenza dipende anche dalla lunghezza dell'output e dall'effort, e
+una chiamata per modello non la misura.
+
+Una sola esecuzione non è una misura: rilanciate un modello salvando la
+risposta in un file nuovo, per esempio `risposte/haiku-2.json` (i tre file
+del passo 3 restano quelli della verifica), e confrontate le due
+risposte.
 
 ## Verifica (tools/verifica.sh M1-E01)
 
-Controlla i tre JSON (senza errori, con una risposta, ciascuno dal suo
-modello) e `confronto.md`: tutto compilato, uno dei tre modelli scelto, e i
-numeri della tabella uguali a quelli dei JSON, i secondi con un secondo di
-tolleranza.
+Le regole sono quelle di «Che cosa misura il controllo». Quando i tre JSON
+e `confronto.md` sono compilati e coerenti la verifica esce con 0, e la
+sua ultima riga è: «Fatto: ogni affermazione è stata messa alla prova; gli
+esiti sono qui sopra.»
 
 ## Se qualcosa va storto
 

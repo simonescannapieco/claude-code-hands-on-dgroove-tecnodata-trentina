@@ -7,7 +7,9 @@ In aula la esegue il docente; potete rifarla da soli quando volete.
 
 Vedere da vicino il mestiere di un modello linguistico: continuare il
 testo con la parola che ritiene più adatta. La stessa frase va più volte a
-ciascuno dei tre modelli Claude del piano Pro, e si confrontano le parole.
+ciascuno dei tre modelli Claude del piano Pro, e si confrontano le parole:
+la documentazione di Anthropic dice che input identici possono produrre
+output diversi, e la demo lo mette alla prova.
 
 ## Tempo
 
@@ -16,7 +18,8 @@ ciascuno dei tre modelli Claude del piano Pro, e si confrontano le parole.
 ## Prerequisiti
 
 Claude Code installato e collegato al piano Pro, con
-`tools/verifica_ambiente.sh` tutto verde (`PRIMA_DEL_CORSO.md`).
+`tools/verifica_ambiente.sh` tutto verde (`PRIMA_DEL_CORSO.md`); Python 3,
+che lo stesso controllo verifica: lo usa la verifica.
 
 ## Punto di partenza (tools/prepara_esercizio.sh M1-D01)
 
@@ -39,7 +42,8 @@ Claude Code: stampa la risposta ed esce.
        cd ~/corso-claude-code/M1-D01
 
 2. Prima di eseguire, una previsione: tre chiamate allo stesso modello
-   daranno tre parole diverse? E tre modelli diversi?
+   daranno tre parole diverse? E tre modelli diversi? Alla fine
+   confrontate le parole con le vostre previsioni.
 
 3. Date la frase tre volte a ciascun modello e raccogliete le parole in
    `risultati.tsv`:
@@ -72,28 +76,67 @@ Claude Code: stampa la risposta ed esce.
 
 ## Che cosa osservare
 
-- Ogni chiamata restituisce una parola sola.
-- Lo stesso modello tende a dare la stessa parola. Nelle registrazioni del
-  corso, venti chiamate per modello: Haiku ha risposto «maltempo» 20 volte
-  su 20, Sonnet e Opus «sciopero» 20 volte su 20.
-- Tende, ma non è garantito: a parità di richiesta un modello può
-  rispondere in modo diverso. Se una parola cambia, è proprio questo.
-- Modelli diversi non sono d'accordo: la parola più probabile dipende dal
-  modello.
-- Confrontate con le parole dette in aula.
+### Che cosa dice Anthropic
+
+- Il glossario della documentazione, alla voce «Temperature»: «Anche con
+  la temperatura impostata a 0, i risultati non saranno completamente
+  deterministici e input identici possono produrre output diversi tra le
+  chiamate API.»
+  (https://platform.claude.com/docs/it/about-claude/glossary). Nella demo,
+  per ogni modello, ogni chiamata manda la stessa frase, con la stessa
+  istruzione di sistema e le stesse opzioni.
+- La guida al prompting, alla voce «Sii chiaro e diretto»: «Claude
+  risponde bene a istruzioni chiare ed esplicite. Essere specifici
+  sull'output desiderato può aiutare a migliorare i risultati.»
+  (https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices).
+  L'istruzione di sistema della demo è esplicita: una parola sola, senza
+  punteggiatura.
+
+### Che cosa misura il controllo
+
+`verifica.sh` legge `risultati.tsv` e, per ogni modello, stampa quante
+risposte ci sono, ogni parola con il numero di volte, quante parole sono
+diverse e quante risposte sono una parola sola, senza punteggiatura; le
+risposte si confrontano senza gli spazi in testa e in coda. Una riga senza
+tabulazione continua la risposta della riga di sopra: così il `printf`
+del passo 3 scrive una risposta di più righe. Prima di ogni controllo le
+righe si uniscono con uno spazio, e la verifica stampa quante ne ha
+unite. Poi, per ogni modello, un verdetto per ciascuna affermazione:
+
+- input identici, output diversi: «confermata» se il modello ha dato
+  almeno due parole diverse, altrimenti «non dimostrata in questa
+  esecuzione». La documentazione dice «possono»: risposte tutte uguali non
+  la smentiscono, una parola diversa la dimostra; con una risposta sola
+  non si può vedere;
+- l'istruzione esplicita: «confermata» se tutte le risposte del modello
+  sono una parola sola, senza punteggiatura, altrimenti «non confermata in
+  questa esecuzione», con il conto. È una raccomandazione: la verifica la
+  stampa e non fallisce per questa.
+
+La verifica esce con 0 quando ognuno dei tre modelli ha almeno una
+risposta.
+
+Nella registrazione del corso dell'11 ottobre 2026 (Claude Code 2.1.296),
+venti chiamate per modello: Haiku ha risposto «maltempo» 20 volte su 20,
+Sonnet e Opus «sciopero» 20 volte su 20. Input identici, output diversi:
+non dimostrata su nessuno dei tre modelli. L'istruzione esplicita: una
+parola sola, senza punteggiatura, 20 risposte su 20 per ciascun modello,
+confermata.
 
 ## Verifica (tools/verifica.sh M1-D01)
 
-`risultati.tsv` contiene almeno una risposta per ciascuno dei tre modelli.
-La verifica riassume le parole di ogni modello: che coincidano o no non è
-un requisito, è ciò che la demo vi fa osservare.
+Le regole dei verdetti sono quelle di «Che cosa misura il controllo».
+Quando `risultati.tsv` contiene almeno una risposta per ciascuno dei tre
+modelli la verifica esce con 0, e la sua ultima riga è: «Fatto: ogni
+affermazione è stata messa alla prova; gli esiti sono qui sopra.»
 
 ## Se qualcosa va storto
 
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Una parola vuota in `risultati.tsv`: rilanciate solo quella chiamata, poi
-  sistemate la riga a mano.
+  sistemate la riga a mano, con la tabulazione fra il modello e la parola:
+  una riga senza tabulazione si unisce alla risposta di sopra.
 - Per ricominciare da capo: `tools/reset_esercizio.sh M1-D01`.
 
 ## Impronta d'uso sul piano Pro
@@ -102,7 +145,8 @@ Nove chiamate brevi, tre per modello, con effort low, nessuno strumento e
 nessun subagent: ciascuna manda al modello meno di 700 token. Opus pesa
 sul limite d'uso più di Sonnet e di Haiku. Per risparmiare, nel ciclo del
 passo 3 scrivete `for m in haiku sonnet; do`, poi fate una sola chiamata
-con `opus` (la verifica chiede almeno una risposta per modello):
+con `opus` (la verifica chiede almeno una risposta per modello; con una
+sola, per Opus il primo verdetto resta «non dimostrata»):
 
     m=opus
     parola="$(claude -p "$(cat frase.txt)" --model "$m" \

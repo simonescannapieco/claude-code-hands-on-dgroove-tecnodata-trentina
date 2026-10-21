@@ -1,7 +1,7 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
 M1-D01	demo	claude-code-pro	s1_fondamenti_llm	m1_2_cosa_fanno_leggono_imparano	slides/theory/m1_fondamenti_llm/m1_2_cosa_fanno_leggono_imparano	3	La prossima parola
 M1-D02	demo	claude-code-pro	s1_fondamenti_llm	m1_3_token_e_contesto	slides/theory/m1_fondamenti_llm/m1_3_token_e_contesto	3	Stessa frase, due lingue
-M1-D03	demo	claude-ai-pro	s1_fondamenti_llm	m1_3_token_e_contesto	slides/theory/m1_fondamenti_llm/m1_3_token_e_contesto	3	Quante n in «interconnessione»?
+M1-D03	demo	claude-code-pro	s1_fondamenti_llm	m1_3_token_e_contesto	slides/theory/m1_fondamenti_llm/m1_3_token_e_contesto	3	Contare le lettere
 M1-D04	demo	claude-code-pro	s1_fondamenti_llm	m1_3_token_e_contesto	slides/theory/m1_fondamenti_llm/m1_3_token_e_contesto	3	Ogni chiamata riparte da zero
 M1-D05	demo	claude-ai-pro	s1_fondamenti_llm	m1_4_forze_e_limiti	slides/theory/m1_fondamenti_llm/m1_4_forze_e_limiti	3	La circolare che non esiste
 M1-E01	esercizio	claude-code-pro	s1_fondamenti_llm	m1_e2_stesso_prompt_tre_modelli	slides/practice/m1_demo_stesso_prompt/m1_e2_stesso_prompt_tre_modelli	15	Lo stesso prompt su tre modelli

@@ -1,81 +1,54 @@
 #!/bin/bash
 #
-# verifica.sh di M1-D05 -- la circolare che non esiste: risposte.tsv
-# (intestazione «modello<TAB>turno<TAB>risposta») contiene, per ciascuno
-# dei tre modelli, la risposta alla richiesta e quella all'insistenza.
-# Se una risposta rifiuta o inventa lo giudicate voi, leggendola: la
-# verifica ne mostra l'inizio. Nelle registrazioni del corso tutti e tre i
-# modelli hanno rifiutato: dodici risposte, dodici rifiuti, nove alla
-# richiesta e tre dopo l'insistenza.
+# verifica.sh di M1-D05 -- la circolare che non esiste. Il controllo sta in
+# demo/controlla_citazioni.py (python3, già richiesto dal corso), lo stesso
+# che i partecipanti lanciano nello spazio di lavoro: legge le dodici
+# risposte di risposte/ (domanda A o B, senza regole o con le regole,
+# haiku, sonnet, opus), stampa i numeri che legge e, per ogni modello, un
+# verdetto per ciascuna delle tre affermazioni messe alla prova. Le
+# confronta con la circolare e con le domande di demo/, non con le copie
+# dello spazio di lavoro, e non scrive niente (--senza-esiti). Le tre
+# affermazioni sono raccomandazioni di Anthropic, non garanzie: i verdetti
+# si stampano e non fanno fallire la verifica.
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = ci sono le risposte dei tre modelli ai due turni
-#         1 = risposte.tsv assente, senza intestazione o incompleto
-#         2 = precondizione (spazio di lavoro assente, risposte.tsv che non
-#             si legge)
+# Uscita: 0 = le dodici risposte ci sono; l'ultima riga è «Fatto: ogni
+#             affermazione è stata messa alla prova; gli esiti sono qui
+#             sopra.»
+#         1 = manca una risposta, o una è incompleta (il controllo dice
+#             quale)
+#         2 = precondizione (spazio di lavoro assente, python3 mancante, un
+#             file che c'è ma non si legge), oppure il controllo uscito in
+#             un altro modo (un segnale, un errore)
 set -euo pipefail
 
-readonly FILE='risposte.tsv'
-readonly INTESTAZIONE=$'modello\tturno\trisposta'
-readonly MODELLI=(haiku sonnet opus)
-readonly TURNI=(richiesta insisto)
-readonly PAROLE=18
-
-# L'inizio dell'ultima risposta di un modello a un turno: le prime PAROLE
-# parole. Si taglia a parole e non a byte, così anche un awk che non
-# conosce l'UTF-8 non spezza le lettere accentate.
-# Arguments: $1 il file, $2 il modello, $3 il turno.
-# Outputs:   l'inizio su STDOUT (vuoto se manca la risposta).
-inizio() {
-  awk -F'\t' -v m="$2" -v t="$3" -v max="${PAROLE}" '
-    { sub(/\r$/, "") }
-    NR > 1 && $1 == m && $2 == t && $3 != "" { v = $3 }
-    END {
-      n = split(v, w, /[ ]+/); s = ""; k = 0
-      for (i = 1; i <= n && k < max; i++) {
-        if (w[i] != "") { s = s (k++ ? " " : "") w[i] }
-      }
-      printf "%s%s", s, (n > max ? " …" : "")
-    }' "$1"
-}
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SELF
+readonly CONTROLLO="${SELF%/*}/demo/controlla_citazioni.py"
 
 main() {
-  local ws="${1:-}" prima='' m t r ko=0
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
   fi
-  if [[ ! -f "${ws}/${FILE}" ]]; then
-    echo "Manca ${FILE}: eseguite i passi del README."
-    exit 1
-  fi
-  if [[ ! -r "${ws}/${FILE}" ]]; then
-    echo "verifica: ${FILE} non si legge" >&2
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "verifica: manca python3 (PRIMA_DEL_CORSO.md, «Python e uv»)" >&2
     exit 2
   fi
-  if ! IFS= read -r prima < "${ws}/${FILE}"; then
-    : # file vuoto, o una riga senza a capo finale: «prima» tiene ciò che c'è
+  if [[ ! -r "${CONTROLLO}" ]]; then
+    echo "verifica: manca ${CONTROLLO}" >&2
+    exit 2
   fi
-  if [[ "${prima%$'\r'}" != "${INTESTAZIONE}" ]]; then
-    echo "${FILE}: la prima riga deve essere l'intestazione" \
-      "«modello<TAB>turno<TAB>risposta»."
-    exit 1
-  fi
-  for m in "${MODELLI[@]}"; do
-    for t in "${TURNI[@]}"; do
-      r="$(inizio "${ws}/${FILE}" "${m}" "${t}")"
-      if [[ -z "${r}" ]]; then
-        echo "Manca la risposta di ${m} al turno «${t}»."
-        ko=1
-      else
-        echo "${m}, ${t}: ${r}"
-      fi
-    done
-  done
-  if (( ko != 0 )); then
-    exit 1
-  fi
-  echo "Le risposte ci sono: rifiutano o inventano? Leggetele."
+  python3 -B -I "${CONTROLLO}" --senza-esiti "${ws}" || rc=$?
+  case "${rc}" in
+    0|1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: il controllo è uscito con ${rc}: un errore, non un" \
+        "esito" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

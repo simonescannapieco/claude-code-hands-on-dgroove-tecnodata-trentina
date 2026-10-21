@@ -7,7 +7,8 @@ Uso:  ... | python3 leggi_json.py token_entrata   (la somma di input_tokens,
       ... | python3 leggi_json.py result          (la risposta)
       ... | python3 leggi_json.py session_id      (l'ID della sessione)
 Uscita: 0 fatto · 1 nessun JSON (per esempio claude non trovato), un JSON
-        non valido, senza quel dato o con un errore · 2 uso sbagliato
+        non valido, senza quel dato (per token_entrata, un «usage» senza
+        nessuno dei tre campi) o con un errore · 2 uso sbagliato
 """
 from __future__ import annotations
 
@@ -36,7 +37,8 @@ def main(argv: List[str]) -> int:
                       "fallita?")
     try:
         risposta = json.loads(testo)
-    except ValueError as exc:
+    except (ValueError, RecursionError) as exc:
+        # RecursionError: un JSON annidato oltre il limite di Python
         return errore("il testo in ingresso non è un JSON valido (%s)" % exc)
     if not isinstance(risposta, dict):
         return errore("il JSON non è quello di claude -p")
@@ -46,11 +48,13 @@ def main(argv: List[str]) -> int:
         uso = risposta.get("usage")
         if not isinstance(uso, dict):
             return errore("il JSON non contiene «usage»")
+        presenti = [c for c in TOKEN if uso.get(c) is not None]
+        if not presenti:
+            return errore("«usage» non contiene i token in entrata (%s)"
+                          % ", ".join(TOKEN))
         totale = 0
-        for campo in TOKEN:
-            valore = uso.get(campo)
-            if valore is None:
-                continue
+        for campo in presenti:
+            valore = uso[campo]
             if isinstance(valore, bool) or not isinstance(valore, int) \
                     or valore < 0:
                 return errore("usage.%s non è un numero (%r)"

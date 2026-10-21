@@ -1,0 +1,13 @@
+domanda	variante	modello	citazioni	ritrovate	contiene_10	numeri_estranei	frase_concordata	solo_la_frase	modello_risposta	non_ritrovate
+A	senza	haiku	0	0	sì	-	no	no	claude-haiku-5-5	-
+A	regole	haiku	1	1	sì	-	no	no	claude-haiku-5-5	-
+B	senza	haiku	1	1	sì	-	no	no	claude-haiku-5-5	-
+B	regole	haiku	0	0	no	-	sì	no	claude-haiku-5-5	-
+A	senza	sonnet	0	0	sì	-	no	no	claude-sonnet-5-5	-
+A	regole	sonnet	1	1	sì	-	no	no	claude-sonnet-5-5	-
+B	senza	sonnet	0	0	sì	-	no	no	claude-sonnet-5-5	-
+B	regole	sonnet	1	1	no	-	sì	no	claude-sonnet-5-5	-
+A	senza	opus	0	0	sì	-	no	no	claude-opus-5-5	-
+A	regole	opus	1	1	sì	-	no	no	claude-opus-5-5	-
+B	senza	opus	0	0	sì	-	no	no	claude-opus-5-5	-
+B	regole	opus	2	2	no	-	sì	no	claude-opus-5-5	-

@@ -4,12 +4,15 @@
 # stanno in verifica.py, accanto a questo file (python3, già richiesto dal
 # corso): i tre JSON di risposte/, confronto.md compilato, e i numeri della
 # tabella uguali a quelli dei JSON. Chi li ha scritti, voi o Claude, va
-# verificato: è parte dell'esercizio.
+# verificato: è parte dell'esercizio. Sulla latenza comparata che Anthropic
+# indica (Haiku la più veloce, poi Sonnet, poi Opus) il verdetto è sempre
+# «non distinguibile»: una chiamata per modello non la misura.
 #
 # Uso:    verifica.sh <spazio di lavoro>
 # Uscita: 0 = tutto compilato e coerente · 1 = qualcosa manca o non torna
 #         2 = precondizione (spazio di lavoro assente, python3 mancante, un
-#             file che c'è ma non si legge)
+#             file che c'è ma non si legge), oppure il controllo uscito in
+#             un altro modo (un segnale, un errore)
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -17,7 +20,7 @@ readonly SELF
 readonly CONTROLLI="${SELF%/*}/verifica.py"
 
 main() {
-  local ws="${1:-}"
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
@@ -30,7 +33,15 @@ main() {
     echo "verifica: manca ${CONTROLLI}" >&2
     exit 2
   fi
-  python3 -B -I "${CONTROLLI}" "${ws}"
+  python3 -B -I "${CONTROLLI}" "${ws}" || rc=$?
+  case "${rc}" in
+    0|1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: il controllo è uscito con ${rc}: un errore, non un" \
+        "esito" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

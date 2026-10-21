@@ -6,21 +6,24 @@
 # italiana, la stessa ripetuta due volte, poi l'inglese, singola e doppia.
 # I token in entrata (input_tokens + cache_creation_input_tokens +
 # cache_read_input_tokens dell'usage del JSON) vanno in conteggi.tsv, nello
-# stesso formato dei passi del README; la crescita dal testo singolo al
-# doppio è il peso della frase, stampato alla fine.
+# stesso formato dei passi del README. Alla fine verifica.sh dell'elemento
+# ne stampa i pesi (la crescita dal testo singolo al doppio), i verdetti e
+# il confronto con la registrazione, e ne decide l'esito: i conteggi
+# completi e i pesi positivi, mai il verso della differenza.
 #
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    PN_MODELLI  i modelli, separati da spazi (default «haiku»;
 #                     ammessi haiku, sonnet, opus)
 #         e le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, …)
-# Uscita: 0 = conteggi completi, italiano > inglese > 0 · 1 = una
-#         chiamata fallita o un esito diverso · 2 = precondizione
+# Uscita: 0 = verifica.sh esce 0 (conteggi completi, pesi positivi) · 1 =
+#         una chiamata fallita, o verifica.sh esce 1 · 2 = precondizione
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
 # lo script sta in <radice>/m1_…/s1_…/m1_3_…/M1-D02_…/_docente/
 readonly RADICE="${SELF%/*/*/*/*/*/*}"
+readonly CONTROLLO="${SELF%/_docente/*}/verifica.sh"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
 
@@ -46,16 +49,17 @@ token_entrata() {
       + (.cache_read_input_tokens // 0)' "$1"
 }
 
-# Il controllo dell'esito: l'italiano pesa più dell'inglese, che pesa più
-# di zero. Arguments: $1 i token dell'italiano, $2 quelli dell'inglese.
+# verifica.sh sullo spazio di lavoro, con la sua uscita sul descrittore 3,
+# lo STDOUT di live.sh: handson::check la esegue dentro $(…) e su un OK
+# resta muta, ma in aula i pesi e gli esiti si leggono sempre.
+# Arguments: $1 lo spazio di lavoro. Returns: l'uscita di verifica.sh.
 # shellcheck disable=SC2317  # la chiama handson::check, indirettamente
-pesa_di_piu() {
-  [[ "$1" =~ ^-?[0-9]+$ && "$2" =~ ^-?[0-9]+$ ]] || return 1
-  (( $1 > $2 && $2 > 0 ))
+verifica_a_schermo() {
+  "${CONTROLLO}" "$1" >&3 2>&1
 }
 
 main() {
-  local ws="${1:-}" m t testo n it en json
+  local ws="${1:-}" m t testo n json
   local -a modelli=()
   [[ -n "${ws}" && -d "${ws}" ]] \
     || handson::die "spazio di lavoro assente: ${ws}"
@@ -100,15 +104,10 @@ main() {
     done
     HANDSON_SHOW_CMD=1
   done
-  for m in "${modelli[@]}"; do
-    it="$(awk -F'\t' -v m="${m}" '$1 == m && $2 == "it-doppia" { d = $3 }
-      $1 == m && $2 == "it" { s = $3 } END { print d - s }' conteggi.tsv)"
-    en="$(awk -F'\t' -v m="${m}" '$1 == m && $2 == "en-doppia" { d = $3 }
-      $1 == m && $2 == "en" { s = $3 } END { print d - s }' conteggi.tsv)"
-    printf '\n  %s: la frase italiana pesa %s token, quella inglese %s\n' \
-      "${m}" "${it}" "${en}"
-    handson::check "${m}: italiano > inglese > 0" pesa_di_piu "${it}" "${en}"
-  done
+  handson::step "I pesi e le due affermazioni"
+  exec 3>&1
+  handson::check "le due affermazioni (verifica.sh)" verifica_a_schermo \
+    "${ws}"
   handson::finish
 }
 
