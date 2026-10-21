@@ -21,8 +21,11 @@ alla radice del repository.
 In aula le demo le esegue il docente; quella degli esempi la fate anche
 voi, in claude.ai. Le due esercitazioni usano gli stessi attrezzi di
 misura: `misura.sh` (la risposta, i controlli scritti in codice e il
-giudizio di un subagent con una rubrica) e `misura.sh --confronta`. M2-E01
-li introduce su un prompt solo, M2-E02 li usa su tre. Prima di M2-E01,
+giudizio di un subagent con una rubrica, due volte su v0) e
+`misura.sh --confronta`, che mette due versioni fianco a fianco e dice
+l'esito della pratica della guida di Anthropic che la nuova versione
+applica. M2-E01 li introduce su un prompt solo, M2-E02 li usa su tre.
+Prima di M2-E01,
 `tools/verifica_ambiente.sh` tutto verde.
 
 Il riassunto del modulo, da tenere a portata di mano, è

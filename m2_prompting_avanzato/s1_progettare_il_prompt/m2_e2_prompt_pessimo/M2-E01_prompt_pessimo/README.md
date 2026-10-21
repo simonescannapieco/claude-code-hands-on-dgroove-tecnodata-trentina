@@ -5,9 +5,12 @@ lavoro del modulo che fate in Claude Code.
 
 ## Obiettivo
 
-Misurare un prompt pessimo, riscriverlo con gli ingredienti del template e
-rimisurarlo: con i controlli scritti in codice e con un giudice, un
-subagent che verifica le affermazioni di una rubrica.
+Mettere alla prova una frase della guida di Anthropic sui prompt: «Più
+precisamente spieghi cosa vuoi, migliore sarà il risultato.» Misurate un
+prompt pessimo, lo riscrivete con gli ingredienti del template e lo
+rimisurate, con i controlli scritti in codice e con un giudice, un subagent
+che verifica le affermazioni di una rubrica. Prima di fidarvi del giudice
+lo mettete alla prova: sulla risposta di v0 giudica due volte.
 
 ## Tempo
 
@@ -40,7 +43,14 @@ Lo spazio di lavoro `~/corso-claude-code/M2-E01/` con:
   i segnaposto da completare, la lunghezza);
 - `misura.sh`, `strumenti/kit.py`, `schema-giudizio.json` e
   `.claude/agents/giudice.md`: gli attrezzi della misura;
-- `registro.md`: il registro delle versioni, da compilare.
+- `registro.md`: il registro delle versioni, da compilare, con la colonna
+  «pratica».
+
+Ogni criterio, in `rubrica.md` e in `controlli.tsv`, porta tra parentesi
+quadre (in `controlli.tsv`, nell'ultima colonna) la pratica che lo legge:
+`chiarezza` per tutti, tranne l'affermazione `fatti`, che porta
+`contesto`. I criteri sono fissati prima di ogni prompt e restano gli
+stessi per tutte le versioni.
 
 `misura.sh` mette al posto di ogni `{{nome}}` il file `dati/<nome>.md`:
 così ogni versione del prompt lavora sugli stessi dati, e cambia una cosa
@@ -62,13 +72,22 @@ dati del corso.
 
        ! ./misura.sh v0
 
-   `misura.sh` fa tre passi e stampa ogni comando prima di eseguirlo: la
-   risposta di Sonnet al prompt, con `claude -p`; i controlli di
+   `misura.sh` stampa ogni comando prima di eseguirlo e su v0 fa quattro
+   passi: la risposta di Sonnet al prompt, con `claude -p`; i controlli di
    `controlli.tsv`; il giudizio del subagent `giudice`, su Haiku, con un
-   JSON vincolato dallo schema. Leggete la risposta e i due elenchi di ✓
-   e ✗.
+   JSON vincolato dallo schema; un secondo giudizio della stessa risposta.
+   Leggete la risposta, i due elenchi di ✓ e ✗, ognuno con la sua pratica,
+   e la riga «Giudice su v0»: su quante affermazioni i due giudizi danno lo
+   stesso esito.
 
-3. Scrivete la nuova versione, sei minuti. Copiate la vecchia:
+3. Scrivete nel registro la pratica di v1 prima di riscrivere il prompt:
+   nella riga di v1 di `registro.md`, colonna «pratica», `chiarezza`.
+   L'elenco delle pratiche, ognuna con la frase di Anthropic che mette
+   alla prova:
+
+       ! ./misura.sh --pratiche
+
+4. Scrivete la nuova versione, sei minuti. Copiate la vecchia:
 
        ! cp prompt/v0.md prompt/v1.md
 
@@ -88,27 +107,35 @@ dati del corso.
      `controlli.tsv` (il telefono da cercare è quello del vostro
      messaggio), `dati/procedure.md` (le vostre regole, oppure togliete
      `{{procedure}}` dal prompt) e le affermazioni di `rubrica.md` che
-     nominano le procedure o CiaspoLink; poi rimisurate v0.
+     nominano le procedure o CiaspoLink, con la loro pratica; poi
+     rimisurate v0. I criteri si cambiano prima di misurare v0, non dopo.
    - **Percorso B, il caso di CiaspoLink:** il messaggio della
      Falegnameria, così com'è. La prova del docente è su questo.
 
-4. Misurate la nuova versione:
+5. Misurate la nuova versione e confrontatela con v0:
 
        ! ./misura.sh v1
-
-5. Confrontate le due versioni, poi chiedete a Claude di leggerle:
-
        ! ./misura.sh --confronta v0 v1
        ! git diff --no-index prompt/v0.md prompt/v1.md
 
-       Confronta giudizi/v0.json e giudizi/v1.json: quali affermazioni sono migliorate, quali no, e che cosa cambieresti nel prompt?
+   Il confronto stampa la pratica di v1 con la frase di Anthropic, ogni
+   criterio prima e dopo, l'esito della pratica, poi i totali e i token.
+   Leggetelo con Claude:
+
+       Confronta giudizi/v0.json e giudizi/v1.json: quali affermazioni sono cambiate, e con quale motivo del giudice?
 
 6. Compilate `registro.md`, le righe di v0 e di v1: che cosa avete
-   cambiato e i totali che stampa `misura.sh` (controlli superati,
-   affermazioni rispettate). Con l'editor, o dettandoli a Claude.
+   cambiato e i totali della riga «totali» del confronto (controlli
+   superati, affermazioni rispettate). Con l'editor, o dettandoli a Claude.
 
-7. Se avete tempo, un altro ciclo: `prompt/v2.md`, poi
-   `! ./misura.sh v2`. Checkpoint: v0 e v1 misurate, registro compilato.
+7. Se avete tempo, la rimisura: v1 di nuovo, senza toccarla. Nella riga di
+   v2 del registro scrivete la pratica `rimisura`, poi:
+
+       ! cp prompt/v1.md prompt/v2.md
+       ! ./misura.sh v2
+       ! ./misura.sh --confronta v1 v2
+
+   Checkpoint: v0 e v1 misurate, registro compilato.
 
 8. Uscite con `/exit`, tornate nella cartella `esercitazioni` e
    verificate:
@@ -118,38 +145,102 @@ dati del corso.
 
 ## Che cosa osservare
 
-- In v0 ogni ingrediente che manca è una decisione che ha preso il
-  modello: la lunghezza, i segnaposto da completare, il numero di telefono
-  ricopiato, le promesse fatte a nome dell'azienda.
-- Nelle registrazioni del corso, v0: nessun controllo superato su tre, una
-  sola affermazione rispettata su cinque. La versione riscritta con ruolo,
-  contesto, procedure tra tag, formato e firma: tre controlli su tre,
-  quattro affermazioni su cinque. Quella che resta riguarda il ricontatto
-  del commerciale, che le procedure prevedono solo per chi chiede
-  un'offerta: nella registrazione il giudice l'ha segnata sotto «fatti»,
-  in un'altra prova sotto «impegni». È un buon esercizio per v2.
-- Il giudice è anch'esso un modello: leggete i suoi motivi. Quando non
-  siete d'accordo, decidete voi, e se serve riscrivete l'affermazione della
-  rubrica perché sia verificabile senza ambiguità.
-- I token: la nuova versione ne manda di più (le procedure), e di solito
-  ne riceve di meno (una risposta più breve).
-- Una sola esecuzione non è una misura: rilanciando la stessa versione la
-  risposta, e il giudizio, possono cambiare.
-- Una risposta può riportare il vostro nome: nella prova del docente, la
-  risposta a v0 conteneva una nota per il titolare dell'account, con il
-  suo nome (nei file di `soluzione/` è sostituita da «(identità
-  dell'account, omessa)»). Controllate le risposte prima di mostrarle in
-  aula.
+### Che cosa dice Anthropic
+
+- La pratica di v1, `chiarezza`, mette alla prova due frasi della guida
+  «Best practice per il prompting», sezione «Sii chiaro e diretto»: «Più
+  precisamente spieghi cosa vuoi, migliore sarà il risultato.» e «Sii
+  specifico sul formato di output desiderato e sui vincoli.» La stessa
+  sezione chiede di pensare a Claude «come a un dipendente brillante ma
+  nuovo, che non ha contesto sulle tue norme e sui tuoi flussi di lavoro»:
+  v0 non spiega niente, la vostra v1 spiega che cosa serve.
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+- Il giudice si mette alla prova prima di usarlo. La pagina sui criteri di
+  successo e sulle valutazioni, della valutazione con un modello: «Testa
+  prima per garantire l'affidabilità, poi scala.»
+  https://platform.claude.com/docs/it/test-and-evaluate/develop-tests
+- L'articolo di Anthropic sulle valutazioni descrive, fra i controlli
+  delle prime esecuzioni, la prova che `misura.sh` fa su v0: «Claude
+  esegue il valutatore due volte sullo stesso output e riferisce se il
+  verdetto è cambiato» (traduzione nostra). E del modello giudice: «non
+  dovrebbe essere il modello che state valutando» (traduzione nostra).
+  https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+- Il giudizio arriva con `--json-schema`. Il riferimento della CLI:
+  «Ottieni output JSON convalidato corrispondente a uno JSON Schema dopo
+  che l'agente completa il suo flusso di lavoro (solo modalità print).» La
+  pagina sull'esecuzione programmatica: «Se un'esecuzione termina senza un
+  output strutturato valido, ad esempio perché Claude ha rifiutato la
+  richiesta, la risposta non contiene il campo `structured_output`.»
+  https://code.claude.com/docs/it/cli-reference ·
+  https://code.claude.com/docs/it/headless
+- La rimisura del passo 7 mette alla prova il glossario: «Anche con la
+  temperatura impostata a 0, i risultati non saranno completamente
+  deterministici e input identici possono produrre output diversi tra le
+  chiamate API.»
+  https://platform.claude.com/docs/it/about-claude/glossary
+
+### Che cosa misura il controllo
+
+- I criteri vengono prima del prompt, come nella pagina sulle valutazioni:
+  un'applicazione «inizia con la definizione chiara dei tuoi criteri di
+  successo e poi con la progettazione di valutazioni per misurare le
+  prestazioni rispetto a essi». I controlli di `controlli.tsv` li decide
+  il codice (il telefono che non deve comparire, anche con spazi, punti o
+  trattini fra le cifre; nessun segnaposto; al massimo 150 parole): sulla
+  stessa risposta danno sempre lo stesso esito.
+  Le affermazioni di `rubrica.md` le decide il giudice, un modello: se ne
+  trovate una ambigua, riscrivetela e misurate di nuovo tutte le versioni.
+- La prova del giudice: su v0 lo stesso giudice giudica due volte la
+  stessa risposta. Un'affermazione su cui i due giudizi non concordano è
+  «instabile»: in v0 conta come non rispettata, e negli esiti delle
+  pratiche non conta, perché il suo cambiamento non è una prova.
+- `./misura.sh --confronta v0 v1` legge nel registro la pratica di v1 e ne
+  dice l'esito, in questa misura, confrontando le due versioni: conta i
+  criteri segnati `chiarezza` che hanno un esito in v0 e in v1, senza le
+  affermazioni instabili, e quanti ne rispetta ciascuna. Confermata se v1
+  ne rispetta più di v0; non decisa se lo stesso numero, perché questa
+  coppia non lo dice; non confermata in questa misura se meno. Il
+  confronto stampa i due conteggi, poi i criteri che v1 non rispetta.
+  Resta non decisa anche se nessun criterio la legge, se la leggono solo
+  affermazioni instabili, o se da v0 a v1 è cambiato anche altro (il
+  modello, l'effort, i dati: li registra `misura.sh` in
+  `risposte/<versione>.opzioni`). Una pratica non confermata è un
+  risultato, come una confermata. La rimisura è confermata se le due
+  risposte sono diverse; se sono identiche, resta non decisa.
+- Il confronto avvisa quando la risposta e il giudizio vengono dallo
+  stesso modello (il campo `modelUsage` dei due JSON), e stampa i token:
+  la v1 di riferimento porta anche le procedure, un testo più lungo.
+- La verifica stampa le misure e l'esito di ogni pratica, e mette alla
+  prova la garanzia di `--json-schema`: ogni giudizio che porta
+  `structured_output` lo porta conforme a `schema-giudizio.json`; se uno
+  no, scrive «la documentazione garantisce …: in questa esecuzione no» ed
+  esce con 1.
+- Nella prova del docente del 20 ottobre 2026, con Claude Code 2.1.305,
+  una esecuzione per versione: v0 0 controlli su 3 e 2 affermazioni
+  rispettate su 5, con i due giudizi d'accordo su 5 affermazioni su 5; la
+  v1 di riferimento 3 su 3 e 3 su 5. `chiarezza` confermata: i criteri
+  segnati `chiarezza` rispettati sono 2 su 7 in v0 e 6 su 7 in v1; in v1
+  resta non rispettato «impegni» (il giudice cita il ricontatto del
+  commerciale, che le procedure prevedono solo per offerte o preventivi).
+  La rimisura confermata: le due risposte sono diverse (96 parole contro
+  106, misura 6 contro 7 su 8). Come dato, senza esito: «Il telefono del
+  cliente nella risposta di v2: assente». I token in entrata 926 contro
+  1932; giudizi conformi allo schema 4 su 4.
 
 ## Verifica (tools/verifica.sh M2-E01)
 
-Controlla che v0 e v1 siano misurate (risposta, controlli e giudizio con un
-esito per ogni affermazione), che `prompt/v1.md` sia diverso da
-`prompt/v0.md`, che l'ultima versione misurata superi v0 nella somma di
-controlli superati e affermazioni rispettate, che la sua risposta non
-ripeta il numero di telefono del cliente (quello del caso di CiaspoLink:
-sul percorso A, il vostro lo cerca `controlli.tsv`), e che le righe di v0
-e v1 di `registro.md` siano compilate.
+Controlla il lavoro, non l'esito: v0 misurata e giudicata due volte
+(`giudizi/v0.json` e `giudizi/v0-bis.json`), v1 misurata e diversa da v0,
+ogni versione misurata completa (risposta, controlli e giudizio con un
+esito per ogni affermazione), e in `registro.md` la riga di ogni versione
+misurata, compilata e con la sua pratica (`partenza` per v0, una
+dell'elenco di `./misura.sh --pratiche` per le altre). Poi stampa le
+misure e l'esito di ogni pratica; stampa anche, come dato e senza esito,
+se la risposta dell'ultima versione ripete il telefono del cliente
+(quello del caso di CiaspoLink: sul percorso A il vostro lo cerca
+`controlli.tsv`). Una pratica non confermata non vi ferma: è un
+risultato. Esce con 1 se manca qualcosa, o se un giudizio strutturato non
+rispetta lo schema.
 
 ## Se qualcosa va storto
 
@@ -162,39 +253,53 @@ e v1 di `registro.md` siano compilate.
   rubrica, i file di `dati/` e la risposta insieme superano lo stesso
   limite; accorciate i file di `dati/` o la rubrica, o chiedete nel prompt
   una risposta più breve.
-- `misura.sh` si ferma perché i controlli non sono riusciti: una riga di
-  `controlli.tsv` non si legge, e il messaggio dice quale; correggetela e
-  rilanciate la misura.
+- `misura.sh` si ferma perché i controlli non sono riusciti, o rifiuta
+  una pratica: una riga di `controlli.tsv` o di `rubrica.md` non si legge,
+  e il messaggio dice quale. Tra parentesi quadre si scrive `chiarezza`,
+  `contesto`, `ruolo` o `tag`; correggete e rilanciate la misura.
+- `--confronta` dice «non decisa» perché la pratica è da scrivere:
+  scrivetela nella colonna «pratica» di `registro.md` e rilanciate il
+  confronto, senza misurare di nuovo.
 - La verifica chiede di misurare di nuovo una versione: un file della sua
-  misura è incompleto; lanciate il comando che la verifica stampa. Una
-  nuova misura cancella prima quella vecchia della stessa versione: se si
-  ferma, la versione resta da misurare.
+  misura è incompleto, per v0 anche `giudizi/v0-bis.json`; lanciate il
+  comando che la verifica stampa. Una nuova misura cancella prima quella
+  vecchia della stessa versione: se si ferma, la versione resta da
+  misurare.
 - Il giudizio arriva senza esito strutturato: rilanciate la misura della
   stessa versione. Se succede ancora, controllate che
   `.claude/agents/giudice.md` sia quello di partenza.
-- La verifica dice che l'ultima versione non migliora: un altro ciclo, con
-  il giudizio sotto gli occhi.
+- La verifica scrive «la documentazione garantisce …: in questa esecuzione
+  no»: un giudizio strutturato non rispetta lo schema. Misurate di nuovo
+  quella versione e avvisate il docente.
+- Una risposta riporta il vostro nome, che nessun prompt né dato
+  contiene: prima di mostrarla in aula, toglietelo. Nei file di
+  `soluzione/` un nome così è sostituito da «(identità dell'account,
+  omessa)».
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Per ricominciare da capo: `tools/reset_esercizio.sh M2-E01`.
 
 ## Impronta d'uso sul piano Pro
 
-Ogni misura sono due chiamate brevi senza strumenti: la risposta su Sonnet
-con effort low (tra mille e duemila token in entrata) e il giudizio su
-Haiku con effort low. Due o tre misure, più la sessione interattiva su
-Sonnet, di quattro o cinque turni. Il giudice gira in una sua chiamata
-`claude -p`, non come subagent dentro la sessione. Niente Opus, niente
-Fable. Alla fine, `/exit`.
+Chiamate brevi `claude -p`, senza strumenti: tre su v0 (la risposta e due
+giudizi), due su v1 (la risposta e un giudizio), cinque in tutto; sette
+con la rimisura. La risposta gira su Sonnet con effort low
+(926 e 1932 token in entrata, v0 e v1, nella prova del docente), i
+giudizi su Haiku con effort low
+(da 2951 a 3506 token in entrata e da 622 a 1648 in uscita per giudizio,
+nella stessa prova). Più la
+sessione interattiva su Sonnet, di quattro o cinque turni. Il giudice gira
+in una sua chiamata `claude -p`, non come subagent dentro la sessione.
+Niente Opus, niente Fable. Alla fine, `/exit`.
 
 ## Per approfondire
 
-- La guida «Prompting best practices» della documentazione:
-  https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+- La guida «Best practice per il prompting» della documentazione:
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 - La pagina sui criteri di successo e sulle valutazioni:
-  https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
+  https://platform.claude.com/docs/it/test-and-evaluate/develop-tests
 - I subagent in Claude Code:
   https://code.claude.com/docs/en/sub-agents
 - L'articolo «Automating eval design and hillclimbing with Claude», sul
-  blog per gli sviluppatori di Anthropic:
+  blog degli sviluppatori di Anthropic:
   https://claude.dev/blog/automating-eval-design-and-hillclimbing/

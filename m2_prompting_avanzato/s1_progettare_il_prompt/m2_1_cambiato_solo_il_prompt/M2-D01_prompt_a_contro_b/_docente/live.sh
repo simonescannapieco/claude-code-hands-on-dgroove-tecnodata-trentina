@@ -7,13 +7,16 @@
 #   B  il prompt di cinque righe (ruolo, contesto, istruzione, formato,
 #      vincoli) e il messaggio tra tag.
 # Token e risposte in confronto.tsv, nello stesso formato dei passi del
-# README; i controlli dell'esito sono quelli di verifica.sh.
+# README; il controllo è quello di verifica.sh, che gira una volta e si
+# vede per intero (i numeri e un esito per ogni affermazione) prima del
+# verdetto.
 #
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    PN_MODELLO  il modello (default sonnet; ammessi haiku, sonnet, opus)
 #         e le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, …)
-# Uscita: 0 = esito come registrato · 1 = una chiamata fallita o un esito
-#         diverso · 2 = precondizione
+# Uscita: 0 = le due risposte ci sono e la garanzia è confermata · 1 = una
+#         chiamata fallita o la garanzia non confermata · 2 = precondizione
+#         (anche verifica.sh che non può girare)
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -57,6 +60,16 @@ fallita() {
   handson::finish
 }
 
+# verifica.sh con il suo STDOUT sul descrittore 3, che main apre sullo
+# STDOUT di live.sh: handson::check mostra l'uscita di un controllo solo
+# su un KO, e qui gli esiti sono la demo anche quando passa; così si
+# vedono una volta sola.
+# Arguments: $1 lo spazio di lavoro. Returns: l'uscita di verifica.sh.
+# shellcheck disable=SC2317  # la chiama handson::check, indirettamente
+verifica_a_schermo() {
+  "${CONTROLLO}" "$1" >&3
+}
+
 main() {
   local ws="${1:-}" json_a json_b
   [[ -n "${ws}" && -d "${ws}" ]] \
@@ -82,9 +95,10 @@ main() {
   handson::step "B: il prompt di cinque righe"
   { chiama prompt-b.md "${json_b}" && riga B "${json_b}"; } \
     || fallita "la chiamata B non ha dato una risposta"
-  handson::step "Il controllo dell'esito"
-  handson::check "B senza telefono, in tabella; B manda più token di A" \
-    "${CONTROLLO}" "${ws}"
+  handson::step "Le affermazioni alla prova"
+  exec 3>&1
+  handson::check "le due risposte ci sono; B manda più token di A" \
+    verifica_a_schermo "${ws}"
   handson::finish
 }
 

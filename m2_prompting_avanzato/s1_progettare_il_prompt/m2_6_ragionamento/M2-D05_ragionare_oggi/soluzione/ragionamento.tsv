@@ -1,10 +1,8 @@
-problema	modello	variante	orario	token_uscita	token_thinking
-sportelli	haiku	di-getto	9:36	110	105
-sportelli	haiku	passo-passo	9:36	530	225
-sportelli	sonnet	di-getto	9:36	45	0
-sportelli	sonnet	passo-passo	9:36	315	0
-sportelli	opus	di-getto	9:36	29	24
-sportelli	opus	passo-passo	9:36	400	0
-squadre	haiku	di-getto	15:30	102	97
-squadre	sonnet	di-getto	15:30	72	0
-squadre	opus	di-getto	15:30	47	42
+modello	effort	thinking_off	modello_id	orario	token_uscita	token_thinking
+haiku	low	no	claude-haiku-5-5	9:36	108	103
+haiku	low	MAX_THINKING_TOKENS=0	claude-haiku-5-5	9:36	131	126
+haiku	high	no	claude-haiku-5-5	9:36	168	163
+sonnet	low	no	claude-sonnet-5-5	9:36	5	0
+sonnet	high	no	claude-sonnet-5-5	9:36	106	101
+opus	low	no	claude-opus-5-5	9:36	31	26
+opus	high	no	claude-opus-5-5	9:36	40	33

@@ -1,4 +1,5 @@
-tipo	valore	descrizione
-parole_max	130	al massimo 130 parole
-assente	\[[^]\n]{2,60}\]	nessun segnaposto tra parentesi quadre da completare
+tipo	valore	descrizione	pratica
+parole_max	130	al massimo 130 parole	chiarezza
+assente	\[[^]\n]{2,60}\]	nessun segnaposto tra parentesi quadre da completare	chiarezza
 assente	!	nessun punto esclamativo
+presente	assistenza clienti di CiaspoLink	firmata dall'assistenza clienti di CiaspoLink	chiarezza

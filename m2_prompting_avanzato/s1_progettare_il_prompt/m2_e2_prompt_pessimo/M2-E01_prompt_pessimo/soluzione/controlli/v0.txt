@@ -1,4 +1,4 @@
 KO	il numero di telefono del cliente non compare	trovato «000 000 0103»
 KO	nessun segnaposto tra parentesi quadre da completare	trovato «[Nome e cognome]»
-KO	al massimo 150 parole	335 parole
+KO	al massimo 150 parole	297 parole
 totale	0/3

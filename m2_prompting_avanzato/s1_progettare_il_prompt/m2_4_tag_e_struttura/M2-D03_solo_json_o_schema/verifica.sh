@@ -1,74 +1,62 @@
 #!/bin/bash
 #
-# verifica.sh di M2-D03 -- solo JSON, o uno schema: esiti.tsv
-# (intestazione «file<TAB>json_valido<TAB>blocco_codice<TAB>telefono<TAB>
-# schema_valido», scritto da controlla_json.py) mostra l'esito registrato
-# dal corso:
-#   - le tre risposte alla richiesta «SOLO un JSON» ci sono (se sono JSON
-#     valido, e se hanno il telefono del cliente, lo dicono le colonne);
-#   - con --json-schema l'oggetto arriva in structured_output e rispetta lo
-#     schema.
+# verifica.sh di M2-D03 -- solo JSON, o uno schema. Il controllo sta in
+# demo/controlla_json.py dell'elemento, lo stesso che i partecipanti
+# lanciano nello spazio di lavoro: legge schema.json e le risposte di
+# risposte/ dello spazio di lavoro, ne stampa i numeri e l'esito di tre
+# affermazioni, e mostra la quarta:
+#   1. «Se lo chiedete, il JSON arriva valido e conforme», da provare: si
+#      conta, e non decide l'uscita;
+#   2. «Con --json-schema, structured_output è validato», garantita;
+#   3. «Uno schema non valido fa uscire claude con un errore, all'avvio»,
+#      garantita;
+#   4. «Lo schema controlla la forma, non il contenuto»: una dimostrazione
+#      con un oggetto costruito dal controllo, senza verdetto.
+# L'esito è «confermata», «non confermata in questa esecuzione» oppure «non
+# distinguibile (perché)», quando manca la risposta che serve. Decide dalle
+# risposte: non legge esiti.tsv e non scrive niente (--senza-esiti).
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = esito come registrato · 1 = esiti.tsv assente, incompleto o
-#         con un esito diverso · 2 = precondizione (spazio di lavoro
-#         assente, esiti.tsv che non si legge)
+# Uscita: 0 = ogni risposta c'è e le due garanzie sono confermate; l'ultima
+#         riga è «Fatto: …» · 1 = la cartella risposte/ che manca, una
+#         risposta che manca o non si legge, una garanzia non confermata ·
+#         2 = precondizione (spazio di lavoro assente, python3 o il
+#         controllo che mancano, schema.json che non è quello della demo,
+#         un file che non si legge, il controllo uscito con un codice fuori
+#         dal suo contratto)
 set -euo pipefail
 
-readonly FILE='esiti.tsv'
-INTESTAZIONE=$'file\tjson_valido\tblocco_codice\ttelefono'
-INTESTAZIONE+=$'\tschema_valido'
-readonly INTESTAZIONE
-readonly MODELLI=(haiku sonnet opus)
-
-# Un campo della riga di un file. Arguments: $1 il file, $2 il nome nella
-# prima colonna, $3 il numero del campo. Outputs: il campo.
-campo() {
-  awk -F'\t' -v c="$2" -v f="$3" \
-    '{ sub(/\r$/, "") } NR > 1 && $1 == c { v = $f } END { print v }' "$1"
-}
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SELF
+readonly CONTROLLO="${SELF%/*}/demo/controlla_json.py"
+FATTO='Fatto: ogni affermazione è stata messa alla prova;'
+FATTO+=' gli esiti sono qui sopra.'
+readonly FATTO
 
 main() {
-  local ws="${1:-}" prima='' m ko=0
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
   fi
-  if [[ ! -f "${ws}/${FILE}" ]]; then
-    echo "Manca ${FILE}: eseguite i passi del README, fino a" \
-      "python3 controlla_json.py."
-    exit 1
-  fi
-  if [[ ! -r "${ws}/${FILE}" ]]; then
-    echo "verifica: ${FILE} non si legge" >&2
+  if ! command -v python3 > /dev/null 2>&1; then
+    echo "verifica: manca python3 (tools/verifica_ambiente.sh)" >&2
     exit 2
   fi
-  if ! IFS= read -r prima < "${ws}/${FILE}"; then
-    : # file vuoto, o una riga senza a capo finale
+  if [[ ! -f "${CONTROLLO}" || ! -r "${CONTROLLO}" ]]; then
+    echo "verifica: manca il controllo ${CONTROLLO}" >&2
+    exit 2
   fi
-  if [[ "${prima%$'\r'}" != "${INTESTAZIONE}" ]]; then
-    echo "${FILE}: la prima riga deve essere l'intestazione di" \
-      "controlla_json.py."
-    exit 1
-  fi
-  for m in "${MODELLI[@]}"; do
-    if [[ -z "$(campo "${ws}/${FILE}" "solo-json-${m}.json" 2)" ]]; then
-      echo "Manca la risposta di ${m} alla richiesta «SOLO un JSON»."
-      ko=1
-    else
-      echo "${m}: JSON valido" \
-        "$(campo "${ws}/${FILE}" "solo-json-${m}.json" 2)," \
-        "telefono $(campo "${ws}/${FILE}" "solo-json-${m}.json" 4)."
-    fi
-  done
-  if [[ "$(campo "${ws}/${FILE}" schema-haiku.json 5)" != "sì" ]]; then
-    echo "Con --json-schema atteso un oggetto che rispetta lo schema."
-    ko=1
-  fi
-  if (( ko != 0 )); then
-    exit 1
-  fi
-  echo "Esito come nelle registrazioni del corso."
+  python3 -B -I "${CONTROLLO}" --senza-esiti "${ws}" || rc=$?
+  case "${rc}" in
+    0) echo "${FATTO}" ;;
+    1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: controlla_json.py è uscito con ${rc}: un errore del" \
+        "controllo, non un esito" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

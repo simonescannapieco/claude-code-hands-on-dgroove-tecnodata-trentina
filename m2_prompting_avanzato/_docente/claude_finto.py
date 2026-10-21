@@ -17,13 +17,21 @@ scelte dal prompt e dalle opzioni:
   --agent giudice        un giudizio strutturato: ogni affermazione della
                          rubrica è rispettata se la risposta non contiene il
                          telefono del cliente;
-  --json-schema          l'oggetto dello schema di M2-D03 in
-                         structured_output;
+  --json-schema          uno schema non valido (un «type» che JSON Schema
+                         non ha) esce 1 con l'errore della CLI su STDERR,
+                         come Claude Code all'avvio; altrimenti l'oggetto
+                         dello schema di M2-D03 in structured_output, o
+                         quello di M2-D04 se lo schema ha «categoria»;
   altrimenti             una risposta che dipende dal prompt (le demo e le
                          esercitazioni del modulo).
 I token in entrata sono finti: una base (500 con --system-prompt,
 altrimenti 3000) più un quarto dei caratteri del prompt e dei system prompt
-passati con --system-prompt e --append-system-prompt.
+passati con --system-prompt e --append-system-prompt.  I token in uscita
+sono 50, di cui 0 di ragionamento; per il problema degli sportelli
+(M2-D05) il ragionamento dipende da modello ed effort (RAGIONAMENTO, anche
+con MAX_THINKING_TOKENS=0, come sui modelli 5.5) e l'uscita è il
+ragionamento più 5; con FINTO_THINKING_OLTRE=1 il ragionamento supera
+l'uscita di 1.  modelUsage nomina il modello dell'alias di --model.
 
 Ogni chiamata (non --version) aggiunge una riga a FINTO_LOG. Con
 FINTO_ESITO=ko esce 1 senza stampare nulla. Con FINTO_RISPOSTA=<testo>
@@ -40,6 +48,12 @@ import sys
 from typing import Dict, List, Tuple
 
 TEL = "+39 000 000 0103"
+MODELLI = {"haiku": "claude-haiku-5-5", "sonnet": "claude-sonnet-5-5",
+           "opus": "claude-opus-5-5"}
+# I token di ragionamento finti del problema degli sportelli (M2-D05).
+RAGIONAMENTO = {("haiku", "low"): 105, ("haiku", "high"): 300,
+                ("sonnet", "low"): 0, ("sonnet", "high"): 120,
+                ("opus", "low"): 24, ("opus", "high"): 200}
 # Le opzioni che il finto conosce, con quanti valori prendono.
 OPZIONI = {"-p": 0, "--print": 0, "--strict-mcp-config": 0,
            "--no-session-persistence": 0, "--verbose": 0, "--model": 1,
@@ -81,9 +95,24 @@ def argomenti(argv: List[str]) -> Tuple[Dict[str, str], str]:
     return opzioni, operandi[0]
 
 
+TIPI = {"null", "boolean", "object", "array", "number", "string", "integer"}
+
+
+def schema_valido(testo: str) -> bool:
+    """Uno schema che la CLI accetterebbe, per quanto serve alle prove."""
+    try:
+        schema = json.loads(testo)
+    except ValueError:
+        return False
+    if not isinstance(schema, dict):
+        return False
+    tipo = schema.get("type", "object")
+    return isinstance(tipo, list) or (isinstance(tipo, str) and tipo in TIPI)
+
+
 def risposta(prompt: str) -> str:
     """La risposta finta a un prompt delle demo o delle esercitazioni."""
-    if "Classificazione:" in prompt and "segui gli esempi" in prompt.lower():
+    if "Classificazione:" in prompt and "<examples>" in prompt:
         return "lentezza | media | noc"
     if "Classificazione:" in prompt:
         return "Prestazioni | Media | Rete"
@@ -91,12 +120,27 @@ def risposta(prompt: str) -> str:
         return "Si parte alle 9:00 e l'ultima persona esce alle 9:36."
     if "linee ferme" in prompt:
         return "15:30"
-    if "Non menzionare" in prompt:
-        return "Gentile cliente, ci scusiamo per il disservizio di venerdì."
-    if "Sull'indennizzo" in prompt:
-        return "Gentile cliente, l'indennizzo lo valuta l'amministrazione."
     if "Come ti ho detto ieri" in prompt:
         return "Non ho accesso alla conversazione di ieri: me la incolla?"
+    # M2-D06: le cure e gli orrori della galleria, nell'ordine in cui una
+    # chiave può stare dentro un'altra (il divieto e la sua cura
+    # contengono anche il riepilogo; la cura della stima anche la stima).
+    if "con il formato concordato: al massimo tre righe" in prompt:
+        return ("Gentile signor Fittizio, la richiameremo la mattina.\n"
+                "L'assistenza clienti di CiaspoLink")
+    if "tecnico di turno" in prompt:
+        return ("Problema: centralino fermo, telefoni «non registrato».\n"
+                "Quando: venerdì mattina, dalle 8 alle 10 e mezza.\n"
+                "Richieste: indennizzo e linea di riserva.")
+    if "prosa scorrevole" in prompt or "Non usare markdown" in prompt:
+        return ("Venerdì mattina il centralino del cliente era fermo.\n\n"
+                "Chiede un indennizzo e una linea di riserva.")
+    if "riepilogo di questo messaggio" in prompt:
+        return "## Che cosa è successo\n- Centralino fermo\n- **Ordini persi**"
+    if "non indicato nel messaggio" in prompt:
+        return "1. Verifica dei log: costo non indicato nel messaggio."
+    if "stima dei costi" in prompt:
+        return "1. Linea di riserva: 150 €"
     if "Formato:" in prompt and "<messaggio>" in prompt:
         return ("| Problema | Quando |\n|---|---|\n| centralino | venerdì |\n\n"
                 "L'assistenza clienti di CiaspoLink")
@@ -134,21 +178,40 @@ def main(argv: List[str]) -> int:
         return 1
     if os.environ.get("FINTO_ESITO", "ok") != "ok":
         return 1
+    schema = opzioni.get("--json-schema")
+    if schema is not None and not schema_valido(schema):
+        sys.stderr.write("Error: --json-schema is not a valid JSON Schema: "
+                         "data/type must be equal to one of the allowed "
+                         "values\n")
+        return 1
     sistema = opzioni.get("--system-prompt")
     caratteri = (len(prompt) + len(sistema or "")
                  + len(opzioni.get("--append-system-prompt", "")))
+    thinking, uscita = 0, 50
+    if "sportelli" in prompt:
+        thinking = RAGIONAMENTO.get((opzioni.get("--model"),
+                                     opzioni.get("--effort")), 0)
+        uscita = thinking + 5
+    if os.environ.get("FINTO_THINKING_OLTRE") == "1":
+        thinking = uscita + 1
     doc = {"type": "result", "subtype": "success", "is_error": False,
            "session_id": "sessione-finta",
            "usage": {"input_tokens": 3, "cache_creation_input_tokens":
                      (3000 if sistema is None else 500) + caratteri // 4,
-                     "cache_read_input_tokens": 0, "output_tokens": 50,
-                     "output_tokens_details": {"thinking_tokens": 0}},
-           "modelUsage": {"claude-finto": {}}}
+                     "cache_read_input_tokens": 0, "output_tokens": uscita,
+                     "output_tokens_details": {"thinking_tokens": thinking}},
+           "modelUsage": {MODELLI.get(opzioni.get("--model", ""),
+                                      "claude-finto"): {}}}
     fissa = os.environ.get("FINTO_RISPOSTA")
     if fissa:
         doc["result"] = fissa
     elif "--agent" in opzioni:
         doc["structured_output"] = giudizio(prompt)
+        doc["result"] = json.dumps(doc["structured_output"])
+    elif ("--json-schema" in opzioni
+          and '"categoria"' in opzioni["--json-schema"]):
+        doc["structured_output"] = {"categoria": "lentezza",
+                                    "priorita": "media", "team": "noc"}
         doc["result"] = json.dumps(doc["structured_output"])
     elif "--json-schema" in opzioni:
         doc["structured_output"] = {

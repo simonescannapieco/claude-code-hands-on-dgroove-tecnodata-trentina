@@ -16,11 +16,15 @@
 #   - le versioni: misura.sh, kit.py e verifica.py ammettono soltanto vN
 #     (^v(0|[1-9][0-9]*)$): v2b e v01 li rifiutano misura.sh e kit.py,
 #     verifica.py non li conta né come ultima versione né come ciclo;
-#   - verifica.py: le regole delle due esercitazioni (prompt uguale, nessun
-#     miglioramento, telefono ripetuto, registro vuoto, famiglia mancante,
-#     due cicli, peggioramento, una famiglia sola che migliora); una misura
-#     rovinata da rifare; una cartella che non si legge (2);
-#   - leggi_json.py, orario.py e controlla_json.py sui casi limite;
+#   - verifica.py: le regole delle due esercitazioni (prompt uguale,
+#     registro vuoto, famiglia mancante, due cicli); gli esiti che stampa
+#     senza fermare la verifica (una pratica non confermata, una famiglia
+#     che peggiora o che migliora da sola, il telefono ripetuto nella
+#     risposta di v2); una misura rovinata da rifare; una cartella che non
+#     si legge (2);
+#   - leggi_json.py e orario.py sui casi limite (i controlli delle demo e il
+#     kit delle esercitazioni hanno le loro suite: test_m2_d01_d02.sh,
+#     test_m2_d03.sh … test_m2_d06.sh, test_m2_kit.sh);
 #   - i live.sh e misura.sh con il claude finto (_docente/claude_finto.py):
 #     le precondizioni escono 2 senza chiamare claude, una chiamata fallita
 #     esce 1 (le demo si fermano lì) e su un esito diverso si legge il
@@ -36,12 +40,16 @@
 #   - il frontmatter del giudice, le parole che i partecipanti leggono;
 #   - shellcheck -x su ogni script del modulo e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
-# repository non cambia.
+# repository non cambia. I casi si contano: da root i casi dei file e delle
+# cartelle che non si leggono sono saltati e contati a parte (SKIP), e un
+# numero di casi diverso da CASES esce 2. CASES conta anche uno shellcheck
+# per ogni script del modulo: uno script in più o in meno lo cambia.
 #
 # Uso:    m2_prompting_avanzato/_docente/test_m2_script.sh
 # Uscita: 0 = tutte le prove passano · 1 = almeno una fallita
 #         2 = precondizione (manca jq, python3, shellcheck o sha256sum, o la
-#             cartella di un elemento)
+#             cartella di un elemento, o le prove eseguite non sono quante
+#             attese)
 set -uo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -60,32 +68,38 @@ readonly E01="${S1}/m2_e2_prompt_pessimo/M2-E01_prompt_pessimo"
 readonly E02="${S2}/m2_e3_tre_prompt_due_cicli/M2-E02_tre_prompt_due_cicli"
 readonly DEMO=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${D06}")
 readonly ELEMENTI=("${DEMO[@]}" "${E01}" "${E02}")
-# Per ogni elemento, nello stesso ordine: il file dei risultati, la frase
-# della verifica riuscita.
-readonly DATI=(confronto.tsv sistema.tsv esiti.tsv etichette.tsv
-  ragionamento.tsv orrori.tsv registro.md registro.md)
-readonly OK_FRASE=('Esito come nelle registrazioni del corso.'
-  'Esito come nelle registrazioni del corso.'
-  'Esito come nelle registrazioni del corso.'
-  'Esito come nelle registrazioni del corso.'
-  'Esito come nelle registrazioni del corso.'
-  'Esito come nelle registrazioni del corso.'
-  'Fatto: le misure ci sono' 'Fatto: le misure ci sono')
+# Per ogni elemento, nello stesso ordine: il file che la verifica legge
+# (per M2-D03 e M2-D04 una risposta: la verifica decide dalle risposte,
+# mai da esiti.tsv), la frase della verifica riuscita.
+readonly FATTO='Fatto: ogni affermazione è stata messa alla prova'
+readonly DATI=(confronto.tsv sistema.tsv risposte/schema-haiku.json
+  risposte/schema-haiku.json ragionamento.tsv orrori.tsv registro.md
+  registro.md)
+readonly OK_FRASE=("${FATTO}" "${FATTO}" "${FATTO}" "${FATTO}" "${FATTO}"
+  "${FATTO}" "${FATTO}" "${FATTO}")
 # ...e la frase della verifica sul punto di partenza.
 readonly PARTENZA_FRASE=('Manca confronto.tsv' 'Manca sistema.tsv'
-  'Manca esiti.tsv' 'Manca etichette.tsv' 'Manca ragionamento.tsv'
-  'Manca orrori.tsv' 'servono almeno v0 e v1' 'servono almeno v0 e v1')
+  'Manca la cartella risposte/' 'Manca la cartella risposte/'
+  'Manca ragionamento.tsv' 'Manca orrori.tsv' 'servono almeno v0 e v1'
+  'servono almeno v0 e v1')
 readonly KIT=(misura.sh strumenti/kit.py schema-giudizio.json
   .claude/agents/giudice.md .claude/settings.json)
-readonly T=$'\t'
+# Le righe intere che kit.py confronta stampa sul confronto di v0 e v1
+# della soluzione di M2-E01.
+readonly E01_TOTALI='  totali: controlli 0/3 → 3/3; giudice 2 → 3 su 5'
+readonly E01_TOKEN='  token: in entrata 926 → 1932, in uscita 849 → 294'
+readonly CASES=294
 TMP=''
 PASS=0
 FAIL=0
+SKIP=0
 RC=0
 OUT=''
 
 pass() { echo "  PASS: $1"; PASS=$((PASS + 1)); }
 fail() { echo "  FAIL: $1"; FAIL=$((FAIL + 1)); }
+# Un caso che da root non può girare: contato a parte, mai come passato.
+skip() { echo "  SKIP: $1"; SKIP=$((SKIP + 1)); }
 
 # Esegue un comando; RC e OUT (STDOUT e STDERR insieme) per expect.
 run() { OUT="$("$@" 2>&1)"; RC=$?; }
@@ -100,6 +114,16 @@ expect() {
     pass "$1"
   else
     fail "$1 (rc=${RC}, attesa $2, parola «$3»): ${OUT:0:300}"
+  fi
+}
+
+# Uscita attesa E una riga intera di OUT, uguale carattere per carattere.
+# Arguments: $1 il nome, $2 l'uscita attesa, $3 la riga (grep -xF).
+expect_riga() {
+  if (( RC == $2 )) && grep -qxF -- "$3" <<< "${OUT}"; then
+    pass "$1"
+  else
+    fail "$1 (rc=${RC}, attesa $2, riga «$3»): ${OUT:0:300}"
   fi
 }
 
@@ -216,7 +240,7 @@ t_verifiche_base() {
     expect "${nome}: la soluzione passa" 0 "${OK_FRASE[i]}"
     expect_absent "${nome}: la soluzione non ha segnalazioni" "Non ancora"
     if (( EUID == 0 )); then
-      echo "  SKIP: ${nome}: da root ogni file si legge"
+      skip "${nome}: ${DATI[i]} che non si legge (da root ogni file si legge)"
       continue
     fi
     chmod 000 "${w}/${DATI[i]}"
@@ -250,8 +274,10 @@ t_copie() {
   done
   for p in "${D01}/demo/prompt-a.md" "${D01}/demo/prompt-b.md" \
       "${D03}/demo/richiesta-json.md" "${D06}/demo/orrore-1-vaga.md" \
+      "${D06}/demo/cura-1-vaga.md" "${D06}/demo/base-2-formato.md" \
       "${D06}/demo/orrore-2-divieto.md" "${D06}/demo/cura-2-divieto.md" \
-      "${D06}/demo/orrore-3-cinque.md"; do
+      "${D06}/demo/orrore-3-stima.md" "${D06}/demo/cura-3-stima.md" \
+      "${D06}/demo/cura-4-memoria.md"; do
     if grep -qF -- "$(cat "${E01}/esercizio/dati/messaggio.md")" "${p}"; then
       pass "${p##*/} contiene il messaggio intero"
     else fail "${p##*/} non contiene il messaggio intero"; fi
@@ -324,11 +350,21 @@ t_verifica_regole() {
   cp "${w}/giudizi/v0.json" "${w}/giudizi/v1.json"
   cp "${w}/controlli/v0.txt" "${w}/controlli/v1.txt"
   run "${E01}/verifica.sh" "${w}"
-  expect "E01: nessun miglioramento" 1 "non migliora"
+  expect "E01: v1 che non migliora è un esito, non un errore" 0 \
+    "v1 rispetto a v0, chiarezza:"
   ws w "${E01}/esercizio" "${E01}/soluzione"
-  cp "${w}/risposte/v0.json" "${w}/risposte/v1.json"
+  python3 -B -I - "${w}/risposte/v2.json" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as fh:
+    doc = json.load(fh)
+doc["result"] += "\nLa richiamiamo al +39 000 000 0103."
+with open(sys.argv[1], "w", encoding="utf-8") as fh:
+    json.dump(doc, fh, ensure_ascii=False)
+PY
   run "${E01}/verifica.sh" "${w}"
-  expect "E01: l'ultima versione ripete il telefono" 1 "telefono"
+  expect_riga "E01: il telefono nella risposta di v2 è un dato, senza esito" \
+    0 "Il telefono del cliente nella risposta di v2: presente (la risposta \
+lo ripete)"
   ws w "${E01}/esercizio" "${E01}/soluzione"
   cp "${E01}/esercizio/registro.md" "${w}/registro.md"
   run "${E01}/verifica.sh" "${w}"
@@ -348,7 +384,8 @@ t_verifica_regole() {
   cp "${w}/sistemi/giudizi/v0.json" "${w}/sistemi/giudizi/v2.json"
   sed -i 's/^totale\t.*/totale\t0\/3/' "${w}/sistemi/controlli/v2.txt"
   run "${E02}/verifica.sh" "${w}"
-  expect "E02: una famiglia peggiora" 1 "peggiorano: sistemi"
+  expect "E02: una famiglia che peggiora è un esito, non un errore" 0 \
+    "${FATTO}"
 }
 
 # leggi_json.py, orario.py.
@@ -366,6 +403,12 @@ t_aiutanti() {
   expect "leggi_json: nessun JSON" 1 "nessun JSON"
   OUT="$(printf '%s' "${j}" | python3 -B -I "${lj}" boh 2>&1)"; RC=$?
   expect "leggi_json: dato sconosciuto" 2 "Uso"
+  j='{"is_error":false,"result":"ok","modelUsage":{"claude-haiku-5-5":{}}}'
+  OUT="$(printf '%s' "${j}" | python3 -B -I "${lj}" modello 2>&1)"; RC=$?
+  expect "leggi_json: il modello che ha risposto" 0 "claude-haiku-5-5"
+  OUT="$(printf '%s' '{"is_error":false,"result":"ok"}' \
+    | python3 -B -I "${lj}" modello 2>&1)"; RC=$?
+  expect "leggi_json: modello assente" 1 "quale modello"
   j='{"is_error":false,"result":"dalle 09:00 ... alle **9:36** (inizio 9:00)"}'
   OUT="$(printf '%s' "${j}" | python3 -B -I "${or}" 9:00 2>&1)"; RC=$?
   expect "orario: esclude l'orario di partenza" 0 "9:36"
@@ -379,37 +422,6 @@ t_aiutanti() {
   expect "orario: nessun orario" 1 "nessun orario"
   OUT="$(printf '{}' | python3 -B -I "${or}" nove 2>&1)"; RC=$?
   expect "orario: argomento non valido" 2 "Uso"
-}
-
-# controlla_json.py: lo schema che manca, il blocco di codice (la colonna
-# blocco_codice, a schermo e in esiti.tsv), enum e chiavi richieste.
-t_controlla_json() {
-  local w j
-  ws w "${D03}/demo"
-  mkdir -p "${w}/risposte"
-  for j in haiku sonnet; do
-    printf '{"is_error":false,"result":"{\\"a\\": 1}"}\n' \
-      > "${w}/risposte/solo-json-${j}.json"
-  done
-  # shellcheck disable=SC2016  # il blocco di codice è testo
-  printf '{"is_error":false,"result":"```json\\n{}\\n```"}\n' \
-    > "${w}/risposte/solo-json-opus.json"
-  run bash -c "cd '${w}' && python3 -B -I controlla_json.py"
-  expect "controlla_json: manca lo schema" 1 "schema-haiku.json"
-  printf '%s\n' '{"is_error":false,"result":"x","structured_output":' \
-    '{"tipo_cliente":"ditta"}}' > "${w}/risposte/schema-haiku.json"
-  run bash -c "cd '${w}' && python3 -B -I controlla_json.py"
-  expect "controlla_json: il blocco di codice" 0 "solo-json-opus.json  no  sì"
-  expect "controlla_json: la colonna blocco_codice a schermo" 0 \
-    "file  json_valido  blocco_codice  telefono  schema_valido"
-  expect_absent "controlla_json: nessuna colonna recinti" "recinti"
-  if [[ "$(head -n 1 "${w}/esiti.tsv")" \
-      == "file${T}json_valido${T}blocco_codice${T}telefono${T}schema_valido" ]]
-  then pass "controlla_json: la colonna blocco_codice in esiti.tsv"
-  else fail "controlla_json: $(head -n 1 "${w}/esiti.tsv")"; fi
-  if grep -q "^schema-haiku.json${T}sì${T}—${T}no${T}no$" "${w}/esiti.tsv"
-  then pass "controlla_json: enum e chiavi richieste"
-  else fail "controlla_json: $(tail -1 "${w}/esiti.tsv")"; fi
 }
 
 # I live.sh e misura.sh con il claude finto.
@@ -582,7 +594,10 @@ t_contratto_kit() {
 t_contratto_misura() {
   local w v
   if (( EUID == 0 )); then
-    echo "  SKIP: misura.sh: da root ogni cartella si scrive"
+    skip "misura.sh: controlli che non girano (da root ogni cartella si" \
+      "scrive)"
+    skip "misura.sh: dopo i controlli falliti nessun giudizio (da root)"
+    skip "misura.sh: una chiamata sola, la risposta (da root)"
   else
     ws w "${E01}/esercizio"
     mkdir -p "${w}/controlli"
@@ -633,7 +648,9 @@ PY
   expect "verifica: controlli/v1.txt non UTF-8 va rimisurato" 1 \
     "mancano i controlli di v1: misurate di nuovo v1"
   if (( EUID == 0 )); then
-    echo "  SKIP: verifica: da root ogni cartella si legge"
+    for d in risposte giudizi .; do
+      skip "verifica: la cartella ${d} che non si legge (da root si legge)"
+    done
     return 0
   fi
   ws w "${E01}/esercizio" "${E01}/soluzione"
@@ -702,13 +719,12 @@ t_rami() {
   expect "kit: parole_min raggiunto" 0 "✓ almeno cinque parole (5 parole)"
   ws w "${E01}/esercizio" "${E01}/soluzione"
   run python3 -B "${w}/strumenti/kit.py" confronta "${w}" v0 v1
-  expect "kit: il confronto, controlli e giudice" 0 \
-    "totali: controlli 0/3 → 3/3; giudice 1 → 4 su 5"
-  expect "kit: il confronto, i token" 0 "token: in entrata 947 → 1953"
+  expect_riga "kit: il confronto, controlli e giudice" 0 "${E01_TOTALI}"
+  expect_riga "kit: il confronto, i token" 0 "${E01_TOKEN}"
 }
 
-# ...e nei live.sh: le precondizioni di una demo e di un'esercitazione; il
-# messaggio di verifica.py sulle famiglie che migliorano.
+# ...e nei live.sh: le precondizioni di una demo e di un'esercitazione; una
+# famiglia sola che migliora, un esito che verifica.py stampa e basta.
 t_rami_live() {
   local w f
   precondizione "M2-D01 live.sh: spazio di lavoro assente" \
@@ -729,23 +745,25 @@ t_rami_live() {
     cp "${w}/${f}/controlli/v0.txt" "${w}/${f}/controlli/v2.txt"
   done
   run "${E02}/verifica.sh" "${w}"
-  expect "E02: una famiglia sola migliora" 1 \
-    "famiglie migliorate: 1 su tre; ne servono almeno due"
+  expect "E02: una famiglia sola che migliora è un esito, non un errore" 0 \
+    "${FATTO}"
 }
 
 # Le sei demo: alla prima chiamata fallita si fermano (una chiamata sola);
 # su un esito diverso stampano il messaggio di verifica.sh, non soltanto la
 # riga del verdetto, con handson::check della libreria e senza una copia
-# locale di esito(). L'esito diverso: FINTO_RISPOSTA per cinque demo, per
-# M2-D02 un system prompt lungo, che pesa più della metà.
+# locale di esito(). L'esito diverso: per M2-D01 un prompt B più corto di A;
+# per M2-D02 un system prompt lungo, che pesa più della metà; per M2-D05
+# thinking_tokens oltre output_tokens; FINTO_RISPOSTA per le altre tre.
 t_demo() {
   local i e w v
-  local -a frase=('La risposta a B non è una tabella'
-    'Con il system prompt sostituito attesi meno della metà'
-    'Con --json-schema atteso un oggetto che rispetta lo schema'
-    'attesa la forma degli esempi'
-    "Manca l'orario di sportelli, haiku, di-getto"
-    "La cura: attesa una risposta che parli dell'indennizzo")
+  local -a frase=(
+    'più token in entrata per B che per A: non confermata in questa esecuzione'
+    'benché la riga ci sia: non confermata in questa esecuzione'
+    'Con --json-schema, structured_output è validato (garantita): non distinguibile'
+    "l'oggetto rispetta lo schema (haiku): chiamata fallita"
+    'in questa esecuzione no (R1: 111 su 110'
+    'in questa esecuzione no')
   for i in "${!DEMO[@]}"; do
     e="${DEMO[i]}"
     if grep -q '^esito()' "${e}/_docente/live.sh" \
@@ -762,9 +780,17 @@ t_demo() {
     else fail "${e##*/}: rc=${RC} dopo ${v} chiamate fallite: ${OUT:0:200}"
     fi
     ws w "$(partenza "${e}")"
-    if [[ "${e}" == "${D02}" ]]; then
+    if [[ "${e}" == "${D01}" ]]; then
+      printf 'Riassumi.\n' > "${w}/prompt-b.md"
+      finto "${e}/_docente/live.sh" "${w}"
+    elif [[ "${e}" == "${D02}" ]]; then
       printf 'Rispondi in italiano. %.0s' {1..600} > "${w}/istruzione.txt"
       finto "${e}/_docente/live.sh" "${w}"
+    elif [[ "${e}" == "${D05}" ]]; then
+      finto FINTO_THINKING_OLTRE=1 "${e}/_docente/live.sh" "${w}"
+    elif [[ "${e}" == "${D06}" ]]; then
+      finto FINTO_RISPOSTA="L'assistenza clienti di CiaspoLink" \
+        "${e}/_docente/live.sh" "${w}"
     else
       finto FINTO_RISPOSTA='Non lo so.' "${e}/_docente/live.sh" "${w}"
     fi
@@ -795,7 +821,7 @@ t_versioni() {
   done
   run "${E01}/verifica.sh" "${w}"
   expect "verifica: una misura v1b non è l'ultima versione (E01)" 0 \
-    "Fatto: le misure ci sono"
+    "${FATTO}"
   expect_absent "verifica: e non compare" "v1b"
   ws w "${E02}/esercizio" "${E02}/soluzione"
   for d in sviluppo supporto; do
@@ -830,7 +856,7 @@ t_versioni_zeri() {
   done
   run "${E01}/verifica.sh" "${w}"
   expect "verifica: una misura v01 non pareggia con v1 (E01)" 0 \
-    "Fatto: le misure ci sono"
+    "${FATTO}"
   expect_absent "verifica: e v01 non compare" "v01"
   ws w "${E02}/esercizio" "${E02}/soluzione"
   for d in sviluppo supporto; do
@@ -863,12 +889,12 @@ t_etichette() {
     pass "M2-D03: «blocco di codice», non «recinti» né «virgolette di codice»"
   else fail "M2-D03: i nomi vecchi in ${OUT}"; fi
   ws w "$(partenza "${D06}")" "${D06}/soluzione"
-  awk -F'\t' -v OFS='\t' '$1 == "orrore-4-memoria" { $6 = "Va bene." }
+  awk -F'\t' -v OFS='\t' '$1 == "orrore-4-memoria" { $13 = "sì" }
     { print }' "${w}/orrori.tsv" > "${w}/orrori.nuovo"
   mv "${w}/orrori.nuovo" "${w}/orrori.tsv"
   run "${D06}/verifica.sh" "${w}"
-  expect "M2-D06: la memoria che non chiede" 1 \
-    "attesa una risposta che chieda ciò che manca"
+  expect "M2-D06: la firma concordata nell'orrore della memoria" 1 \
+    "in questa esecuzione no"
 }
 
 # Il frontmatter del giudice: su Haiku, senza gli strumenti che scrivono o
@@ -959,8 +985,8 @@ t_opzioni() {
   expect_absent "misura.sh --help: senza le righe di codice" "set -euo"
   ws w "${E01}/esercizio" "${E01}/soluzione"
   run env PATH="${TMP}/senza_claude" "${w}/misura.sh" --confronta v0 v1
-  expect "misura.sh --confronta senza claude nel PATH" 0 \
-    "totali: controlli 0/3 → 3/3"
+  expect_riga "misura.sh --confronta senza claude nel PATH" 0 \
+    "${E01_TOTALI}"
   run cat "${E01}/esercizio/misura.sh"
   expect_absent "misura.sh: nessuna attesa in secondi non verificata" \
     "tre secondi"
@@ -996,7 +1022,6 @@ main() {
   t_kit
   t_verifica_regole
   t_aiutanti
-  t_controlla_json
   t_finti
   t_live_esercitazioni
   t_live_verifica
@@ -1015,7 +1040,13 @@ main() {
   t_demo
   t_etichette
   t_shellcheck
-  echo "PASS=${PASS} FAIL=${FAIL}"
+  echo "PASS=${PASS} FAIL=${FAIL} SKIP=${SKIP}" \
+    "CASES=$((PASS + FAIL + SKIP))/${CASES}"
+  if (( PASS + FAIL + SKIP != CASES )); then
+    echo "test_m2_script: eseguite $((PASS + FAIL + SKIP)) prove, attese" \
+      "${CASES}: un caso manca o non è contato" >&2
+    exit 2
+  fi
   (( FAIL == 0 )) || exit 1
 }
 

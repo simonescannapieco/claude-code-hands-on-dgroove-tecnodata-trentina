@@ -1,7 +1,0 @@
-modello	variante	risposta
-haiku	zero-shot	**Backup e Storage | Alta | Infrastruttura (Sistemi/SRE)** Motivazione: i backup notturni non completati compromettono la protezione dei dati (RPO), quindi la priorità è alta. Il problema riguarda le prestazioni dell'upload verso il cloud, di competenza del team infrastruttura.
-haiku	few-shot	Classificazione: backup_lento | media | noc
-haiku	con-etichette	lentezza | media | noc
-sonnet	zero-shot	Prestazioni backup/rete | Media | Infrastruttura / Network
-sonnet	few-shot	prestazioni_lente | media | noc
-sonnet	con-etichette	lentezza | media | noc

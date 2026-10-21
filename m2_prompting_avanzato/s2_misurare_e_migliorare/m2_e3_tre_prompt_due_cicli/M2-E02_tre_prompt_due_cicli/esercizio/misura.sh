@@ -3,24 +3,32 @@
 # misura.sh -- misura una versione di un prompt, in tre passi:
 #   1. la risposta: prompt/<versione>.md, con i file di dati/ al posto dei
 #      segnaposto {{nome}}, a Claude con claude -p, senza strumenti
-#      (risposte/<versione>.json e risposte/<versione>.md);
+#      (risposte/<versione>.json e risposte/<versione>.md; in
+#      risposte/<versione>.opzioni il modello, l'effort e l'impronta del
+#      prompt e dei dati, per dire poi che cosa è cambiato);
 #   2. i controlli scritti in codice di controlli.tsv
 #      (controlli/<versione>.txt);
 #   3. il giudizio del subagent «giudice» (.claude/agents/giudice.md) con
 #      le affermazioni di rubrica.md, in un JSON vincolato da
-#      schema-giudizio.json (giudizi/<versione>.json).
+#      schema-giudizio.json (giudizi/<versione>.json). Su v0 il giudice
+#      giudica due volte la stessa risposta (giudizi/v0-bis.json): la
+#      prova del giudice dice su quante affermazioni dà lo stesso esito.
 # Poi stampa il riepilogo. Con --confronta mette due versioni già misurate
-# fianco a fianco. Ogni comando claude che lancia viene prima stampato.
+# fianco a fianco e dice l'esito della pratica della seconda, scritta in
+# registro.md; con --pratiche elenca le pratiche. Ogni comando claude che
+# lancia viene prima stampato.
 #
 # Uso:    ./misura.sh [cartella] <versione> [--modello M] [--effort E]
 #         ./misura.sh --confronta [cartella] <versione> <versione>
+#         ./misura.sh --pratiche
 #         cartella: la famiglia del prompt (per esempio supporto); senza,
 #         la cartella corrente. versione: v0, v1, v2, ... Il modello della
 #         risposta (haiku, sonnet, opus; default sonnet) e l'effort (low,
 #         medium, high; default low) si cambiano uno per volta.
-# Uscita: 0 misurata o confrontata · 1 una chiamata a Claude fallita o un
-#         file di misura incompleto · 2 uso sbagliato o precondizione,
-#         anche un testo oltre i 100000 byte o controlli che non girano
+# Uscita: 0 misurata, confrontata o elencata · 1 una chiamata a Claude
+#         fallita o un file di misura incompleto · 2 uso sbagliato o
+#         precondizione, anche un testo oltre i 100000 byte o controlli che
+#         non girano
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -32,6 +40,8 @@ readonly AGENTE="${BASE}/.claude/agents/giudice.md"
 readonly SISTEMA='Rispondi in italiano.'
 # Una versione è «v» e un numero senza zeri davanti: v0, v1, v2, ..., v10.
 readonly VERSIONE_RE='^v(0|[1-9][0-9]*)$'
+# Il suffisso del secondo giudizio di v0, la prova del giudice.
+readonly BIS='-bis'
 readonly COMUNI=(--strict-mcp-config --setting-sources 'project,local'
   --permission-mode dontAsk --permission-prompts none
   --output-format json --no-session-persistence)
@@ -47,7 +57,9 @@ esegui() {
   local uscita="$1"
   shift
   printf '$ %s\n' "$(mostra "$@")" >&2
-  env -u ANTHROPIC_API_KEY "$@" < /dev/null > "${uscita}"
+  # Anche senza CLAUDE_CODE_EFFORT_LEVEL, che ha la precedenza su --effort.
+  env -u ANTHROPIC_API_KEY -u CLAUDE_CODE_EFFORT_LEVEL "$@" < /dev/null \
+    > "${uscita}"
 }
 
 # Il comando in una riga leggibile: un argomento lungo (il prompt, lo
@@ -65,14 +77,16 @@ mostra() {
   printf '%s' "${riga}"
 }
 
-# Il passo 1: la risposta. Le opzioni prima, poi «--» e il prompt: un
-# prompt che comincia con «-» (un elenco puntato) non va preso per
-# un'opzione. Arguments: $1 cartella, $2 versione, $3 modello, $4 effort.
+# Il passo 1: la risposta. Prima risposte/<versione>.opzioni (il modello,
+# l'effort, le impronte del prompt e dei dati), poi la chiamata: le opzioni
+# prima, poi «--» e il prompt, perché un prompt che comincia con «-» (un
+# elenco puntato) non va preso per un'opzione.
+# Arguments: $1 cartella, $2 versione, $3 modello, $4 effort.
 # Returns: 1 se claude fallisce.
 rispondi() {
   local prompt
   prompt="$(python3 -B "${KIT}" componi "$1" "$2")" || exit 2
-  mkdir -p "$1/risposte"
+  python3 -B "${KIT}" opzioni "$1" "$2" "$3" "$4" || exit 2
   if ! esegui "$1/risposte/$2.json" claude -p --model "$3" --effort "$4" \
       --tools "" --system-prompt "${SISTEMA}" "${COMUNI[@]}" -- "${prompt}"
   then
@@ -82,29 +96,62 @@ rispondi() {
   python3 -B "${KIT}" estrai "$1" "$2"
 }
 
-# Il passo 3: il giudizio, con la consegna per ultima, dopo «--».
-# Arguments: $1 cartella, $2 versione. Returns: 1 se claude fallisce.
+# Il passo 3: il giudizio, con la consegna per ultima, dopo «--». Con il
+# suffisso -bis è il secondo giudizio della stessa risposta, e il kit
+# stampa anche su quante affermazioni i due giudizi concordano.
+# Arguments: $1 cartella, $2 versione, $3 (facoltativo) il suffisso.
+# Returns: 1 se claude fallisce.
 giudica() {
-  local consegna
+  local consegna uscita="$1/giudizi/$2${3:-}.json"
   consegna="$(python3 -B "${KIT}" consegna "$1" "$2")" || exit 2
   mkdir -p "$1/giudizi"
-  if ! esegui "$1/giudizi/$2.json" claude -p --agent giudice \
+  if ! esegui "${uscita}" claude -p --agent giudice \
       --json-schema "$(cat "${SCHEMA}")" --tools "" --effort low \
       "${COMUNI[@]}" -- "${consegna}"; then
-    err "il giudizio di $2 non è arrivato: vedi $1/giudizi/$2.json"
+    err "il giudizio di $2${3:+ (la seconda volta)} non è arrivato:" \
+      "vedi ${uscita}"
     return 1
   fi
-  python3 -B "${KIT}" giudizio "$1" "$2"
+  if [[ -n "${3:-}" ]]; then
+    python3 -B "${KIT}" stabilita "$1" "$2"
+  else
+    python3 -B "${KIT}" giudizio "$1" "$2"
+  fi
+}
+
+# La misura di una versione: toglie prima quella vecchia (se si ferma a
+# metà, la versione resta da misurare, senza file vecchi accanto ai
+# nuovi), poi risposta, controlli e giudizio; su v0 il secondo giudizio.
+# Arguments: $1 cartella, $2 versione, $3 modello, $4 effort.
+misura() {
+  local rc=0
+  rm -f -- "$1/risposte/$2.json" "$1/risposte/$2.md" \
+    "$1/risposte/$2.opzioni" "$1/controlli/$2.txt" \
+    "$1/giudizi/$2.json" "$1/giudizi/$2${BIS}.json" \
+    || die "non riesco a togliere la misura precedente di $2"
+  echo "== $2: risposta ($3, effort $4)"
+  rispondi "$1" "$2" "$3" "$4" || exit 1
+  echo "== $2: controlli"
+  python3 -B "${KIT}" controlla "$1" "$2" || rc=$?
+  (( rc <= 1 )) || die "i controlli di $2 non sono riusciti" \
+    "(uscita ${rc}): la misura si ferma prima del giudizio"
+  echo "== $2: giudizio"
+  giudica "$1" "$2" || exit 1
+  if [[ "$2" == v0 ]]; then
+    echo "== $2: giudizio, la seconda volta (la prova del giudice)"
+    giudica "$1" "$2" "${BIS}" || exit 1
+  fi
 }
 
 main() {
-  local modello=sonnet effort=low confronta=0 rc=0 cartella versione
+  local modello=sonnet effort=low confronta=0 pratiche=0 cartella versione
   local -a pos=()
   # Un'opzione senza valore lo lascia vuoto: lo rifiutano, con l'uscita 2,
   # i controlli del modello e dell'effort qui sotto.
   while (( $# > 0 )); do
     case "$1" in
       --confronta) confronta=1 ;;
+      --pratiche) pratiche=1 ;;
       --modello) modello="${2:-}"; (( $# < 2 )) || shift ;;
       --effort) effort="${2:-}"; (( $# < 2 )) || shift ;;
       -h|--help) sed -n '/^set -/q; 2,$p' "${SELF}"; exit 0 ;;
@@ -125,6 +172,12 @@ main() {
   [[ -f "${KIT}" && -f "${SCHEMA}" && -f "${AGENTE}" ]] \
     || die "mancano strumenti/kit.py, schema-giudizio.json o il giudice"
   cd "${BASE}"
+  if (( pratiche == 1 )); then
+    (( confronta == 0 && ${#pos[@]} == 0 )) \
+      || die "uso: ./misura.sh --pratiche"
+    python3 -B "${KIT}" pratiche .
+    return
+  fi
   if (( confronta == 1 )); then
     case "${#pos[@]}" in
       2) python3 -B "${KIT}" confronta . "${pos[0]}" "${pos[1]}" ;;
@@ -146,21 +199,7 @@ main() {
     || die "versione «${versione}» non valida: si scrive v0, v1, v2, ..."
   [[ -f "${cartella}/prompt/${versione}.md" ]] \
     || die "manca ${cartella}/prompt/${versione}.md"
-  # La misura nuova toglie prima la vecchia: se si ferma a metà, la
-  # versione resta da misurare, senza file vecchi accanto ai nuovi.
-  rm -f -- "${cartella}/risposte/${versione}.json" \
-    "${cartella}/risposte/${versione}.md" \
-    "${cartella}/controlli/${versione}.txt" \
-    "${cartella}/giudizi/${versione}.json" \
-    || die "non riesco a togliere la misura precedente di ${versione}"
-  echo "== ${versione}: risposta (${modello}, effort ${effort})"
-  rispondi "${cartella}" "${versione}" "${modello}" "${effort}" || exit 1
-  echo "== ${versione}: controlli"
-  python3 -B "${KIT}" controlla "${cartella}" "${versione}" || rc=$?
-  (( rc <= 1 )) || die "i controlli di ${versione} non sono riusciti" \
-    "(uscita ${rc}): la misura si ferma prima del giudizio"
-  echo "== ${versione}: giudizio"
-  giudica "${cartella}" "${versione}" || exit 1
+  misura "${cartella}" "${versione}" "${modello}" "${effort}"
 }
 
 main "$@"

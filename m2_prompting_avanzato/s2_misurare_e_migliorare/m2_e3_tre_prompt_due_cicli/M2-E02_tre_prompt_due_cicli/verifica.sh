@@ -1,15 +1,21 @@
 #!/bin/bash
 #
-# verifica.sh di M2-E01 e M2-E02 -- le misure di un'esercitazione sui
+# verifica.sh di M2-E01 e M2-E02 -- il lavoro di un'esercitazione sui
 # prompt. I controlli stanno in verifica.py, accanto a questo file (python3,
-# già richiesto dal corso): v0 e v1 misurate, il prompt cambiato, la misura
-# migliorata, registro.md compilato. Il giudizio lo dà un modello: se la
-# verifica dice che una versione non migliora, un altro ciclo è la risposta.
+# già richiesto dal corso), che prende le regole di misura dal kit
+# dell'elemento (esercizio/strumenti/kit.py): v0 giudicata due volte, v1
+# diversa da v0, ogni versione misurata e scritta in registro.md con la sua
+# pratica (in M2-E02, due famiglie con v2). Poi stampa le misure e l'esito
+# di ogni pratica: una pratica non confermata è un risultato, e la verifica
+# non fallisce per questo.
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = misure complete e miglioramento · 1 = qualcosa manca o non
-#         migliora · 2 = precondizione (spazio di lavoro assente, python3
-#         mancante, un file che c'è ma non si legge)
+# Uscita: 0 = il lavoro c'è, e ogni giudizio strutturato rispetta lo
+#         schema · 1 = qualcosa manca o è da misurare di nuovo, o un
+#         giudizio strutturato non rispetta lo schema · 2 = precondizione
+#         (spazio di lavoro assente, python3 mancante, un file che c'è ma
+#         non si legge), anche verifica.py uscito con un altro codice (un
+#         segnale, un errore fuori contratto): mai un «non ancora»
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -17,7 +23,7 @@ readonly SELF
 readonly CONTROLLI="${SELF%/*}/verifica.py"
 
 main() {
-  local ws="${1:-}"
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
@@ -30,7 +36,12 @@ main() {
     echo "verifica: manca ${CONTROLLI}" >&2
     exit 2
   fi
-  python3 -B -I "${CONTROLLI}" "${ws}"
+  python3 -B -I "${CONTROLLI}" "${ws}" || rc=$?
+  case "${rc}" in
+    0|1|2) exit "${rc}" ;;
+    *) echo "verifica: il controllo è uscito con ${rc}" >&2
+       exit 2 ;;
+  esac
 }
 
 main "$@"

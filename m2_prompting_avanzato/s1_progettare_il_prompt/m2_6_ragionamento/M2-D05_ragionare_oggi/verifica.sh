@@ -1,80 +1,61 @@
 #!/bin/bash
 #
-# verifica.sh di M2-D05 -- ragionare, sui modelli di oggi: ragionamento.tsv
-# (intestazione «problema<TAB>modello<TAB>variante<TAB>orario<TAB>
-# token_uscita<TAB>token_thinking») mostra l'esito registrato dal corso:
-# sui modelli di oggi le risposte sono giuste anche di getto, senza
-# «ragiona passo passo» -- 9:36 per gli sportelli, 15:30 per le squadre.
-# Quanti token di ragionamento ha usato ogni risposta lo dice la tabella.
+# verifica.sh di M2-D05 -- ragionare, oggi: ragionamento.tsv, la tabella
+# delle sette chiamate dei passi del README (intestazione «modello<TAB>
+# effort<TAB>thinking_off<TAB>modello_id<TAB>orario<TAB>token_uscita<TAB>
+# token_thinking»), letta da demo/controlla_ragionamento.py dell'elemento:
+# prima i numeri, poi una riga per affermazione di Anthropic (V1, una
+# garanzia: thinking_tokens minore o uguale a output_tokens; V2, V3, V4:
+# confermata, non confermata in questa esecuzione, non dimostrata o non
+# distinguibile). L'orario è un dato, mai un verdetto.
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = esito come registrato · 1 = ragionamento.tsv assente,
-#         incompleto o con un orario diverso · 2 = precondizione (spazio di
-#         lavoro assente, ragionamento.tsv che non si legge)
+# Uscita: 0 = la tabella è completa e V1 è confermata, qualunque sia
+#         l'esito di V2-V4 · 1 = ragionamento.tsv assente o incompleto, o
+#         V1 non confermata · 2 = precondizione (spazio di lavoro assente,
+#         python3 o il controllo che mancano, ragionamento.tsv che non si
+#         legge, un modello che ha risposto diverso da quello della riga)
 set -euo pipefail
 
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SELF
+readonly CONTROLLA="${SELF%/*}/demo/controlla_ragionamento.py"
 readonly FILE='ragionamento.tsv'
-INTESTAZIONE=$'problema\tmodello\tvariante\torario\ttoken_uscita'
-INTESTAZIONE+=$'\ttoken_thinking'
-readonly INTESTAZIONE
-readonly MODELLI=(haiku sonnet opus)
-
-# L'orario di una riga, senza lo zero davanti all'ora.
-# Arguments: $1 il file, $2 problema, $3 modello, $4 variante.
-orario() {
-  awk -F'\t' -v p="$2" -v m="$3" -v v="$4" '{ sub(/\r$/, "") }
-    NR > 1 && $1 == p && $2 == m && $3 == v { o = $4 } END {
-      sub(/^0/, "", o); print o }' "$1"
-}
-
-# Controlla una riga. Arguments: $1 il file, $2 problema, $3 modello,
-# $4 variante, $5 l'orario giusto. Returns: 1 se manca o è diverso.
-controlla() {
-  local o
-  o="$(orario "$1" "$2" "$3" "$4")"
-  if [[ -z "${o}" ]]; then
-    echo "Manca l'orario di ${2}, ${3}, ${4}."
-    return 1
-  fi
-  if [[ "${o}" != "$5" ]]; then
-    echo "${2}, ${3}, ${4}: ${o}, atteso ${5}."
-    return 1
-  fi
-  echo "${2}, ${3}, ${4}: ${o}"
-}
+FATTO='Fatto: ogni affermazione è stata messa alla prova; gli esiti sono'
+FATTO+=' qui sopra.'
+readonly FATTO
 
 main() {
-  local ws="${1:-}" prima='' m v ko=0
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
   fi
-  if [[ ! -f "${ws}/${FILE}" ]]; then
+  if ! command -v python3 > /dev/null 2>&1; then
+    echo "verifica: manca python3 (tools/verifica_ambiente.sh)" >&2
+    exit 2
+  fi
+  if [[ ! -f "${CONTROLLA}" || ! -r "${CONTROLLA}" ]]; then
+    echo "verifica: manca il controllo ${CONTROLLA}" >&2
+    exit 2
+  fi
+  if [[ ! -e "${ws}/${FILE}" ]]; then
     echo "Manca ${FILE}: eseguite i passi del README."
     exit 1
   fi
-  if [[ ! -r "${ws}/${FILE}" ]]; then
+  if [[ ! -f "${ws}/${FILE}" || ! -r "${ws}/${FILE}" ]]; then
     echo "verifica: ${FILE} non si legge" >&2
     exit 2
   fi
-  if ! IFS= read -r prima < "${ws}/${FILE}"; then
-    : # file vuoto, o una riga senza a capo finale
-  fi
-  if [[ "${prima%$'\r'}" != "${INTESTAZIONE}" ]]; then
-    echo "${FILE}: la prima riga deve essere l'intestazione dei passi del" \
-      "README."
-    exit 1
-  fi
-  for m in "${MODELLI[@]}"; do
-    for v in di-getto passo-passo; do
-      controlla "${ws}/${FILE}" sportelli "${m}" "${v}" 9:36 || ko=1
-    done
-    controlla "${ws}/${FILE}" squadre "${m}" di-getto 15:30 || ko=1
-  done
-  if (( ko != 0 )); then
-    exit 1
-  fi
-  echo "Esito come nelle registrazioni del corso."
+  python3 -B -I "${CONTROLLA}" "${ws}/${FILE}" || rc=$?
+  case "${rc}" in
+    0) echo "${FATTO}" ;;
+    1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: controlla_ragionamento.py è uscito con ${rc}" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

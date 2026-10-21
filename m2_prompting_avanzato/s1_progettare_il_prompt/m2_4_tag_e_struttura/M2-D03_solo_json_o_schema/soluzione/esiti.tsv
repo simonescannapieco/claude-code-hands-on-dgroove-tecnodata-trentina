@@ -1,5 +1,5 @@
-file	json_valido	blocco_codice	telefono	schema_valido
-solo-json-haiku.json	sì	no	sì	sì
-solo-json-sonnet.json	sì	no	sì	sì
-solo-json-opus.json	sì	no	sì	sì
-schema-haiku.json	sì	—	sì	sì
+affermazione	classe	esito	dettaglio
+Se lo chiedete, il JSON arriva valido e conforme	da provare	confermata	haiku: JSON valido sì, conforme allo schema sì; sonnet: JSON valido sì, conforme allo schema sì; opus: JSON valido sì, conforme allo schema sì; 3 su 3 validi e conformi
+Con --json-schema, structured_output è validato	garantita	confermata	subtype success, structured_output sì, conforme allo schema sì
+Uno schema non valido fa uscire claude con un errore, all'avvio	garantita	confermata	uscita 1; su STDERR «Error: --json-schema is not a valid JSON Schema: data/type must be equal to one of the allowed values, data/type must be array, data/type must match a schema in anyOf»; su STDOUT niente
+Lo schema controlla la forma, non il contenuto	dimostrazione	nessun verdetto	tipo_cliente «azienda» → «privato» (un oggetto modificato dal controllo, non una risposta del modello): conforme allo schema sì; telefono del cliente in 4 risposte su 4

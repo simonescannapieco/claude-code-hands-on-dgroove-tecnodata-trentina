@@ -1,4 +1,5 @@
-OK	al massimo 130 parole	109 parole
+OK	al massimo 130 parole	106 parole
 OK	nessun segnaposto tra parentesi quadre da completare	
 OK	nessun punto esclamativo	
-totale	3/3
+OK	firmata dall'assistenza clienti di CiaspoLink	
+totale	4/4

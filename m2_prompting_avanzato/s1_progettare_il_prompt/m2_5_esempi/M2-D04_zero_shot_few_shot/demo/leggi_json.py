@@ -3,7 +3,9 @@ un dato.
 
 Uso:  ... | python3 leggi_json.py token_entrata    (la somma di input_tokens,
                                                   cache_creation_input_tokens e
-                                                  cache_read_input_tokens)
+                                                  cache_read_input_tokens; un
+                                                  errore se «usage» non ne ha
+                                                  nessuno)
       ... | python3 leggi_json.py token_uscita     (output_tokens)
       ... | python3 leggi_json.py token_thinking   (i token del ragionamento,
                                                   0 se il JSON non li riporta)
@@ -11,6 +13,9 @@ Uso:  ... | python3 leggi_json.py token_entrata    (la somma di input_tokens,
       ... | python3 leggi_json.py structured_output (l'oggetto vincolato dallo
                                                   schema, in JSON su una riga)
       ... | python3 leggi_json.py session_id       (l'ID della sessione)
+      ... | python3 leggi_json.py modello          (il modello che ha risposto,
+                                                  da modelUsage; più modelli
+                                                  separati da virgole)
 Uscita: 0 fatto · 1 nessun JSON (per esempio claude non trovato), un JSON
         non valido, senza quel dato o con un errore · 2 uso sbagliato
 """
@@ -23,7 +28,7 @@ from typing import List
 TOKEN = ("input_tokens", "cache_creation_input_tokens",
          "cache_read_input_tokens")
 DATI = ("token_entrata", "token_uscita", "token_thinking", "result",
-        "structured_output", "session_id")
+        "structured_output", "session_id", "modello")
 
 
 def errore(messaggio: str) -> int:
@@ -51,7 +56,7 @@ def main(argv: List[str]) -> int:
                       "fallita?")
     try:
         risposta = json.loads(testo)
-    except ValueError as exc:
+    except (ValueError, RecursionError) as exc:
         return errore("il testo in ingresso non è un JSON valido (%s)" % exc)
     if not isinstance(risposta, dict):
         return errore("il JSON non è quello di claude -p")
@@ -63,6 +68,9 @@ def main(argv: List[str]) -> int:
             if not isinstance(uso, dict):
                 return errore("il JSON non contiene «usage»")
             if argv[0] == "token_entrata":
+                if all(uso.get(c) is None for c in TOKEN):
+                    return errore("«usage» non riporta i token in entrata: "
+                                  "nessuno fra %s" % ", ".join(TOKEN))
                 print(sum(numero(uso.get(c), "usage." + c) for c in TOKEN))
             elif argv[0] == "token_uscita":
                 print(numero(uso.get("output_tokens"), "usage.output_tokens"))
@@ -73,6 +81,12 @@ def main(argv: List[str]) -> int:
             return 0
     except ValueError as exc:
         return errore(str(exc))
+    if argv[0] == "modello":
+        modelli = risposta.get("modelUsage")
+        if not isinstance(modelli, dict) or not modelli:
+            return errore("il JSON non dice quale modello ha risposto")
+        print(",".join(sorted(str(m) for m in modelli)))
+        return 0
     valore = risposta.get(argv[0])
     if valore is None:
         return errore("il JSON non contiene «%s»" % argv[0])

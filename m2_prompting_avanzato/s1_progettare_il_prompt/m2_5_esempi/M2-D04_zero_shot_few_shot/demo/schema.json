@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "properties": {
+    "categoria": {
+      "type": "string",
+      "enum": [
+        "assenza_connessione",
+        "lentezza",
+        "connessione_instabile",
+        "wifi",
+        "router_configurazione",
+        "telefonia_voip",
+        "hotspot",
+        "rete_aziendale",
+        "fatturazione",
+        "attivazione",
+        "copertura",
+        "trasloco",
+        "informazioni",
+        "reclamo"
+      ]
+    },
+    "priorita": {
+      "type": "string",
+      "enum": [
+        "bassa",
+        "media",
+        "alta",
+        "urgente"
+      ]
+    },
+    "team": {
+      "type": "string",
+      "enum": [
+        "primo_livello",
+        "noc",
+        "tecnici_campo",
+        "voce",
+        "servizi_it",
+        "amministrazione",
+        "commerciale",
+        "assistente_virtuale"
+      ]
+    }
+  },
+  "required": [
+    "categoria",
+    "priorita",
+    "team"
+  ],
+  "additionalProperties": false
+}

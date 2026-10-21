@@ -1,90 +1,65 @@
 #!/bin/bash
 #
-# verifica.sh di M2-D04 -- zero-shot contro few-shot: etichette.tsv
-# (intestazione «modello<TAB>variante<TAB>risposta», sei righe: haiku e
-# sonnet per zero-shot, few-shot, con-etichette) mostra l'esito registrato
-# dal corso:
-#   - con gli esempi, la risposta prende la forma degli esempi:
-#     «categoria | priorità | team», in minuscolo e con il trattino basso;
-#   - con l'elenco delle etichette, usa solo etichette ammesse.
-# Quale categoria sceglie senza l'elenco lo giudicate voi, leggendola.
+# verifica.sh di M2-D04 -- zero-shot contro few-shot. Il controllo sta in
+# demo/controlla_etichette.py dell'elemento, lo stesso che i partecipanti
+# lanciano nello spazio di lavoro: legge le otto risposte di risposte/
+# (quattro varianti, haiku e sonnet), con schema.json e con-etichette.md
+# dello spazio di lavoro, ne stampa i dati e dice, per haiku e per sonnet,
+# se la prova conferma tre affermazioni di Anthropic:
+#   - gli esempi orientano il formato: la forma degli esempi manca con
+#     zero-shot e c'è con few-shot (se c'è già con zero-shot, la prova non
+#     distingue);
+#   - con l'elenco nel prompt, forma ed etichette rispettate: la risposta
+#     di con-etichette ha la forma e solo etichette elencate;
+#   - con --json-schema l'oggetto rispetta lo schema.
+# Le prime due sono raccomandazioni: l'esito si stampa e non fa fallire.
+# La terza è una garanzia: un «no» fa fallire, e un oggetto assente è una
+# chiamata fallita. La categoria, la priorità e il team si stampano, mai
+# si giudicano. Decide dalle risposte: non legge esiti.tsv e non scrive
+# niente (--senza-esiti).
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = esito come registrato · 1 = etichette.tsv assente, incompleto
-#         o con un esito diverso · 2 = precondizione (spazio di lavoro
-#         assente, etichette.tsv che non si legge)
+# Uscita: 0 = le otto risposte ci sono e la garanzia dello schema è
+#         confermata su tutti e due i modelli; l'ultima riga è «Fatto: …» ·
+#         1 = la cartella risposte/ che manca, una risposta che manca o non
+#         va, una chiamata con lo schema fallita, o la garanzia non
+#         confermata · 2 = precondizione (spazio di lavoro assente, python3
+#         o il controllo che mancano, un enum di schema.json diverso dal suo
+#         elenco, un file che non si legge, il controllo uscito con un
+#         codice fuori dal suo contratto)
 set -euo pipefail
 
-readonly FILE='etichette.tsv'
-readonly INTESTAZIONE=$'modello\tvariante\trisposta'
-readonly MODELLI=(haiku sonnet)
-readonly VARIANTI=(zero-shot few-shot con-etichette)
-readonly FORMA='^[a-z_]+ \| [a-z_]+ \| [a-z_]+$'
-readonly CATEGORIE=' assenza_connessione lentezza connessione_instabile wifi
-  router_configurazione telefonia_voip hotspot rete_aziendale fatturazione
-  attivazione copertura trasloco informazioni reclamo '
-readonly PRIORITA=' bassa media alta urgente '
-readonly TEAM=' primo_livello noc tecnici_campo voce servizi_it
-  amministrazione commerciale assistente_virtuale '
-
-# La risposta di un modello a una variante, senza un'eventuale
-# «Classificazione:» davanti. Arguments: $1 il file, $2 il modello, $3 la
-# variante. Outputs: la risposta.
-risposta() {
-  awk -F'\t' -v m="$2" -v v="$3" '{ sub(/\r$/, "") }
-    NR > 1 && $1 == m && $2 == v { r = $3 } END {
-      sub(/^[Cc]lassificazione:[ ]*/, "", r); print r }' "$1"
-}
+SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+readonly SELF
+readonly CONTROLLO="${SELF%/*}/demo/controlla_etichette.py"
+FATTO='Fatto: ogni affermazione è stata messa alla prova;'
+FATTO+=' gli esiti sono qui sopra.'
+readonly FATTO
 
 main() {
-  local ws="${1:-}" prima='' m v r c p t ko=0
+  local ws="${1:-}" rc=0
   if [[ -z "${ws}" || ! -d "${ws}" ]]; then
     echo "verifica: spazio di lavoro assente: ${ws}" >&2
     exit 2
   fi
-  if [[ ! -f "${ws}/${FILE}" ]]; then
-    echo "Manca ${FILE}: eseguite i passi del README."
-    exit 1
-  fi
-  if [[ ! -r "${ws}/${FILE}" ]]; then
-    echo "verifica: ${FILE} non si legge" >&2
+  if ! command -v python3 > /dev/null 2>&1; then
+    echo "verifica: manca python3 (tools/verifica_ambiente.sh)" >&2
     exit 2
   fi
-  if ! IFS= read -r prima < "${ws}/${FILE}"; then
-    : # file vuoto, o una riga senza a capo finale
+  if [[ ! -f "${CONTROLLO}" || ! -r "${CONTROLLO}" ]]; then
+    echo "verifica: manca il controllo ${CONTROLLO}" >&2
+    exit 2
   fi
-  if [[ "${prima%$'\r'}" != "${INTESTAZIONE}" ]]; then
-    echo "${FILE}: la prima riga deve essere l'intestazione" \
-      "«modello<TAB>variante<TAB>risposta»."
-    exit 1
-  fi
-  for m in "${MODELLI[@]}"; do
-    for v in "${VARIANTI[@]}"; do
-      r="$(risposta "${ws}/${FILE}" "${m}" "${v}")"
-      if [[ -z "${r}" ]]; then
-        echo "Manca la risposta di ${m} a ${v}."
-        ko=1
-        continue
-      fi
-      echo "${m}, ${v}: ${r}"
-      if [[ "${v}" != zero-shot && ! "${r}" =~ ${FORMA} ]]; then
-        echo "  attesa la forma degli esempi: categoria | priorità | team."
-        ko=1
-      elif [[ "${v}" == con-etichette ]]; then
-        IFS='|' read -r c p t <<< "${r// /}"
-        if [[ "${CATEGORIE}" != *" ${c}"[[:space:]]* \
-            || "${PRIORITA}" != *" ${p} "* || "${TEAM}" != *" ${t}"[[:space:]]* ]]
-        then
-          echo "  con l'elenco attese solo etichette ammesse."
-          ko=1
-        fi
-      fi
-    done
-  done
-  if (( ko != 0 )); then
-    exit 1
-  fi
-  echo "Esito come nelle registrazioni del corso."
+  python3 -B -I "${CONTROLLO}" --senza-esiti "${ws}" || rc=$?
+  case "${rc}" in
+    0) echo "${FATTO}" ;;
+    1|2) exit "${rc}" ;;
+    *)
+      echo "verifica: controlla_etichette.py è uscito con ${rc}: un errore" \
+        "del controllo, non un esito" >&2
+      exit 2
+      ;;
+  esac
 }
 
 main "$@"

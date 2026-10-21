@@ -1,56 +1,86 @@
 #!/usr/bin/env python3
-"""verifica.py di M2-E01 e M2-E02 -- le misure di un'esercitazione sui prompt.
+"""verifica.py di M2-E01 e M2-E02 -- il lavoro di un'esercitazione sui prompt.
 
-Lo chiama verifica.sh, accanto; il file è lo stesso nei due elementi.
+Lo chiama verifica.sh, accanto; il file è lo stesso nei due elementi. Le
+regole di misura (le pratiche, le affermazioni instabili, l'esito di una
+pratica) non sono copiate qui: le carica da esercizio/strumenti/kit.py di
+questo elemento, lo stesso kit dello spazio di lavoro, così la verifica e
+./misura.sh --confronta danno gli stessi esiti.
+
 Le cartelle di prompt dello spazio di lavoro sono quelle che contengono
 prompt/v0.md: la cartella stessa in M2-E01, le famiglie sviluppo, supporto
 e sistemi in M2-E02. Una versione è «v» e un numero senza zeri davanti
 (v0, v1, v2, ...), come la vuole misura.sh: un file di misura con un altro
-nome (v2b, v01) non conta. Per ciascuna cartella controlla:
-  - v0 e almeno v1 misurate: risposte/<v>.json (claude -p senza errori,
-    con una risposta e i conteggi di usage in numeri), controlli/<v>.txt
-    con il suo totale, giudizi/<v>.json con il giudizio strutturato e un
-    esito per ogni affermazione di rubrica.md; un file di misura che manca
-    o è rovinato chiede di misurare di nuovo quella versione;
-  - un prompt nuovo: prompt/v1.md diverso da prompt/v0.md;
-  - la misura dell'ultima versione (la più alta) contro quella di v0: la
-    somma dei controlli superati e delle affermazioni rispettate. In M2-E01
-    deve crescere, e la risposta dell'ultima versione non deve ripetere il
-    numero di telefono del cliente; in M2-E02 nessuna famiglia deve
-    peggiorare, almeno due devono migliorare, e almeno due devono avere
-    due cicli (v2);
-  - registro.md compilato: le righe di v0 e v1 (in M2-E02, di ogni
-    famiglia) senza «…» nelle colonne del cambiamento e delle misure.
-Il giudizio lo dà un modello: rilanciare una misura può cambiarlo.
+nome (v2b, v01) non conta. Controlla il lavoro, non l'esito; per ciascuna
+cartella:
+  - v0 e almeno v1 misurate, e ogni versione misurata completa: la
+    risposta (claude -p senza errori, con un testo e i conteggi di usage in
+    numeri), i controlli con il loro totale, il giudizio strutturato con un
+    esito per ogni affermazione di rubrica.md; v0 giudicata due volte
+    (giudizi/v0.json e giudizi/v0-bis.json); un file di misura che manca o
+    è rovinato chiede di misurare di nuovo quella versione;
+  - prompt/v1.md diverso da prompt/v0.md;
+  - registro.md: la riga di ogni versione misurata, con la pratica (v0
+    «partenza», le altre una dell'elenco di ./misura.sh --pratiche) e le
+    colonne del cambiamento e delle misure compilate;
+  - in M2-E02, almeno due famiglie con due cicli (v2).
+Poi la garanzia del prodotto: ogni giudizio che porta structured_output lo
+porta conforme a schema-giudizio.json (--json-schema). Stampa le misure e
+l'esito della pratica di ogni versione dopo v0, confrontata con la
+versione da cui parte, come ./misura.sh --confronta: confermata, non
+confermata in questa misura o non decisa. Una pratica non confermata è un
+risultato, mai un motivo per non passare. In M2-E01 stampa anche, come
+dato e senza esito, se la risposta dell'ultima versione ripete il telefono
+del cliente, con spazi, punti o trattini fra le cifre.
 
 Uso:    verifica.py <spazio di lavoro>
-Uscita: 0 fatto · 1 qualcosa manca, è da misurare di nuovo o non migliora
+Uscita: 0 il lavoro c'è e ogni giudizio strutturato rispetta lo schema ·
+        1 qualcosa manca o è da misurare di nuovo, o un giudizio
+        strutturato non rispetta lo schema (la documentazione lo garantisce)
         · 2 precondizione (spazio di lavoro assente o che non si legge, un
-        file o una cartella che c'è ma non si legge); mai un traceback: un
-        errore inatteso esce 2, con un messaggio di una riga
+        file o una cartella che c'è ma non si legge, il kit dell'elemento
+        che manca o non si carica); mai un traceback: un errore inatteso
+        esce 2, con un messaggio di una riga
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 import re
 import sys
-from typing import Dict, List, Optional, Tuple
+from types import ModuleType
+from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 FAMIGLIE = ("sviluppo", "supporto", "sistemi")
 VERSIONE = re.compile(r"(v(?:0|[1-9][0-9]*))\.json")  # con fullmatch
-CLAIM = re.compile(r"^- \*\*([a-z][a-z0-9_]*)\*\*:\s+\S")
 TOTALE = re.compile(r"^totale\t([0-9]+)/([0-9]+)$", re.M)
-TELEFONO = re.compile(r"000[ .]?000[ .]?0103")
+TELEFONO = re.compile(r"000[ .-]?000[ .-]?0103")   # come in M2-D01
 NUMERO = re.compile(r"[0-9]+")              # con fullmatch: cifre ASCII
 # I conteggi di usage che legge strumenti/kit.py: devono essere numeri.
 USAGE = ("input_tokens", "cache_creation_input_tokens",
          "cache_read_input_tokens", "output_tokens")
 VUOTO = "…"
+BIS = "-bis"
+KIT = os.path.join("esercizio", "strumenti", "kit.py")
+SCHEMA = "schema-giudizio.json"
+COLONNE = ("che cosa ho cambiato", "controlli", "giudice")
+GARANZIA = ("La documentazione garantisce un JSON convalidato secondo lo "
+            "schema (--json-schema)")
+FINE = ("Fatto: ogni affermazione è stata messa alla prova; gli esiti sono "
+        "qui sopra.")
 
 
 class Precondizione(Exception):
     """Un file o una cartella che c'è ma non si legge: uscita 2."""
+
+
+class Misura(NamedTuple):
+    """Una versione misurata e completa."""
+    superati: int             # i controlli superati
+    controlli: int            # quanti sono i controlli
+    esiti: Dict[str, bool]    # il giudice, per ogni affermazione
+    testo: str                # la risposta
 
 
 def non_si_legge(percorso: str, exc: Exception) -> Precondizione:
@@ -101,16 +131,27 @@ def misurate(cartella: str) -> List[str]:
     return sorted(trovate, key=ordine)
 
 
-def ids_rubrica(cartella: str) -> List[str]:
-    """Gli id delle affermazioni di rubrica.md."""
-    testo = leggi(os.path.join(cartella, "rubrica.md")) or ""
-    return [m.group(1) for m in map(CLAIM.match, testo.splitlines()) if m]
+def carica_kit() -> ModuleType:
+    """kit.py di questo elemento, accanto a verifica.py; Precondizione se
+    manca o non si carica."""
+    percorso = os.path.join(os.path.dirname(os.path.abspath(__file__)), KIT)
+    if not os.path.isfile(percorso):
+        raise Precondizione("manca %s" % percorso)
+    try:
+        spec = importlib.util.spec_from_file_location("kit_m2", percorso)
+        if spec is None or spec.loader is None:
+            raise ImportError("nessun caricatore")
+        modulo = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(modulo)  # type: ignore[union-attr]
+    except (ImportError, OSError, SyntaxError) as exc:
+        raise Precondizione("%s non si carica (%s)" % (percorso, exc))
+    return modulo
 
 
-def json_claude(percorso: str, nome: str) -> Tuple[Optional[dict], str]:
-    """(il JSON di claude -p, "") o (None, il problema); nome è il file
-    come lo scrive il messaggio."""
-    dati = leggi_byte(percorso)
+def json_claude(nome: str) -> Tuple[Optional[dict], str]:
+    """(il JSON di claude -p, "") o (None, il problema); nome è il file,
+    relativo allo spazio di lavoro."""
+    dati = leggi_byte(nome)
     if dati is None:
         return None, "manca %s" % nome
     try:
@@ -150,101 +191,245 @@ def testo_misura(percorso: str) -> str:
         return ""
 
 
-def file_misura(ws: str, cartella: str, sotto: str,
-                versione: str) -> Tuple[Optional[dict], str]:
-    """json_claude di <cartella>/<sotto>/<versione>.json nello spazio di
-    lavoro, con il percorso relativo nel messaggio."""
-    nome = os.path.normpath(os.path.join(cartella, sotto, versione + ".json"))
-    return json_claude(os.path.join(ws, nome), nome)
+def di_tipo(valore: Any, tipo: Any) -> bool:
+    """Vero se il valore è del tipo JSON Schema (o di uno dei tipi)."""
+    controlli = {"object": lambda v: isinstance(v, dict),
+                 "array": lambda v: isinstance(v, list),
+                 "string": lambda v: isinstance(v, str),
+                 "boolean": lambda v: isinstance(v, bool),
+                 "integer": lambda v: isinstance(v, int)
+                 and not isinstance(v, bool),
+                 "number": lambda v: isinstance(v, (int, float))
+                 and not isinstance(v, bool),
+                 "null": lambda v: v is None}
+    tipi = tipo if isinstance(tipo, list) else [tipo]
+    return any(controlli.get(str(t), lambda v: False)(valore) for t in tipi)
 
 
-def esiti_giudizio(giudizio: dict) -> Optional[Dict[str, bool]]:
-    """{id: rispettato} di structured_output.criteri, None se il giudizio
-    non è strutturato."""
-    uscita = giudizio.get("structured_output")
-    criteri = uscita.get("criteri") if isinstance(uscita, dict) else None
-    if not isinstance(criteri, list):
+def conforme(valore: Any, schema: Any, dove: str = "") -> str:
+    """La prima violazione del valore rispetto allo schema, "" se è
+    conforme. Legge la parte di JSON Schema che usa schema-giudizio.json:
+    type, enum, properties, required, additionalProperties, items."""
+    qui = dove or "structured_output"
+    if not isinstance(schema, dict):
+        return ""
+    if "type" in schema and not di_tipo(valore, schema["type"]):
+        return "%s: atteso %s" % (qui, schema["type"])
+    if "enum" in schema and valore not in schema["enum"]:
+        return "%s: un valore fuori elenco" % qui
+    if isinstance(valore, dict):
+        proprieta = schema.get("properties") or {}
+        for chiave in schema.get("required") or []:
+            if chiave not in valore:
+                return "%s: manca «%s»" % (qui, chiave)
+        if schema.get("additionalProperties") is False:
+            for chiave in valore:
+                if chiave not in proprieta:
+                    return "%s: il campo «%s» non è nello schema" % (
+                        qui, chiave)
+        for chiave, sotto in proprieta.items():
+            if chiave in valore:
+                problema = conforme(valore[chiave], sotto, qui + "." + chiave)
+                if problema:
+                    return problema
+    if isinstance(valore, list) and isinstance(schema.get("items"), dict):
+        for n, elemento in enumerate(valore):
+            problema = conforme(elemento, schema["items"], "%s[%d]" % (qui, n))
+            if problema:
+                return problema
+    return ""
+
+
+def leggi_schema(problemi: List[str]) -> Optional[dict]:
+    """Lo schema del giudice dello spazio di lavoro, None (con il
+    problema) se manca o non è un oggetto JSON."""
+    testo = leggi(SCHEMA)
+    if testo is None:
+        problemi.append("manca %s: senza lo schema la garanzia dei giudizi "
+                        "strutturati non si mette alla prova (rimettetelo "
+                        "com'era nel punto di partenza)" % SCHEMA)
         return None
+    try:
+        schema = json.loads(testo)
+    except (ValueError, RecursionError):
+        schema = None
+    if not isinstance(schema, dict):
+        problemi.append("%s non è uno schema JSON: rimettetelo com'era nel "
+                        "punto di partenza" % SCHEMA)
+        return None
+    return schema
+
+
+def da_rifare(famiglia: Optional[str], versione: str) -> str:
+    """La coda di un messaggio che chiede di misurare di nuovo."""
+    return ": misurate di nuovo %s (./misura.sh%s %s)" % (
+        versione, " " + famiglia if famiglia else "", versione)
+
+
+def giudizio(kit: ModuleType, cartella: str, famiglia: Optional[str],
+             versione: str, suffisso: str, schema: Optional[dict],
+             problemi: List[str],
+             garanzia: List[Tuple[str, str]]) -> Optional[Dict[str, bool]]:
+    """{id: rispettato} di giudizi/<v><suffisso>.json, completo, o None
+    con il problema; ogni structured_output passa la prova dello schema."""
+    nome = os.path.normpath(os.path.join(cartella, "giudizi",
+                                         versione + suffisso + ".json"))
+    doc, problema = json_claude(nome)
+    if doc is None:
+        problemi.append(problema + da_rifare(famiglia, versione))
+        return None
+    uscita = doc.get("structured_output")
+    if uscita is None:
+        problemi.append("%s non ha structured_output: il giudizio non è "
+                        "arrivato%s" % (nome, da_rifare(famiglia, versione)))
+        return None
+    if schema is not None:
+        garanzia.append((nome, conforme(uscita, schema)))
+        if garanzia[-1][1]:
+            return None
+    criteri = uscita.get("criteri") if isinstance(uscita, dict) else None
     esiti: Dict[str, bool] = {}
-    for voce in criteri:
+    for voce in criteri if isinstance(criteri, list) else []:
         if isinstance(voce, dict) and isinstance(voce.get("rispettato"), bool):
             esiti.setdefault(str(voce.get("id")), voce["rispettato"])
-    return esiti
-
-
-def misura(ws: str, cartella: str, famiglia: Optional[str], versione: str,
-           problemi: List[str]) -> Optional[Tuple[int, str]]:
-    """(controlli superati + affermazioni rispettate, risposta), o None con
-    il problema in problemi: un file di misura che manca o è rovinato
-    chiede di misurare di nuovo la versione."""
-    base = os.path.join(ws, cartella)
-    dove = " in %s" % famiglia if famiglia else ""
-    di_nuovo = ": misurate di nuovo %s (./misura.sh%s %s)" % (
-        versione, " " + famiglia if famiglia else "", versione)
-    doc, problema = file_misura(ws, cartella, "risposte", versione)
-    if doc is None:
-        problemi.append(problema + di_nuovo)
+    attesi = [i for i, _, _ in kit.rubrica(cartella)]
+    mancanti = [i for i in attesi if i not in esiti]
+    if mancanti:
+        problemi.append("%s non valuta: %s%s" % (
+            nome, ", ".join(mancanti), da_rifare(famiglia, versione)))
         return None
-    risposta = doc.get("result")
-    if not isinstance(risposta, str) or not risposta.strip():
+    return {i: esiti[i] for i in attesi}
+
+
+def misura(kit: ModuleType, cartella: str, famiglia: Optional[str],
+           versione: str, schema: Optional[dict], problemi: List[str],
+           garanzia: List[Tuple[str, str]]) -> Optional[Misura]:
+    """La misura completa di una versione, o None con il problema: un file
+    di misura che manca o è rovinato chiede di misurare di nuovo."""
+    dove = " in %s" % famiglia if famiglia else ""
+    nome = os.path.normpath(os.path.join(cartella, "risposte",
+                                         versione + ".json"))
+    doc, problema = json_claude(nome)
+    if doc is None:
+        problemi.append(problema + da_rifare(famiglia, versione))
+        return None
+    testo = doc.get("result")
+    if not isinstance(testo, str) or not testo.strip():
         problemi.append("la risposta di %s%s è vuota%s" % (
-            versione, dove, di_nuovo))
+            versione, dove, da_rifare(famiglia, versione)))
         return None
     if not usage_numerico(doc):
-        problemi.append("%s ha un usage non numerico%s" % (os.path.normpath(
-            os.path.join(cartella, "risposte", versione + ".json")), di_nuovo))
+        problemi.append("%s ha un usage non numerico%s" % (
+            nome, da_rifare(famiglia, versione)))
         return None
-    tot = TOTALE.search(testo_misura(os.path.join(base, "controlli",
+    tot = TOTALE.search(testo_misura(os.path.join(cartella, "controlli",
                                                   versione + ".txt")))
     if tot is None:
         problemi.append("mancano i controlli di %s%s%s" % (
-            versione, dove, di_nuovo))
+            versione, dove, da_rifare(famiglia, versione)))
         return None
-    giudizio, problema = file_misura(ws, cartella, "giudizi", versione)
-    esiti = None if giudizio is None else esiti_giudizio(giudizio)
+    esiti = giudizio(kit, cartella, famiglia, versione, "", schema, problemi,
+                     garanzia)
     if esiti is None:
-        problemi.append((problema or "il giudizio di %s%s non è strutturato"
-                         % (versione, dove)) + di_nuovo)
         return None
-    attesi = ids_rubrica(base)
-    mancanti = [i for i in attesi if i not in esiti]
-    if not attesi or mancanti:
-        problemi.append("il giudizio di %s%s non valuta: %s" % (
-            versione, dove, ", ".join(mancanti) or "la rubrica è vuota"))
-        return None
-    rispettate = sum(1 for i in attesi if esiti[i])
-    return int(tot.group(1)) + rispettate, risposta
+    return Misura(int(tot.group(1)), int(tot.group(2)), esiti, testo)
 
 
-def righe_registro(ws: str) -> List[List[str]]:
-    """Le righe della tabella di registro.md, campo per campo."""
-    testo = leggi(os.path.join(ws, "registro.md")) or ""
-    righe = []
-    for riga in testo.splitlines():
-        riga = riga.strip()
-        if riga.startswith("|") and not re.match(r"^\|[\s|:-]+\|$", riga):
-            righe.append([c.strip() for c in riga.strip("|").split("|")])
-    return righe
+def controlla_registro(kit: ModuleType, cartella: str,
+                       famiglia: Optional[str], versioni: List[str],
+                       problemi: List[str]) -> None:
+    """La riga di ogni versione misurata: compilata, con una pratica
+    valida."""
+    for v in versioni:
+        campi, problema = kit.riga_registro(cartella, v)
+        if campi is None:
+            problemi.append(problema)
+            continue
+        if any(not campi.get(c) or VUOTO in campi.get(c, "")
+               or campi.get(c) == "..." for c in COLONNE):
+            problemi.append("registro.md: compilate la riga di %s%s" % (
+                v, " di " + famiglia if famiglia else ""))
+        pratica, problema = kit.pratica_di(cartella, v)
+        if pratica is None:
+            problemi.append(problema)
 
 
-def registro_ok(ws: str, famiglia: Optional[str], versione: str) -> bool:
-    """La riga di una versione (e famiglia) c'è, ed è compilata."""
-    for campi in righe_registro(ws):
-        chiave = campi[:2] if famiglia else campi[:1]
-        atteso = [famiglia, versione] if famiglia else [versione]
-        if chiave == atteso:
-            misure = campi[len(atteso):len(atteso) + 3]
-            return len(misure) == 3 and all(
-                c and VUOTO not in c and c != "..." for c in misure)
-    return False
+def impronta(kit: ModuleType, cartella: str, versione: str) -> Optional[str]:
+    """L'impronta del prompt di una versione: quella registrata alla misura,
+    altrimenti quella del file attuale."""
+    return (kit.opzioni_di(cartella, versione).get("prompt")
+            or kit.impronta_prompt(cartella, versione))
 
 
-def controlla(ws: str, cartella: str, famiglia: Optional[str],
-              problemi: List[str]) -> Optional[Tuple[int, int, int]]:
-    """(misura di v0, dell'ultima, numero di cicli) di una cartella."""
-    base = os.path.join(ws, cartella)
+def base_di(kit: ModuleType, cartella: str, versioni: List[str],
+            i: int) -> str:
+    """La versione da cui parte versioni[i]: la precedente; per una pratica
+    a testo invariato (effort, modello, rimisura), la più recente con lo
+    stesso prompt."""
+    pratica, _ = kit.pratica_di(cartella, versioni[i])
+    if pratica in kit.STESSO_TESTO:
+        testo = impronta(kit, cartella, versioni[i])
+        for v in reversed(versioni[:i]):
+            if testo is not None and impronta(kit, cartella, v) == testo:
+                return v
+    return versioni[i - 1]
+
+
+def stampa_misure(kit: ModuleType, nome: str, versioni: List[str],
+                  misure: Dict[str, Misura], instab: List[str]) -> None:
+    """Le misure lette: controlli e giudice di ogni versione; per v0 le
+    affermazioni rispettate tutte e due le volte, e le instabili."""
+    print("%s, versioni misurate: %s" % (nome[:1].upper() + nome[1:],
+                                          ", ".join(versioni)))
+    for v in versioni:
+        m = misure[v]
+        rispettate = sum(1 for i, ok in m.esiti.items()
+                         if ok and not (v == "v0" and i in instab))
+        riga = "%s: controlli %d/%d, giudice %d/%d" % (
+            v, m.superati, m.controlli, rispettate, len(m.esiti))
+        if v == "v0":
+            riga += "; due giudizi, stesso esito su %d di %d, instabili: " \
+                "%s" % (len(m.esiti) - len(instab), len(m.esiti),
+                        ", ".join(instab) or "nessuna")
+        kit.avvolgi(riga, "  ", "    ")
+
+
+def stampa_esiti(kit: ModuleType, cartella: str, versioni: List[str],
+                 instab: List[str]) -> None:
+    """L'esito della pratica di ogni versione dopo v0, come lo dice
+    ./misura.sh --confronta."""
+    for i in range(1, len(versioni)):
+        base = base_di(kit, cartella, versioni, i)
+        pratica, esito, perche = kit.esito_pratica(cartella, base,
+                                                   versioni[i], instab)
+        kit.avvolgi("%s rispetto a %s, %s: %s (%s)" % (
+            versioni[i], base, pratica or "pratica non indicata", esito,
+            perche), "  ", "    ")
+
+
+def stampa_telefono(kit: ModuleType, versione: str, testo: str) -> None:
+    """M2-E01: se la risposta dell'ultima versione ripete il telefono del
+    cliente, un dato stampato e senza esito: nessuna frase di Anthropic lo
+    decide, e «nessuna volta» è una soglia, non un'affermazione."""
+    riga = "Il telefono del cliente nella risposta di %s: " % versione
+    if not TELEFONO.search(leggi(os.path.join("dati", "messaggio.md")) or ""):
+        kit.avvolgi(riga + "non cercato (il messaggio non è quello di "
+                    "CiaspoLink: il telefono lo cerca controlli.tsv)", "",
+                    "  ")
+    elif TELEFONO.search(testo):
+        print(riga + "presente (la risposta lo ripete)")
+    else:
+        print(riga + "assente")
+
+
+def esamina_cartella(kit: ModuleType, cartella: str, famiglia: Optional[str],
+                     schema: Optional[dict], problemi: List[str],
+                     garanzia: List[Tuple[str, str]]) -> None:
+    """Il lavoro di una cartella di prompt; i problemi in problemi."""
     nome = famiglia or "lo spazio di lavoro"
-    versioni = misurate(base)
+    for f in ("rubrica.md", "controlli.tsv"):
+        leggi(os.path.join(cartella, f))   # Precondizione se non si legge
+    versioni = misurate(cartella)
     da_misurare = [v for v in ("v0", "v1") if v not in versioni]
     if da_misurare:
         problemi.append("%s: misurate %s; servono almeno v0 e v1 "
@@ -252,58 +437,77 @@ def controlla(ws: str, cartella: str, famiglia: Optional[str],
                             nome, ", ".join(versioni) or "nessuna versione",
                             " " + famiglia if famiglia else "",
                             ", poi ".join(da_misurare)))
-        return None
-    if leggi(os.path.join(base, "prompt", "v1.md")) == leggi(
-            os.path.join(base, "prompt", "v0.md")):
-        problemi.append("%s: prompt/v1.md è uguale a prompt/v0.md" % nome)
-        return None
-    ultima = versioni[-1]
-    prima = misura(ws, cartella, famiglia, "v0", problemi)
-    dopo = misura(ws, cartella, famiglia, ultima, problemi)
-    if prima is None or dopo is None:
-        return None
-    for v in ("v0", "v1"):
-        if not registro_ok(ws, famiglia, v):
-            problemi.append("registro.md: compilate la riga di %s%s" % (
-                v, " di " + famiglia if famiglia else ""))
-    cicli = sum(1 for v in versioni if ordine(v) >= 1)
-    if famiglia is None and TELEFONO.search(dopo[1]):
-        problemi.append("la risposta di %s ripete il numero di telefono del "
-                        "cliente" % ultima)
-    print("%s: v0 %d, %s %d (controlli superati + affermazioni "
-          "rispettate)" % (nome, prima[0], ultima, dopo[0]))
-    return prima[0], dopo[0], cicli
-
-
-def esamina(ws: str, problemi: List[str]) -> None:
-    """Le regole di M2-E01 (prompt/v0.md nello spazio di lavoro) o di
-    M2-E02 (le tre famiglie); i problemi in problemi."""
-    if os.path.exists(os.path.join(ws, "prompt", "v0.md")):
-        esito = controlla(ws, ".", None, problemi)
-        if esito and esito[1] <= esito[0]:
-            problemi.append("l'ultima versione non migliora la misura "
-                            "di v0: un altro ciclo")
         return
-    esiti = []
+    if leggi(os.path.join(cartella, "prompt", "v1.md")) == leggi(
+            os.path.join(cartella, "prompt", "v0.md")):
+        problemi.append("%s: prompt/v1.md è uguale a prompt/v0.md" % nome)
+        return
+    misure: Dict[str, Misura] = {}
+    for v in versioni:
+        m = misura(kit, cartella, famiglia, v, schema, problemi, garanzia)
+        if m is not None:
+            misure[v] = m
+    bis = giudizio(kit, cartella, famiglia, "v0", BIS, schema, problemi,
+                   garanzia)
+    controlla_registro(kit, cartella, famiglia, versioni, problemi)
+    if bis is None or len(misure) < len(versioni):
+        return
+    instab = [i for i, ok in misure["v0"].esiti.items() if bis[i] != ok]
+    stampa_misure(kit, nome, versioni, misure, instab)
+    stampa_esiti(kit, cartella, versioni, instab)
+    if famiglia is None:
+        stampa_telefono(kit, versioni[-1], misure[versioni[-1]].testo)
+
+
+def esamina(kit: ModuleType, problemi: List[str],
+            garanzia: List[Tuple[str, str]]) -> None:
+    """Le regole di M2-E01 (prompt/v0.md nello spazio di lavoro) o di
+    M2-E02 (le tre famiglie); i problemi in problemi. Lo spazio di lavoro
+    è la cartella corrente."""
+    leggi("registro.md")   # Precondizione se c'è ma non si legge
+    schema = leggi_schema(problemi)
+    if os.path.exists(os.path.join("prompt", "v0.md")):
+        prova(kit, ".", None, schema, problemi, garanzia)
+        return
+    con_v2 = 0
     for famiglia in FAMIGLIE:
-        if not os.path.isdir(os.path.join(ws, famiglia)):
+        if not os.path.isdir(famiglia):
             problemi.append("manca la cartella %s" % famiglia)
             continue
-        esito = controlla(ws, famiglia, famiglia, problemi)
-        if esito:
-            esiti.append((famiglia,) + esito)
-    if len(esiti) == len(FAMIGLIE):
-        peggio = [f for f, a, b, _ in esiti if b < a]
-        meglio = [f for f, a, b, _ in esiti if b > a]
-        due = [f for f, _, _, c in esiti if c >= 2]
-        if peggio:
-            problemi.append("peggiorano: %s" % ", ".join(peggio))
-        if len(meglio) < 2:
-            problemi.append("famiglie migliorate: %d su tre; ne servono "
-                            "almeno due" % len(meglio))
-        if len(due) < 2:
-            problemi.append("famiglie con due cicli (v2): %d su tre; ne "
-                            "servono almeno due" % len(due))
+        prova(kit, famiglia, famiglia, schema, problemi, garanzia)
+        con_v2 += "v2" in misurate(famiglia)
+    print("Famiglie con due cicli (v2): %d su tre." % con_v2)
+    if con_v2 < 2:
+        problemi.append("famiglie con due cicli (v2): %d su tre; ne servono "
+                        "almeno due" % con_v2)
+
+
+def prova(kit: ModuleType, cartella: str, famiglia: Optional[str],
+          schema: Optional[dict], problemi: List[str],
+          garanzia: List[Tuple[str, str]]) -> None:
+    """esamina_cartella, con un formato rifiutato dal kit (una pratica che
+    non c'è, un id ripetuto) tra i problemi: è un lavoro da correggere."""
+    try:
+        esamina_cartella(kit, cartella, famiglia, schema, problemi, garanzia)
+    except kit.Errore as exc:
+        problemi.append(str(exc))
+
+
+def stampa_garanzia(kit: ModuleType, garanzia: List[Tuple[str, str]]) -> bool:
+    """La riga della garanzia dei giudizi strutturati; falso se un giudizio
+    non rispetta lo schema."""
+    falliti = ["%s: %s" % (n, p) for n, p in garanzia if p]
+    if falliti:
+        kit.avvolgi("%s: in questa esecuzione no (%s)" % (
+            GARANZIA, "; ".join(falliti)), "", "  ")
+        return False
+    if garanzia:
+        print("Ogni giudizio strutturato è conforme a %s (--json-schema), %d "
+              "su %d: confermata" % (SCHEMA, len(garanzia), len(garanzia)))
+    else:
+        print("Giudizi strutturati conformi a %s: non decisa (nessun giudizio "
+              "da leggere)" % SCHEMA)
+    return True
 
 
 def main(argv: List[str]) -> int:
@@ -311,14 +515,17 @@ def main(argv: List[str]) -> int:
         sys.stderr.write("verifica: spazio di lavoro assente: %s\n"
                          % (argv[0] if argv else ""))
         return 2
-    ws = argv[0]
-    if not os.access(ws, os.R_OK | os.X_OK):
+    if not os.access(argv[0], os.R_OK | os.X_OK):
         sys.stderr.write("verifica: lo spazio di lavoro %s non si legge\n"
-                         % ws)
+                         % argv[0])
         return 2
     problemi: List[str] = []
+    garanzia: List[Tuple[str, str]] = []
     try:
-        esamina(ws, problemi)
+        kit = carica_kit()      # prima di cambiare cartella: __file__
+        os.chdir(argv[0])
+        esamina(kit, problemi, garanzia)
+        garantita = stampa_garanzia(kit, garanzia)
     except Precondizione as exc:
         sys.stderr.write("verifica: %s\n" % exc)
         return 2
@@ -326,11 +533,11 @@ def main(argv: List[str]) -> int:
         sys.stderr.write("verifica: errore inatteso (%s: %s)\n" % (
             type(exc).__name__, " ".join(str(exc).split())))
         return 2
-    if problemi:
+    if problemi or not garantita:
         for p in problemi:
             print("Non ancora: %s." % p)
         return 1
-    print("Fatto: le misure ci sono e mostrano il miglioramento.")
+    print(FINE)
     return 0
 
 

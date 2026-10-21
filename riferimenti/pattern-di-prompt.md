@@ -50,10 +50,9 @@ anche Claude.
 
 Dite a Claude che cosa fare invece di che cosa non fare: per il formato,
 la documentazione di Anthropic suggerisce di chiedere una prosa scorrevole,
-in paragrafi, invece di vietare il Markdown. Un divieto lascia
-scoperto che cosa scrivere al suo posto: nella galleria degli orrori del
-corso, «Non menzionare l'indennizzo» è stato rispettato, e la domanda del
-cliente è rimasta senza risposta.
+in paragrafi, invece di vietare il Markdown. Nella galleria degli orrori
+del corso (M2-D06) le due frasi di Anthropic sono messe alla prova sullo
+stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 
 ## Dove va che cosa: system, user, developer
 
@@ -98,10 +97,11 @@ cliente è rimasta senza risposta.
 - Sono uno dei modi più affidabili per orientare formato, tono e
   struttura: pertinenti (come i casi veri), diversi fra loro, da tre a
   cinque, tra tag `<example>`.
-- Insegnano la forma, non l'elenco delle etichette. Nella demo del corso,
-  con due esempi i modelli prendono la forma «categoria | priorità | team»
-  e scelgono una categoria che l'elenco non ha. La cura: elencate le
-  etichette ammesse, o mettetele in un `enum` dello schema.
+- Orientano la forma della risposta: lo mette alla prova la demo M2-D04.
+  Le etichette ammesse si scrivono nel prompt; per classificare, Anthropic
+  consiglia un campo `enum` (in uno strumento o negli output strutturati),
+  e con `--json-schema` Claude Code restituisce un oggetto convalidato
+  sullo schema.
 - Per gli strumenti, Anthropic osserva che con i modelli più recenti gli
   esempi d'uso possono restringere lo spazio di esplorazione del modello, e
   preferisce strumenti progettati bene.
@@ -189,8 +189,10 @@ cliente è rimasta senza risposta.
 - **Fatevi fare le domande**: chiedete a Claude di farvi domande sul compito
   prima di scrivere il prompt.
 - Gli attrezzi del corso sono nelle esercitazioni M2-E01 e M2-E02:
-  `misura.sh` misura una versione (risposta, controlli, giudizio) e
-  `misura.sh --confronta` ne mette due fianco a fianco.
+  `misura.sh` misura una versione (risposta, controlli, giudizio; su v0
+  il giudizio due volte, per vedere quali affermazioni cambiano esito) e
+  `misura.sh --confronta` ne mette due fianco a fianco e dice l'esito
+  della pratica che la nuova versione applica.
 
 ## Fonti
 
@@ -212,7 +214,7 @@ cliente è rimasta senza risposta.
   https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features
 - Il livello di compatibilità con l'SDK di OpenAI:
   https://platform.claude.com/docs/en/cli-sdks-libraries/libraries/openai-sdk
-- Il blog per gli sviluppatori di Anthropic: «Automating eval design and
+- Il blog degli sviluppatori di Anthropic: «Automating eval design and
   hillclimbing with Claude»,
   https://claude.dev/blog/automating-eval-design-and-hillclimbing/; «The new
   rules of context engineering for Claude 5 generation models»,

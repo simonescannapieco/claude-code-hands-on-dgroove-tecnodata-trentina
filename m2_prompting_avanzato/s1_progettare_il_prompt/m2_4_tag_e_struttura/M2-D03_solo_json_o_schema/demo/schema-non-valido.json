@@ -1,0 +1,39 @@
+{
+  "type": "oggetto",
+  "properties": {
+    "tipo_cliente": {
+      "type": "string",
+      "enum": [
+        "privato",
+        "azienda",
+        "associazione"
+      ]
+    },
+    "servizio": {
+      "type": "string"
+    },
+    "problema": {
+      "type": "string"
+    },
+    "urgenza": {
+      "type": "string",
+      "enum": [
+        "bassa",
+        "media",
+        "alta",
+        "urgente"
+      ]
+    },
+    "azione_richiesta": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tipo_cliente",
+    "servizio",
+    "problema",
+    "urgenza",
+    "azione_richiesta"
+  ],
+  "additionalProperties": false
+}

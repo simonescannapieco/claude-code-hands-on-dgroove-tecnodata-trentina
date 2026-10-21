@@ -1,8 +1,8 @@
 """Legge su STDIN il JSON di `claude -p --output-format json` e stampa
-l'orario finale della risposta, senza lo zero davanti all'ora. Le risposte
-passo passo ripetono spesso l'orario di partenza («il servizio inizia alle
-9:00») e a volte ne aggiungono un altro dopo la risposta («l'ultimo turno
-inizia alle 9:32»): per questo l'orario si cerca, in quest'ordine,
+l'orario finale della risposta, senza lo zero davanti all'ora. Una risposta
+può ripetere l'orario di partenza («il servizio inizia alle 9:00») o
+aggiungerne un altro dopo la risposta («l'ultimo turno inizia alle 9:32»):
+per questo l'orario si cerca, in quest'ordine,
   1. nella riga che dice «risposta finale» (o, se lì non c'è, nelle righe
      dopo): il primo orario diverso da quello di partenza;
   2. fra gli orari in grassetto (**9:36**): l'ultimo diverso da quello di
@@ -10,7 +10,6 @@ inizia alle 9:32»): per questo l'orario si cerca, in quest'ordine,
   3. altrimenti: l'ultimo orario diverso da quello di partenza.
 
 Uso:    ... | python3 orario.py 9:00     (gli sportelli: si parte alle 9:00)
-        ... | python3 orario.py 8:00     (le squadre: si parte alle 8:00)
 Uscita: 0 fatto · 1 nessun JSON, un JSON non valido o con un errore,
         nessun orario nella risposta · 2 uso sbagliato
 """

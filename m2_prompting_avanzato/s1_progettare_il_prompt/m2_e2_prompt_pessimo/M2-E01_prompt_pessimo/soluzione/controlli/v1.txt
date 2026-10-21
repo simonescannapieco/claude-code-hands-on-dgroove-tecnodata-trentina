@@ -1,4 +1,4 @@
 OK	il numero di telefono del cliente non compare	
 OK	nessun segnaposto tra parentesi quadre da completare	
-OK	al massimo 150 parole	97 parole
+OK	al massimo 150 parole	96 parole
 totale	3/3

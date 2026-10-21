@@ -1,4 +1,4 @@
-tipo	valore	descrizione
-assente	000[ .]?000[ .]?0103	il numero di telefono del cliente non compare
-assente	\[[^]\n]{2,60}\]	nessun segnaposto tra parentesi quadre da completare
-parole_max	150	al massimo 150 parole
+tipo	valore	descrizione	pratica
+assente	000[ .-]?000[ .-]?0103	il numero di telefono del cliente non compare	chiarezza
+assente	\[[^]\n]{2,60}\]	nessun segnaposto tra parentesi quadre da completare	chiarezza
+parole_max	150	al massimo 150 parole	chiarezza

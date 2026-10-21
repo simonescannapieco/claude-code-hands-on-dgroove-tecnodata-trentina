@@ -1,0 +1,9 @@
+file	forma_esempi	etichette_ammesse	oggetto_schema	scelta
+zero-shot-haiku.json	no	—	—	**Backup e storage | Alta | Infrastruttura (SRE/Operations)** I backup notturni non vengono completati, quindi c'è un rischio di protezione dei dati. La priorità è alta perché un backup incompleto può lasciare dati non protetti in caso di incidente.
+few-shot-haiku.json	sì	—	—	backup_lento | alta | noc
+con-etichette-haiku.json	sì	sì	—	lentezza | media | noc
+schema-haiku.json	—	—	sì	lentezza | media | noc
+zero-shot-sonnet.json	no	—	—	Prestazioni/Rete | Media | Infrastruttura (Network/Backup)
+few-shot-sonnet.json	sì	—	—	prestazioni_upload_lente | media | noc
+con-etichette-sonnet.json	sì	sì	—	lentezza | media | noc
+schema-sonnet.json	—	—	sì	lentezza | media | noc

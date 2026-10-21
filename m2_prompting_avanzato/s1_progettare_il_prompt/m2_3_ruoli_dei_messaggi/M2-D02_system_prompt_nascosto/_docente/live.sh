@@ -7,13 +7,16 @@
 #   aggiunto     con una riga in coda (--append-system-prompt);
 #   sostituito   con una riga al suo posto (--system-prompt).
 # I token in entrata e le risposte in sistema.tsv, nello stesso formato dei
-# passi del README; i controlli dell'esito sono quelli di verifica.sh.
+# passi del README; il controllo è quello di verifica.sh, che gira una
+# volta e si vede per intero (i numeri e un esito per ogni affermazione)
+# prima del verdetto.
 #
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    PN_MODELLO  il modello (default haiku; ammessi haiku, sonnet, opus)
 #         e le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, …)
-# Uscita: 0 = esito come registrato · 1 = una chiamata fallita o un esito
-#         diverso · 2 = precondizione
+# Uscita: 0 = le tre righe ci sono e le due garanzie sono confermate · 1 =
+#         una chiamata fallita o una garanzia non confermata · 2 =
+#         precondizione (anche verifica.sh che non può girare)
 set -euo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -53,6 +56,16 @@ fallita() {
   handson::finish
 }
 
+# verifica.sh con il suo STDOUT sul descrittore 3, che main apre sullo
+# STDOUT di live.sh: handson::check mostra l'uscita di un controllo solo
+# su un KO, e qui gli esiti sono la demo anche quando passa; così si
+# vedono una volta sola.
+# Arguments: $1 lo spazio di lavoro. Returns: l'uscita di verifica.sh.
+# shellcheck disable=SC2317  # la chiama handson::check, indirettamente
+verifica_a_schermo() {
+  "${CONTROLLO}" "$1" >&3
+}
+
 main() {
   local ws="${1:-}" json_p json_a json_s riga_istr
   [[ -n "${ws}" && -d "${ws}" ]] \
@@ -84,9 +97,10 @@ main() {
   { chiama "${json_s}" --system-prompt "${riga_istr}" \
       && riga sostituito "${json_s}"; } \
     || fallita "la chiamata sostituito non ha dato una risposta"
-  handson::step "Il controllo dell'esito"
-  handson::check "il system prompt sostituito pesa meno della metà" \
-    "${CONTROLLO}" "${ws}"
+  handson::step "Le affermazioni alla prova"
+  exec 3>&1
+  handson::check "le tre righe ci sono; le due garanzie confermate" \
+    verifica_a_schermo "${ws}"
   handson::finish
 }
 

@@ -1,0 +1,2 @@
+Error: --json-schema is not a valid JSON Schema: data/type must be equal to one of the allowed values, data/type must be array, data/type must match a schema in anyOf
+uscita: 1
