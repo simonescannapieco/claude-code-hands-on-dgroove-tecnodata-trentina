@@ -118,7 +118,11 @@ La verifica esce con 0 quando ognuno dei tre modelli ha almeno una
 risposta.
 
 Nella registrazione del corso dell'11 ottobre 2026 (Claude Code 2.1.296),
-venti chiamate per modello: Haiku ha risposto «maltempo» 20 volte su 20,
+lo stesso comando del passo 3 con quattro opzioni in più:
+`--setting-sources project,local` (nessuna impostazione dell'utente),
+`--permission-mode dontAsk` e `--permission-prompts none` (ciò che
+chiederebbe un permesso è negato), `--output-format json` (la risposta in
+JSON). Venti chiamate per modello: Haiku ha risposto «maltempo» 20 volte su 20,
 Sonnet e Opus «sciopero» 20 volte su 20. Input identici, output diversi:
 non dimostrata su nessuno dei tre modelli. L'istruzione esplicita: una
 parola sola, senza punteggiatura, 20 risposte su 20 per ciascun modello,

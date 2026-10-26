@@ -273,8 +273,11 @@ rispetta lo schema.
   no»: un giudizio strutturato non rispetta lo schema. Misurate di nuovo
   quella versione e avvisate il docente.
 - Una risposta porta dati vostri, come il nome o l'e-mail: toglieteli
-  prima di mostrarla in aula. Prima di mostrare una risposta,
-  rileggetela: a schermo nessun dato personale.
+  prima di mostrarla in aula. Nella registrazione del corso, alla domanda
+  diretta il modello riporta l'e-mail dell'account in 3 risposte su 3, e
+  alla v0 di questa esercitazione 1 risposta su 5 si rivolge per nome a
+  chi la esegue: prima di mostrare una risposta, controllate che non
+  porti il vostro nome o la vostra e-mail.
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Per ricominciare da capo: `tools/reset_esercizio.sh M2-E01`.
