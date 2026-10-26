@@ -223,8 +223,9 @@ codice: «confermata» per il «può»; nella chat senza memoria, accanto al
 titolo l'icona della memoria barrata («Memory is off for this chat»),
 nessun passo di strumenti e la risposta «NON LO SO»: la garanzia,
 confermata. Alla pulizia l'area della memoria, sotto «Areas», conteneva
-soltanto il codice. Il codice, la frase e le due risposte sono nella
-cartella `soluzione/` di questo elemento.
+soltanto il codice, ed è stata cancellata, con le tre chat. Il codice, la
+frase e le due risposte sono nella cartella `soluzione/` di questo
+elemento.
 
 ## Verifica (tools/verifica.sh M3-D04)
 
