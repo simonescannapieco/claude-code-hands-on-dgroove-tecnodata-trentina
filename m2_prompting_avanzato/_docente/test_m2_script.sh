@@ -21,7 +21,9 @@
 #     senza fermare la verifica (una pratica non confermata, una famiglia
 #     che peggiora o che migliora da sola, il telefono ripetuto nella
 #     risposta di v2); una misura rovinata da rifare; una cartella che non
-#     si legge (2);
+#     si legge (2); i controlli rifatti sulla risposta, in verifica.py e
+#     in --confronta: controlli/<v>.txt manomesso, non UTF-8 o assente
+#     non cambia né i totali né gli esiti né l'uscita;
 #   - leggi_json.py e orario.py sui casi limite (i controlli delle demo e il
 #     kit delle esercitazioni hanno le loro suite: test_m2_d01_d02.sh,
 #     test_m2_d03.sh … test_m2_d06.sh, test_m2_kit.sh);
@@ -88,7 +90,22 @@ readonly KIT=(misura.sh strumenti/kit.py schema-giudizio.json
 # della soluzione di M2-E01.
 readonly E01_TOTALI='  totali: controlli 0/3 → 3/3; giudice 2 → 3 su 5'
 readonly E01_TOKEN='  token: in entrata 926 → 1932, in uscita 849 → 294'
-readonly CASES=294
+readonly E01_CRITERI="    su 7 in v0, 6 su 7 in v1; non rispettati in v1: \
+impegni)"
+# ...e quelle che verifica.py stampa sulla stessa soluzione: i totali di v0
+# e di v1, l'esito di chiarezza e i suoi conteggi.
+readonly E01_V0="  v0: controlli 0/3, giudice 2/5; due giudizi, stesso esito \
+su 5 di 5,"
+readonly E01_V1='  v1: controlli 3/3, giudice 3/5'
+readonly E01_CHIAREZZA="  v1 rispetto a v0, chiarezza: confermata (criteri \
+segnati [chiarezza]"
+readonly E01_CONTEGGI="    rispettati: 2 su 7 in v0, 6 su 7 in v1; non \
+rispettati in v1: impegni)"
+# Nella soluzione di M2-E02, supporto: i totali di v1 che stampa
+# verifica.py, quelli del confronto di v0 e v1.
+readonly E02_SUP_V1='  v1: controlli 4/4, giudice 4/5'
+readonly E02_SUP_TOTALI='  totali: controlli 2/4 → 4/4; giudice 4 → 4 su 5'
+readonly CASES=309
 TMP=''
 PASS=0
 FAIL=0
@@ -346,12 +363,14 @@ t_verifica_regole() {
   cp "${w}/prompt/v0.md" "${w}/prompt/v1.md"
   run "${E01}/verifica.sh" "${w}"
   expect "E01: v1 uguale a v0" 1 "uguale a prompt/v0.md"
+  # v1 con la risposta e il giudizio di v0: i controlli si rifanno sulla
+  # risposta, quindi la copia di controlli/v0.txt non basterebbe.
   ws w "${E01}/esercizio" "${E01}/soluzione"
   cp "${w}/giudizi/v0.json" "${w}/giudizi/v1.json"
-  cp "${w}/controlli/v0.txt" "${w}/controlli/v1.txt"
+  cp "${w}/risposte/v0.json" "${w}/risposte/v1.json"
   run "${E01}/verifica.sh" "${w}"
   expect "E01: v1 che non migliora è un esito, non un errore" 0 \
-    "v1 rispetto a v0, chiarezza:"
+    "v1 rispetto a v0, chiarezza: non decisa"
   ws w "${E01}/esercizio" "${E01}/soluzione"
   python3 -B -I - "${w}/risposte/v2.json" <<'PY'
 import json, sys
@@ -380,12 +399,24 @@ lo ripete)"
   run "${E02}/verifica.sh" "${w}"
   expect "E02: due cicli su una famiglia sola" 1 \
     "famiglie con due cicli (v2): 1 su tre; ne servono almeno due"
+  # sistemi peggiora in v2: il giudizio di v0, e una risposta di nove
+  # righe senza la porta né il numero di ONT, che non supera nessuno dei
+  # tre controlli (si rifanno sulla risposta, non su controlli/v2.txt).
   ws w "${E02}/esercizio" "${E02}/soluzione"
   cp "${w}/sistemi/giudizi/v0.json" "${w}/sistemi/giudizi/v2.json"
-  sed -i 's/^totale\t.*/totale\t0\/3/' "${w}/sistemi/controlli/v2.txt"
+  python3 -B -I - "${w}/sistemi/risposte/v2.json" <<'PY'
+import json, sys
+with open(sys.argv[1], encoding="utf-8") as fh:
+    doc = json.load(fh)
+doc["result"] = "\n".join(["Un guasto da controllare."] * 9)
+with open(sys.argv[1], "w", encoding="utf-8") as fh:
+    json.dump(doc, fh, ensure_ascii=False)
+PY
   run "${E02}/verifica.sh" "${w}"
   expect "E02: una famiglia che peggiora è un esito, non un errore" 0 \
     "${FATTO}"
+  expect "E02: e peggiora nei controlli, rifatti sulla risposta" 0 \
+    "v2: controlli 0/3"
 }
 
 # leggi_json.py, orario.py.
@@ -643,10 +674,10 @@ PY
   expect "verifica: un JSON annidato a dismisura" 1 "non è un JSON valido"
   expect_absent "verifica: un JSON annidato senza traceback" "Traceback"
   ws w "${E01}/esercizio" "${E01}/soluzione"
-  printf '\xff\xfe' > "${w}/controlli/v1.txt"
+  printf '\xff\xfe' > "${w}/risposte/v1.json"
   run "${E01}/verifica.sh" "${w}"
-  expect "verifica: controlli/v1.txt non UTF-8 va rimisurato" 1 \
-    "mancano i controlli di v1: misurate di nuovo v1"
+  expect "verifica: risposte/v1.json non UTF-8 va rimisurato" 1 \
+    "risposte/v1.json non è un JSON valido: misurate di nuovo v1"
   if (( EUID == 0 )); then
     for d in risposte giudizi .; do
       skip "verifica: la cartella ${d} che non si legge (da root si legge)"
@@ -661,6 +692,63 @@ PY
       "non si legge"
     chmod 755 "${w}/${d}"
   done
+}
+
+# I controlli scritti in codice si rifanno sulla risposta: verifica.py e
+# --confronta li calcolano da risposte/<v>.json e da controlli.tsv, con le
+# funzioni del kit che scrivono controlli/<v>.txt. Quel file è per chi
+# legge: manomesso (gli esiti rovesciati, il totale cambiato), non UTF-8 o
+# assente, non cambia i totali, l'esito della pratica, i conteggi del
+# confronto né l'uscita.
+t_controlli_dalla_risposta() {
+  local w
+  ws w "${E01}/esercizio" "${E01}/soluzione"
+  sed -i -e 's/^KO\t/OK\t/' -e 's/^totale\t.*/totale\t3\/3/' \
+    "${w}/controlli/v0.txt"
+  sed -i -e 's/^OK\t/KO\t/' -e 's/^totale\t.*/totale\t0\/3/' \
+    "${w}/controlli/v1.txt"
+  run "${E01}/verifica.sh" "${w}"
+  expect_riga "controlli/ manomessa: i totali di v0, dalla risposta" 0 \
+    "${E01_V0}"
+  expect_riga "controlli/ manomessa: i totali di v1, dalla risposta" 0 \
+    "${E01_V1}"
+  expect_riga "controlli/ manomessa: chiarezza resta confermata" 0 \
+    "${E01_CHIAREZZA}"
+  expect_riga "controlli/ manomessa: i criteri contati sulle risposte" 0 \
+    "${E01_CONTEGGI}"
+  expect "controlli/ manomessa: la verifica passa come prima" 0 "${FATTO}"
+  run env PATH="${TMP}/senza_claude" "${w}/misura.sh" --confronta v0 v1
+  expect_riga "controlli/ manomessa: --confronta, i totali" 0 \
+    "${E01_TOTALI}"
+  expect_riga "controlli/ manomessa: --confronta, i criteri contati" 0 \
+    "${E01_CRITERI}"
+  printf '\xff\xfe' > "${w}/controlli/v1.txt"
+  rm "${w}/controlli/v0.txt"
+  run "${E01}/verifica.sh" "${w}"
+  expect "controlli/v0.txt assente, v1.txt non UTF-8: niente da rimisurare" \
+    0 "${FATTO}"
+  run env PATH="${TMP}/senza_claude" "${w}/misura.sh" --confronta v0 v1
+  expect_riga "controlli/v0.txt assente: --confronta non lo chiede" 0 \
+    "${E01_TOTALI}"
+  ws w "${E02}/esercizio" "${E02}/soluzione"
+  sed -i -e 's/^OK\t/KO\t/' -e 's/^totale\t.*/totale\t0\/4/' \
+    "${w}/supporto/controlli/v1.txt"
+  run "${E02}/verifica.sh" "${w}"
+  expect_riga "E02, controlli/ manomessa: i totali di v1 di supporto" 0 \
+    "${E02_SUP_V1}"
+  run env PATH="${TMP}/senza_claude" "${w}/misura.sh" --confronta supporto \
+    v0 v1
+  expect_riga "E02, controlli/ manomessa: --confronta supporto, i totali" 0 \
+    "${E02_SUP_TOTALI}"
+  # controlli.tsv rotto dopo la misura: i controlli non si rifanno, e la
+  # verifica dice la riga da correggere (1), senza traceback.
+  ws w "${E01}/esercizio" "${E01}/soluzione"
+  printf 'assente\tsolo due campi\n' >> "${w}/controlli.tsv"
+  run "${E01}/verifica.sh" "${w}"
+  expect "controlli.tsv rotto dopo la misura: la verifica dice la riga" 1 \
+    "controlli.tsv, riga 5: attesi tre campi"
+  expect_absent "controlli.tsv rotto dopo la misura: senza traceback" \
+    "Traceback"
 }
 
 # Una precondizione, con il claude finto: uscita 2, la parola attesa, e
@@ -739,14 +827,18 @@ t_rami_live() {
   rm "${w}/registro.md"
   precondizione "M2-E01 live.sh: un file di partenza che manca" \
     "file assente o illeggibile: registro.md" "${E01}/_docente/live.sh" "${w}"
+  # v2 di sviluppo e di supporto con la risposta e il giudizio di v0: i
+  # controlli si rifanno sulla risposta, non su controlli/v2.txt.
   ws w "${E02}/esercizio" "${E02}/soluzione"
   for f in sviluppo supporto; do
     cp "${w}/${f}/giudizi/v0.json" "${w}/${f}/giudizi/v2.json"
-    cp "${w}/${f}/controlli/v0.txt" "${w}/${f}/controlli/v2.txt"
+    cp "${w}/${f}/risposte/v0.json" "${w}/${f}/risposte/v2.json"
   done
   run "${E02}/verifica.sh" "${w}"
   expect "E02: una famiglia sola che migliora è un esito, non un errore" 0 \
     "${FATTO}"
+  expect_riga "E02: v2 di supporto torna alle misure di v0" 0 \
+    "  v2: controlli 2/4, giudice 4/5"
 }
 
 # Le sei demo: alla prima chiamata fallita si fermano (una chiamata sola);
@@ -1029,6 +1121,7 @@ main() {
   t_contratto_kit
   t_contratto_misura
   t_contratto_verifica
+  t_controlli_dalla_risposta
   t_opzioni
   t_rami
   t_rami_live

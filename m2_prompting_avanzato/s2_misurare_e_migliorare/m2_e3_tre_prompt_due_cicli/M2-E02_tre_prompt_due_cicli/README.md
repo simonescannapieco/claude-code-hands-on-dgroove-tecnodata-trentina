@@ -142,13 +142,13 @@ fissati prima di ogni prompt e restano gli stessi per tutte le versioni.
 - Ogni ciclo mette alla prova una frase della guida «Best practice per il
   prompting», sui criteri che la frase nomina:
   - `chiarezza`, sezione «Sii chiaro e diretto»: «Sii specifico sul
-    formato di output desiderato e sui vincoli.» e «Più precisamente
+    formato di output e sui vincoli che desideri.» e «Più precisamente
     spieghi cosa vuoi, migliore sarà il risultato.»;
   - `contesto`, sezione «Aggiungi contesto per migliorare le prestazioni»:
     «Fornire il contesto o la motivazione alla base delle tue istruzioni,
-    ad esempio spiegando a Claude perché un determinato comportamento è
-    importante, può aiutare Claude a comprendere meglio i tuoi obiettivi
-    e a fornire risposte più mirate.»;
+    ad esempio spiegando a Claude perché un certo comportamento è
+    importante, può dare a Claude più informazioni sui tuoi obiettivi e
+    aiutarlo a fornire risposte più mirate.»;
   - `tag`, sezione «Struttura i prompt con tag XML»: «Racchiudere ogni
     tipo di contenuto nel proprio tag (ad esempio, `<instructions>`,
     `<context>`, `<input>`) riduce le interpretazioni errate.» Nelle
@@ -172,7 +172,7 @@ fissati prima di ogni prompt e restano gli stessi per tutte le versioni.
   nostra).
   https://claude.dev/blog/automating-eval-design-and-hillclimbing/
 - La pagina sui criteri di successo e sulle valutazioni, della valutazione
-  con un modello: «Testa prima per garantire l'affidabilità, poi scala.»
+  con un modello: «Prima verifica che sia affidabile, poi scala.»
   https://platform.claude.com/docs/it/test-and-evaluate/develop-tests
 - Il giudizio arriva con `--json-schema`. Il riferimento della CLI:
   «Ottieni output JSON convalidato corrispondente a uno JSON Schema dopo
@@ -250,8 +250,10 @@ fissati prima di ogni prompt e restano gli stessi per tutte le versioni.
 
 Per ogni famiglia controlla il lavoro, non l'esito: v0 misurata e
 giudicata due volte (`giudizi/v0.json` e `giudizi/v0-bis.json`), v1
-misurata e diversa da v0, ogni versione misurata completa (risposta,
-controlli e giudizio con un esito per ogni affermazione), e in
+misurata e diversa da v0, ogni versione misurata completa (risposta e
+giudizio con un esito per ogni affermazione; i controlli di
+`controlli.tsv` li rifà sulla risposta, come `--confronta`:
+`controlli/<versione>.txt` è da leggere, e nessun esito lo legge), e in
 `registro.md` la riga di ogni versione misurata, compilata e con la sua
 pratica (`partenza` per v0, una dell'elenco di `./misura.sh --pratiche`
 per le altre); poi che almeno due famiglie abbiano due cicli (v2). Stampa
@@ -293,10 +295,9 @@ strutturato non rispetta lo schema.
   quella versione e avvisate il docente.
 - Una famiglia peggiora: guardate il confronto e tornate alla versione
   migliore per il ciclo successivo.
-- Una risposta riporta il vostro nome, che nessun prompt né dato
-  contiene: prima di mostrarla in aula, toglietelo. Nei file di
-  `soluzione/` un nome così è sostituito da «(identità dell'account,
-  omessa)».
+- Una risposta porta dati vostri, come il nome o l'e-mail: toglieteli
+  prima di mostrarla in aula. Prima di mostrare una risposta,
+  rileggetela: a schermo nessun dato personale.
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Per ricominciare da capo: `tools/reset_esercizio.sh M2-E02`.

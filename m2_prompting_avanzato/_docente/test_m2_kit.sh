@@ -8,9 +8,11 @@
 #     la pratica), una pratica che non c'è, ✓ e ✗ con la pratica, la
 #     consegna al giudice senza le pratiche; la riga della prova del
 #     giudice; l'elenco delle pratiche (rimisura solo in M2-E01), con le
-#     regole che confrontano vA e vB; un BOM in testa a controlli.tsv,
-#     rubrica.md o registro.md, che non cambia l'esito; il telefono con i
-#     trattini;
+#     frasi di Anthropic come sono oggi nelle pagine (chiarezza, contesto;
+#     di rimisura la parte che la rimisura decide, senza la temperatura a
+#     0) e le regole che confrontano vA e vB; un BOM in testa a
+#     controlli.tsv, rubrica.md o registro.md, che non cambia l'esito; il
+#     telefono con i trattini;
 #   - ogni esito di --confronta, mai «smentita»: sui criteri segnati con la
 #     pratica, contati in vA e in vB, confermata (più criteri in vB),
 #     non decisa (lo stesso numero; nessun criterio; solo affermazioni
@@ -62,7 +64,7 @@ M2-E01_prompt_pessimo"
 readonly E02="${MOD}/s2_misurare_e_migliorare/m2_e3_tre_prompt_due_cicli/\
 M2-E02_tre_prompt_due_cicli"
 readonly FINTO="${MOD}/_docente/claude_finto.py"
-readonly CASES=163
+readonly CASES=167
 readonly SONNET=claude-sonnet-finto
 readonly HAIKU=claude-haiku-finto
 readonly OPUS=claude-opus-finto
@@ -401,6 +403,18 @@ t_pratiche() {
   run kit "${w}" pratiche .
   expect "pratiche: la frase italiana di chiarezza" 0 \
     "«Più precisamente spieghi cosa vuoi, migliore sarà il risultato.»"
+  expect "pratiche: chiarezza, la frase sul formato com'è oggi" 0 \
+    "«Sii specifico sul formato di output e sui vincoli che desideri.»"
+  expect "pratiche: contesto, la frase com'è oggi" 0 \
+    "«Fornire il contesto o la motivazione alla base delle tue istruzioni, \
+ad esempio spiegando a Claude perché un certo comportamento è importante, \
+può dare a Claude più informazioni sui tuoi obiettivi e aiutarlo a fornire \
+risposte più mirate.»"
+  expect "pratiche: rimisura, la parte del glossario che la rimisura decide" \
+    0 "«… input identici potrebbero produrre output diversi tra diverse \
+chiamate API.»"
+  expect_absent "pratiche: rimisura, senza la temperatura a 0" \
+    "temperatura impostata a 0"
   expect "pratiche: rimisura in M2-E01" 0 "rimisura"
   expect "pratiche: il link della guida" 0 "${GUIDA}"
   expect "pratiche: i criteri si contano in vA e in vB" 0 \

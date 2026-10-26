@@ -2,10 +2,11 @@
 """verifica.py di M2-E01 e M2-E02 -- il lavoro di un'esercitazione sui prompt.
 
 Lo chiama verifica.sh, accanto; il file è lo stesso nei due elementi. Le
-regole di misura (le pratiche, le affermazioni instabili, l'esito di una
-pratica) non sono copiate qui: le carica da esercizio/strumenti/kit.py di
-questo elemento, lo stesso kit dello spazio di lavoro, così la verifica e
-./misura.sh --confronta danno gli stessi esiti.
+regole di misura (i controlli di controlli.tsv, le pratiche, le
+affermazioni instabili, l'esito di una pratica) non sono copiate qui: le
+carica da esercizio/strumenti/kit.py di questo elemento, lo stesso kit
+dello spazio di lavoro, così la verifica e ./misura.sh --confronta danno
+gli stessi esiti.
 
 Le cartelle di prompt dello spazio di lavoro sono quelle che contengono
 prompt/v0.md: la cartella stessa in M2-E01, le famiglie sviluppo, supporto
@@ -15,10 +16,12 @@ nome (v2b, v01) non conta. Controlla il lavoro, non l'esito; per ciascuna
 cartella:
   - v0 e almeno v1 misurate, e ogni versione misurata completa: la
     risposta (claude -p senza errori, con un testo e i conteggi di usage in
-    numeri), i controlli con il loro totale, il giudizio strutturato con un
-    esito per ogni affermazione di rubrica.md; v0 giudicata due volte
-    (giudizi/v0.json e giudizi/v0-bis.json); un file di misura che manca o
-    è rovinato chiede di misurare di nuovo quella versione;
+    numeri) e il giudizio strutturato con un esito per ogni affermazione di
+    rubrica.md; v0 giudicata due volte (giudizi/v0.json e
+    giudizi/v0-bis.json); un file di misura che manca o è rovinato chiede
+    di misurare di nuovo quella versione. I controlli di controlli.tsv si
+    rifanno sulla risposta, come in ./misura.sh --confronta:
+    controlli/<v>.txt è da leggere, e nessun esito lo legge;
   - prompt/v1.md diverso da prompt/v0.md;
   - registro.md: la riga di ogni versione misurata, con la pratica (v0
     «partenza», le altre una dell'elenco di ./misura.sh --pratiche) e le
@@ -54,7 +57,6 @@ from typing import Any, Dict, List, NamedTuple, Optional, Tuple
 
 FAMIGLIE = ("sviluppo", "supporto", "sistemi")
 VERSIONE = re.compile(r"(v(?:0|[1-9][0-9]*))\.json")  # con fullmatch
-TOTALE = re.compile(r"^totale\t([0-9]+)/([0-9]+)$", re.M)
 TELEFONO = re.compile(r"000[ .-]?000[ .-]?0103")   # come in M2-D01
 NUMERO = re.compile(r"[0-9]+")              # con fullmatch: cifre ASCII
 # I conteggi di usage che legge strumenti/kit.py: devono essere numeri.
@@ -181,16 +183,6 @@ def usage_numerico(doc: dict) -> bool:
     return True
 
 
-def testo_misura(percorso: str) -> str:
-    """Il testo di un file di misura, "" se manca o non è UTF-8 (una misura
-    da rifare); Precondizione se c'è ma non si legge."""
-    dati = leggi_byte(percorso)
-    try:
-        return "" if dati is None else dati.decode("utf-8")
-    except UnicodeDecodeError:
-        return ""
-
-
 def di_tipo(valore: Any, tipo: Any) -> bool:
     """Vero se il valore è del tipo JSON Schema (o di uno dei tipi)."""
     controlli = {"object": lambda v: isinstance(v, dict),
@@ -305,7 +297,9 @@ def misura(kit: ModuleType, cartella: str, famiglia: Optional[str],
            versione: str, schema: Optional[dict], problemi: List[str],
            garanzia: List[Tuple[str, str]]) -> Optional[Misura]:
     """La misura completa di una versione, o None con il problema: un file
-    di misura che manca o è rovinato chiede di misurare di nuovo."""
+    di misura che manca o è rovinato chiede di misurare di nuovo. I
+    controlli si rifanno sulla risposta, con controlli.tsv (il kit), mai
+    letti da controlli/<v>.txt."""
     dove = " in %s" % famiglia if famiglia else ""
     nome = os.path.normpath(os.path.join(cartella, "risposte",
                                          versione + ".json"))
@@ -322,17 +316,12 @@ def misura(kit: ModuleType, cartella: str, famiglia: Optional[str],
         problemi.append("%s ha un usage non numerico%s" % (
             nome, da_rifare(famiglia, versione)))
         return None
-    tot = TOTALE.search(testo_misura(os.path.join(cartella, "controlli",
-                                                  versione + ".txt")))
-    if tot is None:
-        problemi.append("mancano i controlli di %s%s%s" % (
-            versione, dove, da_rifare(famiglia, versione)))
-        return None
+    controlli = kit.esiti_controlli(cartella, versione)
     esiti = giudizio(kit, cartella, famiglia, versione, "", schema, problemi,
                      garanzia)
     if esiti is None:
         return None
-    return Misura(int(tot.group(1)), int(tot.group(2)), esiti, testo)
+    return Misura(sum(controlli.values()), len(controlli), esiti, testo)
 
 
 def controlla_registro(kit: ModuleType, cartella: str,

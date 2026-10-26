@@ -150,14 +150,14 @@ dati del corso.
 - La pratica di v1, `chiarezza`, mette alla prova due frasi della guida
   «Best practice per il prompting», sezione «Sii chiaro e diretto»: «Più
   precisamente spieghi cosa vuoi, migliore sarà il risultato.» e «Sii
-  specifico sul formato di output desiderato e sui vincoli.» La stessa
+  specifico sul formato di output e sui vincoli che desideri.» La stessa
   sezione chiede di pensare a Claude «come a un dipendente brillante ma
   nuovo, che non ha contesto sulle tue norme e sui tuoi flussi di lavoro»:
   v0 non spiega niente, la vostra v1 spiega che cosa serve.
   https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 - Il giudice si mette alla prova prima di usarlo. La pagina sui criteri di
-  successo e sulle valutazioni, della valutazione con un modello: «Testa
-  prima per garantire l'affidabilità, poi scala.»
+  successo e sulle valutazioni, della valutazione con un modello: «Prima
+  verifica che sia affidabile, poi scala.»
   https://platform.claude.com/docs/it/test-and-evaluate/develop-tests
 - L'articolo di Anthropic sulle valutazioni descrive, fra i controlli
   delle prime esecuzioni, la prova che `misura.sh` fa su v0: «Claude
@@ -173,10 +173,8 @@ dati del corso.
   richiesta, la risposta non contiene il campo `structured_output`.»
   https://code.claude.com/docs/it/cli-reference ·
   https://code.claude.com/docs/it/headless
-- La rimisura del passo 7 mette alla prova il glossario: «Anche con la
-  temperatura impostata a 0, i risultati non saranno completamente
-  deterministici e input identici possono produrre output diversi tra le
-  chiamate API.»
+- La rimisura del passo 7 mette alla prova il glossario: «… input
+  identici potrebbero produrre output diversi tra diverse chiamate API.»
   https://platform.claude.com/docs/it/about-claude/glossary
 
 ### Che cosa misura il controllo
@@ -221,9 +219,10 @@ dati del corso.
   v1 di riferimento 3 su 3 e 3 su 5. `chiarezza` confermata: i criteri
   segnati `chiarezza` rispettati sono 2 su 7 in v0 e 6 su 7 in v1; in v1
   resta non rispettato «impegni» (il giudice cita il ricontatto del
-  commerciale, che le procedure prevedono solo per offerte o preventivi).
-  La rimisura confermata: le due risposte sono diverse (96 parole contro
-  106, misura 6 contro 7 su 8). Come dato, senza esito: «Il telefono del
+  commerciale, che le procedure prevedono solo per offerte o preventivi; la
+  v1 di riferimento lo chiede). La rimisura confermata: le due risposte
+  sono diverse (96 parole contro 106); la misura passa da 6 a 7 su 8
+  perché il giudice, nella seconda, segna rispettato «fatti». Come dato, senza esito: «Il telefono del
   cliente nella risposta di v2: assente». I token in entrata 926 contro
   1932; giudizi conformi allo schema 4 su 4.
 
@@ -231,8 +230,10 @@ dati del corso.
 
 Controlla il lavoro, non l'esito: v0 misurata e giudicata due volte
 (`giudizi/v0.json` e `giudizi/v0-bis.json`), v1 misurata e diversa da v0,
-ogni versione misurata completa (risposta, controlli e giudizio con un
-esito per ogni affermazione), e in `registro.md` la riga di ogni versione
+ogni versione misurata completa (risposta e giudizio con un esito per
+ogni affermazione; i controlli di `controlli.tsv` li rifà sulla risposta,
+come `--confronta`: `controlli/<versione>.txt` è da leggere, e nessun
+esito lo legge), e in `registro.md` la riga di ogni versione
 misurata, compilata e con la sua pratica (`partenza` per v0, una
 dell'elenco di `./misura.sh --pratiche` per le altre). Poi stampa le
 misure e l'esito di ogni pratica; stampa anche, come dato e senza esito,
@@ -271,10 +272,9 @@ rispetta lo schema.
 - La verifica scrive «la documentazione garantisce …: in questa esecuzione
   no»: un giudizio strutturato non rispetta lo schema. Misurate di nuovo
   quella versione e avvisate il docente.
-- Una risposta riporta il vostro nome, che nessun prompt né dato
-  contiene: prima di mostrarla in aula, toglietelo. Nei file di
-  `soluzione/` un nome così è sostituito da «(identità dell'account,
-  omessa)».
+- Una risposta porta dati vostri, come il nome o l'e-mail: toglieteli
+  prima di mostrarla in aula. Prima di mostrare una risposta,
+  rileggetela: a schermo nessun dato personale.
 - `claude: command not found`, oppure un errore di accesso: rifate i passi
   di `PRIMA_DEL_CORSO.md` e rilanciate `tools/verifica_ambiente.sh`.
 - Per ricominciare da capo: `tools/reset_esercizio.sh M2-E01`.

@@ -4,7 +4,8 @@
 # docente (sta in _docente/, il materiale del docente):
 #   - domanda.txt, la domanda delle due chat di prova;
 #   - nuovo_codice.py: la forma del codice (LP-, quattro lettere senza I e
-#     O, un trattino, due cifre) e della frase; il rifiuto di
+#     O, un trattino, due cifre) e della frase; dove togliere il codice
+#     dalla memoria, nei due layout delle impostazioni; il rifiuto di
 #     sovrascrivere codice.txt (uscita 2, file intatti); --nuovo, che lo
 #     cambia; lo spazio di lavoro come argomento; codici diversi a ogni
 #     estrazione; il file dei ticket, trovato con PN_HANDSON_ROOT, nello
@@ -19,13 +20,16 @@
 #     positivi); la garanzia che non tiene (1), con il codice esatto, senza
 #     prefisso, in minuscolo, con un altro trattino, con uno spazio, senza
 #     separatore, in caratteri larghi; un altro codice o le sole lettere
-#     (non contano); il «può» non confermato, che non fa fallire, e allora
+#     (non contano); il «può» non confermato, che non fa fallire e dice
+#     dove guardare la memoria nei due layout delle impostazioni, e allora
 #     la garanzia, che senza il codice nella chat con la memoria non può
 #     mostrare niente, «non distinguibile» con il perché (0), salvo il
 #     codice comparso senza memoria (1); «NON LO
 #     SO» come dato; codice.txt che manca o è vuoto (1), in minuscolo
 #     (letto), senza la forma attesa o non UTF-8 (2); una risposta che
-#     manca o è vuota (1, con l'altra decisa); l'inizio lungo troncato; una
+#     manca o è vuota (1, con l'altra detta lo stesso: senza la chat con la
+#     memoria, che fa da controllo, la garanzia «non distinguibile», mai
+#     «confermata», salvo il codice comparso); l'inizio lungo troncato; una
 #     risposta non UTF-8, una cartella, un file che non si legge (2, senza
 #     traceback e senza dati a metà); gli argomenti; un errore inatteso
 #     (2); nessun file scritto;
@@ -37,8 +41,9 @@
 #     controllo che esce con un codice fuori dal contratto o per un
 #     segnale (2);
 #   - il README: le dieci sezioni, la domanda di domanda.txt, i file che il
-#     controllo legge, le affermazioni citate parola per parola, nessun
-#     nome interno;
+#     controllo legge, le affermazioni citate parola per parola, i due
+#     layout delle impostazioni (ogni percorso o nome del layout
+#     precedente detto tale), nessun nome interno;
 #   - shellcheck -x su verifica.sh e su questo file.
 # Gli spazi di lavoro e i repository finti nascono in una cartella
 # temporanea, nella base di handson::init_temp_base (mai dentro ~/.claude,
@@ -62,7 +67,7 @@ readonly D04
 # (handson::init_temp_base): mai dentro ~/.claude, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${MOD%/*}/tools/lib_handson.sh"
-readonly CASES=106
+readonly CASES=115
 readonly L='LP-QZKW-37'
 readonly FORMA='^LP-[ABCDEFGHJKLMNPQRSTUVWXYZ]{4}-[0-9]{2}$'
 readonly TICKET='progetti/assistenza-clienti/dati/ticket-settimana.csv'
@@ -82,8 +87,19 @@ readonly G
 readonly NC='non confermata in questa esecuzione'
 readonly ND='non distinguibile'
 readonly SENZA_CON='Nella chat con la memoria il codice non è comparso'
+SENZA_CONTROLLO='Manca la risposta della chat con la memoria: non si sa se il'
+SENZA_CONTROLLO+=' codice è arrivato'
+readonly SENZA_CONTROLLO
 readonly MANCA='Manca codice.txt: lanciate python3 nuovo_codice.py'
 readonly FRASE='Ricordati che il codice della linea di prova del corso è'
+# Dove si vede la memoria, nei due layout delle impostazioni di claude.ai:
+# i due script lo stampano con queste due righe.
+DOVE_NUOVO='in Settings > Your Claude, con «Manage» accanto a'
+DOVE_NUOVO+=' «Your memory»'
+readonly DOVE_NUOVO
+DOVE_PRIMA='nel layout precedente delle impostazioni,'
+DOVE_PRIMA+=' in Settings > Memory'
+readonly DOVE_PRIMA
 TMP=''
 PASS=0
 FAIL=0
@@ -282,6 +298,10 @@ t_genera() {
   expect "nuovo_codice: uscita 0, il codice" 0 "Codice della linea di prova:"
   expect "nuovo_codice: la pulizia della memoria" 0 \
     "cancellare le chat non basta"
+  expect "nuovo_codice: dove togliere il codice, nel layout aggiornato" 0 \
+    "${DOVE_NUOVO}"
+  expect "nuovo_codice: e nel layout precedente delle impostazioni" 0 \
+    "${DOVE_PRIMA}"
   c="$(cat "${w}/codice.txt")"
   expect "nuovo_codice: stampa la frase da mandare" 0 "    ${FRASE} ${c}."
   if [[ "${c}" =~ ${FORMA} ]] && (( $(wc -l < "${w}/codice.txt") == 1 ))
@@ -466,8 +486,9 @@ t_puo() {
   local w
   caso w risposta-con-memoria.txt 'NON LO SO.\n'
   expect "può: senza il codice, uscita 0" 0 "${V_CON}: ${NC}"
-  expect "può: dove guardare la memoria" 0 \
-    "In Settings > Memory, sotto «Topics»"
+  expect "può: dove guardare la memoria, nel layout aggiornato" 0 \
+    "${DOVE_NUOVO}"
+  expect "può: e nel layout precedente delle impostazioni" 0 "${DOVE_PRIMA}"
   expect_absent "può: nessuna frase di garanzia" "La documentazione garantisce"
   expect "può: NON LO SO come dato" 0 "il codice c'è: no; NON LO SO: sì"
   expect "può senza il codice: la garanzia non distinguibile" 0 \
@@ -532,8 +553,25 @@ t_mancanti() {
   caso w risposta-con-memoria.txt ' \n\t\n'
   expect "con la memoria vuoto, uscita 1" 1 \
     "risposta-con-memoria.txt è vuoto"
-  expect "con la memoria vuoto: la garanzia decisa lo stesso" 1 \
+  expect "con la memoria vuoto: la garanzia, non distinguibile" 1 \
+    "${V_SENZA}: ${ND}"
+  # Senza la chat con la memoria, il controllo della garanzia, la risposta
+  # senza memoria non mostra niente: mai «confermata», e l'uscita resta 1.
+  ws w
+  complete "${w}"
+  rm "${w}/risposta-con-memoria.txt"
+  controlla "${w}"
+  expect "con la memoria che manca, uscita 1" 1 \
+    "manca risposta-con-memoria.txt: fate la chat con la memoria"
+  expect "con la memoria che manca: la garanzia non distinguibile" 1 \
+    "${V_SENZA}: ${ND}"
+  expect "con la memoria che manca: il perché" 1 "${SENZA_CONTROLLO}"
+  expect_absent "con la memoria che manca: la garanzia non è «confermata»" \
     "${V_SENZA}: confermata"
+  scrivi "${w}" risposta-senza-memoria.txt "${L}\n"
+  controlla "${w}"
+  expect "con la memoria che manca, il codice senza memoria: non confermata" \
+    1 "${V_SENZA}: ${NC}"
   ws w
   controlla "${w}"
   expect "punto di partenza: manca codice.txt, uscita 1" 1 "${MANCA}"
@@ -651,11 +689,24 @@ citazioni = [
     "chats from it, and doesn’t save anything from it to memory.",
     "Select any topic to read it, then use the edit icon to change it or "
     "select \"Delete\" to remove it.",
-    "When a conversation expires or is deleted, related memory entries "
-    "generated from it won’t be removed, but you can delete "
-    "individual memories at any time."]
+    "When a conversation is deleted, including under a retention period, "
+    "memory entries generated from it aren’t removed, but you can delete "
+    "individual memories while memory is on."]
 print("citazioni: " + ("tutte" if all(c in piatto for c in citazioni)
                        else "no"))
+# I due layout delle impostazioni: il percorso aggiornato c'è, e ogni
+# percorso o nome del layout precedente ha «layout precedente delle
+# impostazioni» nelle 80 lettere prima.
+nuovi = all(s in piatto for s in ("Settings > Your Claude",
+                                  "«Memory from chats»",
+                                  "«Manage» accanto a «Your memory»"))
+vecchi = [m.start() for m in re.finditer(
+    r"Settings > Memory|Generate memory from chats", piatto)]
+soli = [i for i in vecchi if "layout precedente delle impostazioni"
+        not in piatto[max(0, i - 80):i]]
+print("layout: " + ("sì" if nuovi and vecchi and not soli
+                    else "no (aggiornato: %s; precedenti senza il layout: "
+                    "%d)" % ("sì" if nuovi else "no", len(soli))))
 vietate = re.findall(r"FACT-|Tecnodata|smentit|\boggi\b|stamattina|"
                      r"prossima sessione|\bX-[0-9]", testo)
 print("vietate: " + (", ".join(vietate) or "nessuna"))
@@ -665,6 +716,8 @@ PY
   expect "README: i file dell'elemento" 0 "file: tutti"
   expect "README: le affermazioni citate parola per parola" 0 \
     "citazioni: tutte"
+  expect "README: i due layout delle impostazioni, il precedente detto tale" 0 \
+    "layout: sì"
   expect "README: nessun nome interno né riferimento al giorno" 0 \
     "vietate: nessuna"
 }

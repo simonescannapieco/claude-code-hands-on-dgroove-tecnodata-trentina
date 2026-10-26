@@ -63,14 +63,18 @@ codice e a verificare.
 gradualmente sui piani Pro e Max: se la casella del messaggio mostra
 ancora le opzioni «Chat» e «Cowork», avete quella precedente. I passi
 valgono per tutte e due; dove un comando sta in un posto diverso, lo dice
-il passo.
+il passo. Anche le impostazioni hanno un layout aggiornato e uno
+precedente: nel primo la memoria sta in Settings > Your Claude, nel layout
+precedente delle impostazioni in Settings > Memory. Dove i due layout
+differiscono, i passi li danno tutti e due.
 
-1. **La memoria accesa.** In claude.ai, in Settings > Memory, «Generate
-   memory from chats» dev'essere acceso. La memoria non dev'essere in
-   pausa: con «Pause memory» Claude conserva la memoria che ha, ma non la
-   usa e non ne crea di nuova. «Search and reference chats», la ricerca
-   nelle chat passate, può restare com'è: se è accesa, il codice può
-   tornare anche da lì.
+1. **La memoria accesa.** In claude.ai, in Settings > Your Claude,
+   «Memory from chats» dev'essere acceso (nel layout precedente delle
+   impostazioni: in Settings > Memory, «Generate memory from chats»). La
+   memoria non dev'essere in pausa: con «Pause memory» Claude conserva la
+   memoria che ha, ma non la usa e non ne crea di nuova. «Search and
+   reference chats», la ricerca nelle chat passate, può restare com'è: se
+   è accesa, il codice può tornare anche da lì.
 
 2. **Il codice.** Dalla cartella `esercitazioni`:
 
@@ -86,9 +90,10 @@ il passo.
    non si tocca. Incollate la frase di `frase-da-ricordare.txt` e inviate.
    Nella registrazione del corso, nella nuova esperienza, sopra la
    risposta è comparso il passo «Updated memory». Se volete, guardate in
-   Settings > Memory: sotto «Topics» c'è tutto ciò che Claude ricorda
-   (nella nuova esperienza gli argomenti stanno sotto «Areas»); vedete se
-   c'è il codice.
+   Settings > Your Claude, con «Manage» accanto a «Your memory» (nel
+   layout precedente delle impostazioni, in Settings > Memory): sotto
+   «Topics» c'è tutto ciò che Claude ricorda (nella nuova esperienza gli
+   argomenti stanno sotto «Areas»); vedete se c'è il codice.
 
 4. **La chat con la memoria.** Un'altra chat nuova, fuori da ogni
    progetto, con la memoria accesa. Incollate la domanda di `domanda.txt`
@@ -120,13 +125,16 @@ il passo.
    Nello spazio di lavoro, `python3 controlla_memoria.py` stampa gli
    stessi dati e gli stessi esiti.
 
-7. **La pulizia, da non saltare.** In Settings > Memory, sotto «Topics»
-   (nella nuova esperienza «Areas»), aprite l'argomento che contiene il
-   codice e, con l'icona di modifica, togliete il codice dall'argomento;
-   se l'argomento non contiene nient'altro, cancellatelo con «Delete»
-   (nella nuova esperienza chiede conferma: «Delete this memory?»).
-   Cancellare le chat non basta: le voci di
-   memoria nate da una chat restano anche quando la chat viene cancellata.
+7. **La pulizia, da non saltare.** In Settings > Your Claude, con
+   «Manage» accanto a «Your memory» (nel layout precedente delle
+   impostazioni, in Settings > Memory), sotto «Topics» (nella nuova
+   esperienza «Areas»), aprite l'argomento che contiene il codice e, con
+   l'icona di modifica, togliete il codice dall'argomento; se l'argomento
+   non contiene nient'altro, cancellatelo con «Delete» (nella nuova
+   esperienza chiede conferma: «Delete this memory?»). Fatela con la
+   memoria accesa: le singole memorie si cancellano finché la memoria è
+   attiva. Cancellare le chat non basta: le voci di memoria nate da una
+   chat restano anche quando la chat viene cancellata.
    Poi, se volete, cancellate le tre chat: si cancellano dalla barra
    laterale, o da «Chats and tasks», con «Delete» (nella nuova esperienza
    la lista delle conversazioni si chiama «Recents»).
@@ -165,9 +173,10 @@ on previous context»
   chats, you will see this reflected in your current chat as a tool
   call.»;
 - sulla pulizia: «Select any topic to read it, then use the edit icon to
-  change it or select "Delete" to remove it.»; e «When a conversation
-  expires or is deleted, related memory entries generated from it won’t
-  be removed, but you can delete individual memories at any time.».
+  change it or select "Delete" to remove it.»; e «When a conversation is
+  deleted, including under a retention period, memory entries generated
+  from it aren’t removed, but you can delete individual memories while
+  memory is on.».
 
 ### Che cosa misura il controllo
 
@@ -191,16 +200,18 @@ parte estratta a caso. Poi le due affermazioni:
   esecuzione il codice è comparso.», ed è un esito da far vedere al
   docente. La chat con la memoria fa anche da controllo di questa: se la
   sua risposta non contiene il codice, il codice non è arrivato alla
-  memoria, e la chat senza memoria non può mostrare che da lì non arriva:
-  si stampa «non distinguibile», con il perché, invece di «confermata».
+  memoria; se manca, non si sa se c'è arrivato. In tutti e due i casi la
+  chat senza memoria non può mostrare che da lì non arriva: si stampa
+  «non distinguibile», con il perché, invece di «confermata».
 
 «NON LO SO» è un dato: la domanda lo permette, e il controllo non lo
 giudica. Il controllo decide dalle risposte e non scrive niente.
 
 Nella registrazione del corso (21 ottobre 2026, claude.ai nella nuova
 esperienza, sull'account del docente, con il modello che l'account aveva
-selezionato, Haiku con effort low; «Generate memory from chats» e
-«Search and reference chats» accesi): la chat da ricordare ha mostrato il
+selezionato, Haiku con effort low; nel layout precedente delle
+impostazioni, «Generate memory from chats» e «Search and reference chats»
+accesi): la chat da ricordare ha mostrato il
 passo «Updated memory»; nella chat con la memoria, il passo «Read memory»
 e la risposta «LP-FKYJ-14», il codice: «confermata» per il «può»; nella
 chat senza memoria, nessun passo di strumenti e la risposta «NON LO SO»:
@@ -231,8 +242,10 @@ testo UTF-8, o quando `codice.txt` non ha più la forma che gli dà
   quella chat. Se c'è, è un esito da segnalare al docente: la
   documentazione lo esclude.
 - La risposta con la memoria non contiene il codice: è un esito anche
-  questo, e la verifica non fallisce. Guardate in Settings > Memory se il
-  codice è fra i «Topics», e se la memoria è accesa e non in pausa.
+  questo, e la verifica non fallisce. Guardate in Settings > Your Claude,
+  con «Manage» accanto a «Your memory» (nel layout precedente delle
+  impostazioni, in Settings > Memory), se il codice è fra i «Topics», e se
+  la memoria è accesa e non in pausa.
 - Avete fatto le chat dentro un progetto: un progetto ha una memoria sua.
   Rifatele fuori da ogni progetto.
 - `controlla_memoria.py` dice che manca `codice.txt`: lanciate

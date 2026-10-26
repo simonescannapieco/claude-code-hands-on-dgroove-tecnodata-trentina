@@ -21,7 +21,9 @@ prompt solo, altrimenti la sua famiglia (sviluppo, supporto, sistemi).
                                    risposte/<versione>.json, scritto in
                                    risposte/<versione>.md
   controlla <cartella> <versione>  i controlli di controlli.tsv sulla
-                                   risposta: controlli/<versione>.txt
+                                   risposta: controlli/<versione>.txt,
+                                   da leggere; il confronto e la verifica
+                                   li rifanno sulla risposta
   consegna  <cartella> <versione>  il testo che riceve il giudice: la
                                    rubrica (senza le pratiche), i dati, la
                                    risposta
@@ -130,15 +132,16 @@ SYSTEM_FISSO = ("la frase parla del system prompt, e misura.sh manda il "
                 "«Rispondi in italiano.»")
 # Le pratiche: (id, la frase di Anthropic che mette alla prova, il link,
 # come si decide l'esito). Le frasi in italiano sono quelle delle pagine
-# italiane della documentazione; quella del blog è tradotta.
+# italiane della documentazione; quella del blog è tradotta. Del glossario
+# si cita la parte che la rimisura decide: «…» segna il taglio.
 PRATICHE: Tuple[Tuple[str, str, str, str], ...] = (
-    ("chiarezza", "«Sii specifico sul formato di output desiderato e sui "
-     "vincoli.» «Più precisamente spieghi cosa vuoi, migliore sarà il "
+    ("chiarezza", "«Sii specifico sul formato di output e sui vincoli che "
+     "desideri.» «Più precisamente spieghi cosa vuoi, migliore sarà il "
      "risultato.»", GUIDA, REGOLA_CRITERI % "chiarezza"),
     ("contesto", "«Fornire il contesto o la motivazione alla base delle tue "
-     "istruzioni, ad esempio spiegando a Claude perché un determinato "
-     "comportamento è importante, può aiutare Claude a comprendere meglio "
-     "i tuoi obiettivi e a fornire risposte più mirate.»", GUIDA,
+     "istruzioni, ad esempio spiegando a Claude perché un certo "
+     "comportamento è importante, può dare a Claude più informazioni sui "
+     "tuoi obiettivi e aiutarlo a fornire risposte più mirate.»", GUIDA,
      REGOLA_CRITERI % "contesto"),
     ("ruolo", "«Impostare un ruolo nel \"system prompt\" (prompt di "
      "sistema) focalizza il comportamento e il tono di Claude per il tuo "
@@ -153,9 +156,8 @@ PRATICHE: Tuple[Tuple[str, str, str, str], ...] = (
     ("modello", FRASE_BLOG, BLOG, "con lo stesso testo e lo stesso effort: "
      "il kit non sa quale dei due modelli sia «più capace», quindi stampa "
      "la misura e l'esito resta non decisa"),
-    ("rimisura", "«Anche con la temperatura impostata a 0, i risultati non "
-     "saranno completamente deterministici e input identici possono "
-     "produrre output diversi tra le chiamate API.»", GLOSSARIO,
+    ("rimisura", "«… input identici potrebbero produrre output diversi tra "
+     "diverse chiamate API.»", GLOSSARIO,
      "la stessa versione, misurata di nuovo: confermata se le due "
      "risposte sono diverse; se sono identiche, non decisa (un caso "
      "uguale non la smentisce)"),
@@ -525,31 +527,40 @@ def esito_controllo(tipo: str, valore: str, testo: str) -> Tuple[bool, str]:
     return n >= limite, "%d parole" % n
 
 
+def esegui_controlli(cartella: str,
+                     versione: str) -> List[Tuple[bool, str, str, str]]:
+    """Ogni controllo di controlli.tsv sul testo di risposte/<v>.json:
+    [(superato, descrizione, dettaglio, pratica)]. Lo stesso calcolo per
+    controlla, che ne scrive controlli/<v>.txt, e per il confronto e la
+    verifica, che quel file non lo leggono."""
+    testo = risposta(cartella, versione)
+    esiti: List[Tuple[bool, str, str, str]] = []
+    for tipo, valore, descrizione, pratica in controlli(cartella):
+        superato, dettaglio = esito_controllo(tipo, valore, testo)
+        esiti.append((superato, descrizione, dettaglio, pratica))
+    return esiti
+
+
 def controlla(cartella: str, versione: str) -> bool:
     """Scrive controlli/<v>.txt (OK/KO per riga, poi il totale) e lo stampa,
-    ogni controllo con la sua pratica. Returns: vero se ogni controllo è
-    superato."""
+    ogni controllo con la sua pratica: il file è da leggere, nessun esito
+    lo rilegge. Returns: vero se ogni controllo è superato."""
     controlla_versione(versione)
-    testo = risposta(cartella, versione)
-    voci = controlli(cartella)
-    righe = []
-    superati = 0
-    for tipo, valore, descrizione, _ in voci:
-        ok, dettaglio = esito_controllo(tipo, valore, testo)
-        superati += ok
-        righe.append("\t".join(["OK" if ok else "KO", descrizione, dettaglio]))
-    righe.append("totale\t%d/%d" % (superati, len(voci)))
+    esiti = esegui_controlli(cartella, versione)
+    superati = sum(1 for ok, _, _, _ in esiti if ok)
+    righe = ["\t".join(["OK" if ok else "KO", descrizione, dettaglio])
+             for ok, descrizione, dettaglio, _ in esiti]
+    righe.append("totale\t%d/%d" % (superati, len(esiti)))
     scrivi(os.path.join(cartella, "controlli", versione + ".txt"),
            "\n".join(righe) + "\n")
     print("Controlli %s: %d %s su %d" % (
         versione, superati, "superato" if superati == 1 else "superati",
-        len(voci)))
-    for (_, _, _, pratica), riga in zip(voci, righe):
-        esito, descrizione, dettaglio = riga.split("\t", 2)
-        print("  %s %s%s%s" % ("✓" if esito == "OK" else "✗",
-                               etichetta(pratica), descrizione,
+        len(esiti)))
+    for ok, descrizione, dettaglio, pratica in esiti:
+        print("  %s %s%s%s" % ("✓" if ok else "✗", etichetta(pratica),
+                               descrizione,
                                " (%s)" % dettaglio if dettaglio else ""))
-    return superati == len(voci)
+    return superati == len(esiti)
 
 
 def consegna_fissa(cartella: str) -> Tuple[List[str], List[Tuple[str, str]]]:
@@ -665,14 +676,10 @@ def stampa_stabilita(cartella: str, versione: str) -> None:
 
 
 def esiti_controlli(cartella: str, versione: str) -> Dict[str, bool]:
-    """{descrizione: superato} di controlli/<v>.txt."""
-    percorso = os.path.join(cartella, "controlli", versione + ".txt")
-    esiti: Dict[str, bool] = {}
-    for riga in leggi(percorso).splitlines():
-        campi = riga.split("\t", 2)
-        if len(campi) >= 2 and campi[0] in ("OK", "KO"):
-            esiti[campi[1]] = campi[0] == "OK"
-    return esiti
+    """{descrizione: superato}: i controlli rifatti sulla risposta
+    (esegui_controlli), mai letti da controlli/<v>.txt."""
+    return {descrizione: superato for superato, descrizione, _, _
+            in esegui_controlli(cartella, versione)}
 
 
 def segno(valore: Optional[bool]) -> str:
@@ -683,10 +690,10 @@ def segno(valore: Optional[bool]) -> str:
 
 
 def misura_completa(cartella: str, versione: str) -> None:
-    """Errore(2) se della versione manca la risposta, i controlli o il
-    giudizio: una misura fermata a metà, da rifare."""
+    """Errore(2) se della versione manca la risposta o il giudizio: una
+    misura fermata a metà, da rifare. I controlli non si cercano in
+    controlli/: si rifanno sulla risposta."""
     for nome in (os.path.join("risposte", versione + ".json"),
-                 os.path.join("controlli", versione + ".txt"),
                  os.path.join("giudizi", versione + ".json")):
         percorso = os.path.normpath(os.path.join(cartella, nome))
         if not os.path.isfile(percorso):

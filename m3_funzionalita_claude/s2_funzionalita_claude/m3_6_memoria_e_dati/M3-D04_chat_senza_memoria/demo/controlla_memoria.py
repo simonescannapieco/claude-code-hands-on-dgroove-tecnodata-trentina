@@ -28,8 +28,9 @@ ciascuna solo se c'è la sua risposta:
       esecuzione», con la frase che dice che cosa garantisce la
       documentazione, e l'uscita è 1. La chat con la memoria è anche il
       controllo di questa: se la sua risposta c'è e non contiene il
-      codice, il codice non è arrivato alla memoria, e una risposta senza
-      memoria che non lo contiene non può mostrare niente: si stampa «non
+      codice, il codice non è arrivato alla memoria; se manca, non si sa
+      se c'è arrivato. In tutti e due i casi una risposta senza memoria
+      che non contiene il codice non può mostrare niente: si stampa «non
       distinguibile», con il perché, invece di «confermata» (l'uscita non
       cambia).
 Che la risposta dica «NON LO SO» è un dato: il controllo non lo giudica.
@@ -79,12 +80,18 @@ NON_DISTINGUIBILE = "non distinguibile"
 SENZA_CON = ("  Nella chat con la memoria il codice non è comparso: non è "
              "arrivato alla memoria,\n  e la chat senza memoria non può "
              "mostrare che da lì non arriva.")
+SENZA_CONTROLLO = ("  Manca la risposta della chat con la memoria: non si sa "
+                   "se il codice è arrivato\n  alla memoria, e la chat senza "
+                   "memoria non può mostrare che da lì non arriva.")
 PUO = ("  È un «può»: l'esito di una sola esecuzione si stampa e non fa "
        "fallire la verifica.")
 DA_DOVE = ("  Il codice può tornare dalla memoria o dalla ricerca nelle chat "
            "passate; nella chat senza memoria sono spente tutte e due.")
-TOPICS = ("  In Settings > Memory, sotto «Topics», vedete se il codice è "
-          "stato salvato.")
+TOPICS = ("  Se il codice è stato salvato, lo vedete sotto «Topics»:\n"
+          "    in Settings > Your Claude, con «Manage» accanto a «Your "
+          "memory»;\n"
+          "    nel layout precedente delle impostazioni, in Settings > "
+          "Memory.")
 GARANZIA = ("  La documentazione garantisce che in una chat con la memoria "
             "spenta Claude non usa la memoria e non cerca nelle chat "
             "passate: in questa esecuzione il codice è comparso.")
@@ -173,9 +180,9 @@ def avviso(messaggio: str) -> None:
 def stampa_verdetti(esiti: Dict[str, Esito]) -> bool:
     """Il verdetto di ogni affermazione di cui c'è la risposta: il «può»
     della chat con la memoria, poi la garanzia della chat senza («non
-    distinguibile» invece di «confermata» se la risposta con la memoria
-    c'è e non contiene il codice). Returns: True se la garanzia non
-    tiene."""
+    distinguibile» invece di «confermata» se la risposta con la memoria,
+    il controllo, manca o non contiene il codice). Returns: True se la
+    garanzia non tiene."""
     if CON in esiti:
         if esiti[CON][0]:
             print("%s: %s" % (S_CON, CONFERMATA))
@@ -187,7 +194,10 @@ def stampa_verdetti(esiti: Dict[str, Esito]) -> bool:
     if SENZA not in esiti:
         return False
     if not esiti[SENZA][0]:
-        if CON in esiti and not esiti[CON][0]:
+        if CON not in esiti:
+            print("%s: %s" % (S_SENZA, NON_DISTINGUIBILE))
+            print(SENZA_CONTROLLO)
+        elif not esiti[CON][0]:
             print("%s: %s" % (S_SENZA, NON_DISTINGUIBILE))
             print(SENZA_CON)
         else:
