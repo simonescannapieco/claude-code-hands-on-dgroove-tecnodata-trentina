@@ -112,9 +112,9 @@ mandano gli stessi testi con le stesse opzioni, più
 
    E nelle best practice per il prompting, al posto delle risposte
    precompilate: «Prova prima a chiedere al modello di conformarsi alla
-   tua struttura di output, poiché i modelli più recenti possono
+   tua struttura di output, poiché i modelli più recenti sono in grado di
    rispettare in modo affidabile schemi complessi quando viene loro
-   richiesto, specialmente se implementato con tentativi ripetuti.»
+   richiesto, soprattutto se implementato con nuovi tentativi.»
    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 
 2. **Con `--json-schema`, un oggetto convalidato in `structured_output`.**

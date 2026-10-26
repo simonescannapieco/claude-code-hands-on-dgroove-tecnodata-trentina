@@ -80,7 +80,7 @@ repository, `esercitazioni`.
    e segui i «Passi in Claude Code» del `README.md` dell'elemento. In ogni
    momento `git status` e `git diff` mostrano che cosa è cambiato rispetto al
    punto di partenza. I checkpoint di Claude Code (`/rewind`) riportano
-   indietro dentro una sessione, ma non tracciano le modifiche fatte con
+   indietro dentro una sessione, ma non tracciano i file cambiati solo da
    comandi Bash e non sostituiscono git.
 
 3. **Verifica**:

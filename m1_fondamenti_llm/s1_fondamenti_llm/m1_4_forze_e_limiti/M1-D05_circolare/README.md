@@ -114,8 +114,8 @@ Dalla guida «Ridurre le allucinazioni» della documentazione
 - «Anche i modelli linguistici più avanzati, come Claude, possono talvolta
   generare testo fattualmente errato o incoerente con il contesto
   fornito.»
-- «Dai esplicitamente a Claude il permesso di ammettere l'incertezza.
-  Questa semplice tecnica può ridurre drasticamente le informazioni
+- «Concedi esplicitamente a Claude il permesso di ammettere
+  l'incertezza. Questa tecnica può ridurre drasticamente le informazioni
   false.» Nell'esempio della guida, il prompt chiede una frase fissa per
   quando l'informazione manca: «If you're unsure about any aspect or if the
   report lacks necessary information, say "I don't have enough information
@@ -124,13 +124,13 @@ Dalla guida «Ridurre le allucinazioni» della documentazione
   report non ha le informazioni necessarie, di' "Non ho abbastanza
   informazioni per valutarlo con sicurezza."», traduzione nostra). Qui la
   frase fissa è «NON NEL DOCUMENTO».
-- «Istruisci esplicitamente Claude a usare solo le informazioni dei
-  documenti forniti e non la sua conoscenza generale.»
-- «Rendi verificabile la risposta di Claude facendogli citare passaggi e
+- «Istruisci esplicitamente Claude a utilizzare solo le informazioni
+  provenienti dai documenti forniti e non la sua conoscenza generale.»
+- «Rendi la risposta di Claude verificabile facendogli citare passaggi e
   fonti per ciascuna delle sue affermazioni.»
 - «Ricorda che, sebbene queste tecniche riducano significativamente le
   allucinazioni, non le eliminano del tutto. Convalida sempre le
-  informazioni critiche, soprattutto per decisioni ad alto rischio.»
+  informazioni critiche, specialmente per decisioni ad alto rischio.»
 
 Dal tutorial dell'Academy «Why do AI models hallucinate?»
 (https://academy.claude.com/tutorials/why-do-ai-models-hallucinate):

@@ -78,13 +78,14 @@ Claude Code: stampa la risposta ed esce.
 
 ### Che cosa dice Anthropic
 
-- Il glossario della documentazione, alla voce «Temperature»: «Anche con
-  la temperatura impostata a 0, i risultati non saranno completamente
-  deterministici e input identici possono produrre output diversi tra le
-  chiamate API.»
+- Il glossario della documentazione, alla voce «Temperature»: «… input
+  identici potrebbero produrre output diversi tra diverse chiamate API.»
   (https://platform.claude.com/docs/it/about-claude/glossary). Nella demo,
   per ogni modello, ogni chiamata manda la stessa frase, con la stessa
-  istruzione di sistema e le stesse opzioni.
+  istruzione di sistema e le stesse opzioni. La temperatura resta quella
+  predefinita: sui modelli attuali, dice la documentazione, un valore non
+  predefinito restituisce un errore 400 a ogni richiesta
+  (https://platform.claude.com/docs/en/build-with-claude/thinking).
 - La guida al prompting, alla voce «Sii chiaro e diretto»: «Claude
   risponde bene a istruzioni chiare ed esplicite. Essere specifici
   sull'output desiderato può aiutare a migliorare i risultati.»
@@ -105,8 +106,8 @@ unite. Poi, per ogni modello, un verdetto per ciascuna affermazione:
 
 - input identici, output diversi: «confermata» se il modello ha dato
   almeno due parole diverse, altrimenti «non dimostrata in questa
-  esecuzione». La documentazione dice «possono»: risposte tutte uguali non
-  la smentiscono, una parola diversa la dimostra; con una risposta sola
+  esecuzione». La documentazione dice «potrebbero»: risposte tutte uguali
+  non la smentiscono, una parola diversa la dimostra; con una risposta sola
   non si può vedere;
 - l'istruzione esplicita: «confermata» se tutte le risposte del modello
   sono una parola sola, senza punteggiatura, altrimenti «non confermata in

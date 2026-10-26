@@ -31,8 +31,8 @@ condivisione. Con una sola modifica della dashboard bastano 16 minuti.
   … Code execution and file creation is enabled by default»
   (https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude).
   Gli artifact ne hanno bisogno: «Artifacts require Cloud code execution
-  and file creation to be turned on in Settings > Capabilities (Free, Pro,
-  Max)»
+  and file creation (called Create and edit files in the updated Settings
+  layout) to be turned on in Settings > Capabilities (Free, Pro, Max)»
   (https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them).
 - Python 3 nel terminale (Linux, o WSL 2 su Windows), per la verifica:
   `tools/verifica_ambiente.sh` lo controlla (`PRIMA_DEL_CORSO.md`).

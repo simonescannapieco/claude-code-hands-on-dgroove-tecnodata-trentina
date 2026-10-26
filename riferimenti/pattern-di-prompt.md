@@ -33,7 +33,7 @@ promettere. Il prompt è una specifica, non un desiderio.
 
 La documentazione di Anthropic, nella versione italiana: «Pensa a Claude
 come a un dipendente brillante ma nuovo, che non ha contesto sulle tue
-norme e sui tuoi flussi di lavoro». La regola d'oro: fate leggere il prompt
+norme e sui tuoi flussi di lavoro». Il test chiave: fate leggere il prompt
 a un collega con poco contesto sul compito; se resta confuso lui, lo sarà
 anche Claude.
 

@@ -6,9 +6,9 @@
 # chiamata), stampa per ogni modello le risposte, le parole diverse e le
 # risposte di una parola sola, poi un verdetto per ciascuna affermazione di
 # Anthropic che la demo mette alla prova:
-#   - input identici possono produrre output diversi (il glossario):
+#   - input identici potrebbero produrre output diversi (il glossario):
 #     confermata con almeno due parole diverse, altrimenti non dimostrata
-#     in questa esecuzione (un «possono» non si smentisce);
+#     in questa esecuzione (un «potrebbero» non si smentisce);
 #   - Claude risponde bene a istruzioni chiare ed esplicite (la guida al
 #     prompting), sulla parola sola senza punteggiatura che l'istruzione
 #     chiede: una raccomandazione, stampata, che non fa fallire la

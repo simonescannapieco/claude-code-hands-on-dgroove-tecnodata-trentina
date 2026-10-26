@@ -394,8 +394,9 @@ handson::_claude_arg_ok() {
 # le esecuzioni dal vivo: `claude -p` con l'elenco esplicito degli
 # strumenti consentiti (sintassi delle regole di permesso, per esempio
 # 'Read,Edit,Bash(git diff *)'), il modello esplicito, la modalità
-# di permesso esplicita (in -p, se nessuno la imposta, si può partire da
-# auto), --permission-prompts none (ciò che chiederebbe un permesso viene
+# di permesso esplicita (da Claude Code v2.1.302 un -p in cui nessuno la
+# imposta parte in Manual; la passiamo comunque, regola nostra),
+# --permission-prompts none (ciò che chiederebbe un permesso viene
 # negato e Claude non riprova) e --output-format json (un JSON con
 # `result`, l'ID di sessione e i metadati). Mai
 # --dangerously-skip-permissions, mai bypassPermissions, mai auto (lì le

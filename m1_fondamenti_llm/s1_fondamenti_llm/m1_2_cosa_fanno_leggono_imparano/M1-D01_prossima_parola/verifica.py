@@ -16,10 +16,10 @@ legge come la sua prima riga. Quante righe sono state unite si stampa.
 
 Poi, per ogni modello con almeno una risposta, un verdetto su ciascuna
 delle due affermazioni di Anthropic che la demo mette alla prova:
-1. «input identici possono produrre output diversi» (il glossario):
+1. «input identici potrebbero produrre output diversi» (il glossario):
    confermata se il modello ha dato almeno due parole diverse, altrimenti
-   non dimostrata in questa esecuzione. Un «possono» non si smentisce: lo
-   dimostra soltanto una parola diversa.
+   non dimostrata in questa esecuzione. Un «potrebbero» non si smentisce:
+   lo dimostra soltanto una parola diversa.
 2. «Claude risponde bene a istruzioni chiare ed esplicite» (la guida al
    prompting), sulla richiesta dell'istruzione di sistema, una parola sola
    senza punteggiatura: confermata se lo sono tutte le risposte del
@@ -47,7 +47,7 @@ INTESTAZIONE = "modello\tparola"
 BOM = chr(0xFEFF)
 MODELLI = ("haiku", "sonnet", "opus")
 MOSTRA = 40
-VARIA = "Input identici possono produrre output diversi (%s)"
+VARIA = "Input identici potrebbero produrre output diversi (%s)"
 ISTRUZIONE = ("Istruzione esplicita rispettata, una parola sola senza "
               "punteggiatura (%s, %d su %d)")
 FATTO = ("Fatto: ogni affermazione è stata messa alla prova; gli esiti sono "

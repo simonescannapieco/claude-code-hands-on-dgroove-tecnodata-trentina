@@ -97,12 +97,12 @@ Le segnalazioni sono inventate, come tutti i dati del corso.
   la bontà della classificazione.
   https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 - Sul formato chiesto nel prompt, nella stessa guida: «Sii specifico sul
-  formato di output desiderato e sui vincoli.» (sezione «Sii chiaro e
+  formato di output e sui vincoli che desideri.» (sezione «Sii chiaro e
   diretto»); e «Prova prima a chiedere al modello di conformarsi alla tua
-  struttura di output, poiché i modelli più recenti possono rispettare in
-  modo affidabile schemi complessi quando viene loro richiesto,
-  specialmente se implementato con tentativi ripetuti.» (sezione «Migrare
-  dalle risposte precompilate»).
+  struttura di output, poiché i modelli più recenti sono in grado di
+  rispettare in modo affidabile schemi complessi quando viene loro
+  richiesto, soprattutto se implementato con nuovi tentativi.» (sezione
+  «Migrare dalle risposte precompilate»).
 - Sulla classificazione, subito dopo: «Per le attività di
   classificazione, usa strumenti con un campo enum contenente le
   etichette valide oppure gli structured outputs.» Con `claude -p` lo

@@ -247,13 +247,15 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
 - Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
   Sonnet con effort medium, tre sessioni, il prompt in un solo messaggio)
   le sessioni sono `claude -p` in modalità `dontAsk`, che «denies every
-  call that would otherwise prompt»
-  (https://code.claude.com/docs/en/headless): nessuna approvazione, e ciò
-  che la chiederebbe è negato. In tutte e tre la verifica è uscita con 0:
-  i dieci indicatori del blocco `kpi` quelli veri, i sette numeri singoli
-  nel testo della pagina, niente da fuori. Il ciclo della guida, dalle
-  chiamate di ogni sessione: il controllo eseguito una, due e una volta,
-  l'ultima con uscita 0; confermata 3 su 3.
+  call that would otherwise prompt … though a mod you installed can still
+  approve some of those calls»
+  (https://code.claude.com/docs/en/headless): nessuna approvazione a
+  mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
+  installata può ancora approvare. In tutte e tre la verifica è uscita
+  con 0: i dieci indicatori del blocco `kpi` quelli veri, i sette numeri
+  singoli nel testo della pagina, niente da fuori. Il ciclo della guida,
+  dalle chiamate di ogni sessione: il controllo eseguito una, due e una
+  volta, l'ultima con uscita 0; confermata 3 su 3.
 
 ### Il confronto con M3-E02
 

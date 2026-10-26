@@ -57,7 +57,7 @@ readonly CASES=136
 FATTO='Fatto: ogni affermazione è stata messa alla prova;'
 FATTO+=' gli esiti sono qui sopra.'
 readonly FATTO
-readonly VARIA='Input identici possono produrre output diversi'
+readonly VARIA='Input identici potrebbero produrre output diversi'
 ISTRUZIONE='Istruzione esplicita rispettata,'
 ISTRUZIONE+=' una parola sola senza punteggiatura'
 readonly ISTRUZIONE
@@ -332,7 +332,7 @@ t_d01_verdetti() {
     "${VARIA} (sonnet): ${NON_DIM}"
   expect_riga "M1-D01: una sola risposta: non dimostrata, e perché" 0 \
     "${VARIA} (opus): ${NON_DIM} (una sola risposta)"
-  expect_fatto "M1-D01: un «possono» non fa fallire la verifica"
+  expect_fatto "M1-D01: un «potrebbero» non fa fallire la verifica"
   ws w
   tsv "${w}/risultati.tsv" 'modello|parola' 'haiku|sciopero.' \
     'haiku|lo sciopero' 'haiku|  sciopero  ' 'sonnet|Sciopero' \

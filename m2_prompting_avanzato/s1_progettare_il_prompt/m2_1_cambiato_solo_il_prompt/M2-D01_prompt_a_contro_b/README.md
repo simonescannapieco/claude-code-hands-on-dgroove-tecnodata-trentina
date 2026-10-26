@@ -77,8 +77,8 @@ Il messaggio è inventato, come tutti i dati del corso.
 - La guida «Best practice per il prompting», nella sezione «Sii chiaro e
   diretto»: «Claude risponde bene a istruzioni chiare ed esplicite. Essere
   specifici sull'output desiderato può aiutare a migliorare i risultati.»
-  Poco sotto: «Sii specifico sul formato di output desiderato e sui
-  vincoli.»
+  Poco sotto: «Sii specifico sul formato di output e sui vincoli che
+  desideri.»
   https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 
   Sono raccomandazioni: dicono che cosa aiuta, non promettono che ogni

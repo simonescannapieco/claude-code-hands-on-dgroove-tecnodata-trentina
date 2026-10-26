@@ -150,8 +150,10 @@ def istruzioni(codice: str) -> str:
         "  con «Memory» spenta dal menu «+», prima",
         "  del primo messaggio                    -> "
         "risposta-senza-memoria.txt",
-        "Alla fine togliete il codice dalla memoria, in Settings > Memory",
-        "(l'ultimo passo del README): cancellare le chat non basta.",
+        "Alla fine togliete il codice dalla memoria, sotto «Topics»:",
+        "  in Settings > Your Claude, con «Manage» accanto a «Your memory»;",
+        "  nel layout precedente delle impostazioni, in Settings > Memory.",
+        "È l'ultimo passo del README: cancellare le chat non basta.",
     ])
 
 

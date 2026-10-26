@@ -99,14 +99,14 @@ spazio, quindi il peso di «interconnessione» misurato così è quello di
   (https://platform.claude.com/docs/it/about-claude/glossary):
   - «Quando a Claude viene fornito un testo da valutare, il testo
     (costituito da una serie di caratteri) viene codificato in una serie
-    di token che il modello può elaborare.»
+    di token che il modello elabora.»
   - I token «sono le unità individuali più piccole di un modello
     linguistico e possono corrispondere a parole, sottoparole, caratteri o
     persino byte (nel caso di Unicode)».
-  - «Token più grandi consentono efficienza dei dati durante l'inferenza e
-    il pretraining (e vengono utilizzati quando possibile), mentre token
-    più piccoli consentono a un modello di gestire parole non comuni o mai
-    viste prima.»
+  - «Token più grandi migliorano l'efficienza dei dati durante
+    l'inferenza e il preaddestramento (e vengono utilizzati quando
+    possibile), mentre token più piccoli consentono a un modello di
+    gestire parole insolite o mai viste prima.»
 - Il tutorial dell'Academy «Tokens: why some inputs cost more than others»
   (https://academy.claude.com/tutorials/tokens-and-embeddings): al modello
   il testo arriva come numeri, «non un numero per carattere da una tabella

@@ -315,9 +315,11 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   peggiore; se un file manca, la coppia non decide. Nella registrazione
   del corso (21 ottobre 2026, Claude Code 2.1.306, Sonnet con effort
   medium, tre coppie) le sessioni sono `claude -p` in modalità `dontAsk`,
-  che «denies every call that would otherwise prompt»
-  (https://code.claude.com/docs/en/headless): nessuna approvazione, e ciò
-  che la chiederebbe è negato. Con il
+  che «denies every call that would otherwise prompt … though a mod you
+  installed can still approve some of those calls»
+  (https://code.claude.com/docs/en/headless): nessuna approvazione a
+  mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
+  installata può ancora approvare. Con il
   controllo, 0 dati personali rimasti in tutte e tre le sessioni; senza,
   2, 9 e 6, nomi e informazioni sulla salute. Confermata 3 su 3. Il ciclo
   della guida, dalle chiamate di ogni sessione con il controllo: il

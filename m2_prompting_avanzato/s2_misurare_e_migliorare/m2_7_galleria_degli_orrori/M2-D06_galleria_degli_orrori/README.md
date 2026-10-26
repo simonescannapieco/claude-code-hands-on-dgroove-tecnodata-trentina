@@ -110,7 +110,7 @@ risposta e ne stampa un dato).
   sezione «Sii chiaro e diretto»: «Claude risponde bene a istruzioni
   chiare ed esplicite. Essere specifici sull'output desiderato può aiutare
   a migliorare i risultati.» E, fra i consigli della stessa sezione: «Sii
-  specifico sul formato di output desiderato e sui vincoli.»
+  specifico sul formato di output e sui vincoli che desideri.»
   https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 - **Il divieto.** Nella stessa guida, sezione «Controlla il formato delle
   risposte», il primo dei «modi particolarmente efficaci per orientare la
@@ -119,12 +119,12 @@ risposta e ne stampa un dato).
   «Prova: "La tua risposta dovrebbe essere composta da paragrafi di prosa
   scorrevole."». Il divieto e la cura usano queste parole.
 - **Una stima senza dati.** Nella guida «Ridurre le allucinazioni», alla
-  voce «Consenti a Claude di dire "Non lo so"»: «Dai esplicitamente a
-  Claude il permesso di ammettere l'incertezza. Questa semplice tecnica
-  può ridurre drasticamente le informazioni false.» E alla voce
-  «Restrizione della conoscenza esterna»: «Istruisci esplicitamente Claude
-  a usare solo le informazioni dei documenti forniti e non la sua
-  conoscenza generale.» Con un avvertimento: «sebbene queste tecniche
+  voce «Consenti a Claude di dire "Non lo so"»: «Concedi esplicitamente a
+  Claude il permesso di ammettere l'incertezza. Questa tecnica può
+  ridurre drasticamente le informazioni false.» E alla voce «Limitazione
+  della conoscenza esterna»: «Istruisci esplicitamente Claude a
+  utilizzare solo le informazioni provenienti dai documenti forniti e non
+  la sua conoscenza generale.» Con un avvertimento: «sebbene queste tecniche
   riducano significativamente le allucinazioni, non le eliminano del
   tutto».
   https://platform.claude.com/docs/it/test-and-evaluate/strengthen-guardrails/reduce-hallucinations
