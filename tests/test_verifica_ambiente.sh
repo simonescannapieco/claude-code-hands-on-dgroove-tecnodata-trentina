@@ -5,16 +5,22 @@
 # docker, python3, python, uv), così ogni caso è deterministico e nessun
 # claude vero viene lanciato: tutto presente (uscita 0); ogni pezzo che
 # manca o non basta (uscita 1, con il paragrafo di PRIMA_DEL_CORSO.md);
-# ANTHROPIC_API_KEY impostata (uscita 1, valore mai stampato); PHP o Docker
-# in alternativa; python3 con Python 3.8+, il comando che lanciano le
-# esercitazioni (python da solo, o accanto a un python3 troppo vecchio,
-# non basta); i sistemi operativi (macOS, Linux, WSL 2, WSL 1, Git Bash,
-# altri); claude chiamato solo con --version; argomenti non validi
-# (uscita 2).
+# ANTHROPIC_API_KEY impostata (uscita 1, valore mai stampato); l'accesso
+# letto da claude auth status --json (in ordine solo con l'account
+# claude.ai; senza accesso, con il comando che fallisce o con un altro
+# metodo, uscita 1), senza mai stampare l'e-mail o l'organizzazione
+# dell'account; PHP o Docker in alternativa; python3 con Python 3.8+, il
+# comando che lanciano le esercitazioni (python da solo, o accanto a un
+# python3 troppo vecchio, non basta); i sistemi operativi (macOS, Linux,
+# WSL 2, WSL 1, Git Bash, altri); claude chiamato solo con --version e
+# auth status --json; argomenti non validi (uscita 2).
+# Il python3 finto risponde da sé soltanto a --version: il resto lo passa
+# al python3 vero, che legge il JSON dell'accesso come sul computer di un
+# partecipante.
 #
 # Uso:    tests/test_verifica_ambiente.sh
 # Uscita: 0 = tutti i test passano · 1 = almeno un test fallito
-#         2 = precondizione (lo strumento non c'è)
+#         2 = precondizione (lo strumento non c'è, o manca python3)
 set -uo pipefail
 
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -24,6 +30,22 @@ readonly TOOL="${REPO}/tools/verifica_ambiente.sh"
 readonly CHIAVE_FINTA='chiave-finta-di-prova-0042'
 readonly NON_CORSO='il corso presuppone Linux o Windows con WSL 2'
 readonly GUIDA="${REPO}/PRIMA_DEL_CORSO.md"
+readonly NL=$'\n'
+# L'identità finta dell'account, piantata nel JSON di claude auth status:
+# non deve mai comparire nell'uscita.
+readonly EMAIL_FINTA='persona.finta@example.invalid'
+readonly ORG_FINTA='Organizzazione Finta di Prova'
+readonly ORG_ID_FINTO='00000000-0000-4000-8000-000000000042'
+readonly IDENTITA="\"email\": \"${EMAIL_FINTA}\",
+  \"orgId\": \"${ORG_ID_FINTO}\", \"orgName\": \"${ORG_FINTA}\""
+# Come risponde claude auth status --json con l'abbonamento, e senza
+# accesso (uscita 1).
+readonly JSON_ABBONAMENTO="{\"loggedIn\": true, \"authMethod\": \"claude.ai\",
+  \"apiProvider\": \"firstParty\", ${IDENTITA}, \"subscriptionType\": \"pro\"}"
+readonly JSON_FUORI='{"loggedIn": false, "authMethod": "none"}'
+readonly ACCESSO_OK="[ok]        accesso: con l'abbonamento (claude.ai)"
+readonly NON_RISULTA='[da fare]   accesso: non risulta'
+readonly PARAGRAFO_ACCESSO="«Accedere con l'abbonamento Pro»"
 TMP="$(mktemp -d)" || { echo "mktemp non riesce" >&2; exit 2; }
 readonly TMP
 trap 'rm -rf -- "${TMP}"' EXIT
@@ -65,14 +87,23 @@ finto() {
   case "$2" in
     uname) corpo='echo "${FINTO_UNAME:-Linux}"' ;;
     claude) corpo='printf "%s\n" "$*" >> "${FINTO_LOG}"
-      echo "9.9.9 (Claude Code)"' ;;
+      case "$*" in
+        --version) echo "9.9.9 (Claude Code)" ;;
+        "auth status --json") printf "%s\n" "${FINTO_AUTH_JSON}"
+          exit "${FINTO_AUTH_RC:-0}" ;;
+        *) exit 64 ;;
+      esac' ;;
     git) corpo='echo "git version 2.43.0"' ;;
     composer) corpo='echo "Composer version 2.7.0"' ;;
     php) corpo='case "$2" in *PHP_VERSION_ID*) echo "${FINTO_PHP_ID:-80301}" ;;
       *) echo "${FINTO_PHP_VER:-8.3.1}" ;; esac' ;;
     docker) corpo='if [[ "${FINTO_DOCKER_GIU:-0}" == "1" ]]; then exit 1; fi
       echo "27.0.0"' ;;
-    python3) corpo='echo "Python ${FINTO_PY3:-3.12.1}"' ;;
+    python3) corpo='if [[ "$*" == "--version" ]]; then
+        echo "Python ${FINTO_PY3:-3.12.1}"
+      else
+        exec "${FINTO_PY3_VERO}" "$@"
+      fi' ;;
     python) corpo='echo "Python 3.11.4"' ;;
     uv) corpo='echo "uv 0.9.9"' ;;
   esac
@@ -105,15 +136,69 @@ t_tutto() {
   ambiente tutto
   expect "tutto presente" 0 "Tutto pronto per il corso."
   expect "mostra la versione di Claude Code" 0 "9.9.9 (Claude Code)"
+  expect "accesso con l'abbonamento: in ordine" 0 "${ACCESSO_OK}"
+  expect "ANTHROPIC_API_KEY non impostata: in ordine" 0 \
+    "[ok]        ANTHROPIC_API_KEY: non impostata"
+  expect_absent "e la riga della chiave non parla dell'abbonamento" \
+    "usa l'abbonamento"
   expect "riconosce Docker" 0 "Docker: servizio attivo"
   expect_absent "niente da sistemare" "[da fare]"
-  if [[ "$(< "${LOG}")" == "--version" ]]; then
-    pass "claude chiamato solo con --version (nessun modello)"
+  expect_absent "mai l'e-mail dell'account" "${EMAIL_FINTA}"
+  expect_absent "mai il nome dell'organizzazione" "${ORG_FINTA}"
+  expect_absent "mai l'id dell'organizzazione" "${ORG_ID_FINTO}"
+  if [[ "$(< "${LOG}")" == "--version${NL}auth status --json" ]]; then
+    pass "claude chiamato solo con --version e auth status --json"
   else
     fail "claude chiamato con: $(< "${LOG}")"
   fi
   ambiente tutto extra
   expect "argomento in più" 2 "Uso:"
+}
+
+# Lo strumento con tutto presente e una risposta finta di claude auth
+# status --json. Arguments: $1 che cosa stampa, $2 la sua uscita.
+accesso() {
+  : > "${LOG}"
+  OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
+    FINTO_AUTH_JSON="$1" FINTO_AUTH_RC="$2" "${TOOL}" 2>&1)"
+  RC=$?
+}
+
+# L'accesso: in ordine soltanto loggedIn true con authMethod claude.ai e
+# uscita 0; ogni altro caso è da sistemare, sempre senza l'identità.
+t_accesso() {
+  printf 'Linux version 6.1.0 (builder@example.org)\n' > "${PROC}"
+  accesso "${JSON_FUORI}" 1
+  expect "senza accesso: da sistemare" 1 "${NON_RISULTA}"
+  expect "e indica il paragrafo dell'accesso" 1 "${PARAGRAFO_ACCESSO}"
+  accesso 'Errore: qualcosa non va' 1
+  expect "claude auth status che fallisce: da sistemare" 1 "${NON_RISULTA}"
+  accesso 'non è JSON' 0
+  expect "una risposta che non è JSON: da sistemare" 1 "${NON_RISULTA}"
+  accesso '{"loggedIn": true, "authMethod": "claude.ai"}' 1
+  expect "loggedIn true ma uscita 1: da sistemare" 1 "${NON_RISULTA}"
+  expect_absent "e non in ordine" "[ok]        accesso"
+  accesso "{\"loggedIn\": true, \"authMethod\": \"console\", ${IDENTITA}}" 0
+  expect "con un altro metodo (console): da sistemare" 1 \
+    "[da fare]   accesso: con il metodo console, non con il vostro account"
+  expect "e indica lo stesso paragrafo" 1 "${PARAGRAFO_ACCESSO}"
+  expect_absent "senza l'e-mail dell'account" "${EMAIL_FINTA}"
+  expect_absent "senza il nome dell'organizzazione" "${ORG_FINTA}"
+  expect_absent "senza l'id dell'organizzazione" "${ORG_ID_FINTO}"
+  accesso '{"loggedIn": true, "authMethod": "api_key"}' 0
+  expect "con la chiave API (api_key): da sistemare" 1 \
+    "accesso: con il metodo api_key, non con il vostro account claude.ai"
+  accesso "{\"loggedIn\": true, \"authMethod\": \"${EMAIL_FINTA}\"}" 0
+  expect "un metodo che non è una parola semplice non si stampa" 1 \
+    "accesso: con il metodo sconosciuto, non"
+  expect_absent "nemmeno quando è un'e-mail" "${EMAIL_FINTA}"
+  ambiente senza_claude
+  expect "senza claude: lo dice la riga di Claude Code" 1 \
+    "«Installare Claude Code»"
+  expect_absent "e nessuna riga dell'accesso" "accesso:"
+  ambiente solo_python
+  expect "senza python3, l'accesso resta da controllare" 1 \
+    "[da fare]   accesso: non controllato senza python3"
 }
 
 t_mancanze() {
@@ -198,21 +283,29 @@ t_sistemi() {
   expect "e indica il paragrafo della guida" 1 "«Linux o Windows con WSL 2»"
 }
 
-# Tutto da sistemare: ogni paragrafo che lo strumento cita esiste come
-# titolo «## …» di PRIMA_DEL_CORSO.md.
+# Tutto da sistemare, e poi claude senza accesso: ogni paragrafo che lo
+# strumento cita esiste come titolo «## …» di PRIMA_DEL_CORSO.md.
 t_paragrafi() {
-  local nome trovati=0 mancanti=''
+  local nome trovati=0 mancanti='' uscite
   bin vuoto uname
+  bin senza_accesso uname claude python3
   printf 'Linux version 4.4.0-19041-Microsoft\n' > "${PROC}"
   OUT="$(env PATH="${TMP}/vuoto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
     ANTHROPIC_API_KEY="${CHIAVE_FINTA}" "${TOOL}" 2>&1)"
   RC=$?
   expect "tutto da sistemare" 1 "Da sistemare: 7"
+  uscite="${OUT}"
+  OUT="$(env PATH="${TMP}/senza_accesso" FINTO_LOG="${LOG}" \
+    PN_PROC_VERSION="${PROC}" FINTO_AUTH_JSON="${JSON_FUORI}" FINTO_AUTH_RC=1 \
+    "${TOOL}" 2>&1)"
+  RC=$?
+  expect "claude senza accesso: da sistemare" 1 "${PARAGRAFO_ACCESSO}"
+  uscite+="${NL}${OUT}"
   while IFS= read -r nome; do
     trovati=$((trovati + 1))
     grep -qxF "## ${nome}" "${GUIDA}" || mancanti+=" «${nome}»"
-  done < <(grep -o '«[^»]*»' <<< "${OUT}" | sed 's/[«»]//g' | sort -u)
-  if (( trovati >= 6 )) && [[ -z "${mancanti}" ]]; then
+  done < <(grep -o '«[^»]*»' <<< "${uscite}" | sed 's/[«»]//g' | sort -u)
+  if (( trovati >= 7 )) && [[ -z "${mancanti}" ]]; then
     pass "ogni paragrafo citato è un titolo di PRIMA_DEL_CORSO.md"
   else
     fail "paragrafi senza titolo:${mancanti} (citati ${trovati})"
@@ -221,6 +314,13 @@ t_paragrafi() {
 
 main() {
   [[ -x "${TOOL}" ]] || { echo "manca ${TOOL}" >&2; exit 2; }
+  if ! FINTO_PY3_VERO="$(command -v python3)" \
+      || [[ "${FINTO_PY3_VERO}" != /* ]]; then
+    echo "manca python3, che legge il JSON dell'accesso" >&2
+    exit 2
+  fi
+  export FINTO_PY3_VERO
+  export FINTO_AUTH_JSON="${JSON_ABBONAMENTO}"
   echo "test_verifica_ambiente.sh"
   bin tutto uname claude git docker python3 uv
   bin senza_uv uname claude git docker python3
@@ -231,6 +331,7 @@ main() {
   bin solo_python uname claude git docker python uv
   bin python3_vecchio_e_python uname claude git docker python3 python uv
   t_tutto
+  t_accesso
   t_mancanze
   t_php_docker
   t_python

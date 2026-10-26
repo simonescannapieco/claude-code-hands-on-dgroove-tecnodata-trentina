@@ -6,6 +6,12 @@
 #   - il sistema operativo: Linux, oppure Windows con WSL 2 (ogni altro
 #     sistema, WSL 1 compreso, è da sistemare);
 #   - Claude Code (il comando claude) e la sua versione;
+#   - l'accesso di Claude Code, da claude auth status --json: in ordine
+#     soltanto con l'account claude.ai (authMethod claude.ai). Del JSON
+#     python3 usa soltanto loggedIn e authMethod: l'e-mail,
+#     l'organizzazione e ogni altro campo non vengono né stampati né
+#     conservati. Senza claude la riga non c'è: lo dice già quella di
+#     Claude Code;
 #   - ANTHROPIC_API_KEY non impostata: con la chiave impostata Claude Code
 #     userebbe la chiave invece dell'abbonamento Pro (il valore non viene
 #     mai stampato);
@@ -15,8 +21,8 @@
 #   - python3, il comando con cui le esercitazioni lanciano Python, con
 #     Python 3.8 o successivo (un comando python senza python3 non basta),
 #     e uv.
-# Di Claude Code esegue soltanto claude --version: nessun prompt, nessuna
-# richiesta al modello.
+# Di Claude Code esegue soltanto claude --version e claude auth status
+# --json: nessun prompt, nessuna richiesta al modello.
 # Volutamente autonomo, senza librerie: è il primo script che si lancia, e
 # deve poter dire che cosa manca anche su un computer appena preparato.
 #
@@ -34,6 +40,21 @@ readonly PY_RE='^Python 3\.([0-9]+)'
 readonly GUIDA='PRIMA_DEL_CORSO.md'
 readonly USO='Uso: tools/verifica_ambiente.sh'
 readonly NL=$'\n'
+# Legge da STDIN il JSON di claude auth status e ne stampa soltanto
+# «loggedIn authMethod»: true o false, poi il metodo se è una parola
+# semplice, altrimenti «sconosciuto». Nessun altro campo esce di qui.
+readonly PY_ACCESSO='
+import json, re, sys
+try:
+    d = json.load(sys.stdin)
+except ValueError:
+    sys.exit(1)
+if not isinstance(d, dict):
+    sys.exit(1)
+m = d.get("authMethod")
+if not (isinstance(m, str) and re.match(r"[A-Za-z0-9._-]{1,40}\Z", m)):
+    m = "sconosciuto"
+print("true" if d.get("loggedIn") is True else "false", m)'
 DA_FARE=0
 
 # Una riga di esito. Arguments: $1 che cosa, poi il dettaglio.
@@ -84,13 +105,41 @@ check_os() {
     "con WSL 2 (${GUIDA}, «Linux o Windows con WSL 2»)"
 }
 
+# L'accesso di Claude Code, da claude auth status --json (uscita 0 con un
+# accesso, 1 senza): in ordine soltanto loggedIn true con authMethod
+# claude.ai. Senza claude non stampa niente; senza python3 non può leggere
+# il JSON, e lo dice. Globals: PY_ACCESSO, GUIDA.
+check_accesso() {
+  local esito=''
+  command -v claude >/dev/null 2>&1 || return 0
+  if ! command -v python3 >/dev/null 2>&1; then
+    da_fare "accesso" "non controllato senza python3 (${GUIDA}," \
+      "«Python e uv»)"
+    return 0
+  fi
+  if esito="$(claude auth status --json < /dev/null 2>/dev/null \
+      | python3 -B -I -c "${PY_ACCESSO}" 2>/dev/null)"; then
+    case "${esito}" in
+      'true claude.ai')
+        ok "accesso" "con l'abbonamento (claude.ai)"
+        return 0 ;;
+      'true '*)
+        da_fare "accesso" "con il metodo ${esito#true }, non con il vostro" \
+          "account claude.ai (${GUIDA}, «Accedere con l'abbonamento Pro»)"
+        return 0 ;;
+    esac
+  fi
+  da_fare "accesso" "non risulta: lanciate claude e accedete con il vostro" \
+    "account claude.ai (${GUIDA}, «Accedere con l'abbonamento Pro»)"
+}
+
 check_api_key() {
   if [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then
     da_fare "ANTHROPIC_API_KEY" "è impostata: Claude Code userebbe la" \
-      "chiave invece dell'abbonamento Pro; toglila (${GUIDA}," \
+      "chiave invece dell'abbonamento Pro; toglietela (${GUIDA}," \
       "«La chiave API non serve»)"
   else
-    ok "ANTHROPIC_API_KEY" "non impostata: Claude Code usa l'abbonamento"
+    ok "ANTHROPIC_API_KEY" "non impostata"
   fi
 }
 
@@ -141,6 +190,7 @@ main() {
   printf "Controllo dell'ambiente per le esercitazioni\n\n"
   check_os
   presente "Claude Code" "Installare Claude Code" claude --version
+  check_accesso
   check_api_key
   presente "git" "git" git --version
   check_php_docker
