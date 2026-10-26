@@ -91,9 +91,10 @@ differiscono, i passi li danno tutti e due.
    (un progetto ha una memoria sua), con la memoria accesa: il menu «+»
    non si tocca. Incollate la frase di `frase-da-ricordare.txt` e inviate.
    Nella registrazione del corso, nella nuova esperienza, sopra la
-   risposta è comparso il passo «Updated memory». Se volete, guardate in
-   Settings > Your Claude, con «Manage» accanto a «Your memory» (nel
-   layout precedente delle impostazioni, in Settings > Memory): sotto
+   risposta è comparso il passo «Read and updated memory». Se volete,
+   guardate in Settings > Your Claude, con «Manage» accanto a «Your
+   memory» (nel layout precedente delle impostazioni, in Settings >
+   Memory): sotto
    «Topics» c'è tutto ciò che Claude ricorda (nella nuova esperienza gli
    argomenti stanno sotto «Areas»); vedete se c'è il codice.
 
@@ -211,20 +212,19 @@ parte estratta a caso. Poi le due affermazioni:
 «NON LO SO» è un dato: la domanda lo permette, e il controllo non lo
 giudica. Il controllo decide dalle risposte e non scrive niente.
 
-Nella registrazione del corso (21 ottobre 2026, claude.ai nella nuova
+Nella registrazione del corso (26 ottobre 2026, claude.ai nella nuova
 esperienza, sull'account del docente, con il modello che l'account aveva
-selezionato, Haiku con effort low; nel layout precedente delle
-impostazioni, «Generate memory from chats» e «Search and reference chats»
-accesi): la chat da ricordare ha mostrato il
-passo «Updated memory»; nella chat con la memoria, il passo «Read memory»
-e la risposta «LP-FKYJ-14», il codice: «confermata» per il «può»; nella
-chat senza memoria, nessun passo di strumenti e la risposta «NON LO SO»:
-la garanzia, confermata. Alla pulizia l'argomento della memoria conteneva
-soltanto il codice, ed è stato cancellato. Il codice, la frase e le due
-risposte sono nella cartella `soluzione/` di questo elemento. La prova
-ora chiede la ricerca nelle chat spenta: nella registrazione era accesa,
-ma la chat con la memoria mostra il passo «Read memory» e nessuna
-ricerca, quindi il codice è arrivato dalla memoria.
+selezionato, Opus con effort medium; nel layout precedente delle
+impostazioni, «Generate memory from chats» accesa e «Search and reference
+chats» spenta, come chiede il passo 1): la chat da ricordare ha mostrato
+il passo «Read and updated memory»; nella chat con la memoria, il passo
+«Read memory», nessuna ricerca nelle chat e la risposta «LP-YNFB-00», il
+codice: «confermata» per il «può»; nella chat senza memoria, accanto al
+titolo l'icona della memoria barrata («Memory is off for this chat»),
+nessun passo di strumenti e la risposta «NON LO SO»: la garanzia,
+confermata. Alla pulizia l'area della memoria, sotto «Areas», conteneva
+soltanto il codice. Il codice, la frase e le due risposte sono nella
+cartella `soluzione/` di questo elemento.
 
 ## Verifica (tools/verifica.sh M3-D04)
 
