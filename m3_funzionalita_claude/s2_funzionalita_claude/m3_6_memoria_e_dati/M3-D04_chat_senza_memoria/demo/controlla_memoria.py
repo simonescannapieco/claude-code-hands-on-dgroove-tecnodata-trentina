@@ -19,9 +19,9 @@ ciascuna solo se c'è la sua risposta:
       conversazioni nuove», un «può»: confermata se la risposta con la
       memoria contiene il codice, altrimenti non confermata in questa
       esecuzione. Una sola esecuzione non decide un «può»: l'esito si
-      stampa e non decide l'uscita. Il codice può tornare dalla memoria o
-      dalla ricerca nelle chat passate: nella chat senza memoria sono
-      spente tutte e due;
+      stampa e non decide l'uscita. La prova si fa con la ricerca nelle
+      chat passate spenta (README, passo 1): il codice può tornare solo
+      dalla memoria, che nella chat senza memoria è spenta anch'essa;
   «In una chat senza memoria Claude non usa la memoria e non cerca nelle
       chat passate», una garanzia: confermata se la risposta senza memoria
       non contiene il codice; se lo contiene è «non confermata in questa
@@ -85,8 +85,9 @@ SENZA_CONTROLLO = ("  Manca la risposta della chat con la memoria: non si sa "
                    "memoria non può mostrare che da lì non arriva.")
 PUO = ("  È un «può»: l'esito di una sola esecuzione si stampa e non fa "
        "fallire la verifica.")
-DA_DOVE = ("  Il codice può tornare dalla memoria o dalla ricerca nelle chat "
-           "passate; nella chat senza memoria sono spente tutte e due.")
+DA_DOVE = ("  Con la ricerca nelle chat passate spenta (README, passo 1), il "
+           "codice può tornare solo dalla memoria; nella chat senza memoria "
+           "è spenta anche la memoria.")
 TOPICS = ("  Se il codice è stato salvato, lo vedete sotto «Topics»:\n"
           "    in Settings > Your Claude, con «Manage» accanto a «Your "
           "memory»;\n"

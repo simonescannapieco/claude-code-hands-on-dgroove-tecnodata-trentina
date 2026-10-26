@@ -14,7 +14,8 @@ claude.ai. Una garanzia: in una chat avviata con la memoria spenta, Claude
 non usa la memoria e non cerca nelle chat passate. E un «può»: Claude può
 ricordare il contesto delle chat e portarlo nelle conversazioni nuove. Le
 due chat con la domanda differiscono in una cosa sola, l'interruttore
-della memoria. Il codice è inventato, nuovo per ogni spazio di lavoro, e
+della memoria. La ricerca nelle chat passate resta spenta per tutta la
+prova: così il codice può tornare solo dalla memoria. Il codice è inventato, nuovo per ogni spazio di lavoro, e
 non compare nei dati del corso: se torna in una risposta, Claude l'ha
 avuto dalla chat in cui gli avete chiesto di ricordarlo.
 
@@ -68,13 +69,14 @@ precedente: nel primo la memoria sta in Settings > Your Claude, nel layout
 precedente delle impostazioni in Settings > Memory. Dove i due layout
 differiscono, i passi li danno tutti e due.
 
-1. **La memoria accesa.** In claude.ai, in Settings > Your Claude,
-   «Memory from chats» dev'essere acceso (nel layout precedente delle
-   impostazioni: in Settings > Memory, «Generate memory from chats»). La
-   memoria non dev'essere in pausa: con «Pause memory» Claude conserva la
-   memoria che ha, ma non la usa e non ne crea di nuova. «Search and
-   reference chats», la ricerca nelle chat passate, può restare com'è: se
-   è accesa, il codice può tornare anche da lì.
+1. **La memoria accesa, la ricerca spenta.** In claude.ai, in Settings >
+   Your Claude, «Memory from chats» dev'essere acceso (nel layout
+   precedente delle impostazioni: in Settings > Memory, «Generate memory
+   from chats»). La memoria non dev'essere in pausa: con «Pause memory»
+   Claude conserva la memoria che ha, ma non la usa e non ne crea di
+   nuova. Nella stessa pagina spegnete «Search and reference chats», la
+   ricerca nelle chat passate: così il codice può tornare solo dalla
+   memoria. Al passo 7 potete riaccenderla.
 
 2. **Il codice.** Dalla cartella `esercitazioni`:
 
@@ -105,7 +107,8 @@ differiscono, i passi li danno tutti e due.
 
    poi incollate, premete Invio e infine Ctrl+D. Quando Claude cerca nelle
    chat passate, nella chat lo vedete come una chiamata a uno strumento:
-   guardate se c'è. Nella registrazione del corso il passo era «Read
+   con la ricerca spenta non deve comparire (se compare, vedete «Se
+   qualcosa va storto»). Nella registrazione del corso il passo era «Read
    memory», e nessuna ricerca nelle chat.
 
 5. **La chat senza memoria.** Un'altra chat nuova, fuori da ogni
@@ -137,7 +140,8 @@ differiscono, i passi li danno tutti e due.
    chat restano anche quando la chat viene cancellata.
    Poi, se volete, cancellate le tre chat: si cancellano dalla barra
    laterale, o da «Chats and tasks», con «Delete» (nella nuova esperienza
-   la lista delle conversazioni si chiama «Recents»).
+   la lista delle conversazioni si chiama «Recents»). Infine, se volete,
+   riaccendete «Search and reference chats» (passo 1).
 
 ## Che cosa osservare
 
@@ -190,9 +194,9 @@ parte estratta a caso. Poi le due affermazioni:
 - «Claude può ricordare il contesto delle chat e portarlo nelle
   conversazioni nuove» (chat con la memoria): confermata se la risposta
   contiene il codice, altrimenti «non confermata in questa esecuzione». È
-  un «può»: l'esito si stampa e non fa fallire la verifica. Il codice può
-  tornare dalla memoria o dalla ricerca nelle chat passate: il controllo
-  non sa quale delle due, la ricerca la vedete nella chat;
+  un «può»: l'esito si stampa e non fa fallire la verifica. Con la
+  ricerca nelle chat passate spenta (passo 1), il codice può tornare solo
+  dalla memoria;
 - «In una chat senza memoria Claude non usa la memoria e non cerca nelle
   chat passate» (chat senza memoria): confermata se la risposta non
   contiene il codice. È una garanzia: se il codice c'è, la verifica
@@ -217,7 +221,10 @@ e la risposta «LP-FKYJ-14», il codice: «confermata» per il «può»; nella
 chat senza memoria, nessun passo di strumenti e la risposta «NON LO SO»:
 la garanzia, confermata. Alla pulizia l'argomento della memoria conteneva
 soltanto il codice, ed è stato cancellato. Il codice, la frase e le due
-risposte sono nella cartella `soluzione/` di questo elemento.
+risposte sono nella cartella `soluzione/` di questo elemento. La prova
+ora chiede la ricerca nelle chat spenta: nella registrazione era accesa,
+ma la chat con la memoria mostra il passo «Read memory» e nessuna
+ricerca, quindi il codice è arrivato dalla memoria.
 
 ## Verifica (tools/verifica.sh M3-D04)
 
@@ -241,6 +248,9 @@ testo UTF-8, o quando `codice.txt` non ha più la forma che gli dà
   controllate prima l'icona della memoria barrata accanto al titolo di
   quella chat. Se c'è, è un esito da segnalare al docente: la
   documentazione lo esclude.
+- Nella chat con la memoria compare una ricerca nelle chat passate, una
+  chiamata a uno strumento: la ricerca era accesa, e il codice può essere
+  arrivato da lì. Spegnetela (passo 1) e rifate le chat 4 e 5.
 - La risposta con la memoria non contiene il codice: è un esito anche
   questo, e la verifica non fallisce. Guardate in Settings > Your Claude,
   con «Manage» accanto a «Your memory» (nel layout precedente delle

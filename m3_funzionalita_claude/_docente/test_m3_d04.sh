@@ -67,7 +67,7 @@ readonly D04
 # (handson::init_temp_base): mai dentro ~/.claude, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${MOD%/*}/tools/lib_handson.sh"
-readonly CASES=115
+readonly CASES=116
 readonly L='LP-QZKW-37'
 readonly FORMA='^LP-[ABCDEFGHJKLMNPQRSTUVWXYZ]{4}-[0-9]{2}$'
 readonly TICKET='progetti/assistenza-clienti/dati/ticket-settimana.csv'
@@ -443,8 +443,10 @@ t_confermate() {
     "il codice c'è: sì; NON LO SO: no"
   expect "controlla: NON LO SO senza la memoria" 0 \
     "il codice c'è: no; NON LO SO: sì"
-  expect "controlla: da dove può tornare il codice" 0 \
-    "Il codice può tornare dalla memoria o dalla ricerca nelle chat passate"
+  expect "controlla: con la ricerca spenta, il codice torna dalla memoria" 0 \
+    "Con la ricerca nelle chat passate spenta (README, passo 1), il codice può tornare solo dalla memoria"
+  expect_absent "controlla: non più «o dalla ricerca»" \
+    "o dalla ricerca nelle chat passate"
   expect "controlla: il «può» non fa fallire" 0 \
     "l'esito di una sola esecuzione si stampa e non fa fallire la verifica"
   expect_absent "controlla: la frase finale è della verifica" "Fatto:"
