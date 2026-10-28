@@ -42,6 +42,13 @@
 #     dallo spazio di lavoro; il lavoro finito nella seconda parte; mai
 #     finito (i seguiti, 1); una chiamata fallita (1); il revisore che
 #     modifica (1, senza seguiti);
+#   - PN_VARIANTE di live.sh: python, e vuota, come senza (i prompt del
+#     README byte per byte); bash, i prompt di chi segue il passo 1 del
+#     README per Bash (la frase cambia i prompt che nomina; i testi per
+#     Bash, nessuno per Python; il resto delle chiamate come in Python); un
+#     valore sconosciuto esce 2 senza claude, e così un README cambiato: la
+#     frase del passo 1, un prompt con rapporto_giornaliero.py, un prompt
+#     che non cambia più, uno in più che cambia;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero;
 #   - shellcheck -x sugli script dell'elemento e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea, nella base di
@@ -66,7 +73,7 @@ readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 readonly RAPPORTO_FINTO="${MOD}/_docente/rapporto_finto_m4_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=91
+readonly CASES=103
 readonly RIFERIMENTO="${E05}/soluzione/rapporto_giornaliero.py"
 STRUMENTI='Read,Write,Edit,Bash(python3 controlla_rapporto.py),'
 STRUMENTI+='Bash(python3 rapporto_giornaliero.py *),'
@@ -668,16 +675,21 @@ for n in range(1, 7):
 PY
 }
 
-# live.sh nello spazio di lavoro, con il claude finto.
+# live.sh nello spazio di lavoro, con il claude finto; senza PN_VARIANTE,
+# salvo che la passi la prova.
 # Arguments: $1 lo spazio di lavoro, $2 il nome della prova, poi variabili.
 live() {
-  local ws="$1" nome="$2"
-  shift 2
-  run env PATH="${TMP}/bin:${PATH}" HANDSON_NO_PAUSE=1 \
+  live_di "${E05}/_docente/live.sh" "$@"
+}
+
+# Come live, con un live.sh dato. Arguments: $1 il live.sh, poi come live.
+live_di() {
+  local script="$1" ws="$2" nome="$3"
+  shift 3
+  run env -u PN_VARIANTE PATH="${TMP}/bin:${PATH}" HANDSON_NO_PAUSE=1 \
     PN_CLAUDE_DIR="${TMP}/claude-${nome}" FINTO_LOG="${TMP}/finto-${nome}.log" \
     FINTO_SOLUZIONE="${RIFERIMENTO}" FINTO_RAPPORTO="${RAPPORTO_FINTO}" \
-    ANTHROPIC_API_KEY=finta-chiave-di-prova "$@" "${E05}/_docente/live.sh" \
-    "${ws}"
+    ANTHROPIC_API_KEY=finta-chiave-di-prova "$@" "${script}" "${ws}"
 }
 
 test_live() {
@@ -726,9 +738,9 @@ test_live() {
   fi
   if [[ "$(cut -f8 <<< "${righe}")" \
       == "$(impronte_readme | head -n 5)" ]]; then
-    pass "live: i prompt 1…5 sono quelli del README"
+    pass "live: senza PN_VARIANTE, i prompt 1…5 sono quelli del README"
   else
-    fail "live: i prompt non sono quelli del README"
+    fail "live: senza PN_VARIANTE, i prompt non sono quelli del README"
   fi
   if [[ -f "${ws}.prova_dal_vivo/turno-5.json" && ! -e "${ws}/prova_dal_vivo" \
       && ! -e "${ws}/turno-1.json" ]]; then
@@ -772,6 +784,169 @@ test_live_varianti() {
     pass "live: con la segnalazione sul revisore nessun seguito"
   else
     fail "live: seguiti dopo la segnalazione sul revisore"
+  fi
+}
+
+# --- live.sh, PN_VARIANTE ---------------------------------------------------
+
+# I prompt che il claude finto ha ricevuto e quelli che scrive chi segue il
+# passo 1 del README per Bash: la frase «per Bash, nei prompt … scrivete
+# `…` al posto di `…`, e `…` al posto di `…`» sui prompt del README, dove
+# uno spazio del testo per Python vale anche un a capo.
+# Arguments: $1 il registro del claude finto (sette chiamate).
+# Outputs: tre righe: «frase ok» (cambia i prompt che nomina), «chiamate
+# ok» (i prompt 1…6 e il 6 del seguito, byte per byte), «testi ok» (per
+# Bash sì, per Python no); altrimenti che cosa non torna.
+prompt_bash() {
+  python3 -B -I - "$1" "${E05}/README.md" <<'PY'
+import json
+import re
+import sys
+import textwrap
+
+registro, readme = sys.argv[1:3]
+testo = open(readme, encoding="utf-8").read()
+righe = testo.split("\n")
+frase = re.search(r"per Bash, nei prompt (\d) e (\d) scrivete `([^`]+)` al "
+                  r"posto di `([^`]+)`, e `([^`]+)` al posto di `([^`]+)`\.",
+                  " ".join(testo.split()))
+if frase is None:
+    sys.exit("frase: il README non dice più come scegliere Bash")
+nominati = [int(frase.group(1)), int(frase.group(2))]
+coppie = [(frase.group(4), frase.group(3)), (frase.group(6), frase.group(5))]
+
+
+def prompt(n):
+    a, b = ([i for i, r in enumerate(righe) if r.strip() == s % n]
+            for s in ("<!-- prompt %d -->", "<!-- /prompt %d -->"))
+    return textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
+
+
+def in_bash(p):
+    for vecchio, nuovo in coppie:
+        schema = r"\s+".join(re.escape(w) for w in vecchio.split())
+        p = re.sub(schema, lambda _: nuovo, p)
+    return p
+
+
+nel_readme = {n: prompt(n) for n in range(1, 7)}
+attesi = {n: in_bash(p) for n, p in nel_readme.items()}
+cambiati = [n for n in attesi if attesi[n] != nel_readme[n]]
+usate = all(any(nuovo in p for p in attesi.values()) for _, nuovo in coppie)
+print("frase ok" if cambiati == nominati and usate else
+      "frase: cambia i prompt %s, ne nomina %s" % (cambiati, nominati))
+ricevuti = []
+for riga in open(registro, encoding="utf-8"):
+    a = json.loads(riga)["argv"]
+    ricevuti.append(a[a.index("--") + 1] if "--" in a else "")
+sequenza = [attesi[n] for n in (1, 2, 3, 4, 5, 6, 6)]
+diversi = [i + 1 for i, (r, s) in enumerate(zip(ricevuti, sequenza))
+           if r != s]
+print("chiamate ok" if len(ricevuti) == len(sequenza) and not diversi else
+      "chiamate: %d, diverse %s" % (len(ricevuti), diversi))
+ricevuti += ["", ""]
+print("testi ok" if "scrivere rapporto_giornaliero.sh, in Bash, con "
+      "#!/bin/bash e set -euo pipefail, ciascuno" in ricevuti[0]
+      and "bash rapporto_giornaliero.sh --giorno 2026-09-08" in ricevuti[1]
+      and not any(s in p for p in ricevuti
+                  for s in ("rapporto_giornaliero.py", "Python 3.8"))
+      else "testi: per Bash no, o per Python sì")
+PY
+}
+
+test_live_bash() {
+  local ws
+  echo "== _docente/live.sh, PN_VARIANTE: Python o Bash"
+  ws="$(spazio live-perl)" || rotta "lo spazio di lavoro"
+  live "${ws}" perl PN_VARIANTE=perl
+  if (( RC == 2 )) && grep -qF "PN_VARIANTE non ammessa: «perl»" \
+      <<< "${OUT}" && [[ ! -s "${TMP}/finto-perl.log" \
+        && ! -e "${ws}.prova_dal_vivo" ]]; then
+    pass "live: PN_VARIANTE=perl esce 2 con il messaggio, senza claude"
+  else
+    fail "live: PN_VARIANTE=perl (rc=${RC}): ${OUT:0:400}"
+  fi
+  ws="$(spazio live-vuota)" || rotta "lo spazio di lavoro"
+  live "${ws}" vuota FINTO_KO_ALLA=2 PN_VARIANTE=
+  if (( RC == 1 )) && grep -qF "turno 2" <<< "${OUT}" \
+      && [[ "$(chiamate "${TMP}/finto-vuota.log" | cut -f8)" \
+        == "$(impronte_readme | head -n 2)" ]]; then
+    pass "live: PN_VARIANTE vuota vale python (i prompt 1 e 2 del README)"
+  else
+    fail "live: PN_VARIANTE vuota (rc=${RC}): ${OUT:0:400}"
+  fi
+  ws="$(spazio live-python)" || rotta "lo spazio di lavoro"
+  live "${ws}" python FINTO_LAVORO=mai FINTO_MAI=1 PN_VARIANTE=python
+  if (( RC == 1 )) && grep -qF "VERIFICA KO" <<< "${OUT}" \
+      && [[ "$(chiamate "${TMP}/finto-python.log" | cut -f8)" \
+        == "$(impronte_readme; impronte_readme | sed -n '6p')" ]]; then
+    pass "live: PN_VARIANTE=python, i prompt 1…6 del README byte per byte"
+  else
+    fail "live: PN_VARIANTE=python (rc=${RC}): ${OUT:0:400}"
+  fi
+  ws="$(spazio live-bash)" || rotta "lo spazio di lavoro"
+  live "${ws}" bash FINTO_LAVORO=mai FINTO_MAI=1 PN_VARIANTE=bash
+  expect "live: PN_VARIANTE=bash gira fino alla verifica (nessuno script)" \
+    1 "VERIFICA KO"
+  if (( "$(wc -l < "${TMP}/finto-bash.log")" == 7 )) \
+      && [[ "$(chiamate "${TMP}/finto-bash.log" | cut -f1-7)" \
+        == "$(chiamate "${TMP}/finto-python.log" | cut -f1-7)" ]]; then
+    pass "live: PN_VARIANTE=bash cambia solo i prompt, non modi né strumenti"
+  else
+    fail "live: PN_VARIANTE=bash cambia altro che i prompt"
+  fi
+  run prompt_bash "${TMP}/finto-bash.log"
+  expect "README: la frase per Bash cambia i prompt che nomina, 1 e 2" 0 \
+    "frase ok"
+  expect "live: PN_VARIANTE=bash, i prompt di chi segue il passo 1" 0 \
+    "chiamate ok"
+  expect "live: PN_VARIANTE=bash, i testi per Bash, nessuno per Python" 0 \
+    "testi ok"
+  deriva frase 's/nei prompt 1 e 2 scrivete/nei prompt 1 e 2 usate/' \
+    "il passo 1 del README non dice più"
+  deriva python-3.9 '/per scrivere rapporto_giornaliero/s/3\.8/3.9/' \
+    "il prompt 1 nomina ancora rapporto_giornaliero.py"
+  deriva senza-comando \
+    '/--giorno 2026-09-08/s/python3 rapporto_giornaliero\.py/lo script/' \
+    "cambiano i prompt 1, il passo 1 del README dice 1 2"
+  deriva prompt-6 \
+    '/uscita: 0\. Poi esegui/s/lo script/python3 rapporto_giornaliero.py/' \
+    "cambiano i prompt 1 2 6, il passo 1 del README dice 1 2"
+}
+
+# live.sh copiato in un albero di prova, accanto alle librerie e a
+# verifica.sh veri (collegamenti), con il README cambiato da sed.
+# Arguments: $1 il nome della prova, $2 lo script di sed.
+# Outputs: il percorso del live.sh copiato.
+# Returns: 2 se l'albero non si prepara o se sed non cambia il README.
+albero() {
+  local radice="${TMP}/albero-$1" el
+  el="${radice}/${E05#"${RADICE}/"}"
+  if ! mkdir -p "${el}/_docente" \
+      || ! ln -s "${RADICE}/tools" "${radice}/tools" \
+      || ! ln -s "${MOD}/_docente" "${radice}/${MOD##*/}/_docente" \
+      || ! ln -s "${E05}/verifica.sh" "${el}/verifica.sh" \
+      || ! cp -- "${E05}/_docente/live.sh" "${el}/_docente/live.sh" \
+      || ! sed -- "$2" "${E05}/README.md" > "${el}/README.md" \
+      || cmp -s -- "${E05}/README.md" "${el}/README.md"; then
+    return 2
+  fi
+  printf '%s\n' "${el}/_docente/live.sh"
+}
+
+# PN_VARIANTE=bash con un README cambiato (albero): esce 2 con il
+# messaggio atteso, senza chiamare claude.
+# Arguments: $1 il nome della prova, $2 lo script di sed, $3 il messaggio.
+deriva() {
+  local copia ws
+  copia="$(albero "$1" "$2")" || rotta "l'albero di prova $1"
+  ws="$(spazio "live-$1")" || rotta "lo spazio di lavoro"
+  live_di "${copia}" "${ws}" "$1" PN_VARIANTE=bash
+  if (( RC == 2 )) && grep -qF -- "$3" <<< "${OUT}" \
+      && [[ ! -s "${TMP}/finto-$1.log" ]]; then
+    pass "live: PN_VARIANTE=bash, README cambiato ($1): esce 2 senza claude"
+  else
+    fail "live: PN_VARIANTE=bash, README cambiato ($1), rc=${RC}: ${OUT:0:400}"
   fi
 }
 
@@ -825,6 +1000,7 @@ main() {
   test_verifica_sessioni
   test_soluzione
   test_live
+  test_live_bash
   test_prepara
   test_shellcheck
   echo "PASS=${PASS} FAIL=${FAIL} (attese ${CASES})"

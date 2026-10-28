@@ -441,6 +441,22 @@ c'è, 4 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
 (revisore 3)», e «il controllo eseguito da Claude: 11 volte, l'ultima con
 uscita 0».
 
+La variante in Bash si prova con lo stesso `_docente/live.sh` e
+`PN_VARIANTE=bash`: nei prompt 1 e 2 fa le due sostituzioni del passo 1,
+come chi sceglie Bash. Nella prova del corso in Bash (28 ottobre 2026,
+Claude Code 2.1.312, Sonnet con effort medium, sull'account del docente):
+`rapporto_giornaliero.sh`, con `#!/bin/bash` e `set -euo pipefail`; il
+controllo dell'esercizio, «8 casi su 8 come la specifica»; martedì 8
+settembre, uscita 1 e una riga, con il disservizio che la verifica
+conosce, «apparato sì · porta sì · inizio sì · fine sì · linee sì»;
+lunedì 7, uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read):
+2 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
+dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
+negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
+c'è, 4 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 2
+(revisore 2)», e «il controllo eseguito da Claude: 6 volte, l'ultima con
+uscita 0».
+
 ## Verifica (tools/verifica.sh M4-E05)
 
 Dalla cartella `esercitazioni`:
@@ -495,7 +511,8 @@ se mancano i log della rete nel repository.
 
 Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato tre volte. In Bash, 30 turni e il revisore
+chiamato due volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). Leggere i log a pezzi tiene
 piccola la conversazione; i subagent non sono gratis: «What they cost you
@@ -519,7 +536,10 @@ chiamata: cinque chiamate, quattro nella prima parte e una nella
 seconda, con 11, 6, 3, 4 e 4 turni del modello (`num_turns`); 74,0, 16,7,
 7,4, 18,6 e 14,0 secondi; token in entrata della conversazione
 principale, cache compresa, 194.792, 306.986, 177.656, 244.259 e
-171.550. I token del revisore si aggiungono a questi.
+171.550. I token del revisore si aggiungono a questi. In Bash, con
+`PN_VARIANTE=bash`: 7, 5, 8, 4 e 6 turni del modello; 45,5, 23,6, 13,5,
+15,8 e 19,2 secondi; 148.811, 158.781, 336.713, 234.027 e 200.596 token
+in entrata.
 
 ## Per approfondire
 
