@@ -12,7 +12,8 @@ esempio su cui lavorano gli esercizi e le dispense di riferimento.
 - Al docente: per preparare e provare gli elementi prima di ogni sessione.
 
 Prima della prima sessione seguite [`PRIMA_DEL_CORSO.md`](PRIMA_DEL_CORSO.md):
-Linux o Windows con WSL 2, installazione di Claude Code, accesso con
+Linux o Windows con WSL 2 (una distribuzione Ubuntu o Debian, con il suo
+utente e gli strumenti di base), installazione di Claude Code, accesso con
 l'abbonamento Pro, strumenti e controllo finale.
 
 ## Ottenere il repository e aggiornarlo

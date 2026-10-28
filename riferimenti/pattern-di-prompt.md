@@ -180,12 +180,14 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 - **Un cambiamento alla volta**: il testo, oppure il modello, oppure
   l'effort; e un gruppo di esempi tenuto da parte, per scoprire quando il
   prompt si adatta troppo ai casi di prova.
-- **I limiti del giudice**: chi cerca lacune ne trova qualcuna anche nel
-  lavoro corretto (chiedete solo ciò che tocca la correttezza e i
-  requisiti); e, secondo uno studio sui giudici LLM (Zheng e altri, 2023,
-  su altri modelli), i giudici tendono a preferire una posizione e le
-  risposte più lunghe. Il giudice è uno strumento: quando non siete
-  d'accordo, decidete voi.
+- **I limiti del giudice**: un revisore a cui chiedete di trovare problemi
+  ne troverà sempre qualcuno, e se correggete ogni segnalazione finite con
+  astrazioni in più e test per casi che non possono capitare (chiedetegli
+  le lacune che toccano la correttezza, e di lasciar perdere lo stile); e,
+  secondo uno studio sui giudici LLM (Zheng e altri, 2023, su altri
+  modelli), i giudici tendono a preferire una posizione e le risposte più
+  lunghe. Il giudice è uno strumento: quando non siete d'accordo, decidete
+  voi.
 - **Fatevi fare le domande**: chiedete a Claude di farvi domande sul compito
   prima di scrivere il prompt.
 - Gli attrezzi del corso sono nelle esercitazioni M2-E01 e M2-E02:
