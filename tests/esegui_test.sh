@@ -7,9 +7,9 @@
 #      dopo l'altro, con STDIN da /dev/null; una suite senza il bit di
 #      esecuzione conta come fallita;
 #   2. shellcheck -x su ogni *.sh di tools/, tests/, progetti/ e dei moduli
-#      m<N>_*/ che git consegna (non vendor/ né gli altri file ignorati;
-#      dei moduli non esercizio/, demo/ e soluzione/ degli elementi), un
-#      file per invocazione, con le regole di .shellcheckrc.
+#      m<N>_*/ che git consegna (non vendor/ né gli altri file ignorati),
+#      compresi quelli degli elementi in demo/, esercizio/ e soluzione/,
+#      un file per invocazione, con le regole di .shellcheckrc.
 # Per ogni suite stampa la sua ultima riga (il suo riepilogo); per una
 # suite fallita anche le ultime righe della sua uscita.
 # Volutamente autonomo, senza librerie: deve poter dire che cosa non va
@@ -93,13 +93,6 @@ run_shellcheck() {
   fi
   while IFS= read -r -d '' f; do
     [[ "${f}" == *.sh && -f "${ROOT}/${f}" ]] || continue
-    # I contenuti degli elementi di un modulo restano fuori, come in
-    # handson::check_scripts: lì uno script può essere materia
-    # dell'esercizio (uno script da correggere, per esempio).
-    case "/${f}" in
-      /m[1-9]_*/esercizio/*|/m[1-9]_*/demo/*|/m[1-9]_*/soluzione/*)
-        continue ;;
-    esac
     N_FILE=$((N_FILE + 1))
     if ! out="$(cd "${ROOT}" && shellcheck -x -- "${f}" 2>&1)"; then
       printf '  KO  shellcheck %s\n' "${f}"

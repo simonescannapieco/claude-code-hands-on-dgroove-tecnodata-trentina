@@ -5,10 +5,10 @@
 # ogni suite); una suite che fallisce, una suite non eseguibile, uno script
 # con una segnalazione di shellcheck (uscita 1); vendor/ ignorato da git
 # resta fuori; le suite dei moduli (m<N>_*/_docente/test_*.sh) girano e
-# gli script dei moduli passano da shellcheck, tranne esercizio/, demo/ e
-# soluzione/ degli elementi; alle suite non arriva PN_HANDSON_ROOT e lo
-# STDIN è chiuso; le precondizioni (nessuna suite, shellcheck mancante,
-# fuori da git, argomenti) danno 2.
+# gli script dei moduli passano da shellcheck, anche quelli di demo/,
+# esercizio/ e soluzione/ degli elementi; alle suite non arriva
+# PN_HANDSON_ROOT e lo STDIN è chiuso; le precondizioni (nessuna
+# suite, shellcheck mancante, fuori da git, argomenti) danno 2.
 #
 # Uso:    tests/test_esegui_test.sh
 # Uscita: 0 = tutti i test passano · 1 = almeno un test fallito
@@ -120,28 +120,21 @@ t_rossi() {
 
 # Le suite dei moduli, m<N>_*/_docente/test_*.sh, girano come quelle di
 # tests/ e shellcheck guarda anche gli script dei moduli; una cartella che
-# non è un modulo resta fuori, e così i contenuti degli elementi
-# (esercizio/, demo/, soluzione/: lì uno script può essere materia
-# dell'esercizio, come in handson::check_scripts).
+# non è un modulo resta fuori.
 # shellcheck disable=SC2016  # le righe sono codice degli script finti
 t_moduli() {
   local a="${TMP}/moduli" s='m1_prova/_docente/test_m1_prova.sh'
-  local v='m1_prova/s1/M1-D01_x/verifica.sh' e='m1_prova/s1/M1-E01_y' c
+  local v='m1_prova/s1/M1-D01_x/verifica.sh'
   albero "${a}"
   script "${a}/${s}" 755 'echo "PASS=7 FAIL=0"'
   script "${a}/${v}" 755 'echo "pulito"'
   script "${a}/altro/_docente/test_fuori.sh" 755 'echo $1'
-  for c in esercizio demo soluzione; do
-    script "${a}/${e}/${c}/da_correggere_${c}.sh" 755 'echo $1'
-  done
   runner "${a}"
   expect "la suite di un modulo gira" 0 "ok  ${s}"
   expect "con la sua ultima riga" 0 "PASS=7 FAIL=0"
   expect "suite e script del modulo contati" 0 \
     "3 suite, 0 KO · shellcheck: 5 file, 0 con segnalazioni"
   expect_absent "una cartella che non è un modulo resta fuori" "test_fuori"
-  expect_absent "esercizio/, demo/ e soluzione/ restano fuori" \
-    "da_correggere"
   a="${TMP}/moduli2"
   albero "${a}"
   script "${a}/${s}" 755 'echo "FAIL: nel modulo"' 'exit 1'
@@ -150,6 +143,45 @@ t_moduli() {
   expect "la suite di un modulo che fallisce" 1 "KO  ${s}"
   expect "con le sue ultime righe" 1 "| FAIL: nel modulo"
   expect "uno script del modulo con una segnalazione" 1 "KO  shellcheck ${v}"
+}
+
+# I contenuti degli elementi passano da shellcheck come gli altri script
+# dei moduli: demo/ e soluzione/, gli script di riferimento, ed esercizio/,
+# il punto di partenza, con la sua copia di tools/php.sh (nessun elemento
+# vi mette uno script da correggere: il lavoro si fa in uno spazio di
+# lavoro fuori dal repository). Puliti si contano, senza segnalazioni;
+# uno script con una segnalazione è un KO in ciascuna delle tre cartelle.
+# vendor/, ignorato da git, resta fuori anche dentro un elemento.
+# shellcheck disable=SC2016  # le righe sono codice degli script finti
+t_contenuti() {
+  local a="${TMP}/contenuti" d='m1_prova/s1/M1-D01_x' f
+  local e='m1_prova/s1/M1-E01_y'
+  local -a dentro=("${d}/demo/nuova_copia.sh" "${e}/soluzione/applica.sh"
+    "${e}/esercizio/tools/php.sh")
+  albero "${a}"
+  for f in "${dentro[@]}"; do
+    script "${a}/${f}" 755 'echo "pulito"'
+  done
+  script "${a}/${e}/soluzione/progetti/x/vendor/terzi.sh" 755 'echo $1'
+  runner "${a}"
+  expect "i contenuti puliti degli elementi contati" 0 \
+    "2 suite, 0 KO · shellcheck: 6 file, 0 con segnalazioni"
+  expect_absent "nessuna segnalazione sui contenuti puliti" "KO  shellcheck"
+  expect_absent "vendor/ dentro un elemento resta fuori" "terzi.sh"
+  a="${TMP}/contenuti2"
+  albero "${a}"
+  for f in "${dentro[@]}"; do
+    script "${a}/${f}" 755 'echo $1'
+  done
+  runner "${a}"
+  expect "uno script di demo/ con una segnalazione" 1 \
+    "KO  shellcheck ${dentro[0]}"
+  expect "uno script di soluzione/ con una segnalazione" 1 \
+    "KO  shellcheck ${dentro[1]}"
+  expect "uno script di esercizio/ con una segnalazione" 1 \
+    "KO  shellcheck ${dentro[2]}"
+  expect "i tre contati, tre con segnalazioni" 1 \
+    "shellcheck: 6 file, 3 con segnalazioni"
 }
 
 t_precondizioni() {
@@ -184,6 +216,7 @@ main() {
   t_verde
   t_rossi
   t_moduli
+  t_contenuti
   t_precondizioni
   echo "PASS=${PASS} FAIL=${FAIL}"
   (( FAIL == 0 )) || exit 1
