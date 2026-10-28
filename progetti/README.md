@@ -1,11 +1,12 @@
 # Progetti di esempio — il materiale condiviso delle esercitazioni
 
-Le esercitazioni del corso lavorano su tre progetti **sintetici**, inventati da cima a fondo: un piccolo operatore di connettività immaginario, **CiaspoLink S.r.l.**, con il suo gestionale in PHP, la sua rete e la sua assistenza clienti. Nessun file descrive persone, aziende o sistemi reali: ogni somiglianza con un operatore esistente è casuale.
+Le esercitazioni del corso lavorano su tre progetti **sintetici**, inventati da cima a fondo: un piccolo operatore di connettività immaginario, **CiaspoLink S.r.l.**, con il suo gestionale in PHP, la sua rete e la sua assistenza clienti; le demo del Modulo 4 usano anche un quarto progetto minimo, `urgenze/`. Nessun file descrive persone, aziende o sistemi reali: ogni somiglianza con un operatore esistente è casuale.
 
 | cartella | che cosa contiene | dove serve |
 |---|---|---|
 | `gestionale-php/` | il gestionale dell'operatore, scritto in PHP negli anni e mai riscritto: clienti, offerte «Casa» e «Business», linee FTTH e FWA, copertura per indirizzo, attivazioni, rivenditori, ticket, fatture; parti pulite accanto a moduli legacy volutamente oscuri; test PHPUnit parziali; le convenzioni del team in `docs/convenzioni.md` | Moduli 2, 4, 5, 6 |
 | `rete/` | configurazioni di apparati nei dialetti che un operatore radio e fibra usa davvero, ciascuna con l'elenco dei problemi inseriti apposta; log syslog, RADIUS/PPPoE, DHCP e di registrazione SIP; l'inventario in CSV; gli allarmi del monitoraggio | Moduli 2, 4, 5 |
+| `urgenze/` | un modulo Python di poche righe, la regola che decide se una segnalazione di guasto è urgente, con i suoi test `unittest`: abbastanza piccolo da leggerlo per intero su una slide | Modulo 4 |
 | `assistenza-clienti/` | un assistente virtuale «versione 0», volutamente mediocre (system prompt, strumenti, regole di passaggio all'operatore); la base di conoscenza delle procedure di assistenza guidata; gli scenari di prova, anche ostili; le conversazioni di riferimento; il tono di voce; una settimana di ticket in CSV | Moduli 2, 3, 5, 7, 8 |
 
 ## L'operatore immaginario

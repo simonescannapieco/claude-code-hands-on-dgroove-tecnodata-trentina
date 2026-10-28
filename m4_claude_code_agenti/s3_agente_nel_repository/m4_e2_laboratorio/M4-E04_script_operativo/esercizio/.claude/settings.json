@@ -1,0 +1,24 @@
+{
+  "plansDirectory": "./piani",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python3 controlla_notturno.py)",
+      "Bash(tools/php.sh php progetti/gestionale-php/bin/controllo-notturno.php *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(/controlla_notturno.py)",
+      "Edit(/SPECIFICA.md)",
+      "Edit(/tools/php.sh)",
+      "Edit(/.claude/agents/**)",
+      "Edit(/progetti/gestionale-php/src/**)",
+      "Edit(/progetti/gestionale-php/legacy/**)",
+      "Edit(/progetti/gestionale-php/database/**)"
+    ]
+  }
+}

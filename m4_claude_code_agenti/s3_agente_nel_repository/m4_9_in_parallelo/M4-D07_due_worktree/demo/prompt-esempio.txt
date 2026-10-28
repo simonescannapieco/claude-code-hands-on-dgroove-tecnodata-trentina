@@ -1,0 +1,1 @@
+Aggiungi alla docstring del modulo progetti/urgenze/urgenza.py un esempio d'uso della funzione urgente, nel formato di doctest: righe che cominciano con >>>. Non cambiare altro.

@@ -1,1 +1,14 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M4-D01	demo	claude-code-pro	s3_agente_nel_repository	m4_3_installare_configurare	slides/theory/m4_claude_code_agenti/m4_3_installare_configurare	4	La chiave che scavalca il Pro
+M4-D02	demo	claude-code-pro	s3_agente_nel_repository	m4_4_server_mcp	slides/theory/m4_claude_code_agenti/m4_4_server_mcp	5	Un server MCP per la copertura
+M4-D03	demo	claude-code-pro	s3_agente_nel_repository	m4_5_ciclo_strumenti	slides/theory/m4_claude_code_agenti/m4_5_ciclo_strumenti	4	Un giro del ciclo, registrato
+M4-D04	demo	claude-code-pro	s3_agente_nel_repository	m4_6_permessi_fiducia	slides/theory/m4_claude_code_agenti/m4_6_permessi_fiducia	6	Tre gradini, tre garanzie
+M4-D05	demo	claude-code-pro	s3_agente_nel_repository	m4_7_rete_di_sicurezza	slides/theory/m4_claude_code_agenti/m4_7_rete_di_sicurezza	5	Il controllo che non si salta
+M4-D06	demo	claude-code-pro	s3_agente_nel_repository	m4_8_subagent	slides/theory/m4_claude_code_agenti/m4_8_subagent	5	Delegare la lettura
+M4-D07	demo	claude-code-pro	s3_agente_nel_repository	m4_9_in_parallelo	slides/theory/m4_claude_code_agenti/m4_9_in_parallelo	3	Due filoni, due worktree
+M4-D08	demo	claude-code-pro	s3_agente_nel_repository	m4_11_oltre_il_codice	slides/theory/m4_claude_code_agenti/m4_11_oltre_il_codice	3	Il log in una pipe
+M4-E01	esercizio	claude-code-pro	s3_agente_nel_repository	m4_e1_un_file_mai_visto	slides/practice/m4_esercitazione_codice/m4_e1_un_file_mai_visto	20	Un file mai visto
+M4-E02	esercizio	claude-code-pro	s3_agente_nel_repository	m4_e2_laboratorio	slides/practice/m4_esercitazione_codice/m4_e2_laboratorio	87	Una funzione nuova, con i test
+M4-E03	esercizio	claude-code-pro	s3_agente_nel_repository	m4_e2_laboratorio	slides/practice/m4_esercitazione_codice/m4_e2_laboratorio	87	Un modulo opaco: documentarlo e proporre il refactoring
+M4-E04	esercizio	claude-code-pro	s3_agente_nel_repository	m4_e2_laboratorio	slides/practice/m4_esercitazione_codice/m4_e2_laboratorio	87	Uno script operativo che gira davvero
+M4-E05	esercizio	claude-code-pro	s3_agente_nel_repository	m4_e2_laboratorio	slides/practice/m4_esercitazione_codice/m4_e2_laboratorio	87	Il rapporto quotidiano dei log

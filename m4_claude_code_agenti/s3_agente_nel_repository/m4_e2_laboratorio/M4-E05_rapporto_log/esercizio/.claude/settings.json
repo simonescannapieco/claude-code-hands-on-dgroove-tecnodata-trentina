@@ -1,0 +1,22 @@
+{
+  "plansDirectory": "./piani",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python3 controlla_rapporto.py)",
+      "Bash(python3 rapporto_giornaliero.py *)",
+      "Bash(bash rapporto_giornaliero.sh *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(/controlla_rapporto.py)",
+      "Edit(/SPECIFICA.md)",
+      "Edit(/.claude/agents/**)",
+      "Edit(/progetti/rete/**)"
+    ]
+  }
+}

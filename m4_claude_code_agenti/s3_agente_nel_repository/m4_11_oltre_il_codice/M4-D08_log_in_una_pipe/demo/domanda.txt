@@ -1,0 +1,1 @@
+Questo è il syslog di olt-pergine-01 della settimana: a che ora inizia e a che ora finisce il guasto di martedì 8 settembre? Rispondi in una riga: 'inizio HH:MM | fine HH:MM'.

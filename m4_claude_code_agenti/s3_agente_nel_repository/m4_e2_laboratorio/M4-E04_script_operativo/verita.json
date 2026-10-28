@@ -1,0 +1,28 @@
+{
+  "elemento": "M4-E04",
+  "nota": "Impronte SHA-256 di «m4-e04:<voce>:<valore>»: le segnalazioni attese sui dati di esempio, per controllo, e i due conteggi. La verifica le confronta con ciò che lo script stampa, senza mai scriverle in chiaro.",
+  "giorno": "2026-09-13",
+  "segnalazioni": {
+    "attivazione-ferma": [
+      "1a2c7055181264f92ac762ea983f5eed16ccfe07cd2aa318fc46a167f9d431b0",
+      "b2b4c62a46460b5f9d6974a953275523947b20a6885642d266970880a5dc8634",
+      "f7aef9238a0cdd6d2ed9a56244d64949fcc02366efda91fe3f857add94412027"
+    ],
+    "linea-cliente-cessato": [
+      "a845d18eb48eaa4cc643b5f5711c3f4262205f91cfa1462d793e62e9f93c2e15",
+      "ebf4abe8936595318207ee08180e4fce31a26b84f68040430dcbb6afe72f31b9"
+    ],
+    "linea-senza-apparato": [
+      "eaac989bad7f6ee46a4dc347405788693c77d3df13d3e55095bfd00939a2f9c6"
+    ],
+    "ticket-in-attesa": [
+      "0acb4958578185a386eb47bcb66ee372d8babc422ec83eda787b5ed5e3c77b1a",
+      "ae358b5737ff5cb1aa575e65f624135ae120d80e511a25a174bf993cc5965edb",
+      "b6709faef6c5da2fa000521bf329f144dc9cff5b9159d8c0142c92c076eb0e95"
+    ]
+  },
+  "conteggi": {
+    "clienti-sospesi": "4e8a28cfc43419316639d6b7c12ef1394ec8eca984c5bf7bb8a4ae6518d1c2c1",
+    "fatture-scadute": "1a19eb7137047c39bdea08655bd32a7b372cf06e847aa8444c089cf68268abd2"
+  }
+}

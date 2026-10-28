@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit *)"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(/tools/php.sh)",
+      "Edit(/progetti/gestionale-php/legacy/**)"
+    ]
+  },
+  "plansDirectory": "piani"
+}

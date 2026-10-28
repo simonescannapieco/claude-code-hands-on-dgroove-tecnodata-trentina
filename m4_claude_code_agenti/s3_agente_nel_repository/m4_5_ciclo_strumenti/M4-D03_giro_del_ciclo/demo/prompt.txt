@@ -1,0 +1,1 @@
+Il confine dei 7 giorni in urgenza.py non è rispettato: correggilo, poi esegui `python3 -m unittest` e continua finché i test passano. Esegui un comando alla volta.

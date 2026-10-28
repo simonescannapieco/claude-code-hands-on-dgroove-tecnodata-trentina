@@ -1,0 +1,1 @@
+Aggiungi in testa a progetti/gestionale-php/src/Ticket/PrioritaTicket.php un commento di una riga che spieghi a che cosa serve l'enum. Non fare altro.

@@ -1,0 +1,15 @@
+# Il server MCP del corso: la copertura di CiaspoLink, in sola lettura.
+# Un progetto uv senza pacchetto: uv sync crea l'ambiente (.venv/, fuori da
+# git), uv run lo usa. FastMCP è fissato a una versione esatta, e uv.lock
+# fissa tutte le dipendenze: chi clona il repository ottiene le stesse.
+# FastMCP 3.4.11 vuole Python 3.10 o successivo: se il vostro è più
+# vecchio, uv sync ne scarica uno adatto.
+[project]
+name = "server-copertura"
+version = "1.0.0"
+description = "Il server MCP del corso: la copertura di CiaspoLink, in sola lettura"
+requires-python = ">=3.10"
+dependencies = ["fastmcp==3.4.11"]
+
+[tool.uv]
+package = false

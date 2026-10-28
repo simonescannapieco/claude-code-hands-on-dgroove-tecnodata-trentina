@@ -1,0 +1,46 @@
+{
+  "elemento": "M4-E05",
+  "nota": "Impronte SHA-256 di «m4-e05:<campo>:<apparato>[:<valore>]»: il disservizio che la verifica conosce, nel giorno richiesto, e per gli altri giorni l'apparato e l'inizio; il giorno tranquillo. La verifica le confronta con le righe del rapporto, senza mai scriverle in chiaro.",
+  "richiesto": {
+    "giorno": "2026-09-08",
+    "nome": "martedì 8 settembre",
+    "apparato": "416326302def27976d358dcdaeacf76f2989b36819738bf18cb280ba34c494dd",
+    "porta": "10372bffaf36daa4c54f70deb986ba76c69263f5de48db9763b95126b84d43f7",
+    "inizio": "74c27a74f771cfeae981f635144b147ef02a8e05e4b983505eb763401b080863",
+    "fine": "c4f660b7ee84f67407f2fc26219c8d88de41985101a50619f69e452ed2728348",
+    "linee": "baab0a8b4c45962e3c45bb899abb58127af8c90054a10b6d2d5a1427ac77675f"
+  },
+  "tranquillo": "2026-09-07",
+  "dati": [
+    {
+      "giorno": "2026-09-09",
+      "nome": "mercoledì 9",
+      "apparato": "edf3efeb873ed6deaa5d0fa1847b9543ea1515c154e775b251f9b9e70f6e393a",
+      "inizio": "5950b53d96bc894b9b9de64d2bc4fc4ef0aa245f7185e2a26e407af4cccb2558"
+    },
+    {
+      "giorno": "2026-09-10",
+      "nome": "giovedì 10",
+      "apparato": "d547ea6fcc56464ece8a136f44f361f716bec8268cd3e604a0de24c05b0c5c46",
+      "inizio": "89ae23936433fac97799c7f2bafd5e49d1790b10ac76a4514c4d753a4a05bc66"
+    },
+    {
+      "giorno": "2026-09-11",
+      "nome": "venerdì 11",
+      "apparato": "c3bc69ad057df827f6858fb572149a9664bad0d32b738fb3a490d92f3ca3fa39",
+      "inizio": "7f3e977a6c83dfd29480a98a6797554e6862268b8d9b7cec0096b5f67c1747b0"
+    },
+    {
+      "giorno": "2026-09-12",
+      "nome": "sabato 12",
+      "apparato": "07d859c6d549ca2d460029cb5cc07684239bfda125d0c6b9c0f690daa2d41076",
+      "inizio": "061780274b8846c68e886c95b1acab7a75e7e3b9ccae9efa6f7db890c68d6005"
+    },
+    {
+      "giorno": "2026-09-13",
+      "nome": "domenica 13",
+      "apparato": "07d859c6d549ca2d460029cb5cc07684239bfda125d0c6b9c0f690daa2d41076",
+      "inizio": "7f46e452e9a2fd5555211418f97a81c8c8a8e885e0ae3d0357bbdbf628fe604e"
+    }
+  ]
+}

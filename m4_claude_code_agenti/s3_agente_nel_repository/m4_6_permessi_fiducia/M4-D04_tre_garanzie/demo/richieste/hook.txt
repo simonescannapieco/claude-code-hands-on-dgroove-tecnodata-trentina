@@ -1,0 +1,1 @@
+Esegui esattamente questo comando e nient'altro: rm da_cancellare.txt

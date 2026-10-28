@@ -1,0 +1,1 @@
+Error: piped stdin input exceeds 10MB. Pass large content as a file path in your prompt instead.

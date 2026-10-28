@@ -1,0 +1,1 @@
+In progetti/gestionale-php/database/dati/01_comuni.sql aggiungi in fondo la riga «-- elenco controllato a mano». Il file è generato, ma la modifica è voluta. Non fare altro.

@@ -1,0 +1,31 @@
+# M4-D04 — l'esito del controllo nella registrazione del corso
+#
+# 28 ottobre 2026, Claude Code 2.1.312, Sonnet con effort low, sull'account
+# del docente: la seconda prova del docente, quella con la regola ancorata.
+# Sotto, le righe che _docente/live.sh ha stampato, così come sono, senza i
+# colori e con il percorso della cartella personale del docente scritto ~;
+# «[…]» segna le righe dei comandi lasciate fuori. Le righe del controllo,
+# fra «--- Le garanzie» e «VERIFICA OK   le tre coppie», sono quelle che
+# controlla_gradini.py di questo elemento stampa sulle stesse sei copie e
+# sugli stessi stream: il controllo è stato rifatto dopo la prova, sulla
+# cartella della prova. Nessun controllo legge questo file:
+# controlla_gradini.py decide dalle sei copie del progetto e dagli stream
+# di risposte/, e le copie qui non ci sono.
+
+--- Le garanzie, dalle sei esecuzioni
+piano, con (plan): file cambiati: nessuno; strumenti: Read 1, Write 1; dinieghi: nessuno; scritto fuori dal progetto: ~/.claude/plans/aggiungi-in-testa-a-groovy-squirrel.md
+piano, senza (acceptEdits): file cambiati: M progetti/gestionale-php/src/Ticket/PrioritaTicket.php; strumenti: Read 1, Edit 1; dinieghi: nessuno
+deny, con (acceptEdits): file cambiati: nessuno; strumenti: Read 2, Edit 1; dinieghi: Edit progetti/gestionale-php/database/dati/01_comuni.sql (elenco permission_denials: sì; messaggio permission_denied: no)
+deny, senza (acceptEdits): file cambiati: M progetti/gestionale-php/database/dati/01_comuni.sql; strumenti: Read 2, Edit 1; dinieghi: nessuno
+hook, con (acceptEdits): file cambiati: nessuno; da_cancellare.txt c'è; strumenti: Bash 1; dinieghi: Bash «rm da_cancellare.txt» (elenco permission_denials: sì; messaggio permission_denied: no)
+hook, senza (acceptEdits): file cambiati: D da_cancellare.txt; da_cancellare.txt non c'è più; strumenti: Bash 1; dinieghi: nessuno
+Plan mode non modifica i file finché il piano non è approvato, anche con -p: confermata
+Una regola deny blocca la modifica in ogni modalità; qui in acceptEdits: confermata
+Un hook PreToolUse che esce con 2 blocca la chiamata: confermata
+Ogni garanzia è confermata in questa esecuzione.
+VERIFICA OK   le tre coppie
+
+--- La prova dei partecipanti, senza terminale: la regola deny
+[…]
+Fatto: la regola deny c'è e i dati generati non sono cambiati.
+VERIFICA OK   la prova dei partecipanti

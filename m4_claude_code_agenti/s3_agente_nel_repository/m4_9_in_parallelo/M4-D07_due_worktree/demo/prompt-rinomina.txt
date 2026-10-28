@@ -1,0 +1,1 @@
+Rinomina il parametro giorni_aperta della funzione urgente in giorni_di_apertura, in progetti/urgenze/urgenza.py e nei suoi test, progetti/urgenze/test_urgenza.py. Non cambiare altro.

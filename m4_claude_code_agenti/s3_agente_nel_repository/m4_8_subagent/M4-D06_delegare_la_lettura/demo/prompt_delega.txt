@@ -1,0 +1,1 @@
+Delega la lettura dei log a un subagent Explore e fatti riportare solo un riassunto breve. Martedì 8 settembre 2026 un guasto su olt-pergine-01 ha messo fuori servizio insieme più linee di clienti. Quando è cominciato, quando è finito (quando le ONT sono tornate in linea) e quante linee di clienti (ONT) ha coinvolto? Rispondi in una riga: 'inizio: HH:MM | fine: HH:MM | ONT: N'.
