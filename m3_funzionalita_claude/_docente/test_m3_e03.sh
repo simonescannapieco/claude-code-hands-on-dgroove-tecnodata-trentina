@@ -29,7 +29,8 @@
 #     rete, nessun blocco, una pagina non UTF-8 (1); la regola della copia
 #     originale (un controllo dello spazio di lavoro che dice sempre 0 non
 #     basta); le esecuzioni del registro soltanto come dato, senza un esito
-#     sul ciclo della guida e mai come uscita; i numeri nel testo come
+#     sul ciclo della guida e mai come uscita, con la frase della guida
+#     com'è oggi nella pagina, non quella di prima; i numeri nel testo come
 #     dato; nessun testo dei ticket stampato; la verifica non scrive nel
 #     registro; le precondizioni (2);
 #   - soluzione/: genera_dashboard.py, eseguito in uno spazio di lavoro
@@ -74,9 +75,15 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=120
+readonly CASES=122
 readonly FINE="Fatto: la pagina c'è, i suoi KPI sono quelli veri e non \
 carica niente da fuori."
+# La frase della guida di Claude Code che la verifica stampa, com'è oggi
+# nella pagina, e un pezzo di quella di prima, che non c'è più.
+readonly FRASE_GUIDA="It makes the change, runs the check, and if \
+something broke it reads the output and fixes it before running the \
+check again."
+readonly FRASE_DI_PRIMA="iterates until the check passes"
 readonly UN_COMANDO="Esegui ogni comando da solo, senza concatenarlo ad \
 altri, e leggi l'uscita del controllo nella sua ultima riga."
 # L'ora UTC in testa a una riga di controlli_dashboard.log.
@@ -613,6 +620,8 @@ t_verifica() {
     "esecuzioni registrate: 1; uscite, in ordine: 0"
   expect "verifica: il registro lo scrive il controllo, non lo prova" 0 \
     "Che Claude l'abbia eseguito lo dicono le sue chiamate"
+  expect "verifica: la frase della guida, com'è oggi" 0 "${FRASE_GUIDA}"
+  expect_absent "verifica: non più la frase di prima" "${FRASE_DI_PRIMA}"
   expect_absent "verifica: mai «In questa esecuzione»" "In questa esecuzione"
   expect_absent "verifica: nessun esito sul ciclo, sulla soluzione" \
     "confermata"

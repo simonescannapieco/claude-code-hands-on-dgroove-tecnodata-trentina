@@ -12,8 +12,8 @@ dizionario delle colonne, lo esegue, esegue un controllo dei dati personali
 e corregge lo script finché il controllo passa; poi scrive `profilo.py`,
 che calcola gli indicatori della settimana. Il controllo conosce i dati
 personali solo come impronte, e a Claude dice quanti ne restano e dove, mai
-quali. Mettete alla prova la guida di Claude Code: «Give Claude a check it
-can run: tests, a build, a screenshot to compare.»
+quali. Mettete alla prova la guida di Claude Code: «Give Claude a check to
+run … Give Claude something it can run that comes back pass or fail.»
 
 ## Tempo
 
@@ -235,18 +235,21 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   Qui il valore è `default`, cioè Manual: «The mode that reviews every
   action is named Manual in the CLI … Its config value is default»
   (https://code.claude.com/docs/en/permission-modes).
-- **Il controllo che Claude esegue.** La guida di Claude Code raccomanda:
-  «Give Claude a check it can run: tests, a build, a screenshot to
-  compare.» Un controllo è qualsiasi segnale che Claude legge nella
-  conversazione, anche uno script che confronta l'uscita con un
-  riferimento: «The check is anything that returns a signal Claude can
-  read in the conversation: … a script that diffs output against a
-  fixture». Senza, Claude si ferma quando il lavoro sembra finito:
-  «Claude stops when the work looks done. Without a check it can run,
-  "looks done" is the only signal available». Con il controllo, il ciclo
-  che la guida descrive, e che questo esercizio mette alla prova: «Claude
-  does the work, runs the check, reads the result, and iterates until the
-  check passes.» (https://code.claude.com/docs/en/best-practices).
+- **Il controllo che Claude esegue.** La guida di Claude Code dice di dare
+  a Claude un controllo da eseguire, qualcosa che risponde «passa» o
+  «fallisce»: «Give Claude a check to run … Give Claude something it can
+  run that comes back pass or fail.» Il controllo può essere quasi
+  qualsiasi cosa di cui Claude legga il risultato, anche uno script che
+  confronta l'uscita con un riferimento: «The check can be almost
+  anything, as long as Claude can read the result: … A script that diffs
+  output against a fixture». Senza, Claude si ferma quando il lavoro
+  sembra finito: «Claude stops when the work looks done. … "looks done"
+  is all it has to go on.» Con il controllo, il ciclo che la guida
+  descrive, e che questo esercizio mette alla prova: Claude fa la
+  modifica, esegue il controllo e, se qualcosa si è rotto, legge l'uscita
+  e corregge prima di rieseguirlo, «It makes the change, runs the check,
+  and if something broke it reads the output and fixes it before running
+  the check again.» (https://code.claude.com/docs/en/best-practices).
 - **Con il controllo, un risultato migliore?** I consigli d'uso di Claude
   Code: «Giving Claude a way to verify its work will markedly improve the
   quality of the final result.»

@@ -19,10 +19,11 @@ un numero solo compare nel testo visibile della pagina, con il punto o la
 virgola decimale; se genera_dashboard.py c'è; le esecuzioni del controllo
 registrate in controlli_dashboard.log e se controlla_dashboard.py dello
 spazio di lavoro è diverso dall'originale; la frase della guida di Claude
-Code «Claude does the work, runs the check, reads the result, and iterates
-until the check passes.», senza un esito: il registro lo scrive il
-controllo a ogni esecuzione, chiunque lo esegua, e che Claude l'abbia
-eseguito lo dicono le sue chiamate, non il registro.
+Code sul ciclo con un controllo, «It makes the change, runs the check, and
+if something broke it reads the output and fixes it before running the
+check again.», senza un esito: il registro lo scrive il controllo a ogni
+esecuzione, chiunque lo esegua, e che Claude l'abbia eseguito lo dicono le
+sue chiamate, non il registro.
 
 Uso:    verifica.py <spazio di lavoro>
 Uscita: 0 la pagina c'è, il suo blocco kpi ha i KPI veri e non carica niente
@@ -52,8 +53,9 @@ SCRIPT = "genera_dashboard.py"
 GIORNI = ("lun", "mar", "mer", "gio", "ven", "sab", "dom")
 RIGA_LOG = re.compile(r"(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)\t([0-9]+)\t"
                       r"([0-9]+|-)")
-AFFERMAZIONE = ("«Claude does the work, runs the check, reads the result, "
-                "and iterates until the check passes.»")
+AFFERMAZIONE = ("«It makes the change, runs the check, and if something "
+                "broke it reads the output and fixes it before running the "
+                "check again.»")
 FONTE = "https://code.claude.com/docs/en/best-practices"
 COME_DATO = ("  Come dato: il registro lo scrive il controllo a ogni "
              "esecuzione, chiunque\n  lo esegua. Che Claude l'abbia "
@@ -220,7 +222,8 @@ def stampa_ciclo() -> None:
     print("  controlla_dashboard.py dello spazio di lavoro: %s" % stato)
     print("  %s: %s" % (SCRIPT, "c'è" if os.path.isfile(SCRIPT)
                         else "manca"))
-    print("\nLa guida di Claude Code: %s" % AFFERMAZIONE)
+    print("\nLa guida di Claude Code, su Claude con un controllo: %s"
+          % AFFERMAZIONE)
     print("  (%s)" % FONTE)
     print(COME_DATO)
 

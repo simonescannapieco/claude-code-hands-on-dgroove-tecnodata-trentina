@@ -29,7 +29,8 @@
 #     sbagliato di uno (1), un telefono rimesso al suo posto (1), un nome a
 #     metà (1), la regola della copia originale (un controlla_pii.py dello
 #     spazio di lavoro che esce sempre 0 non basta), le esecuzioni del
-#     registro soltanto come dato e senza esito; come dato, mai come
+#     registro soltanto come dato e senza esito, con la frase della guida
+#     com'è oggi nella pagina, non quella di prima; come dato, mai come
 #     uscita, i dati del corso rimasti in parte (un civico, il dominio di
 #     un'e-mail) e le omissioni senza un dato del corso (una in più, tutto
 #     omesso); le forme sbagliate del file (colonne, righe, pseudonimi,
@@ -88,9 +89,15 @@ readonly PROGETTO="${RADICE}/progetti/assistenza-clienti"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=176
+readonly CASES=178
 readonly FINE="Fatto: il file anonimo, i dati personali rimasti e il \
 profilo sono quelli attesi."
+# La frase della guida di Claude Code che la verifica stampa, com'è oggi
+# nella pagina, e un pezzo di quella di prima, che non c'è più.
+readonly FRASE_GUIDA="It makes the change, runs the check, and if \
+something broke it reads the output and fixes it before running the \
+check again."
+readonly FRASE_DI_PRIMA="iterates until the check passes"
 # L'ora UTC in testa a una riga di controlli.log (espressione estesa).
 readonly RIGA_LOG='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
 # Gli identificativi interni che i file per i partecipanti non portano.
@@ -880,6 +887,8 @@ t_verifica() {
     "esecuzioni registrate: 1; uscite, in ordine: 0"
   expect "verifica: il registro lo scrive il controllo, non lo prova" 0 \
     "Che Claude l'abbia eseguito lo dicono le sue chiamate"
+  expect "verifica: la frase della guida, com'è oggi" 0 "${FRASE_GUIDA}"
+  expect_absent "verifica: non più la frase di prima" "${FRASE_DI_PRIMA}"
   expect_absent "verifica: mai «In questa esecuzione»" "In questa esecuzione"
   expect_absent "verifica: nessun esito sul ciclo, sulla soluzione" \
     "confermata"

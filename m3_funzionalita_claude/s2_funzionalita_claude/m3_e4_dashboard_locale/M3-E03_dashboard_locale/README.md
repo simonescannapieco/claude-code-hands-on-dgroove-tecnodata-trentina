@@ -12,9 +12,9 @@ settimana **senza che Claude lo legga**, ne calcola gli indicatori e scrive
 `dashboard.html`: un file solo, che si apre nel browser senza rete. Poi
 Claude esegue un controllo che confronta i numeri della pagina con il
 profilo di M3-E01, e corregge lo script finché il controllo passa. Mettete
-alla prova la guida di Claude Code: «Give Claude a check it can run:
-tests, a build, a screenshot to compare.» Alla fine, il confronto con la
-dashboard di M3-E02.
+alla prova la guida di Claude Code: «Give Claude a check to run … Give
+Claude something it can run that comes back pass or fail.» Alla fine, il
+confronto con la dashboard di M3-E02.
 
 ## Tempo
 
@@ -170,17 +170,19 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
 ### Che cosa dice Anthropic
 
 - **Il controllo che Claude esegue.** La guida di Claude Code: «Give
-  Claude a check it can run: tests, a build, a screenshot to compare.» Il
-  controllo è qualunque segnale che Claude legge nella conversazione,
-  anche uno script che confronta il risultato con un riferimento: «The
-  check is anything that returns a signal Claude can read in the
-  conversation: … a script that diffs output against a fixture». Qui il
-  riferimento è `anonimo/profilo.json`, il profilo che ha scritto
-  M3-E01. Senza un controllo: «Claude stops when the work looks done.
-  Without a check it can run, "looks done" is the only signal available».
-  Con il controllo, il ciclo che l'esercizio mette alla prova: «Claude
-  does the work, runs the check, reads the result, and iterates until the
-  check passes.» (https://code.claude.com/docs/en/best-practices).
+  Claude a check to run … Give Claude something it can run that comes
+  back pass or fail.» Il controllo può essere quasi qualsiasi cosa di cui
+  Claude legga il risultato, anche uno script che confronta l'uscita con
+  un riferimento: «The check can be almost anything, as long as
+  Claude can read the result: … A script that diffs output against a
+  fixture». Qui il riferimento è `anonimo/profilo.json`, il profilo che ha
+  scritto M3-E01. Senza un controllo: «Claude stops when the work looks
+  done. … "looks done" is all it has to go on.» Con il controllo, il
+  ciclo che l'esercizio mette alla prova: Claude fa la modifica, esegue il
+  controllo e, se qualcosa si è rotto, legge l'uscita e corregge prima di
+  rieseguirlo, «It makes the change, runs the check, and if something
+  broke it reads the output and fixes it before running the check
+  again.» (https://code.claude.com/docs/en/best-practices).
 - **Perché Claude non apre il file.** Claude Code gira sul vostro
   computer, ma la conversazione passa dalla rete: «Claude Code runs
   locally. To interact with the LLM, Claude Code sends data over the

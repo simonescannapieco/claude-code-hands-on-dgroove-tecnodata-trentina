@@ -26,11 +26,12 @@ corso di cui resta una parte fuori dagli [OMESSO], e quante omissioni non
 coprono nessun dato del corso; le esecuzioni del controllo registrate in
 anonimo/controlli.log e le loro uscite, e se controlla_pii.py e
 impronte.json dello spazio di lavoro sono diversi dagli originali; la frase
-della guida di Claude Code «Claude does the work, runs the check, reads the
-result, and iterates until the check passes.», senza un esito: il registro
-lo scrive il controllo a ogni esecuzione, chiunque lo esegua, e che Claude
-l'abbia eseguito lo dicono le sue chiamate, non il registro. Non stampa
-mai un valore dei dati personali.
+della guida di Claude Code sul ciclo con un controllo, «It makes the change,
+runs the check, and if something broke it reads the output and fixes it
+before running the check again.», senza un esito: il registro lo scrive il
+controllo a ogni esecuzione, chiunque lo esegua, e che Claude l'abbia
+eseguito lo dicono le sue chiamate, non il registro. Non stampa mai un
+valore dei dati personali.
 
 Uso:    verifica.py <spazio di lavoro>
 Uscita: 0 il file anonimo, i dati personali rimasti (0) e il profilo sono
@@ -73,8 +74,9 @@ TESTI = ("oggetto", "descrizione")
 GIORNI = ("lun", "mar", "mer", "gio", "ven", "sab", "dom")
 RIGA_LOG = re.compile(r"(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ)\t([0-9]+)\t"
                       r"([0-9]+|-)")
-AFFERMAZIONE = ("«Claude does the work, runs the check, reads the result, "
-                "and iterates until the check passes.»")
+AFFERMAZIONE = ("«It makes the change, runs the check, and if something "
+                "broke it reads the output and fixes it before running the "
+                "check again.»")
 FONTE = "https://code.claude.com/docs/en/best-practices"
 COME_DATO = ("  Come dato: il registro lo scrive il controllo a ogni "
              "esecuzione, chiunque\n  lo esegua. Che Claude l'abbia "
@@ -445,7 +447,8 @@ def stampa_controllo_eseguito() -> None:
         else:
             stato = "DIVERSO dall'originale"
         print("  %s dello spazio di lavoro: %s" % (nome, stato))
-    print("\nLa guida di Claude Code: %s" % AFFERMAZIONE)
+    print("\nLa guida di Claude Code, su Claude con un controllo: %s"
+          % AFFERMAZIONE)
     print("  (%s)" % FONTE)
     print(COME_DATO)
 
