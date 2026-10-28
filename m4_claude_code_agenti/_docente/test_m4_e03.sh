@@ -29,7 +29,8 @@
 #     sessioni con le chiamate Agent e Task, i doppioni, le righe dei
 #     subagent, una riga rotta, ExitPlanMode, le modifiche tentate su
 #     legacy/, U+2028 dentro una riga, una riga troppo annidata, una cartella
-#     oltre i 200 caratteri) mai come uscita; la verifica non scrive nello
+#     oltre i 200 caratteri, la copia di una richiesta che ripete le chiamate
+#     senza il loro messaggio) mai come uscita; la verifica non scrive nello
 #     spazio di lavoro, nemmeno in .git/index, e non usa il suo php.sh; le
 #     precondizioni (2), anche un errore inatteso e python3 o git mancanti;
 #   - soluzione/: applica.sh con il finto (copia e installa; con vendor/ non
@@ -51,7 +52,8 @@
 #     fuori dallo spazio di lavoro, in <spazio>.prova_dal_vivo/;
 #   - il README: il passo 8 torna in esercitazioni con il suo percorso;
 #     Manual chiede per ciò che non è di sola lettura, «di regola»; i
-#     traguardi e il tool Agent; la nota sui JSON della prova del corso;
+#     traguardi e il tool Agent; i JSON della prova del corso, fuori dallo
+#     spazio di lavoro;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero, e
 #     check_handson.sh senza segnalazioni su M4-E03;
 #   - shellcheck -x sugli script dell'elemento e su questo; la sintassi dei
@@ -78,7 +80,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e03.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e03.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=187
+readonly CASES=189
 readonly PROGETTO="progetti/gestionale-php"
 readonly TEST_REL="${PROGETTO}/tests/Integrazione/ChiusuraMeseTest.php"
 readonly DOC_REL="${PROGETTO}/docs/chiusura_mese.md"
@@ -396,6 +398,16 @@ if variante == "due":
                                     "prima seconda")])]
 if variante == "profonda":
     righe.append(assistente("m1", [uso(1, "Agent", "Explore")]))
+if variante == "copia":
+    # un blocco per riga, lo stesso messaggio, come le scrive Claude Code;
+    # poi la copia di una richiesta, che le ripete senza il messaggio
+    righe += [assistente("m1", [uso(1, "Agent", "Explore")]),
+              assistente("m1", [uso(2, "Agent", "Explore")]),
+              {"type": "api-request-blob", "hash": "finto",
+               "sessionId": "s1",
+               "message": {"role": "assistant",
+                           "content": [uso(1, "Agent", "Explore"),
+                                       uso(2, "Agent", "Explore")]}}]
 with open(os.path.join(cartella, "s1.jsonl"), "w", encoding="utf-8") as fh:
     for r in righe:
         fh.write(json.dumps(r, ensure_ascii=False) + "\n")
@@ -711,15 +723,16 @@ print("manual ok" if "non è di sola lettura" in piatto
 print("termini ok" if "Checkpoint" not in piatto and "Traguardo:" in piatto
       and "strumento Agent" not in piatto
       else "termini: «Checkpoint» o «strumento Agent»")
-print("json ok" if "letto con `grep` anche i JSON" in piatto
-      else "json: manca la nota sui JSON della prova del corso")
+print("json ok" if "con il JSON di ogni chiamata fuori dallo spazio di "
+      "lavoro" in piatto and "letto con `grep` anche i JSON" not in piatto
+      else "json: la prova del corso non dice che i JSON erano fuori")
 PY
   expect "README: il passo 8 torna in esercitazioni, non con cd -" 0 \
     "ritorno ok"
   expect "README: Manual chiede per ciò che non è di sola lettura" 0 \
     "manual ok"
   expect "README: Traguardo, non Checkpoint; il tool Agent" 0 "termini ok"
-  expect "README: la prova del corso e i JSON della prima parte" 0 \
+  expect "README: la prova del corso, i JSON fuori dallo spazio di lavoro" 0 \
     "json ok"
 }
 
@@ -950,6 +963,14 @@ t_dati_cartelle() {
   verifica "${w}" PN_CLAUDE_DIR="${c}"
   expect "una riga JSON troppo annidata: contata, mai un'uscita" 0 \
     "che non si leggono: 1"
+  ws w
+  soluzione "${w}"
+  c="$(mktemp -d "${TMP}/claude.XXXXXX")" || rotta "mktemp"
+  python3 -B -I "${TMP}/sessioni.py" "${c}" "${w}" copia || rotta "sessioni"
+  verifica "${w}" PN_CLAUDE_DIR="${c}"
+  expect "la copia di una richiesta non conta le chiamate due volte" 0 \
+    "chiamate Agent: 2 (Explore 2)"
+  expect "...né le toglie dal loro messaggio" 0 "nello stesso messaggio: 2"
   lunga="${TMP}/$(printf 'cartella%.0s' {1..24})"
   mkdir -p "${lunga}" || rotta "mkdir lunga"
   ws w "" "${lunga}"

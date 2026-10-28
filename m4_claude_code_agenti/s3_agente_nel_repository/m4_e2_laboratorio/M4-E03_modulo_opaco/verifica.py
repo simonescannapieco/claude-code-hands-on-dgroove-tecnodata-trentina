@@ -522,7 +522,11 @@ def conta_uso(uso: dict, mid: str, conti: Conteggi) -> None:
 
 
 def leggi_trascrizione(percorso: str, conti: Conteggi) -> None:
-    """Una trascrizione: le righe dei subagent (isSidechain) si saltano.
+    """Una trascrizione: contano solo i messaggi del modello (le righe di
+    type «assistant») e i loro blocchi tool_use. Le righe dei subagent
+    (isSidechain) si saltano, e così ogni altra riga che ripete le
+    chiamate senza il loro messaggio, come la copia di una richiesta
+    (api-request-blob): le toglierebbe dal messaggio che le contiene.
     Le righe si separano solo a «\\n»: dentro una stringa JSON possono
     esserci U+2028 e simili, che splitlines() romperebbe."""
     for riga in leggi(percorso).split("\n"):
@@ -536,9 +540,11 @@ def leggi_trascrizione(percorso: str, conti: Conteggi) -> None:
         if not isinstance(record, dict) or record.get("isSidechain") is True:
             continue
         messaggio = record.get("message")
-        mid = str(messaggio.get("id", "")) if isinstance(messaggio,
-                                                         dict) else ""
-        for uso in usi(record):
+        if record.get("type") != "assistant" or \
+                not isinstance(messaggio, dict):
+            continue
+        mid = str(messaggio.get("id", ""))
+        for uso in usi(messaggio.get("content")):
             conta_uso(uso, mid, conti)
 
 

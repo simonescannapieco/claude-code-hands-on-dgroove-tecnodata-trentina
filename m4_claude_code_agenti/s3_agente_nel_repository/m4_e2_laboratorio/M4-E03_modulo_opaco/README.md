@@ -412,22 +412,18 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
   come nel vostro spazio di lavoro.
 
 Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
-effort medium, `_docente/live.sh` sull'account del docente, con le regole
-scritte allora senza la barra iniziale, equivalenti dalla radice dello
-spazio di lavoro): dopo i prompt la verifica ha detto «Non ancora»,
-perché i controlli dei passi 2–7 di `PROPOSTA.md` non eseguivano i test;
-il turno in più con quelle righe li ha sistemati. Poi «VERIFICA OK»: le
-sei sezioni, le 9 tabelle e sei responsabilità; 8 passi, ognuno con il
-suo controllo; `legacy/` com'era; i test verdi sul codice originale,
-«OK (13 tests, 49 assertions)», e rossi sulla copia rotta, «Tests: 13,
-Assertions: 33, Failures: 10.». Come dati: la regola `deny` c'era; un
-piano in `piani/`; 5 commit; 2 sessioni; «chiamate Agent: 2 (Explore 2);
-nello stesso messaggio: 2», con 2 trascrizioni di subagent; nessun
-`ExitPlanMode`; nessuna chiamata di Edit o Write su `legacy/`. In quella
-prova la sessione della seconda parte ha letto con `grep` anche i JSON
-delle chiamate della prima parte, che allora `_docente/live.sh` teneva
-nello spazio di lavoro: lo spazio di lavoro di un partecipante non li ha,
-e ora la prova del docente li tiene fuori.
+effort medium, `_docente/live.sh` sull'account del docente, con il JSON
+di ogni chiamata fuori dallo spazio di lavoro): dopo i prompt la verifica
+ha detto «Non ancora», perché i controlli dei passi 5–7 di `PROPOSTA.md`
+non eseguivano i test; il turno in più con quelle righe li ha sistemati.
+Poi «VERIFICA OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 8
+passi, ognuno con il suo controllo; `legacy/` com'era; i test verdi sul
+codice originale, «OK (14 tests, 31 assertions)», e rossi sulla copia
+rotta, «Tests: 14, Assertions: 21, Failures: 10.». Come dati: la regola
+`deny` c'era; nessun piano in `piani/`; 5 commit; 2 sessioni; «chiamate
+Agent: 2 (Explore 2); nello stesso messaggio: 2», con 2 trascrizioni di
+subagent; nessun `ExitPlanMode`; nessuna chiamata di Edit o Write su
+`legacy/`.
 
 ## Verifica (tools/verifica.sh M4-E03)
 
@@ -493,7 +489,7 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 69 turni del modello in tutto, 29 soltanto per i test (sotto). Due
+corso 64 turni del modello in tutto, 28 soltanto per i test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -513,12 +509,12 @@ ogni parte, `/exit`.
 Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: sette chiamate, i cinque prompt, l'approvazione del piano e il
-turno in più per sistemare la proposta, con 3, 8, 29, 4, 9, 5 e 11 turni
-del modello (`num_turns`); 27,5, 69,5, 149,9, 21,7, 90,4, 28,5 e 30,2
-secondi; token in entrata della conversazione principale, cache
-compresa, 36.868, 246.419, 1.109.505, 241.956, 260.035, 241.642 e
-643.564. Nella prima chiamata i due subagent Explore portano il totale di
-tutti i modelli a 141.213 token in entrata.
+turno in più per sistemare la proposta, con 1, 10, 28, 4, 10, 5 e 6
+turni del modello (`num_turns`); 11,1, 69,4, 183,9, 24,1, 106,6, 47,7 e
+19,3 secondi; token in entrata della conversazione principale, cache
+compresa, 21.555, 269.773, 1.190.420, 359.040, 200.884, 317.660 e
+265.139. Nella prima chiamata i due subagent Explore portano il totale di
+tutti i modelli a 193.122 token in entrata.
 
 ## Per approfondire
 
