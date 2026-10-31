@@ -50,7 +50,8 @@ promettere. Il prompt è una specifica, non un desiderio.
 
 Ogni ingrediente sta nel suo tag, e ogni tag su una riga sua; il ruolo è
 una frase, «Sei …». I nomi dei tag sono in inglese, come negli esempi
-della documentazione di Anthropic («I tag»). I dati vengono dopo gli
+della documentazione di Anthropic, e sono la convenzione del corso («I
+tag»). I dati vengono dopo gli
 ingredienti, ciascuno in un tag che dice che cosa contiene; un documento
 lungo o una tabella incollata vanno invece in cima, e allora
 `<instructions>` va in fondo. Così sono scritti il prompt B del Modulo 2,
@@ -121,9 +122,10 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
   `<examples>` con un `<example>` per caso; per i dati, un nome che dice
   che cosa contengono, come `<message>` e `<procedures>`. Sono la
   convenzione del corso; Anthropic chiede nomi coerenti e descrittivi.
-- Ogni tag su una riga sua, aperto e chiuso; tag annidati quando il
-  contenuto ha una gerarchia (`<documents>`, con dentro un `<document>`
-  per file, come negli esempi della documentazione).
+- Nel corso ogni tag sta su una riga sua, aperto e chiuso.
+- Tag annidati quando il contenuto ha una gerarchia: `<documents>`, con
+  dentro un `<document>` per file, come negli esempi della
+  documentazione.
 - Con i documenti lunghi, i documenti in cima e la domanda in fondo: nei
   test di Anthropic, fino al 30 % di qualità in più. Nel template: i dati
   lunghi prima di `<role>`, e `<instructions>` per ultimo.

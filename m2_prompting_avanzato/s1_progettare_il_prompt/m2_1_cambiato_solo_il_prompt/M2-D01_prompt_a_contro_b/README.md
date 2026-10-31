@@ -84,8 +84,8 @@ Il messaggio è inventato, come tutti i dati del corso.
 
   Sono raccomandazioni: dicono che cosa aiuta, non promettono che ogni
   risposta rispetti ogni istruzione. Il prompt B le segue: i tag
-  `<format>` e `<constraints>` dicono la forma della scheda e i suoi
-  limiti.
+  `<format>` e `<constraints>` (i nomi dei tag sono del corso) dicono la
+  forma della scheda e i suoi limiti.
 - La guida al prompt caching, sul conteggio dei token: «La risposta di
   utilizzo include tre campi separati per i token di input che insieme
   rappresentano il tuo input totale». Sono `input_tokens`,

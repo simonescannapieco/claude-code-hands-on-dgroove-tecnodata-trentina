@@ -330,7 +330,7 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   di Anthropic non dice quanti indicatori debbano tornare, e una chat sola
   non decide un confronto.
 - La dashboard si giudica a occhio: nessuno script la legge.
-- La coppia registrata del corso, in Claude Code: il prompt dei numeri, con
+- La coppia del corso, in Claude Code: il prompt dei numeri, con
   il contesto (il tag `<context>`) che dice dove sta la tabella e
   l'istruzione (il tag `<instructions>`) che dice come calcolare, una volta
   con il CSV incollato in cima al messaggio, fra i tag
