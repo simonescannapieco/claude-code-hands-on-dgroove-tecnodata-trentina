@@ -29,6 +29,11 @@ Ogni ingrediente che manca è una decisione che lasciate al modello: la
 lunghezza, il formato, che cosa fare dei dati personali, che cosa si può
 promettere. Il prompt è una specifica, non un desiderio.
 
+I prompt che le demo e le esercitazioni vi danno, dal Modulo 3 in poi,
+seguono questo template: il ruolo in una frase, «Sei …», poi le etichette,
+una per paragrafo; un seguito nella stessa sessione tiene le etichette e
+non ripete il ruolo. Quelli brevi, una richiesta sola, restano semplici.
+
 ## Il collega brillante, appena arrivato
 
 La documentazione di Anthropic, nella versione italiana: «Pensa a Claude

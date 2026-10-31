@@ -49,6 +49,18 @@ verificano ogni elemento.
     come codice d'uscita.
   - Il controllo legge le esecuzioni, mai un file di esiti scritto prima.
   - Un oggetto che il controllo costruisce da sé è una dimostrazione.
+- Dal Modulo 3 in poi i prompt delle demo e degli esercizi seguono il
+  template del Modulo 2 (`riferimenti/pattern-di-prompt.md`) quando sono
+  lunghi o portano dati, un documento o esempi.
+  - Il ruolo in una frase, «Sei …», poi «Contesto:», «Istruzione:» (passi
+    numerati, il controllo che Claude esegue per ultimo), «Formato:»,
+    «Vincoli:» detti in positivo, «Esempi:» fra i tag `<example>`.
+  - I dati vanno in un tag che dice che cosa contengono, e allora le
+    istruzioni fra i tag `<istruzioni>`.
+  - Un seguito nella stessa sessione tiene le etichette e non ripete il
+    ruolo. Una richiesta breve resta semplice.
+  - Le due esecuzioni di una coppia differiscono solo nella parte che
+    cambia, e le slide mostrano il prompt così com'è.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata
   in testata, shellcheck pulito; le librerie `lib_*.sh` non sono eseguibili.
 
