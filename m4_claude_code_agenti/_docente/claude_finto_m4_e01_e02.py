@@ -40,8 +40,8 @@ Le scene, dal prompt:
   M4-E02  «prepara un piano» il piano: nessuna modifica; se le impostazioni
                              hanno plansDirectory, vi scrive piano-finto.md
                              (questa e «leggi NOTA.md», maiuscole o
-                             minuscole: nel prompt vengono dopo
-                             «Istruzione:»)
+                             minuscole: nel prompt stanno nel tag
+                             <instructions>, «leggi» in apertura)
           «@agent-autore-test»  un Agent autore-test che scrive un test
                              finto (il segno FINTO-RICHIEDE del criterio
                              $dal, che il codice di partenza non ha);

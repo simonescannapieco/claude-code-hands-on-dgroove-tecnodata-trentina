@@ -9,7 +9,9 @@
 #     l'uscita 1), i confini (120 e 121 parole, l'apostrofo, B uguale ad
 #     A), i dati rovinati (intestazione, righe, numeri, byte che non sono
 #     UTF-8, un file vuoto, una cartella al posto del file), mai con un
-#     traceback; una fila di 100000 trattini, entro 20 secondi;
+#     traceback; una fila di 100000 trattini, entro 20 secondi; le parole
+#     che dicono il prompt B, «il prompt di cinque tag», nei numeri, nella
+#     garanzia e nel suggerimento quando non è confermata;
 #   - M2-D02, demo/controlla_sistema.py attraverso verifica.sh, sugli
 #     stessi rami: le due garanzie, che confrontano le tre chiamate fra
 #     loro, con i loro confini e con molto contesto in comune; le
@@ -32,9 +34,13 @@
 #     claude esca, primo nel PATH, scrive ogni chiamata in un registro che
 #     deve restare vuoto); con il claude finto del modulo girano per
 #     intero, mostrano gli esiti ed escono 0, e la verifica dopo di loro
-#     esce 0; su una garanzia non confermata escono 1, con la riga d'esito
-#     una volta sola e «(uscita 1)»; se verifica.sh esce 2 (in una copia,
-#     con una verifica.sh finta) si fermano con 2;
+#     esce 0 (M2-D01: il passo di B, «il prompt di cinque tag», e la
+#     tabella che il claude finto dà a B); su una garanzia non confermata
+#     escono 1, con la riga d'esito una volta sola e «(uscita 1)»; se
+#     verifica.sh esce 2 (in una copia, con una verifica.sh finta) si
+#     fermano con 2;
+#   - il claude finto da solo: a un prompt del template, con i tag format
+#     e message come il prompt B, risponde con una tabella;
 #   - i due controlli compilati con -W error, senza avvisi;
 #   - shellcheck -x sui due verifica.sh, sui due live.sh e su questo file,
 #     con l'elenco delle segnalazioni vuoto.
@@ -58,7 +64,7 @@ readonly D02="${S1}/m2_3_ruoli_dei_messaggi/M2-D02_system_prompt_nascosto"
 readonly CONTROLLO_D01="${D01}/demo/controlla_istruzioni.py"
 readonly CONTROLLO_D02="${D02}/demo/controlla_sistema.py"
 readonly FINTO="${MOD}/_docente/claude_finto.py"
-readonly CASES=140
+readonly CASES=145
 readonly NL=$'\n'
 readonly FATTO="Fatto: ogni affermazione è stata messa alla prova; gli \
 esiti sono qui sopra."
@@ -312,7 +318,9 @@ t_d01_colonne() {
     "${G_TOKEN}${CONF}" "${NO}"
   expect_fatto "D01: l'ultima riga è la frase finale"
   expect "D01: i numeri letti di B" 0 \
-    "B, il prompt di cinque righe: 1211 token in entrata, 50 in uscita; 35"
+    "B, il prompt di cinque tag: 1211 token in entrata, 50 in uscita; 35"
+  expect "D01: la garanzia, i cinque tag al posto di «Riassumi.»" 0 \
+    "con cinque tag al posto di «Riassumi.»):"
   expect "D01: i dati di A, senza verdetto" 0 \
     "il nome del cliente: A sì · B no"
   b="| Problema | Quando | Impatto | Priorità | |---|---|---|---| | Fermo |"
@@ -378,6 +386,8 @@ t_d01_parole_garanzia() {
   expect "D01: B con meno token di A, uscita 1" 1 "${G_TOKEN}${NCONF}" \
     "${FATTO}"
   expect "D01: e la frase della documentazione" 1 "${DOC_TOKEN}"
+  expect "D01: e il suggerimento, B il prompt di cinque tag" 1 \
+    "A è «Riassumi.», B il prompt di cinque tag, con le stesse opzioni."
   d01 937 "${A_RISP}" 937 "${B_BUONA}"
   expect "D01: B con gli stessi token di A, uscita 1" 1 "${G_TOKEN}${NCONF}"
   d01 937 "${A_RISP}" 938 "${B_BUONA}"
@@ -735,7 +745,9 @@ t_live_precondizioni() {
 }
 
 # I live.sh con il claude finto del modulo: girano per intero, escono 0, e
-# la verifica dopo di loro esce 0.
+# la verifica dopo di loro esce 0. M2-D01: il passo di B lo dice «il
+# prompt di cinque tag», e il claude finto risponde a B, il prompt di
+# partenza, con la tabella.
 t_live_finto() {
   local e w
   for e in "${D01}" "${D02}"; do
@@ -743,9 +755,26 @@ t_live_finto() {
     finto_run "${e}/_docente/live.sh" "${w}"
     expect "${e##*/} live.sh con il claude finto: uscita 0" 0 "VERIFICA OK"
     expect "${e##*/} live.sh mostra gli esiti e la frase finale" 0 "${FATTO}"
+    if [[ "${e}" == "${D01}" ]]; then
+      expect "M2-D01 live.sh: il passo di B, il prompt di cinque tag" 0 \
+        "B: il prompt di cinque tag"
+      expect "M2-D01 live.sh: il claude finto risponde a B con la tabella" \
+        0 "la tabella: A nessuna · B con le colonne Problema | Quando"
+    fi
     run "${e}/verifica.sh" "${w}"
     expect_fatto "${e##*/}: dopo live.sh la verifica esce 0"
   done
+}
+
+# Il claude finto da solo: a un prompt del template, con i tag format e
+# message come il prompt B, risponde con la tabella che il prompt chiede.
+t_finto_template() {
+  local p
+  p=$'<format>\nUna tabella.\n</format>\n\n<message>\nIl centralino è'
+  p+=$' fermo.\n</message>'
+  run "${TMP}/finto/claude" -p --output-format json -- "${p}"
+  expect "il claude finto: format e message, la tabella" 0 \
+    '"result": "| Problema | Quando |'
 }
 
 # I live.sh su una garanzia non confermata, con il claude finto: escono 1,
@@ -844,6 +873,7 @@ main() {
   t_leggi_json
   t_live_precondizioni
   t_live_finto
+  t_finto_template
   t_live_ko
   t_live_due
   t_strumenti

@@ -130,29 +130,39 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
        pianifichi una funzione nuova, con i suoi test.
+       </role>
 
-       Contesto: la funzione è descritta in SPECIFICA.md. Il codice dei
-       ticket che la riguarda è in progetti/gestionale-php/src/Ticket/,
+       <context>
+       La funzione è descritta in SPECIFICA.md. Il codice dei ticket
+       che la riguarda è in progetti/gestionale-php/src/Ticket/,
        progetti/gestionale-php/src/Web/TicketController.php e
        progetti/gestionale-php/templates/ticket_elenco.php; i test che
        ci sono, in progetti/gestionale-php/tests/. Nel progetto ci sono
        due subagent: autore-test scrive i test dalla specifica,
        revisore confronta le modifiche con SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi SPECIFICA.md, quel codice e quei test, e
-       prepara un piano a piccoli passi.
+       <instructions>
+       Leggi SPECIFICA.md, quel codice e quei test, e prepara un piano
+       a piccoli passi.
+       </instructions>
 
-       Formato: un passo per requisito, ciascuno con il suo commit. Nel
-       piano: i test li scrive autore-test dalla specifica, in
-       background, mentre tu implementi; dopo ogni passo esegui il
-       controllo; prima del commit che chiude la funzione, revisore
-       confronta le modifiche con SPECIFICA.md.
+       <format>
+       Un passo per requisito, ciascuno con il suo commit. Nel piano: i
+       test li scrive autore-test dalla specifica, in background,
+       mentre tu implementi; dopo ogni passo esegui il controllo; prima
+       del commit che chiude la funzione, revisore confronta le
+       modifiche con SPECIFICA.md.
+       </format>
 
-       Vincoli: il controllo è questo comando, eseguito da solo, senza
+       <constraints>
+       Il controllo è questo comando, eseguito da solo, senza
        concatenarlo ad altri:
        tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
+       </constraints>
 
    <!-- /prompt 1 -->
 
@@ -166,7 +176,8 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       <instructions>
+       Il piano va bene, eseguilo un passo alla volta.
        1. Per i test lancia @agent-autore-test: scriva in
           progetti/gestionale-php/tests/ i test di SPECIFICA.md, dalla
           specifica e dai test che ci sono. Mentre lavora, implementa i
@@ -179,9 +190,11 @@ quella con la barra sì.
           messaggio fra virgolette, un comando per volta, e un
           messaggio come chiede la regola 11.1 di
           progetti/gestionale-php/docs/convenzioni.md.
+       </instructions>
 
-       Vincoli: i test si cambiano solo dove contraddicono
-       SPECIFICA.md.
+       <constraints>
+       I test si cambiano solo dove contraddicono SPECIFICA.md.
+       </constraints>
 
    <!-- /prompt 2 -->
 
@@ -203,11 +216,17 @@ quella con la barra sì.
 
    <!-- prompt 4 -->
 
-       Siamo alla fine della prima parte del laboratorio. Scrivi NOTA.md,
-       nella cartella in cui siamo: che cosa è fatto (i requisiti di
-       SPECIFICA.md già soddisfatti, con i loro commit), che cosa manca, e
-       i comandi per riprendere (il controllo, il revisore). Poi fai un
-       commit di NOTA.md: git add, poi git commit -m, un comando per volta.
+       <context>
+       Siamo alla fine della prima parte del laboratorio.
+       </context>
+
+       <instructions>
+       Scrivi NOTA.md, nella cartella in cui siamo: che cosa è fatto (i
+       requisiti di SPECIFICA.md già soddisfatti, con i loro commit),
+       che cosa manca, e i comandi per riprendere (il controllo, il
+       revisore). Poi fai un commit di NOTA.md: git add, poi git commit
+       -m, un comando per volta.
+       </instructions>
 
    <!-- /prompt 4 -->
 
@@ -228,14 +247,19 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
        una funzione lasciata a metà.
+       </role>
 
-       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; la
-       funzione è descritta in SPECIFICA.md.
+       <context>
+       NOTA.md dice che cosa è fatto e che cosa manca; la funzione è
+       descritta in SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
-       dove si era fermato.
+       <instructions>
+       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
+       fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
           passo; dopo ogni passo esegui il controllo, da solo, senza
           concatenarlo ad altri:
@@ -243,6 +267,16 @@ quella con la barra sì.
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché lo
           confronti con SPECIFICA.md.
+       </instructions>
+
+       <format>
+       Un commit per passo, con un messaggio come chiede la regola 11.1
+       di progetti/gestionale-php/docs/convenzioni.md.
+       </format>
+
+       <constraints>
+       I test si cambiano solo dove contraddicono SPECIFICA.md.
+       </constraints>
 
    <!-- /prompt 5 -->
 
@@ -383,7 +417,8 @@ quella con la barra sì.
 
 Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README): sei file di test nuovi, quattro in `Integrazione/`
+di questo README nella forma di allora, con le etichette al posto dei
+tag): sei file di test nuovi, quattro in `Integrazione/`
 (`TicketCriteriCombinatiTest.php`, `TicketPerApparatoCondizioniTest.php`,
 `TicketPerApparatoTest.php`, `TicketPerDateTest.php`) e due in
 `Unit/Ticket/` (`FiltroTicketIntervalloTest.php`,

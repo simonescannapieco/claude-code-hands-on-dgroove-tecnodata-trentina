@@ -10,29 +10,55 @@ controllate la data delle pagine.
 ## Il template
 
 ```text
-Ruolo:      chi è Claude in questo compito, e per chi lavora.
-Contesto:   che cosa deve sapere: lo scopo, chi leggerà, come verrà usato
-            il risultato.
-Istruzione: che cosa deve fare, con un verbo; passi numerati quando
-            l'ordine o la completezza contano.
-Formato:    in che forma: lunghezza, struttura, tabella, JSON.
-Vincoli:    che cosa fare, detto in positivo; che cosa scrivere quando un
-            dato manca («non indicato»).
-Esempi:     se la forma conta, da tre a cinque, tra tag <example>.
+<role>
+Sei …: chi è Claude in questo compito, e per chi lavora.
+</role>
 
-<dati>
-... il messaggio, il codice, il log ...
-</dati>
+<context>
+Che cosa deve sapere: lo scopo, chi leggerà, come verrà usato il
+risultato; dove sono i dati.
+</context>
+
+<instructions>
+Che cosa deve fare, con un verbo; passi numerati quando l'ordine
+o la completezza contano.
+</instructions>
+
+<format>
+In che forma: lunghezza, struttura, tabella, JSON.
+</format>
+
+<constraints>
+Che cosa fare, detto in positivo; che cosa scrivere quando un
+dato manca («non indicato»).
+</constraints>
+
+<examples>
+<example>
+Se la forma conta: un caso già risolto; da tre a cinque esempi.
+</example>
+</examples>
+
+<message>
+... i dati: ciascuno in un tag che dice che cosa contiene ...
+</message>
 ```
 
 Ogni ingrediente che manca è una decisione che lasciate al modello: la
 lunghezza, il formato, che cosa fare dei dati personali, che cosa si può
 promettere. Il prompt è una specifica, non un desiderio.
 
-I prompt che le demo e le esercitazioni vi danno, dal Modulo 3 in poi,
-seguono questo template: il ruolo in una frase, «Sei …», poi le etichette,
-una per paragrafo; un seguito nella stessa sessione tiene le etichette e
-non ripete il ruolo. Quelli brevi, una richiesta sola, restano semplici.
+Ogni ingrediente sta nel suo tag, e ogni tag su una riga sua; il ruolo è
+una frase, «Sei …». I nomi dei tag sono in inglese, come negli esempi
+della documentazione di Anthropic («I tag»). I dati vengono dopo gli
+ingredienti, ciascuno in un tag che dice che cosa contiene; un documento
+lungo o una tabella incollata vanno invece in cima, e allora
+`<instructions>` va in fondo. Così sono scritti il prompt B del Modulo 2,
+la versione di riferimento della prima esercitazione e, dal Modulo 3 in
+poi, i prompt che le demo e le esercitazioni vi danno. Un seguito nella
+stessa sessione tiene i tag e non ripete il ruolo. Una richiesta di una
+frase resta semplice; quando le sue frasi portano ingredienti diversi,
+ognuna va nel tag del suo ingrediente.
 
 ## Il collega brillante, appena arrivato
 
@@ -44,14 +70,14 @@ anche Claude.
 
 ## Gli ingredienti, uno per uno
 
-| ingrediente | la domanda | per esempio |
-|---|---|---|
-| ruolo | chi scrive, e a chi? | «Sei l'assistenza clienti di CiaspoLink e rispondi per e-mail a un cliente business.» |
-| contesto | che cosa deve sapere, e perché? | lo scopo, chi legge, le procedure che valgono, tra tag |
-| istruzione | che cosa deve fare? | «Rispondi alle due richieste del cliente, con le sole informazioni delle procedure.» |
-| formato | in che forma? | «al massimo 120 parole, senza oggetto; firma: L'assistenza clienti di CiaspoLink» |
-| vincoli | che cosa fare invece di ciò che non va? | «Dove un dato manca, scrivi “non indicato”.» |
-| esempi | quale forma deve copiare? | due o tre segnalazioni già classificate |
+| ingrediente | tag | la domanda | per esempio |
+|---|---|---|---|
+| ruolo | `<role>` | chi scrive, e a chi? | «Sei l'assistenza clienti di CiaspoLink e rispondi per e-mail a un cliente business.» |
+| contesto | `<context>` | che cosa deve sapere, e perché? | lo scopo, chi legge, le procedure che valgono, e in quale tag stanno i dati |
+| istruzione | `<instructions>` | che cosa deve fare? | «Rispondi alle due richieste del cliente, con le sole informazioni delle procedure.» |
+| formato | `<format>` | in che forma? | «al massimo 120 parole, senza oggetto; firma: L'assistenza clienti di CiaspoLink» |
+| vincoli | `<constraints>` | che cosa fare invece di ciò che non va? | «Dove un dato manca, scrivi “non indicato”.» |
+| esempi | `<examples>`, un `<example>` per caso | quale forma deve copiare? | tre segnalazioni già classificate |
 
 Dite a Claude che cosa fare invece di che cosa non fare: per il formato,
 la documentazione di Anthropic suggerisce di chiedere una prosa scorrevole,
@@ -86,13 +112,21 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 ## I tag
 
 - I tag XML aiutano Claude a leggere senza ambiguità un prompt che mescola
-  istruzioni, contesto, esempi e dati: un tag per ogni tipo di contenuto,
-  per esempio `<istruzioni>`, `<contesto>`, `<messaggio>`.
-- Nomi coerenti in tutti i prompt; tag annidati quando il contenuto ha una
-  gerarchia (`<documents>`, con dentro un `<document>` per file, come
-  negli esempi della documentazione).
+  istruzioni, contesto, esempi e dati; la documentazione di Anthropic
+  consiglia un tag per ogni tipo di contenuto, con l'esempio di
+  `<instructions>`, `<context>` e `<input>`.
+- Nel corso i nomi sono in inglese, come negli esempi della
+  documentazione, e gli stessi in tutti i prompt: un tag per ingrediente,
+  `<role>`, `<context>`, `<instructions>`, `<format>`, `<constraints>`,
+  `<examples>` con un `<example>` per caso; per i dati, un nome che dice
+  che cosa contengono, come `<message>` e `<procedures>`. Sono la
+  convenzione del corso; Anthropic chiede nomi coerenti e descrittivi.
+- Ogni tag su una riga sua, aperto e chiuso; tag annidati quando il
+  contenuto ha una gerarchia (`<documents>`, con dentro un `<document>`
+  per file, come negli esempi della documentazione).
 - Con i documenti lunghi, i documenti in cima e la domanda in fondo: nei
-  test di Anthropic, fino al 30 % di qualità in più.
+  test di Anthropic, fino al 30 % di qualità in più. Nel template: i dati
+  lunghi prima di `<role>`, e `<instructions>` per ultimo.
 - Anche la risposta può avere le sue sezioni tra tag: chiedetelo.
 - Sui modelli recenti la forma esatta conta probabilmente meno di una
   volta, scrive Anthropic: l'importante è separare istruzioni e dati.
@@ -156,8 +190,8 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 5. **Vincoli in positivo**: che cosa fare, e che cosa scrivere quando un
    dato manca; il permesso di dire «non lo so».
 6. **Esempi**, se la forma conta, con le etichette ammesse.
-7. **Dati tra tag**, e nessuna memoria presunta: ogni chiamata parte da ciò
-   che le date.
+7. **Ogni ingrediente e ogni dato nel suo tag**, e nessuna memoria
+   presunta: ogni chiamata parte da ciò che le date.
 8. **Il test del collega**: lo capirebbe chi non sa niente del compito?
 
 ## Quale strategia per quale compito

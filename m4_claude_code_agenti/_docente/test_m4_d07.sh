@@ -2,7 +2,9 @@
 #
 # test_m4_d07.sh -- le prove di M4-D07 «Due filoni, due worktree», per il
 # docente (sta in _docente/, il materiale del docente):
-#   - i due prompt (l'esempio in formato doctest, la rinomina), lo spazio
+#   - i due prompt (l'esempio in formato doctest, la rinomina; ogni frase
+#     intera nel suo tag, <instructions> e <constraints>, le parole quelle
+#     di prima), lo spazio
 #     di lavoro di prepara_esercizio.sh (un repository git con un commit,
 #     pulito; nessun controllo), dove verifica.sh esce 1;
 #   - demo/fotografa.sh su repository git veri, con worktree veri: lo
@@ -70,7 +72,10 @@ readonly FINTO_PY="${MOD}/_docente/claude_finto_m4_urgenze.py"
 readonly URG="${RADICE}/progetti/urgenze"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=132
+readonly CASES=133
+# I tag dei due prompt, nell'ordine: una frase nel tag <instructions>, una
+# nel tag <constraints>.
+readonly TAG_D07="<instructions> </instructions> <constraints> </constraints>"
 FINE='Fatto: ogni affermazione è stata messa alla prova;'
 FINE+=' gli esiti sono qui sopra.'
 readonly FINE
@@ -504,6 +509,21 @@ PY
 
 # --- I prompt e lo spazio di lavoro -----------------------------------------
 
+# Un prompt a tag, per le prove: la prima riga elenca le righe dei tag,
+# nell'ordine, separate da spazi; la seconda riunisce le altre righe non
+# vuote, le parole. Arguments: $1 il file. Outputs: le due righe.
+tag_e_parole() {
+  python3 -B -I - "$1" <<'PY'
+import re
+import sys
+
+righe = open(sys.argv[1], encoding="utf-8").read().rstrip("\n").split("\n")
+tag = [r for r in righe if re.fullmatch(r"</?[a-z_]+>", r)]
+print(" ".join(tag))
+print(" ".join(r for r in righe if r and r not in tag))
+PY
+}
+
 t_file() {
   local e r
   e="$(cat "${D07}/demo/prompt-esempio.txt")"
@@ -523,6 +543,19 @@ t_file() {
     pass "prompt: la rinomina nel modulo e nei test, nient'altro"
   else
     fail "prompt-rinomina.txt: «${r}»"
+  fi
+  e="$(tag_e_parole "${D07}/demo/prompt-esempio.txt")"
+  r="$(tag_e_parole "${D07}/demo/prompt-rinomina.txt")"
+  if [[ "${e}" == "${TAG_D07}"$'\n'"Aggiungi alla docstring del modulo \
+progetti/urgenze/urgenza.py un esempio d'uso della funzione urgente, nel \
+formato di doctest: righe che cominciano con >>>. Non cambiare altro." \
+      && "${r}" == "${TAG_D07}"$'\n'"Rinomina il parametro giorni_aperta \
+della funzione urgente in giorni_di_apertura, in progetti/urgenze/urgenza.py \
+e nei suoi test, progetti/urgenze/test_urgenza.py. Non cambiare altro." ]]
+  then
+    pass "prompt: ogni frase nel suo tag, instructions e constraints"
+  else
+    fail "prompt: i tag e le parole: «${e}» «${r}»"
   fi
   if [[ ! -e "${D07}/demo/controlla_worktree.py" \
       && -f "${D07}/controlla_worktree.py" ]]; then

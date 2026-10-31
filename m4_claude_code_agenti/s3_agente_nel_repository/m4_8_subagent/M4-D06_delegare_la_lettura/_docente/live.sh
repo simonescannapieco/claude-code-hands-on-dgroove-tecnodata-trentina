@@ -6,9 +6,9 @@
 # ci sono soltanto i log della settimana: nella cartella niente dice la
 # risposta. Le coppie: prompt_delega.txt (delega la lettura dei log al
 # subagent Explore, con un riassunto breve) e prompt_senza.txt (leggi tu i
-# log, con Read, Grep e Glob); i due prompt differiscono soltanto nella
-# prima frase di «Istruzione:». Ogni chiamata: claude -p, sonnet, --effort
-# low, --tools Agent,Read,Grep,Glob
+# log, con Read, Grep e Glob); i due prompt, un tag per ingrediente,
+# differiscono soltanto nella prima frase del tag <instructions>. Ogni
+# chiamata: claude -p, sonnet, --effort low, --tools Agent,Read,Grep,Glob
 # (fra gli strumenti integrati soltanto questi: Agent lancia il subagent,
 # e Bash non c'è, perché un suo ls -la in sola lettura, che di regola non
 # chiede il permesso, scriveva negli stream l'utente della macchina),

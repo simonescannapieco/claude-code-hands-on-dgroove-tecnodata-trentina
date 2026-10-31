@@ -136,31 +136,39 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
+       <role>
        Sei uno sviluppatore della rete di CiaspoLink e pianifichi uno
        script operativo, il rapporto quotidiano dei disservizi.
+       </role>
 
-       Contesto: lo script da scrivere è rapporto_giornaliero.py, in
-       Python 3.8 o successivo, solo libreria standard, descritto in
-       SPECIFICA.md.
+       <context>
+       Lo script da scrivere è rapporto_giornaliero.py, in Python 3.8 o
+       successivo, solo libreria standard, descritto in SPECIFICA.md.
        I log della settimana sono in progetti/rete/log/, e la loro
        forma è descritta in progetti/rete/README.md («I log della
        settimana»). Nel progetto c'è il subagent revisore, che
        confronta il contratto d'uscita e i messaggi di uno script con
        SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi SPECIFICA.md e la descrizione dei log, guarda
-       poche righe per sorgente dei log, e prepara un piano a piccoli
-       passi.
+       <instructions>
+       Leggi SPECIFICA.md e la descrizione dei log, guarda poche righe
+       per sorgente dei log, e prepara un piano a piccoli passi.
+       </instructions>
 
-       Formato: ogni passo con il suo commit. Nel piano: dopo ogni
-       passo esegui il controllo e leggi l'esito nella sua ultima riga;
-       prima del commit che chiude lo script, revisore ne controlla il
-       contratto d'uscita e i messaggi con SPECIFICA.md.
+       <format>
+       Ogni passo con il suo commit. Nel piano: dopo ogni passo esegui
+       il controllo e leggi l'esito nella sua ultima riga; prima del
+       commit che chiude lo script, revisore ne controlla il contratto
+       d'uscita e i messaggi con SPECIFICA.md.
+       </format>
 
-       Vincoli: dei log leggi poche righe per sorgente; i file interi
-       li legge lo script. Il controllo è questo comando, eseguito da
-       solo, senza concatenarlo ad altri:
+       <constraints>
+       Dei log leggi poche righe per sorgente; i file interi li legge
+       lo script. Il controllo è questo comando, eseguito da solo,
+       senza concatenarlo ad altri:
        python3 controlla_rapporto.py
+       </constraints>
 
    <!-- /prompt 1 -->
 
@@ -175,7 +183,8 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       <instructions>
+       Il piano va bene, eseguilo un passo alla volta.
        1. Prova lo script su un giorno della settimana dei log, da
           solo:
           python3 rapporto_giornaliero.py --giorno 2026-09-08
@@ -186,17 +195,28 @@ quella con la barra sì.
           Dopo ogni passo che passa il controllo fai un commit: git
           add, poi git commit -m con il messaggio fra virgolette, un
           comando per volta.
+       </instructions>
 
-       Formato: il messaggio di commit è breve, nella forma
-       tipo(ambito): descrizione.
+       <format>
+       Il messaggio di commit è breve, nella forma tipo(ambito):
+       descrizione.
+       </format>
 
-       Vincoli: si corregge lo script; controlla_rapporto.py resta
-       com'è.
+       <constraints>
+       Si corregge lo script; controlla_rapporto.py resta com'è.
+       </constraints>
 
-       Esempi:
+       <examples>
        <example>
        feat(rapporto): legge il syslog
        </example>
+       <example>
+       feat(rapporto): conta le linee dei disservizi della fibra
+       </example>
+       <example>
+       fix(rapporto): esce con 2 quando manca un log del giorno
+       </example>
+       </examples>
 
    <!-- /prompt 2 -->
 
@@ -225,17 +245,21 @@ quella con la barra sì.
 
    <!-- prompt 4 -->
 
-       Contesto: siamo alla fine della prima parte del laboratorio, e
-       la seconda riparte da una sessione nuova.
+       <context>
+       Siamo alla fine della prima parte del laboratorio, e la seconda
+       riparte da una sessione nuova.
+       </context>
 
-       Istruzione: scrivi NOTA.md, nella cartella in cui siamo; poi fai
-       un commit di NOTA.md: git add, poi git commit -m, un comando per
-       volta.
+       <instructions>
+       Scrivi NOTA.md, nella cartella in cui siamo; poi fai un commit
+       di NOTA.md: git add, poi git commit -m, un comando per volta.
+       </instructions>
 
-       Formato: che cosa è fatto (i punti di SPECIFICA.md già
-       soddisfatti, con i loro commit), che cosa manca, e i comandi per
-       riprendere (il controllo, lo script su un giorno della
-       settimana, il revisore).
+       <format>
+       Che cosa è fatto (i punti di SPECIFICA.md già soddisfatti, con i
+       loro commit), che cosa manca, e i comandi per riprendere (il
+       controllo, lo script su un giorno della settimana, il revisore).
+       </format>
 
    <!-- /prompt 4 -->
 
@@ -256,14 +280,19 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
+       <role>
        Sei uno sviluppatore della rete di CiaspoLink e riprendi uno
        script operativo lasciato a metà.
+       </role>
 
-       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; lo
-       script è descritto in SPECIFICA.md.
+       <context>
+       NOTA.md dice che cosa è fatto e che cosa manca; lo script è
+       descritto in SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
-       dove si era fermato.
+       <instructions>
+       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
+       fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
           passo; dopo ogni passo esegui il controllo, da solo, senza
           concatenarlo ad altri:
@@ -272,6 +301,16 @@ quella con la barra sì.
           dal primo commit, e passa il diff a @agent-revisore perché
           controlli il contratto d'uscita e i messaggi dello script con
           SPECIFICA.md.
+       </instructions>
+
+       <format>
+       Un commit per passo, con un messaggio breve, nella forma
+       tipo(ambito): descrizione.
+       </format>
+
+       <constraints>
+       Si corregge lo script; controlla_rapporto.py resta com'è.
+       </constraints>
 
    <!-- /prompt 5 -->
 
@@ -466,7 +505,8 @@ nella settimana dei log di esempio: quelli li trova lo script.
 
 Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, la variante in Python, `_docente/live.sh` sull'account del
-docente, con i prompt di questo README): il controllo dell'esercizio, «8
+docente, con i prompt di questo README nella forma di allora, con le
+etichette al posto dei tag): il controllo dell'esercizio, «8
 casi su 8 come la specifica»; martedì 8 settembre, uscita 1 e una riga,
 con il disservizio che la verifica conosce, «apparato sì · porta sì ·
 inizio sì · fine sì · linee sì»; lunedì 7, uscita 0 e nessuna riga. Il

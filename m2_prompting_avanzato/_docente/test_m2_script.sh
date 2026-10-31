@@ -9,6 +9,10 @@
 #     misura.sh, strumenti/kit.py, lo schema, il giudice, le impostazioni,
 #     verifica.py e verifica.sh nelle due esercitazioni; il messaggio del
 #     cliente in ogni elemento che lo usa, anche dentro i prompt;
+#   - i due prompt del template (il prompt B di M2-D01, la versione di
+#     riferimento di M2-E01): un tag per ingrediente, ogni tag su una riga
+#     sua e nell'ordine, poi i dati nei loro tag; il ruolo che comincia
+#     con «Sei »; nessuna etichetta; v2 uguale a v1 byte per byte;
 #   - kit.py senza claude: i segnaposto, le versioni, i controlli, la
 #     consegna al giudice, il giudizio incompleto, il confronto; l'uscita di
 #     controlla (0 tutto superato, 1 un controllo no, 2 un errore); i
@@ -105,7 +109,7 @@ rispettati in v1: impegni)"
 # verifica.py, quelli del confronto di v0 e v1.
 readonly E02_SUP_V1='  v1: controlli 4/4, giudice 4/5'
 readonly E02_SUP_TOTALI='  totali: controlli 2/4 → 4/4; giudice 4 → 4 su 5'
-readonly CASES=309
+readonly CASES=316
 TMP=''
 PASS=0
 FAIL=0
@@ -299,6 +303,47 @@ t_copie() {
       pass "${p##*/} contiene il messaggio intero"
     else fail "${p##*/} non contiene il messaggio intero"; fi
   done
+}
+
+# I tag di un prompt del template, nell'ordine, su una riga: le righe che
+# sono soltanto un tag, aperto o chiuso. Arguments: $1 il file.
+# Outputs: i tag separati da uno spazio.
+tag_del_prompt() {
+  grep -E '^</?[a-z_]+>$' -- "$1" | tr '\n' ' '
+}
+
+# I due prompt del template del modulo: il prompt B di M2-D01 e la
+# versione di riferimento di M2-E01. Ogni ingrediente nel suo tag, ogni
+# tag da solo su una riga e nell'ordine del modulo (ruolo, contesto,
+# istruzione, formato, vincoli), poi i dati, ciascuno nel suo tag; il ruolo
+# comincia con «Sei »; nessuna riga comincia con un'etichetta («Ruolo:»,
+# «Contesto:», …); e v2, la rimisura, è v1 byte per byte.
+t_template() {
+  local p f t tags line
+  local -a nomi
+  for p in "${D01}/demo/prompt-b.md:message" \
+      "${E01}/soluzione/prompt/v1.md:message procedures"; do
+    f="${p%%:*}"
+    read -ra nomi <<< "role context instructions format constraints ${p#*:}"
+    tags=''
+    for t in "${nomi[@]}"; do
+      tags+="<${t}> </${t}> "
+    done
+    if [[ "$(tag_del_prompt "${f}")" == "${tags}" ]]; then
+      pass "${f##*/}: un tag per ingrediente, poi i dati, nell'ordine"
+    else fail "${f##*/}: i tag sono «$(tag_del_prompt "${f}")»"; fi
+    line="$(grep -A1 -xF '<role>' -- "${f}" | sed -n 2p)"
+    if [[ "${line}" == "Sei "* ]]; then
+      pass "${f##*/}: il ruolo comincia con «Sei »"
+    else fail "${f##*/}: il ruolo comincia con «${line:0:40}»"; fi
+    if grep -qE '^(Ruolo|Contesto|Istruzion[ei]|Formato|Vincoli|Esempi):' \
+        -- "${f}"; then
+      fail "${f##*/}: una riga comincia con un'etichetta"
+    else pass "${f##*/}: nessuna riga comincia con un'etichetta"; fi
+  done
+  if cmp -s "${E01}/soluzione/prompt/v1.md" "${E01}/soluzione/prompt/v2.md"
+  then pass "M2-E01: v2, la rimisura, è v1 byte per byte"
+  else fail "M2-E01: v2 è diversa da v1"; fi
 }
 
 # kit.py, senza claude, in una copia dell'esercizio di M2-E01.
@@ -1111,6 +1156,7 @@ main() {
   prepara_finto
   t_verifiche_base
   t_copie
+  t_template
   t_kit
   t_verifica_regole
   t_aiutanti

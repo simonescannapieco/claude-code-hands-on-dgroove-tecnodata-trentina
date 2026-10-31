@@ -1,14 +1,26 @@
+<role>
 Sei un tecnico della rete di CiaspoLink e ricostruisci un guasto
 dai log degli apparati.
+</role>
 
-Contesto: martedì 8 settembre 2026 un guasto su olt-pergine-01
-ha messo fuori servizio insieme più linee di clienti. I log
-della settimana sono nella cartella in cui siamo.
+<context>
+Martedì 8 settembre 2026 un guasto su olt-pergine-01 ha messo
+fuori servizio insieme più linee di clienti. I log della
+settimana sono nella cartella in cui siamo.
+</context>
 
-Istruzione: leggi tu i log, con i tuoi strumenti Read, Grep e
-Glob.
+<instructions>
+Leggi tu i log, con i tuoi strumenti Read, Grep e Glob.
 Poi rispondi: quando è cominciato, quando è finito (quando le
 ONT sono tornate in linea) e quante linee di clienti (ONT) ha
 coinvolto?
+</instructions>
 
-Formato: una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'.
+<format>
+Una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'.
+</format>
+
+<constraints>
+Ricava orari e linee dai log; dove un dato manca, scrivi «non
+indicato» al suo posto.
+</constraints>

@@ -77,17 +77,21 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
 
    <!-- prompt -->
 
+       <role>
        Sei uno sviluppatore Python dell'assistenza clienti di
        CiaspoLink e prepari per il team di analisi una copia anonima
        della settimana di ticket.
+       </role>
 
-       Contesto: la settimana è in dati/ticket-settimana.csv, 343
-       segnalazioni con dati personali, che devono restare fuori da
-       questa conversazione. Il dizionario delle sue colonne è
-       dati/README.md; gli indicatori del profilo sono in
-       kpi_definizioni.md.
+       <context>
+       La settimana è in dati/ticket-settimana.csv, 343 segnalazioni
+       con dati personali, che devono restare fuori da questa
+       conversazione. Il dizionario delle sue colonne è dati/README.md;
+       gli indicatori del profilo sono in kpi_definizioni.md.
+       </context>
 
-       Istruzione: scrivi ed esegui due script, in quest'ordine.
+       <instructions>
+       Scrivi ed esegui due script, in quest'ordine.
        1. Leggi dati/README.md e kpi_definizioni.md.
        2. Scrivi anonimizza.py, che legge dati/ticket-settimana.csv e
           scrive anonimo/ticket-anonimi.csv. Eseguilo con
@@ -101,37 +105,43 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
           ultima riga, «uscita: 0» oppure «uscita: 1»: finché dice 1,
           correggi anonimizza.py e riesegui anonimizza.py, profilo.py e
           il controllo.
+       </instructions>
 
-       Formato: gli script in Python 3.8 o successivo, solo libreria
-       standard. anonimo/ticket-anonimi.csv in UTF-8 senza BOM, fine
-       riga LF, con tutte le righe nell'ordine originale e queste 17
-       colonne in quest'ordine: id_ticket, aperto_il, chiuso_il,
-       canale, cliente, tipo_cliente, comune, tecnologia, categoria,
-       priorita, stato, oggetto, descrizione, team,
-       minuti_prima_risposta, minuti_risoluzione, soddisfazione.
-       anonimo/profilo.json con la chiave "kpi", gli indicatori di
-       kpi_definizioni.md, e accanto ciò che trova una profilazione del
-       file: campi vuoti, comuni scritti in modi diversi, segnalazioni
-       doppie.
+       <format>
+       Gli script in Python 3.8 o successivo, solo libreria standard.
+       anonimo/ticket-anonimi.csv in UTF-8 senza BOM, fine riga LF, con
+       tutte le righe nell'ordine originale e queste 17 colonne in
+       quest'ordine: id_ticket, aperto_il, chiuso_il, canale, cliente,
+       tipo_cliente, comune, tecnologia, categoria, priorita, stato,
+       oggetto, descrizione, team, minuti_prima_risposta,
+       minuti_risoluzione, soddisfazione. anonimo/profilo.json con la
+       chiave "kpi", gli indicatori di kpi_definizioni.md, e accanto
+       ciò che trova una profilazione del file: campi vuoti, comuni
+       scritti in modi diversi, segnalazioni doppie.
+       </format>
 
-       Vincoli: i due CSV li aprono soltanto i tuoi script, e il loro
-       contenuto resta fuori da ciò che stampi. In cliente metti uno
-       pseudonimo al posto di id_cliente: C-001, C-002, … in ordine di
-       prima comparsa, lo stesso codice sempre con lo stesso
-       pseudonimo, vuoto se il codice è vuoto. Togli nome_cliente,
-       telefono, email e id_linea. In oggetto e descrizione sostituisci
-       con [OMESSO] ogni dato personale (telefoni, e-mail, indirizzi,
-       nomi di persone e di clienti, indirizzi MAC e IP, codici cliente
-       e di linea, utenze PPPoE, informazioni sulla salute); il resto
-       del testo e le altre colonne restano come sono. Esegui ogni
-       comando da solo, senza concatenarlo ad altri.
+       <constraints>
+       I due CSV li aprono soltanto i tuoi script, e il loro contenuto
+       resta fuori da ciò che stampi. In cliente metti uno pseudonimo
+       al posto di id_cliente: C-001, C-002, … in ordine di prima
+       comparsa, lo stesso codice sempre con lo stesso pseudonimo,
+       vuoto se il codice è vuoto. Togli nome_cliente, telefono, email
+       e id_linea. In oggetto e descrizione sostituisci con [OMESSO]
+       ogni dato personale (telefoni, e-mail, indirizzi, nomi di
+       persone e di clienti, indirizzi MAC e IP, codici cliente e di
+       linea, utenze PPPoE, informazioni sulla salute); il resto del
+       testo e le altre colonne restano come sono. Esegui ogni comando
+       da solo, senza concatenarlo ad altri.
+       </constraints>
 
    <!-- /prompt -->
 
    Il prompt segue il template del Modulo 2
-   (`riferimenti/pattern-di-prompt.md`): il ruolo, poi il contesto,
-   l'istruzione a passi con il controllo per ultimo, il formato e i
-   vincoli. La slide lo mostra così com'è, riga per riga, in tre pagine.
+   (`riferimenti/pattern-di-prompt.md`), ogni ingrediente nel suo tag: il
+   ruolo in `<role>`, il contesto in `<context>`, l'istruzione a passi in
+   `<instructions>`, con il controllo per ultimo, il formato in `<format>`
+   e i vincoli in `<constraints>`. La slide lo mostra così com'è, riga per
+   riga, in tre pagine.
 
    - **Percorso A, un vostro CSV:** un'esportazione come quelle del vostro
      lavoro, ma con dati inventati al posto di quelli veri (le regole di

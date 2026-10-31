@@ -10,7 +10,7 @@
 #     raccomandazioni, «rispettata» o «non rispettata in questa
 #     esecuzione», che non cambiano l'uscita;
 #   - la garanzia: B manda più token in entrata di A, perché manda lo
-#     stesso messaggio con cinque righe al posto di «Riassumi.».
+#     stesso messaggio con cinque tag al posto di «Riassumi.».
 #
 # Uso:    verifica.sh <spazio di lavoro>
 # Uscita: 0 = le due risposte ci sono e la garanzia è confermata · 1 =

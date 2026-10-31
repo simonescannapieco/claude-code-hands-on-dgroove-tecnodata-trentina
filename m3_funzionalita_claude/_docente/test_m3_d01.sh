@@ -8,7 +8,9 @@
 #     apparato dell'inventario; verita.json dice gli stessi critici; le due
 #     immagini sono PNG di 1600×1000 e di 160×100, la grande sotto i 256
 #     KB; prompt.txt chiede le due righe o «non leggibile» e nomina
-#     IMMAGINE una volta; .claude/settings.json tiene le regole prudenti
+#     IMMAGINE una volta, ogni frase nel tag del suo ingrediente
+#     (instructions, format, constraints); .claude/settings.json tiene le
+#     regole prudenti
 #     del repository e nega a Read la pagina, la verità, gli esiti e le
 #     risposte; prepara_esercizio.sh porta tutto nello spazio di lavoro, e
 #     verifica.sh vi esce 1;
@@ -81,7 +83,7 @@ readonly FINTO_PY="${MOD}/_docente/claude_finto_m3_demo.py"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=143
+readonly CASES=144
 readonly NA='—'
 FINE='Fatto: ogni affermazione è stata messa alla prova;'
 FINE+=' gli esiti sono qui sopra.'
@@ -474,7 +476,10 @@ PY
   fi
 }
 
-# prompt.txt: le due righe, «non leggibile», IMMAGINE una volta.
+# prompt.txt: le due righe, «non leggibile», IMMAGINE una volta; ogni
+# frase nel tag del suo ingrediente: la richiesta in instructions, le due
+# righe in format, «non leggibile» in constraints, ogni tag da solo sulla
+# sua riga e chiuso, niente fuori dai tag.
 t_prompt() {
   local p n
   p="$(cat "${D01}/demo/prompt.txt")"
@@ -490,6 +495,35 @@ t_prompt() {
   else
     fail "prompt: «${p}»"
   fi
+  run python3 -B -I - "${D01}/demo/prompt.txt" <<'PY'
+import re
+import sys
+
+dentro, ordine, fuori, corrente = {}, [], [], None
+for r in open(sys.argv[1], encoding="utf-8").read().rstrip("\n").split("\n"):
+    m = re.fullmatch(r"<(/?)([a-z_]+)>", r)
+    if m and not m.group(1) and corrente is None:
+        corrente = m.group(2)
+        ordine.append(corrente)
+        dentro[corrente] = []
+    elif m and m.group(1) and m.group(2) == corrente:
+        corrente = None
+    elif corrente is not None:
+        dentro[corrente].append(r)
+    elif r.strip():
+        fuori.append(r)
+t = {k: "\n".join(v) for k, v in dentro.items()}
+if tuple(ordine) == ("instructions", "format", "constraints") \
+        and corrente is None and not fuori \
+        and "IMMAGINE" in t["instructions"] and "critici: " in t["format"] \
+        and "apparati: " in t["format"] \
+        and "non leggibile" in t["constraints"]:
+    print("tre tag ok")
+else:
+    print("tag: %s; fuori dai tag: %d righe" % (ordine, len(fuori)))
+PY
+  expect "prompt: la richiesta, le due righe e «non leggibile», ognuna nel \
+suo tag" 0 "tre tag ok"
 }
 
 # .claude/settings.json: le regole prudenti del repository, più le

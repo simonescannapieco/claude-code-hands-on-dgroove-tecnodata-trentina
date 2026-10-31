@@ -33,7 +33,7 @@ L'elemento si riconosce dalla cartella corrente: controlla_notturno.py
 nessuna modifica; se le impostazioni hanno plansDirectory, vi scrive
 piano-finto.md. Nelle altre modalità le scene, dal prompt («il piano va
 bene», «scrivi NOTA.md» e «leggi NOTA.md» maiuscole o minuscole: nei
-prompt vengono dopo «Istruzione:»):
+prompt aprono il tag <instructions>):
   «il piano va bene»   lo script, secondo FINTO_LAVORO = completo (default:
                        la copia di FINTO_SOLUZIONE) · a_meta (una variante
                        che il controllo boccia) · mai (niente); poi una

@@ -49,16 +49,25 @@ verificano ogni elemento.
     come codice d'uscita.
   - Il controllo legge le esecuzioni, mai un file di esiti scritto prima.
   - Un oggetto che il controllo costruisce da sé è una dimostrazione.
-- Dal Modulo 3 in poi i prompt delle demo e degli esercizi seguono il
-  template del Modulo 2 (`riferimenti/pattern-di-prompt.md`) quando sono
-  lunghi o portano dati, un documento o esempi.
-  - Il ruolo in una frase, «Sei …», poi «Contesto:», «Istruzione:» (passi
-    numerati, il controllo che Claude esegue per ultimo), «Formato:»,
-    «Vincoli:» detti in positivo, «Esempi:» fra i tag `<example>`.
-  - I dati vanno in un tag che dice che cosa contengono, e allora le
-    istruzioni fra i tag `<istruzioni>`.
-  - Un seguito nella stessa sessione tiene le etichette e non ripete il
-    ruolo. Una richiesta breve resta semplice.
+- I prompt delle demo e degli esercizi seguono il template di
+  `riferimenti/pattern-di-prompt.md` quando sono lunghi o portano dati, un
+  documento o esempi: ogni ingrediente nel suo tag, su una riga sua, con i
+  nomi in inglese. Nel Modulo 2 lo seguono il prompt B e la versione di
+  riferimento della prima esercitazione; i prompt che il modulo mette alla
+  prova restano come sono.
+  - `<role>` in una frase, «Sei …»; poi `<context>`, `<instructions>`
+    (passi numerati, il controllo che Claude esegue per ultimo),
+    `<format>` (un contratto che un controllo legge, alla lettera),
+    `<constraints>` detti in positivo, `<examples>` con da tre a cinque
+    `<example>`.
+  - I dati vanno ciascuno in un tag che dice che cosa contengono
+    (`<message>`, `<procedures>`, `<data>`…), dopo gli ingredienti; un
+    documento lungo va in cima, e allora `<instructions>` va per ultimo.
+  - Un seguito nella stessa sessione tiene i tag e non ripete `<role>`.
+    Una richiesta breve resta semplice; se le sue frasi portano
+    ingredienti diversi, ogni frase va nel tag del suo ingrediente.
+  - I nomi dei tag sono la convenzione del corso, non una raccomandazione
+    di Anthropic.
   - Le due esecuzioni di una coppia differiscono solo nella parte che
     cambia, e le slide mostrano il prompt così com'è.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata

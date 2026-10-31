@@ -17,6 +17,8 @@
 #     _docente/residui.py (il controllo originale, che non scrive niente);
 #   - «Ora scrivi profilo.py ed eseguilo da solo, come chiedeva il primo
 #     messaggio.», se manca soltanto il profilo.
+# Ogni seguito è una richiesta di una frase sola: resta semplice, senza i
+# tag del prompt del README, che ha dato il ruolo e il resto.
 # Come il prompt, i turni chiedono un comando alla volta: in dontAsk una
 # riga che concatena un comando consentito a uno che non lo è (un echo
 # di $?, per esempio) viene negata per intero, e niente gira (osservato

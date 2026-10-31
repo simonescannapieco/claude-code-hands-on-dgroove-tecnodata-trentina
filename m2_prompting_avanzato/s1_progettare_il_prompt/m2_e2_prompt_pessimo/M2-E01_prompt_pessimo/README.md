@@ -91,16 +91,18 @@ dati del corso.
 
        ! cp prompt/v0.md prompt/v1.md
 
-   e riscrivete `prompt/v1.md` nel vostro editor, con le righe del
-   template come domande: chi scrive e a chi (ruolo); che cosa deve sapere
-   (contesto: il messaggio e le procedure, con `{{procedure}}`); che cosa
-   deve fare (istruzione); in che forma (lunghezza, firma); con quali
-   limiti (che cosa si può promettere, che cosa si fa dei dati
-   personali); e, se volete, un esempio (una frase nel tono giusto). Fra
-   doppie graffe c'è un segnaposto: `misura.sh` ci mette il file di
-   `dati/` con quel nome. Mettete i dati tra tag:
-   `<messaggio>` `{{messaggio}}` `</messaggio>`. Se qualcosa non è chiaro,
-   chiedete a Claude di farvi domande sul compito prima di scrivere.
+   e riscrivete `prompt/v1.md` nel vostro editor, con i tag del template
+   come domande: chi scrive e a chi (ruolo, `<role>`); che cosa deve
+   sapere (contesto, `<context>`: il messaggio e le procedure, con
+   `{{procedure}}`); che cosa deve fare (istruzione, `<instructions>`); in
+   che forma (formato, `<format>`: lunghezza, firma); con quali limiti
+   (vincoli, `<constraints>`: che cosa si può promettere, che cosa si fa
+   dei dati personali); e, se la forma conta, gli esempi (`<examples>`,
+   da tre a cinque, ciascuno in `<example>`). Fra doppie graffe c'è un
+   segnaposto: `misura.sh` ci mette il file di `dati/` con quel nome.
+   Mettete i dati tra tag: `<message>` `{{messaggio}}` `</message>`. Se
+   qualcosa non è chiaro, chiedete a Claude di farvi domande sul compito
+   prima di scrivere.
    - **Percorso A, un vostro caso:** sostituite `dati/messaggio.md` con il
      messaggio di un vostro cliente, con i dati sostituiti da valori
      inventati. Adattate poi ciò che è legato al caso di CiaspoLink:

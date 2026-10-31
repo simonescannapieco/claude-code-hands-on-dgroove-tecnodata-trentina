@@ -8,10 +8,10 @@ quando è finito, quante linee di clienti, cioè ONT, ha coinvolto; la
 risposta in una riga 'inizio: HH:MM | fine: HH:MM | ONT: N') con la
 richiesta di delegare la lettura dei log al subagent Explore, e
 senza-<n>.jsonl, la
-stessa domanda con la richiesta di leggerli da sé; le due esecuzioni di una
-coppia differiscono soltanto nella prima frase di «Istruzione:». Le coppie sono
-i numeri per cui c'è almeno uno dei due file, e ognuna deve averli tutti e
-due.
+stessa domanda con la richiesta di leggerli da sé; i due prompt hanno un tag
+per ingrediente, e le due esecuzioni di una coppia differiscono soltanto
+nella prima frase del tag <instructions>. Le coppie sono i numeri per cui
+c'è almeno uno dei due file, e ognuna deve averli tutti e due.
 
 Per ogni esecuzione stampa, come dati: gli strumenti della conversazione
 principale (i messaggi con parent_tool_use_id null), con le chiamate Agent

@@ -2,7 +2,9 @@
 #
 # test_m4_d03.sh -- le prove di M4-D03 «Un giro del ciclo, registrato»,
 # per il docente (sta in _docente/, il materiale del docente):
-#   - il prompt (il confine, il comando dei test, un comando alla volta) e
+#   - il prompt (il confine, il comando dei test, un comando alla volta;
+#     ogni frase intera nel suo tag, <instructions> e <constraints>, le
+#     parole quelle di prima) e
 #     lo spazio di lavoro di prepara_esercizio.sh (il progetto senza
 #     _docente/, il prompt, nuova_copia.sh, nessun controllo), dove
 #     verifica.sh esce 1;
@@ -65,7 +67,7 @@ readonly URG="${RADICE}/progetti/urgenze"
 # (handson::init_temp_base): mai dentro ~/.claude.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=117
+readonly CASES=118
 FINE='Fatto: ogni affermazione è stata messa alla prova;'
 FINE+=' gli esiti sono qui sopra.'
 readonly FINE
@@ -429,6 +431,21 @@ PY
 
 # --- Il prompt e lo spazio di lavoro ---------------------------------------
 
+# Un prompt a tag, per le prove: la prima riga elenca le righe dei tag,
+# nell'ordine, separate da spazi; la seconda riunisce le altre righe non
+# vuote, le parole. Arguments: $1 il file. Outputs: le due righe.
+tag_e_parole() {
+  python3 -B -I - "$1" <<'PY'
+import re
+import sys
+
+righe = open(sys.argv[1], encoding="utf-8").read().rstrip("\n").split("\n")
+tag = [r for r in righe if re.fullmatch(r"</?[a-z_]+>", r)]
+print(" ".join(tag))
+print(" ".join(r for r in righe if r and r not in tag))
+PY
+}
+
 t_file() {
   local p
   p="$(cat "${D03}/demo/prompt.txt")"
@@ -438,6 +455,15 @@ t_file() {
     pass "prompt: il confine, il comando dei test, un comando alla volta"
   else
     fail "prompt: «${p}»"
+  fi
+  run tag_e_parole "${D03}/demo/prompt.txt"
+  if (( RC == 0 )) && [[ "${OUT}" == "<instructions> </instructions> \
+<constraints> </constraints>"$'\n'"Il confine dei 7 giorni in urgenza.py \
+non è rispettato: correggilo, poi esegui \`python3 -m unittest\` e continua \
+finché i test passano. Esegui un comando alla volta." ]]; then
+    pass "prompt: ogni frase nel suo tag, instructions e constraints"
+  else
+    fail "prompt: i tag e le parole di prompt.txt: «${OUT}»"
   fi
   if [[ ! -e "${D03}/demo/controlla_giro.py" \
       && -f "${D03}/controlla_giro.py" ]]; then

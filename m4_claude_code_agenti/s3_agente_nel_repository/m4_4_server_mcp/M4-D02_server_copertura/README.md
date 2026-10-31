@@ -91,7 +91,13 @@ preparate lo spazio di lavoro, poi lanciate il passo 1:
 
    <!-- prompt -->
 
-       Quali comuni hanno indirizzi coperti dalla fibra FTTH di CiaspoLink? Rispondi soltanto con l'elenco dei comuni, uno per riga, in ordine alfabetico.
+       <instructions>
+       Quali comuni hanno indirizzi coperti dalla fibra FTTH di CiaspoLink?
+       </instructions>
+
+       <format>
+       Rispondi soltanto con l'elenco dei comuni, uno per riga, in ordine alfabetico.
+       </format>
 
    <!-- /prompt -->
 

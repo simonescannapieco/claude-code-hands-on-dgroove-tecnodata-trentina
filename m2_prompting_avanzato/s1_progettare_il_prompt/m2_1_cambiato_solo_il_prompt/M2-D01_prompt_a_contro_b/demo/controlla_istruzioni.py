@@ -31,8 +31,8 @@ Poi un esito per ogni affermazione:
                     («l'assistenza» è una parola); i segni della tabella e
                     del grassetto non contano;
   - una garanzia: i token in entrata di B sono più di quelli di A. B manda
-    lo stesso messaggio e lo stesso system prompt di A, con cinque righe
-    al posto di «Riassumi.», e per la documentazione i tre campi dei token
+    lo stesso messaggio e lo stesso system prompt di A, con cinque tag al
+    posto di «Riassumi.», e per la documentazione i tre campi dei token
     in entrata sono tutto l'input: «confermata», oppure «non confermata in
     questa esecuzione» e l'uscita 1.
 
@@ -53,7 +53,7 @@ from typing import Dict, List, NamedTuple, Optional
 
 FILE = "confronto.tsv"
 INTESTAZIONE = "prompt\ttoken_entrata\ttoken_uscita\trisposta"
-PROMPT = (("A", "A, «Riassumi.»"), ("B", "B, il prompt di cinque righe"))
+PROMPT = (("A", "A, «Riassumi.»"), ("B", "B, il prompt di cinque tag"))
 MASSIMO_PAROLE = 120
 # Le cinque celle d'intestazione attese, sul testo ripulito e in minuscolo;
 # «Priorità» può continuare.
@@ -209,7 +209,7 @@ def stampa_garanzia(righe: Dict[str, Riga]) -> bool:
     """L'esito della garanzia sui token in entrata; vero se confermata."""
     confermata = righe["B"].entrata > righe["A"].entrata
     print("La garanzia (B manda lo stesso messaggio e lo stesso system "
-          "prompt di A, con cinque righe al posto di «Riassumi.»):")
+          "prompt di A, con cinque tag al posto di «Riassumi.»):")
     print("  più token in entrata per B che per A: %s"
           % ("confermata" if confermata
              else "non confermata in questa esecuzione"))
@@ -218,7 +218,7 @@ def stampa_garanzia(righe: Dict[str, Riga]) -> bool:
               "tutto l'input, e quello di B è più lungo di quello di A: in "
               "questa esecuzione no.")
         print("Controllate di non avere scambiato le righe: A è "
-              "«Riassumi.», B il prompt di cinque righe, con le stesse "
+              "«Riassumi.», B il prompt di cinque tag, con le stesse "
               "opzioni.")
     return confermata
 

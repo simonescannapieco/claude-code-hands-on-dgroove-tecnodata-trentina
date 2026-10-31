@@ -41,7 +41,9 @@
 #   - i due live.sh: le precondizioni escono 2 senza chiamare claude (un
 #     claude esca davanti nel PATH registra ogni chiamata), in M2-E02
 #     anche ogni famiglia prima della prima chiamata; con il claude finto
-#     del modulo la prova intera esce 0, con 7 e 21 chiamate;
+#     del modulo la prova intera esce 0, con 7 e 21 chiamate; in M2-E01
+#     la versione di riferimento, un tag per ingrediente, conferma
+#     chiarezza, e la sua riga nel registro lo dice;
 #   - shellcheck -x sugli script dei due elementi e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
 # repository non cambia. I casi si contano: da root i casi dei file che
@@ -64,7 +66,7 @@ M2-E01_prompt_pessimo"
 readonly E02="${MOD}/s2_misurare_e_migliorare/m2_e3_tre_prompt_due_cicli/\
 M2-E02_tre_prompt_due_cicli"
 readonly FINTO="${MOD}/_docente/claude_finto.py"
-readonly CASES=167
+readonly CASES=169
 readonly SONNET=claude-sonnet-finto
 readonly HAIKU=claude-haiku-finto
 readonly OPUS=claude-opus-finto
@@ -992,7 +994,23 @@ t_live() {
     expect "${e%:*}: live.sh con il claude finto" 0 "VERIFICA OK"
     if (( n == ${e##*:} )); then pass "${e%:*}: ${n} chiamate"
     else fail "${e%:*}: ${n} chiamate, attese ${e##*:}"; fi
+    if [[ "${e%:*}" == "${E01}" ]]; then
+      live_e01 "${w}"
+    fi
   done
+}
+
+# M2-E01 dopo live.sh con il claude finto: la versione di riferimento,
+# un tag per ingrediente, ha la risposta del template, e chiarezza è
+# confermata; nel registro, la riga di v1 dice com'è fatta.
+# Arguments: $1 lo spazio di lavoro (OUT è l'uscita di live.sh).
+live_e01() {
+  expect "M2-E01 live.sh: v1 di riferimento, chiarezza confermata" 0 \
+    "v1 rispetto a v0, chiarezza: confermata"
+  run cat "$1/registro.md"
+  expect "M2-E01 live.sh: la riga di v1 nel registro, un tag per ingrediente" \
+    0 "| v1 | chiarezza | il template intero: un tag per ingrediente, le \
+procedure nel loro tag (la versione di riferimento) |"
 }
 
 # Lo shellcheck degli script dei due elementi e di questo.

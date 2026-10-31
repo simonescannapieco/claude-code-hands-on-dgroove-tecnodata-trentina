@@ -110,18 +110,19 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
 
    <!-- prompt: numeri -->
 
-       <istruzioni>
+       <role>
        Sei un analista dell'assistenza clienti di CiaspoLink e prepari
        i numeri della settimana per una dashboard.
+       </role>
 
-       Contesto: la settimana è nel file ticket-anonimi.csv che ti ho
-       caricato, una segnalazione per riga.
+       <context>
+       La settimana è nel file ticket-anonimi.csv che ti ho caricato,
+       una segnalazione per riga.
        I numeri li controllo con uno script prima di usarli.
+       </context>
 
-       Istruzione: calcola con il codice, sul file, questi dieci
-       indicatori.
-
-       Formato: soltanto un oggetto JSON, con queste dieci chiavi:
+       <format>
+       Un oggetto JSON, con queste dieci chiavi:
        - segnalazioni: le righe (intero)
        - per_giorno: le righe per giorno della settimana di aperto_il,
          data come è scritta, chiavi lun mar mer gio ven sab dom
@@ -135,10 +136,16 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
        - voti: le righe con soddisfazione non vuota (intero)
        - soddisfazione_media: la media (2 decimali)
        - clienti_ricorrenti: i clienti con almeno 3 righe (intero)
+       </format>
 
-       Vincoli: nei conti entrano soltanto i campi con un valore, e un
-       campo vuoto resta fuori; arrotonda con la metà per eccesso.
-       </istruzioni>
+       <constraints>
+       Nei conti entrano soltanto i campi con un valore, e un campo
+       vuoto resta fuori; arrotonda con la metà per eccesso.
+       </constraints>
+
+       <instructions>
+       Calcola con il codice, sul file, questi dieci indicatori.
+       </instructions>
 
    <!-- /prompt: numeri -->
 
@@ -179,20 +186,28 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
 
    <!-- prompt: dashboard -->
 
-       Contesto: i numeri del JSON qui sopra li ho verificati con lo
-       script del corso, e la dashboard li mostra così come sono.
+       <context>
+       I numeri del JSON qui sopra li ho verificati con lo script del
+       corso, e la dashboard li mostra così come sono.
+       </context>
 
-       Istruzione: crea come artifact una dashboard della settimana con
-       esattamente quei numeri.
+       <instructions>
+       Crea come artifact una dashboard della settimana con esattamente
+       quei numeri.
+       </instructions>
 
-       Formato: le segnalazioni per giorno in barre, le categorie dalla
-       più frequente, le aperte a fine settimana e le annullate, la
-       mediana dei minuti alla prima risposta, la media dei minuti di
+       <format>
+       Le segnalazioni per giorno in barre, le categorie dalla più
+       frequente, le aperte a fine settimana e le annullate, la mediana
+       dei minuti alla prima risposta, la media dei minuti di
        risoluzione per tecnologia, la soddisfazione media con il numero
        dei voti, i clienti ricorrenti; ogni numero scritto accanto al
        suo grafico.
+       </format>
 
-       Vincoli: testi in italiano.
+       <constraints>
+       Testi in italiano.
+       </constraints>
 
    <!-- /prompt: dashboard -->
 
@@ -315,9 +330,11 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   di Anthropic non dice quanti indicatori debbano tornare, e una chat sola
   non decide un confronto.
 - La dashboard si giudica a occhio: nessuno script la legge.
-- La coppia registrata del corso, in Claude Code: il prompt dei numeri, con un
-  primo paragrafo che dice dove sta la tabella, una volta con il CSV
-  incollato nel messaggio e nessuno strumento, una volta con il file nella
+- La coppia registrata del corso, in Claude Code: il prompt dei numeri, con
+  il contesto (il tag `<context>`) che dice dove sta la tabella e
+  l'istruzione (il tag `<instructions>`) che dice come calcolare, una volta
+  con il CSV incollato in cima al messaggio, fra i tag
+  `<anonymized_tickets>`, e nessuno strumento, una volta con il file nella
   cartella di lavoro e il solo `python3` per interrogarlo, un comando alla
   volta; tutte e due su Sonnet, con l'oggetto vincolato allo schema
   dei dieci indicatori, tre esecuzioni per parte. Per ogni coppia: confermata
@@ -330,8 +347,9 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   Haiku 5.5, or the Fable models.»
   (https://code.claude.com/docs/en/model-config). I numeri della coppia
   sono del corso, non quelli di Anthropic. Nella registrazione del corso
-  (31 ottobre 2026, Claude Code 2.1.316, Sonnet con effort low, la tabella
-  nel messaggio fra i tag `<ticket_anonimi>`): incollando 10, 9 e 7
+  (31 ottobre 2026, Claude Code 2.1.316, Sonnet con effort low, i prompt
+  di allora, con le etichette al posto dei tag, e la tabella nel messaggio
+  fra i tag `<ticket_anonimi>`): incollando 10, 9 e 7
   indicatori giusti su dieci, con il file e il codice 10, 10 e 9, cioè non
   distinguibile nella prima coppia e confermata nelle altre due:
   confermata 2 su 3. Incollando erano sbagliati `voti` nella seconda
@@ -340,7 +358,8 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   token in entrata: da 57.228 a 57.230 per esecuzione incollando, da
   21.161 a 31.081 con il file.
 - Nella registrazione del corso in claude.ai (31 ottobre 2026, nuova
-  esperienza, Sonnet 5.5, la chat con la memoria spenta): la prima
+  esperienza, Sonnet 5.5, la chat con la memoria spenta, i prompt di
+  allora, con le etichette al posto dei tag): la prima
   risposta, dopo i passi «Updated tasks, ran a command» e «Ran 2
   commands», dava 10 indicatori su 10 che corrispondevano. Copiata con
   «Copy», portava anche le due frasi che Claude aveva scritto fra un

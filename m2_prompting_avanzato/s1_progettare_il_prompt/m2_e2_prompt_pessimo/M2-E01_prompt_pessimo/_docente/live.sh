@@ -51,9 +51,8 @@ import sys
 
 path, fase, nota = sys.argv[1:4]
 voci = {"v0": ("partenza", "il prompt di partenza"),
-        "v1": ("chiarezza", "il template intero: ruolo, contesto e "
-               "procedure tra tag, istruzione, formato, vincoli (la versione "
-               "di riferimento)"),
+        "v1": ("chiarezza", "il template intero: un tag per ingrediente, "
+               "le procedure nel loro tag (la versione di riferimento)"),
         "v2": ("rimisura", "niente: v1 misurata di nuovo")}
 
 

@@ -4,7 +4,9 @@
 # (sta in _docente/, il materiale del docente):
 #   - l'elemento: i suoi file, verifica.sh e _docente/live.sh eseguibili,
 #     il README con le dieci sezioni, progetti.txt con progetti/rete, la
-#     domanda; la verità di controlla_pipe.py (10:12 e 11:40) è quella di
+#     domanda (ogni frase intera nel suo tag, <instructions> e <format>, le
+#     parole quelle di prima); la verità di controlla_pipe.py (10:12 e
+#     11:40) è quella di
 #     progetti/rete/_docente/README.md e del syslog di olt-pergine-01;
 #     prepara_esercizio.sh porta la rete senza _docente/ e senza il
 #     controllo, e verifica.sh vi esce 1;
@@ -58,7 +60,7 @@ readonly FINTO_PY="${MOD}/_docente/claude_finto_m4_d01_d02_d08.py"
 readonly CONTROLLO="${D08}/controlla_pipe.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=71
+readonly CASES=72
 FINE='Fatto: ogni affermazione è stata messa alla prova;'
 FINE+=' gli esiti sono qui sopra.'
 readonly FINE
@@ -247,7 +249,8 @@ finto() {
 # Le chiamate -p del registro, una per riga: la chiave, i byte dello STDIN,
 # le opzioni in ordine alfabetico (con --setting-sources,
 # --permission-mode e --permission-prompts solo se $2 è «tutte») e il
-# prompt. Arguments: $1 il registro, $2 «tutte» o «readme».
+# prompt, in JSON perché resti su una riga anche quando ne ha più d'una.
+# Arguments: $1 il registro, $2 «tutte» o «readme».
 chiamate() {
   python3 -B -I - "$1" "$2" <<'PY'
 import json, sys
@@ -274,7 +277,8 @@ for riga in open(sys.argv[1], encoding="utf-8"):
         if sys.argv[2] == "tutte" or coppia.split("=")[0] not in SOLO_LIVE:
             opzioni.append(coppia)
     print("%s | %s | %s | %s" % (voce["chiave"], voce["stdin"],
-                                 " ".join(sorted(opzioni)), prompt))
+                                 " ".join(sorted(opzioni)),
+                                 json.dumps(prompt, ensure_ascii=False)))
 PY
 }
 
@@ -351,6 +355,25 @@ t_elemento() {
   else
     fail "elemento: la domanda non va: ${OUT:0:200}"
   fi
+  run python3 -B -I - "${D08}/demo/domanda.txt" <<'PY'
+import re
+import sys
+
+righe = open(sys.argv[1], encoding="utf-8").read().rstrip("\n").split("\n")
+tag = [r for r in righe if re.fullmatch(r"</?[a-z_]+>", r)]
+parole = " ".join(r for r in righe if r and r not in tag)
+problemi = []
+if tag != ["<instructions>", "</instructions>", "<format>", "</format>"]:
+    problemi.append("i tag %s" % tag)
+if parole != ("Questo è il syslog di olt-pergine-01 della settimana: a che "
+              "ora inizia e a che ora finisce il guasto di martedì 8 "
+              "settembre? Rispondi in una riga: 'inizio HH:MM | fine "
+              "HH:MM'."):
+    problemi.append("le parole: %s" % parole)
+print("; ".join(problemi) or "domanda a tag")
+PY
+  expect "elemento: la domanda nei tag instructions e format, le parole di \
+prima" 0 "domanda a tag"
 }
 
 # La verità del controllo contro il README del docente e il syslog.
@@ -606,10 +629,11 @@ t_live_finto() {
     "${RADICE}"/progetti/rete/log/syslog/syslog_*.log | wc -c)"
   r="$(chiamate "${TMP}/finto.log" tutte)"
   run python3 -B -I - "${r}" "${filtrato}" "${w}" <<'PY'
-import sys
+import json, sys
 righe = sys.argv[1].splitlines()
 filtrato, ws = int(sys.argv[2]), sys.argv[3]
 domanda = open(ws + "/domanda.txt", encoding="utf-8").read().rstrip("\n")
+domanda = json.dumps(domanda, ensure_ascii=False)
 attese = ("--effort=low --model=sonnet --no-session-persistence "
           "--output-format=json --permission-mode=dontAsk "
           "--permission-prompts=none --setting-sources=project,local "

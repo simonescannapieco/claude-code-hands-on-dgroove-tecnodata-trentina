@@ -8,8 +8,8 @@ esegue il docente; potete rifarla da soli quando volete.
 Mettere alla prova una raccomandazione di Anthropic: Claude risponde bene
 a istruzioni chiare ed esplicite. Lo stesso messaggio di un cliente, sullo
 stesso modello, una volta con «Riassumi.», una volta con un prompt di
-cinque righe che chiede una scheda precisa; il controllo legge, una per
-una, cinque istruzioni del secondo prompt.
+cinque ingredienti, ciascuno nel suo tag, che chiede una scheda precisa;
+il controllo legge, una per una, cinque istruzioni del secondo prompt.
 
 ## Tempo
 
@@ -30,8 +30,9 @@ Lo spazio di lavoro `~/corso-claude-code/M2-D01/` con:
   della segnalazione perso, una domanda sull'indennizzo, una sulla linea di
   riserva, un telefono per richiamare;
 - `prompt-a.md`: «Riassumi.» e il messaggio;
-- `prompt-b.md`: cinque righe (ruolo, contesto, istruzione, formato,
-  vincoli) e il messaggio tra i tag `<messaggio>`;
+- `prompt-b.md`: cinque tag, uno per ingrediente (`<role>`, `<context>`,
+  `<instructions>`, `<format>`, `<constraints>`), e il messaggio tra i tag
+  `<message>`;
 - `istruzione.txt`: il system prompt delle due chiamate, «Rispondi in
   italiano.»;
 - `leggi_json.py`: legge il JSON di una risposta e ne stampa un dato;
@@ -82,8 +83,9 @@ Il messaggio è inventato, come tutti i dati del corso.
   https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
 
   Sono raccomandazioni: dicono che cosa aiuta, non promettono che ogni
-  risposta rispetti ogni istruzione. Il prompt B le segue: le righe
-  «Formato» e «Vincoli» dicono la forma della scheda e i suoi limiti.
+  risposta rispetti ogni istruzione. Il prompt B le segue: i tag
+  `<format>` e `<constraints>` dicono la forma della scheda e i suoi
+  limiti.
 - La guida al prompt caching, sul conteggio dei token: «La risposta di
   utilizzo include tre campi separati per i token di input che insieme
   rappresentano il tuo input totale». Sono `input_tokens`,
@@ -121,7 +123,7 @@ non fallisce. Le altre richieste di B (una riga per problema, le righe
 priorità) il controllo non le giudica: le guardate voi.
 
 Una garanzia, invece, decide l'uscita: B manda più token in entrata di A.
-B ha lo stesso messaggio e lo stesso system prompt di A, con cinque righe
+B ha lo stesso messaggio e lo stesso system prompt di A, con i cinque tag
 al posto di «Riassumi.»: il suo input è più lungo, a ogni esecuzione. Se
 non torna, la verifica esce con 1.
 
@@ -156,7 +158,7 @@ quando non può partire (manca lo spazio di lavoro o python3,
   l'esito di quella risposta, e la verifica lo riporta senza fallire.
 - «più token in entrata per B che per A: non confermata in questa
   esecuzione»: controllate di non avere scambiato le righe (A è
-  «Riassumi.», B il prompt di cinque righe) e che le due chiamate abbiano
+  «Riassumi.», B il prompt di cinque tag) e che le due chiamate abbiano
   le stesse opzioni.
 - Token molto diversi da quelli registrati: le vostre impostazioni utente
   di Claude Code (per esempio un hook o un `CLAUDE.md` personale) entrano

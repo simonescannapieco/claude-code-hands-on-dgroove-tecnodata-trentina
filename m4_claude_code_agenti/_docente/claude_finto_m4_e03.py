@@ -48,11 +48,11 @@ Le scene, dal prompt:
                                 plan mode, niente
   «Il piano è approvato»        PROPOSTA.md e un commit; FINTO_E03_PROPOSTA =
                                 buona (default) · senza_controlli
-  «la verifica dello spazio di lavoro dice» (maiuscole o minuscole: è nel
-                                «Contesto:» della correzione)  riscrive buone
-                                documentazione, test e proposta, con un
-                                commit (salvo FINTO_E03_MAI=1); legacy/ non
-                                lo tocca
+  «la verifica dello spazio di lavoro dice» (maiuscole o minuscole: apre
+                                il tag <context> della correzione)  riscrive
+                                buone documentazione, test e proposta, con
+                                un commit (salvo FINTO_E03_MAI=1); legacy/
+                                non lo tocca
   FINTO_ESITO=ko                esce 1 senza stampare nulla;
   FINTO_KO_ALLA=<n>             lo stesso, solo alla chiamata n.
 Uscita: 0 risposta · 1 FINTO_ESITO=ko, FINTO_KO_ALLA o un argomento rifiutato

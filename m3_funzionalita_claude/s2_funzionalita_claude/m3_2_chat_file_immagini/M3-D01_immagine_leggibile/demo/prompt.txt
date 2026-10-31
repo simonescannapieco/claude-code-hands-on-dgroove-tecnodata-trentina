@@ -1,5 +1,13 @@
+<instructions>
 Leggi l'immagine IMMAGINE: è una tabella di allarmi di rete.
+</instructions>
+
+<format>
 Rispondi con due righe e nient'altro:
 critici: <quanti allarmi hanno gravità «critico»>
 apparati: <i nomi degli apparati di quegli allarmi, separati da virgola>
+</format>
+
+<constraints>
 Se non riesci a leggere l'immagine, rispondi soltanto: non leggibile
+</constraints>

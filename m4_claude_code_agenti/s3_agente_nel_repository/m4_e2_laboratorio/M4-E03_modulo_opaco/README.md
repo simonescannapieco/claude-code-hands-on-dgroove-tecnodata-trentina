@@ -133,16 +133,21 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 1 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
        documenti un modulo legacy che nessuno conosce più.
+       </role>
 
-       Contesto: il modulo è
+       <context>
+       Il modulo è
        progetti/gestionale-php/legacy/chiusura_mese.inc.php. Due
        ricerche indipendenti bastano a mapparlo: chi lo chiama, e quali
        tabelle tocca.
+       </context>
 
-       Istruzione: usa due subagent Explore in parallelo, nello stesso
-       messaggio, per mappare chiusura_mese().
+       <instructions>
+       Usa due subagent Explore in parallelo, nello stesso messaggio,
+       per mappare chiusura_mese().
        1. Il subagent (a) trova chi chiama chiusura_mese() nel progetto
           e come: file e riga, chi la chiama, con quali argomenti e
           opzioni.
@@ -150,14 +155,19 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
           legge e quali scrive, anche attraverso le funzioni del legacy
           che chiama.
        3. Mostrami i due riassunti così come sono.
+       </instructions>
 
-       Formato: ciascun subagent risponde con un riassunto breve in
-       questo formato, al massimo 12 righe: (a) una riga per chiamata,
+       <format>
+       Ciascun subagent risponde con un riassunto breve in questo
+       formato, al massimo 12 righe: (a) una riga per chiamata,
        «file:riga | chi chiama | argomenti e opzioni»; (b) una riga per
        tabella, «tabella | legge, scrive o tutti e due | dove: riga o
        funzione».
+       </format>
 
-       Vincoli: tu leggi soltanto i due riassunti.
+       <constraints>
+       Tu leggi soltanto i due riassunti.
+       </constraints>
 
    <!-- /prompt 1 -->
 
@@ -170,11 +180,13 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 2 -->
 
-       Contesto: la documentazione di chiusura_mese() si scrive dai due
-       riassunti e dal codice del modulo; le proposte di correzione
-       vengono dopo, nella seconda parte.
+       <context>
+       La documentazione di chiusura_mese() si scrive dai due riassunti
+       e dal codice del modulo; le proposte di correzione vengono dopo,
+       nella seconda parte.
+       </context>
 
-       Istruzione:
+       <instructions>
        1. Scrivi la documentazione in
           progetti/gestionale-php/docs/chiusura_mese.md, in italiano.
        2. Rileggi il file e controlla che abbia le sei sezioni, in
@@ -182,18 +194,22 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
           file, con un messaggio come quelli della regola 11.1 di
           progetti/gestionale-php/docs/convenzioni.md, un comando per
           volta.
+       </instructions>
 
-       Formato: queste sezioni, in quest'ordine, come titoli «## »: Che
-       cosa fa · Ingressi e uscite · Tabelle lette e scritte · Effetti
+       <format>
+       Queste sezioni, in quest'ordine, come titoli «## »: Che cosa fa
+       · Ingressi e uscite · Tabelle lette e scritte · Effetti
        collaterali · Le sei responsabilità · Rischi. In «Tabelle lette
        e scritte» tutte le tabelle del riassunto (b), ciascuna con il
        suo nome nel database; in «Le sei responsabilità» una voce per
        ciascuna, nell'ordine in cui la funzione le esegue, con le righe
        del file.
+       </format>
 
-       Vincoli: descrivi che cosa fa il codice così com'è, con i fatti
-       del codice e nessun giudizio. progetti/gestionale-php/legacy/
-       resta com'è.
+       <constraints>
+       Descrivi che cosa fa il codice così com'è, soltanto con i fatti
+       del codice. progetti/gestionale-php/legacy/ resta com'è.
+       </constraints>
 
    <!-- /prompt 2 -->
 
@@ -204,11 +220,13 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 3 -->
 
-       Contesto: un test di caratterizzazione fissa ciò che il codice
-       fa adesso, anche dove sembra strano: se un test non passa, si
-       corregge il test, e il modulo resta com'è.
+       <context>
+       Un test di caratterizzazione fissa ciò che il codice fa adesso,
+       anche dove sembra strano: se un test non passa, si corregge il
+       test, e il modulo resta com'è.
+       </context>
 
-       Istruzione:
+       <instructions>
        1. Scrivi i test di caratterizzazione di chiusura_mese() in
           progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php,
           con PHPUnit, come i test che il progetto ha già (sezioni 9 e
@@ -217,17 +235,22 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
           ad altri, e correggi i test finché passano:
           tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php
           Poi fai il commit del test, un comando per volta.
+       </instructions>
 
-       Formato: i test girano su un database di prova con pochi dati
-       scritti dal test e passano sempre la data di riferimento nelle
-       opzioni, come progetti/gestionale-php/bin/chiusura-mese.php.
+       <format>
+       I test girano su un database di prova con pochi dati scritti dal
+       test e passano sempre la data di riferimento nelle opzioni, come
+       progetti/gestionale-php/bin/chiusura-mese.php.
        Eseguono la chiusura vera, senza simulazione, e controllano che
        cosa scrive nel database: le fatture che diventano scadute, i
        clienti e le linee sospesi e riattivati, le note di credito
        degli indennizzi con le righe e gli importi; e che cosa
        restituisce. In più un test in simulazione.
+       </format>
 
-       Vincoli: progetti/gestionale-php/legacy/ resta com'è.
+       <constraints>
+       progetti/gestionale-php/legacy/ resta com'è.
+       </constraints>
 
    <!-- /prompt 3 -->
 
@@ -282,11 +305,14 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 5 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e proponi
        il refactoring di un modulo legacy già documentato e coperto da
        test.
+       </role>
 
-       Contesto: NOTA.md dice che cosa è fatto;
+       <context>
+       NOTA.md dice che cosa è fatto;
        progetti/gestionale-php/docs/chiusura_mese.md documenta
        chiusura_mese(), e
        progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php
@@ -294,8 +320,9 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
        legacy (sezione 9 di
        progetti/gestionale-php/docs/convenzioni.md), il commento del
        modulo «non spezzare in piu funzioni» e chi chiama la funzione.
+       </context>
 
-       Istruzione:
+       <instructions>
        1. Leggi NOTA.md, la documentazione e i test.
        2. Proponi il refactoring di chiusura_mese() in passi piccoli,
           ciascuno con lo stesso comportamento e con il controllo che
@@ -303,15 +330,19 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
        3. Quando approvo il piano, scrivi PROPOSTA.md, esegui una volta
           il controllo del primo passo, da solo, e fai il commit di
           PROPOSTA.md, un comando per volta.
+       </instructions>
 
-       Formato: il piano è il contenuto di PROPOSTA.md, nella radice
-       dello spazio di lavoro: un titolo «## Passo N — titolo» per
-       passo, numerati da 1, almeno tre; per ogni passo che cosa cambia
-       e perché, in poche righe; e una riga «Controllo: » con il
-       comando dei test da eseguire dopo il passo e che cosa deve dire.
+       <format>
+       Il piano è il contenuto di PROPOSTA.md, nella radice dello
+       spazio di lavoro: un titolo «## Passo N — titolo» per passo,
+       numerati da 1, almeno tre; per ogni passo che cosa cambia e
+       perché, in poche righe; e una riga «Controllo: » con il comando
+       dei test da eseguire dopo il passo e che cosa deve dire.
+       </format>
 
-       Vincoli: il codice legacy resta com'è: la proposta lo descrive
-       soltanto.
+       <constraints>
+       Il codice legacy resta com'è: la proposta lo descrive soltanto.
+       </constraints>
 
    <!-- /prompt 5 -->
 
@@ -451,7 +482,8 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
 Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con il JSON
 di ogni chiamata fuori dallo spazio di lavoro e i prompt di questo
-README): dopo i prompt la verifica ha detto «Non ancora», perché i
+README, nella forma di allora con le etichette al posto dei tag): dopo
+i prompt la verifica ha detto «Non ancora», perché i
 controlli dei passi 2, 4, 5 e 7 di `PROPOSTA.md` non eseguivano i test;
 il turno di correzione con quelle righe li ha sistemati. Poi «VERIFICA
 OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 8 passi, ognuno
@@ -497,22 +529,26 @@ scrive niente nello spazio di lavoro.
   test che esegue la chiusura senza simulazione e legge le tabelle.
 - La verifica dice «Non ancora» per la proposta o la documentazione:
   incollate a Claude questo messaggio, con le righe «Non ancora: …» della
-  verifica al posto della riga fra i tag `<esito_verifica>`, poi
+  verifica al posto della riga fra i tag `<verification_result>`, poi
   verificate di nuovo:
 
-      <istruzioni>
-      Contesto: la verifica dello spazio di lavoro dice che manca
-      ancora ciò che sta tra i tag <esito_verifica>, qui sotto.
+      <context>
+      La verifica dello spazio di lavoro dice che manca ancora ciò che
+      sta tra i tag <verification_result>, qui sotto.
+      </context>
 
-      Istruzione: sistema questi punti, un comando per volta, e fai il
-      commit di ciò che cambi.
+      <instructions>
+      Sistema questi punti, un comando per volta, e fai il commit di
+      ciò che cambi.
+      </instructions>
 
-      Vincoli: progetti/gestionale-php/legacy/ resta com'è.
-      </istruzioni>
+      <constraints>
+      progetti/gestionale-php/legacy/ resta com'è.
+      </constraints>
 
-      <esito_verifica>
+      <verification_result>
       Non ancora: …
-      </esito_verifica>
+      </verification_result>
 
   `_docente/live.sh` manda questo messaggio, una volta sola, quando la
   verifica dice «Non ancora». Nella prova del corso il turno di correzione

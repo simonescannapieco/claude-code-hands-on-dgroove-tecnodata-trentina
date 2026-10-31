@@ -9,17 +9,18 @@ coppia potete rifarla da soli quando volete.
 Mettere alla prova che cosa cambia quando Claude delega una lettura
 pesante a un subagent. La stessa domanda su una settimana di log della
 rete di CiaspoLink, una volta chiedendo a Claude di delegare la lettura
-dei log al subagent Explore, una volta chiedendogli di leggerli da sé: le
-due esecuzioni di una coppia differiscono soltanto nella prima frase di
-«Istruzione:». La domanda è esatta, con una lettura sola: sul guasto che
-il «Contesto:» descrive («martedì 8 settembre 2026 un guasto su
+dei log al subagent Explore, una volta chiedendogli di leggerli da sé. I
+due prompt hanno un tag per ingrediente, e le due esecuzioni di una
+coppia differiscono soltanto nella prima frase del tag `<instructions>`.
+La domanda è esatta, con una lettura sola: sul guasto che il tag
+`<context>` descrive («Martedì 8 settembre 2026 un guasto su
 olt-pergine-01 ha messo fuori servizio insieme più linee di clienti»),
 «quando è cominciato, quando è finito (quando le ONT sono tornate in
-linea) e quante linee di clienti (ONT) ha coinvolto?», con la risposta in
-«una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'». Dice che cosa
-contare, non dove trovarlo. Si guarda che cosa arriva alla
-conversazione principale, quanto contesto le resta all'ultima richiesta e
-quanti token costa il tutto.
+linea) e quante linee di clienti (ONT) ha coinvolto?», con la risposta,
+nel tag `<format>`, in «Una riga, 'inizio: HH:MM | fine: HH:MM | ONT:
+N'». Dice che cosa contare, non dove trovarlo. Si guarda che cosa arriva
+alla conversazione principale, quanto contesto le resta all'ultima
+richiesta e quanti token costa il tutto.
 
 ## Tempo
 
@@ -166,8 +167,9 @@ predefiniti: «On macOS, Linux, and WSL, Claude Code leaves Glob and Grep
 out of the default tool set»; qui tornano perché si nominano: «You name
 Glob or Grep in --tools or --allowedTools when you start the session»
 (https://code.claude.com/docs/en/tools-reference). Le due sessioni
-differiscono ancora soltanto nella prima frase di «Istruzione:»; gli
-strumenti che il subagent usa davvero, il controllo li stampa come dati.
+differiscono ancora soltanto nella prima frase del tag `<instructions>`;
+gli strumenti che il subagent usa davvero, il controllo li stampa come
+dati.
 
 ### Che cosa misura il controllo
 

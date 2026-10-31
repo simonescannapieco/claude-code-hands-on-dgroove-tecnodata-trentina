@@ -18,20 +18,26 @@ contratto; i comandi qui sotto non vanno lanciati dai partecipanti.
 
 | braccio | la tabella | strumenti | prompt | risposta |
 |---|---|---|---|---|
-| `incollato` | il testo di `ticket-anonimi.csv` sull'input standard: arriva nel messaggio | nessuno, `--tools ""` | `_docente/prompt-incollato.md` | `gemello/incollato-<n>.json` |
+| `incollato` | il testo di `ticket-anonimi.csv` in cima al messaggio, fra i tag `<anonymized_tickets>`, poi una riga vuota e il prompt: un messaggio solo, niente sull'input standard | nessuno, `--tools ""` | `_docente/prompt-incollato.md` | `gemello/incollato-<n>.json` |
 | `file` | `ticket-anonimi.csv` nella cartella di lavoro | `--tools Bash` con `--allowedTools "Bash(python3 *)"`: solo `python3`, niente Read | `_docente/prompt-file.md` | `gemello/file-<n>.json` |
 
 I due prompt sono il prompt dei partecipanti, `esercizio/prompt-numeri.md`,
-con un primo paragrafo diverso: dove sta la tabella e, nel braccio `file`,
-«calcola con il codice, sul file» e il suo solo comando, «L'unico comando
-permesso è python3: eseguilo da solo, senza concatenarlo ad altri
-comandi.» Senza quella frase, nella prima registrazione del 21 ottobre
-2026 Claude ha messo un `cd` o un `cat` davanti al suo `python3` in due
-esecuzioni su tre: con `--permission-mode dontAsk` il comando è stato
-rifiutato e l'oggetto è arrivato con tutti i valori a zero, una misura
-dei permessi, non della strada. Il secondo paragrafo, le dieci chiavi e
-le regole, è uguale byte per byte nei tre file (lo controlla
-`m3_funzionalita_claude/_docente/test_m3_e02.sh`).
+un tag per ingrediente, con un contesto e un'istruzione diversi: il tag
+`<context>` dice dove sta la tabella, e il tag `<instructions>` del
+braccio `file` dice «Calcola con il codice, sul file» e il suo solo
+comando, «L'unico comando permesso è python3: eseguilo da solo, senza
+concatenarlo ad altri comandi.» Senza quella frase, nella prima
+registrazione del 21 ottobre 2026 Claude ha messo un `cd` o un `cat`
+davanti al suo `python3` in due esecuzioni su tre: con
+`--permission-mode dontAsk` il comando è stato rifiutato e l'oggetto è
+arrivato con tutti i valori a zero, una misura dei permessi, non della
+strada. I tag `<role>`, `<format>` e `<constraints>`, cioè il ruolo, le
+dieci chiavi e le regole, sono uguali byte per byte nei tre file (lo
+controlla `m3_funzionalita_claude/_docente/test_m3_e02.sh`). In tutti e
+tre `<instructions>` è l'ultimo tag: nel braccio `incollato` la tabella
+sta in cima al messaggio e la domanda in fondo, e i tre prompt hanno lo
+stesso ordine. Il formato chiede «Un oggetto JSON», e nei due bracci la
+forma la vincola lo schema di `--json-schema`.
 
 Tutto il resto è uguale nelle due braccia:
 
@@ -55,15 +61,20 @@ suoi file (`kpi.json` e il CSV caricato) passano da `verifica.py`.
 
 Con `E` il percorso assoluto dell'elemento, `R` una cartella nuova per le
 risposte, `U` una cartella di lavoro nuova e vuota, `T` una cartella di
-lavoro nuova con la sola copia del CSV (tutte e tre sotto `/tmp`):
+lavoro nuova con la sola copia del CSV (tutte e tre sotto `/tmp`). Il
+messaggio del braccio `incollato`, `m`, è il CSV fra i tag
+`<anonymized_tickets>`, una riga vuota, poi il prompt: un argomento solo,
+di circa 100 KB, sotto il limite di 128 KB di un argomento su Linux:
 
     mkdir -p "$R/gemello"
+    m="$(printf '<anonymized_tickets>\n%s\n</anonymized_tickets>\n\n%s' \
+      "$(cat "$E/esercizio/ticket-anonimi.csv")" \
+      "$(cat "$E/_docente/prompt-incollato.md")")"
     (cd "$U" && claude -p --model sonnet --effort low --tools "" \
       --output-format json --json-schema "$(cat "$E/_docente/schema_kpi.json")" \
       --permission-mode dontAsk --setting-sources project,local \
       --strict-mcp-config --no-session-persistence \
-      -- "$(cat "$E/_docente/prompt-incollato.md")" \
-      < "$E/esercizio/ticket-anonimi.csv") > "$R/gemello/incollato-1.json"
+      -- "$m" < /dev/null) > "$R/gemello/incollato-1.json"
     (cd "$T" && claude -p --model sonnet --effort low --tools Bash \
       --allowedTools "Bash(python3 *)" \
       --output-format json --json-schema "$(cat "$E/_docente/schema_kpi.json")" \
@@ -106,9 +117,6 @@ Poi il controllo, che legge le sei risposte e nient'altro:
 
 ## Le opzioni, dalla documentazione
 
-- L'input standard: «Non-interactive mode reads stdin, so you can pipe
-  data in and redirect the response out like any other command-line
-  tool.» (https://code.claude.com/docs/en/headless)
 - Lo schema: «To get output conforming to a specific schema, use
   --output-format json with --json-schema and a JSON Schema definition.»
   e l'oggetto: «The response includes metadata about the request (session

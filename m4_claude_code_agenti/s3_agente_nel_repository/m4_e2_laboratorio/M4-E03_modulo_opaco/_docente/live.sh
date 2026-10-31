@@ -18,10 +18,10 @@
 #     le veci dell'approvazione che il partecipante dà con un clic;
 #   - la verifica, come la lancerebbe il partecipante: se dice «Non
 #     ancora», un turno in più nella stessa sessione, una volta sola, manda
-#     le istruzioni di CORREZIONE fra i tag <istruzioni> e, dopo una riga
-#     vuota, le righe «Non ancora: …» della verifica fra i tag
-#     <esito_verifica>: lo stesso messaggio che il README mostra in «Se
-#     qualcosa va storto».
+#     CORREZIONE, un tag per ingrediente (<context>, <instructions>,
+#     <constraints>), e, dopo una riga vuota, le righe «Non ancora: …»
+#     della verifica fra i tag <verification_result>: lo stesso messaggio
+#     che il README mostra in «Se qualcosa va storto».
 # Gli strumenti consentiti: Read, Write, Edit, il comando dei test (la regola
 # allow delle impostazioni, che in -p in una cartella mai approvata non vale
 # e va ripetuta qui) e i due comandi dei commit, git add e git commit; in
@@ -72,27 +72,36 @@ readonly PHP_SH="${PN_PHP_SH:-${RADICE}/tools/php.sh}"
 # La assegna prova::cartella_json: fuori dallo spazio di lavoro.
 CARTELLA_JSON=''
 readonly APPROVAZIONE="Il piano è approvato: procedi come dice il piano."
+# Il seguito sui test, quando non sono verdi, un tag per ingrediente: la
+# richiesta nel tag <instructions>, il limite su legacy/ in <constraints>.
 SEGUITO_TEST="Esegui di nuovo i test con ${COMANDO} -c ${PROGETTO}"
 SEGUITO_TEST+=" ${TEST_REL}, da solo, senza concatenarlo ad altri, e"
-SEGUITO_TEST+=" correggi i test finché passano. Non modificare niente in"
-SEGUITO_TEST+=" ${PROGETTO}/legacy/. Poi fai il commit del test."
-readonly SEGUITO_TEST
+SEGUITO_TEST+=" correggi i test finché passano. Poi fai il commit del test."
+printf -v SEGUITO_TEST '%s\n' '<instructions>' "${SEGUITO_TEST}" \
+  '</instructions>' '' '<constraints>' \
+  "Non modificare niente in ${PROGETTO}/legacy/." '</constraints>'
+readonly SEGUITO_TEST="${SEGUITO_TEST%$'\n'}"
 readonly SEGUITI_MASSIMI=2
-# Le istruzioni del turno di correzione, fra i tag <istruzioni>: correggi()
-# vi aggiunge una riga vuota e le righe «Non ancora: …» della verifica fra
-# i tag <esito_verifica>. Due contenuti diversi, ciascuno nel suo tag,
-# come insegna il Modulo 2: prima le istruzioni, perché i dati sono poche
-# righe; il tag dei dati ha il nome di ciò che contiene.
+# Il turno di correzione, un tag per ingrediente: il contesto, le
+# istruzioni e i vincoli nei tag <context>, <instructions> e
+# <constraints>. correggi() vi aggiunge una riga vuota e le righe «Non
+# ancora: …» della verifica fra i tag <verification_result>, che hanno il
+# nome di ciò che contengono: i dati dopo gli ingredienti, come nel
+# template del corso, perché sono poche righe.
 printf -v CORREZIONE '%s\n' \
-  '<istruzioni>' \
-  'Contesto: la verifica dello spazio di lavoro dice che manca' \
-  'ancora ciò che sta tra i tag <esito_verifica>, qui sotto.' \
+  '<context>' \
+  'La verifica dello spazio di lavoro dice che manca ancora ciò che' \
+  'sta tra i tag <verification_result>, qui sotto.' \
+  '</context>' \
   '' \
-  'Istruzione: sistema questi punti, un comando per volta, e fai il' \
-  'commit di ciò che cambi.' \
+  '<instructions>' \
+  'Sistema questi punti, un comando per volta, e fai il commit di' \
+  'ciò che cambi.' \
+  '</instructions>' \
   '' \
-  "Vincoli: ${PROGETTO}/legacy/ resta com'è." \
-  '</istruzioni>'
+  '<constraints>' \
+  "${PROGETTO}/legacy/ resta com'è." \
+  '</constraints>'
 readonly CORREZIONE="${CORREZIONE%$'\n'}"
 readonly TITOLO="Un modulo opaco: documentarlo e proporre il refactoring"
 readonly DOVE="Modulo 4, laboratorio, traccia (b): la prova del partecipante"
@@ -150,15 +159,15 @@ seconda_parte() {
 
 # La verifica come la lancia il partecipante; se dice «Non ancora», un turno
 # con CORREZIONE, una riga vuota e le sue righe «Non ancora: …» fra i tag
-# <esito_verifica>. Arguments: $1 lo spazio di lavoro.
+# <verification_result>. Arguments: $1 lo spazio di lavoro.
 correggi() {
-  local out righe rc=0
+  local out righe dati rc=0
   out="$("${CONTROLLO}" "$1" 2>&1)" || rc=$?
   (( rc == 1 )) || return 0
   righe="$(grep '^Non ancora: ' <<< "${out}")" || return 0
   handson::step "La verifica dice «Non ancora»: un turno per sistemare"
-  turno "${SESSIONE}" \
-    "${CORREZIONE}"$'\n\n<esito_verifica>\n'"${righe}"$'\n</esito_verifica>'
+  dati=$'\n\n<verification_result>\n'"${righe}"$'\n</verification_result>'
+  turno "${SESSIONE}" "${CORREZIONE}${dati}"
 }
 
 main() {

@@ -138,10 +138,13 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
        pianifichi uno script operativo, il controllo notturno.
+       </role>
 
-       Contesto: lo script da scrivere è
+       <context>
+       Lo script da scrivere è
        progetti/gestionale-php/bin/controllo-notturno.php, descritto in
        SPECIFICA.md. Gli altri script di progetti/gestionale-php/bin/
        sono i modelli: le opzioni, le uscite, i messaggi su stderr. Lo
@@ -151,18 +154,25 @@ quella con la barra sì.
        progetti/gestionale-php/docs/convenzioni.md. Nel progetto c'è il
        subagent revisore, che confronta il contratto d'uscita e i
        messaggi di uno script con SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi SPECIFICA.md, gli script di bin/, lo schema e
-       quelle regole, e prepara un piano a piccoli passi.
+       <instructions>
+       Leggi SPECIFICA.md, gli script di bin/, lo schema e quelle
+       regole, e prepara un piano a piccoli passi.
+       </instructions>
 
-       Formato: ogni passo con il suo commit. Nel piano: dopo ogni
-       passo esegui il controllo e leggi l'esito nella sua ultima riga;
-       prima del commit che chiude lo script, revisore ne controlla il
-       contratto d'uscita e i messaggi con SPECIFICA.md.
+       <format>
+       Ogni passo con il suo commit. Nel piano: dopo ogni passo esegui
+       il controllo e leggi l'esito nella sua ultima riga; prima del
+       commit che chiude lo script, revisore ne controlla il contratto
+       d'uscita e i messaggi con SPECIFICA.md.
+       </format>
 
-       Vincoli: il controllo è questo comando, eseguito da solo, senza
+       <constraints>
+       Il controllo è questo comando, eseguito da solo, senza
        concatenarlo ad altri:
        python3 controlla_notturno.py
+       </constraints>
 
    <!-- /prompt 1 -->
 
@@ -176,7 +186,8 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       <instructions>
+       Il piano va bene, eseguilo un passo alla volta.
        1. Prova lo script sui dati di esempio, da solo:
           tools/php.sh php progetti/gestionale-php/bin/controllo-notturno.php --giorno=2026-09-13
        2. Dopo ogni passo esegui il controllo, da solo, senza
@@ -187,9 +198,11 @@ quella con la barra sì.
           add, poi git commit -m con il messaggio fra virgolette, un
           comando per volta, e un messaggio come chiede la regola 11.1
           di progetti/gestionale-php/docs/convenzioni.md.
+       </instructions>
 
-       Vincoli: si corregge lo script; controlla_notturno.py resta
-       com'è.
+       <constraints>
+       Si corregge lo script; controlla_notturno.py resta com'è.
+       </constraints>
 
    <!-- /prompt 2 -->
 
@@ -217,17 +230,21 @@ quella con la barra sì.
 
    <!-- prompt 4 -->
 
-       Contesto: siamo alla fine della prima parte del laboratorio, e
-       la seconda riparte da una sessione nuova.
+       <context>
+       Siamo alla fine della prima parte del laboratorio, e la seconda
+       riparte da una sessione nuova.
+       </context>
 
-       Istruzione: scrivi NOTA.md, nella cartella in cui siamo; poi fai
-       un commit di NOTA.md: git add, poi git commit -m, un comando per
-       volta.
+       <instructions>
+       Scrivi NOTA.md, nella cartella in cui siamo; poi fai un commit
+       di NOTA.md: git add, poi git commit -m, un comando per volta.
+       </instructions>
 
-       Formato: che cosa è fatto (i punti di SPECIFICA.md già
-       soddisfatti, con i loro commit), che cosa manca, e i comandi per
-       riprendere (il controllo, lo script sui dati di esempio, il
-       revisore).
+       <format>
+       Che cosa è fatto (i punti di SPECIFICA.md già soddisfatti, con i
+       loro commit), che cosa manca, e i comandi per riprendere (il
+       controllo, lo script sui dati di esempio, il revisore).
+       </format>
 
    <!-- /prompt 4 -->
 
@@ -248,14 +265,19 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
+       <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
        uno script operativo lasciato a metà.
+       </role>
 
-       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; lo
-       script è descritto in SPECIFICA.md.
+       <context>
+       NOTA.md dice che cosa è fatto e che cosa manca; lo script è
+       descritto in SPECIFICA.md.
+       </context>
 
-       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
-       dove si era fermato.
+       <instructions>
+       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
+       fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
           passo; dopo ogni passo esegui il controllo, da solo, senza
           concatenarlo ad altri:
@@ -264,6 +286,16 @@ quella con la barra sì.
           dal primo commit, e passa il diff a @agent-revisore perché
           controlli il contratto d'uscita e i messaggi dello script con
           SPECIFICA.md.
+       </instructions>
+
+       <format>
+       Un commit per passo, con un messaggio come chiede la regola 11.1
+       di progetti/gestionale-php/docs/convenzioni.md.
+       </format>
+
+       <constraints>
+       Si corregge lo script; controlla_notturno.py resta com'è.
+       </constraints>
 
    <!-- /prompt 5 -->
 
@@ -446,7 +478,8 @@ nei dati di esempio: quelle le trova lo script.
 
 Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README): il controllo dell'esercizio, «7 casi su 7 come la
+di questo README nella forma di allora, con le etichette al posto dei
+tag): il controllo dell'esercizio, «7 casi su 7 come la
 specifica»; sui dati di esempio, con `--giorno=2026-09-13`,
 `linea-cliente-cessato` trovate 2 su 2, `linea-senza-apparato` 1 su 1,
 `attivazione-ferma` 3 su 3, `ticket-in-attesa` 3 su 3, e i due conteggi

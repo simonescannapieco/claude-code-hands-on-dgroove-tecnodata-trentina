@@ -4,8 +4,8 @@
 # Due chiamate a Sonnet con claude -p, senza strumenti né server MCP, sullo
 # stesso messaggio di un cliente:
 #   A  «Riassumi.» e il messaggio;
-#   B  il prompt di cinque righe (ruolo, contesto, istruzione, formato,
-#      vincoli) e il messaggio tra tag.
+#   B  il prompt di cinque tag, uno per ingrediente (ruolo, contesto,
+#      istruzione, formato, vincoli), e il messaggio nel suo tag.
 # Token e risposte in confronto.tsv, nello stesso formato dei passi del
 # README; il controllo è quello di verifica.sh, che gira una volta e si
 # vede per intero (i numeri e un esito per ogni affermazione) prima del
@@ -92,7 +92,7 @@ main() {
   handson::step "A: «Riassumi.»"
   { chiama prompt-a.md "${json_a}" && riga A "${json_a}"; } \
     || fallita "la chiamata A non ha dato una risposta"
-  handson::step "B: il prompt di cinque righe"
+  handson::step "B: il prompt di cinque tag"
   { chiama prompt-b.md "${json_b}" && riga B "${json_b}"; } \
     || fallita "la chiamata B non ha dato una risposta"
   handson::step "Le affermazioni alla prova"

@@ -129,7 +129,7 @@ main() {
   live::turno 1 "${PROMPT[0]}"
   HANDSON_PERMISSION_MODE=dontAsk
   for n in 2 3 4; do
-    handson::step "Prima parte, turno ${n}: ${PROMPT[n - 1]%%$'\n'*}"
+    handson::step "Prima parte, turno ${n}: $(live::titolo "${PROMPT[n - 1]}")"
     live::turno "${n}" "${PROMPT[n - 1]}" --resume "${LIVE_SESSIONE}"
   done
   handson::step "Seconda parte, turno 5: una sessione nuova, da NOTA.md"
@@ -138,7 +138,7 @@ main() {
     stato="$(stato_del_lavoro "${ws}")" \
       || handson::die "la verifica dell'elemento non può girare"
     [[ "${stato}" == "lavoro" ]] || break
-    handson::step "Seconda parte, turno ${n}: ${PROMPT[5]%%$'\n'*}"
+    handson::step "Seconda parte, turno ${n}: $(live::titolo "${PROMPT[5]}")"
     live::turno "${n}" "${PROMPT[5]}" --resume "${LIVE_SESSIONE}"
   done
   live::verifica "${ws}"

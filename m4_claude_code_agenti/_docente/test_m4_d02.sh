@@ -88,7 +88,7 @@ readonly DATI="${RADICE}/progetti/gestionale-php/database"
 readonly FINTO_PY="${MOD}/_docente/claude_finto_m4_d01_d02_d08.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=106
+readonly CASES=107
 VERITA='Ala|Arco|Baselga di Pinè|Borgo Valsugana|Caldonazzo|Lavis'
 VERITA+='|Levico Terme|Mezzolombardo|Mori|Pergine Valsugana|Riva del Garda'
 VERITA+='|Rovereto|Trento'
@@ -514,6 +514,36 @@ t_elemento() {
   else
     fail "elemento: in demo/ c'è altro: ${f}"
   fi
+  # La domanda, un tag per ingrediente: ogni frase intera nel suo tag, le
+  # parole quelle di prima; il blocco del README la mostra uguale.
+  run python3 -B -I - "${D02}/demo/domanda.txt" "${D02}/README.md" <<'PY'
+import re
+import sys
+import textwrap
+
+testo = open(sys.argv[1], encoding="utf-8").read().rstrip("\n")
+righe = testo.split("\n")
+tag = [r for r in righe if re.fullmatch(r"</?[a-z_]+>", r)]
+parole = " ".join(r for r in righe if r and r not in tag)
+readme = open(sys.argv[2], encoding="utf-8").read().split("\n")
+a = [i for i, r in enumerate(readme) if r.strip() == "<!-- prompt -->"]
+b = [i for i, r in enumerate(readme) if r.strip() == "<!-- /prompt -->"]
+blocco = None
+if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
+    blocco = textwrap.dedent("\n".join(readme[a[0] + 1:b[0]])).strip("\n")
+problemi = []
+if tag != ["<instructions>", "</instructions>", "<format>", "</format>"]:
+    problemi.append("i tag %s" % tag)
+if parole != ("Quali comuni hanno indirizzi coperti dalla fibra FTTH di "
+              "CiaspoLink? Rispondi soltanto con l'elenco dei comuni, uno "
+              "per riga, in ordine alfabetico."):
+    problemi.append("le parole: %s" % parole)
+if blocco != testo:
+    problemi.append("il blocco del README non è domanda.txt")
+print("; ".join(problemi) or "domanda a tag")
+PY
+  expect "domanda.txt: nei tag instructions e format, le parole di prima, \
+uguale nel README" 0 "domanda a tag"
 }
 
 # prepara_esercizio.sh e tools/verifica.sh sul punto di partenza.
@@ -984,7 +1014,8 @@ t_live_precondizioni() {
 }
 
 # Le chiamate -p del registro, una per riga: la chiave, le opzioni in
-# ordine alfabetico e il prompt. Arguments: $1 il registro.
+# ordine alfabetico e il prompt, in JSON perché resti su una riga anche
+# quando ne ha più d'una. Arguments: $1 il registro.
 chiamate() {
   python3 -B -I - "$1" <<'PY'
 import json, sys
@@ -1008,7 +1039,7 @@ for riga in open(sys.argv[1], encoding="utf-8"):
             opzioni.append(argv[i])
             i += 1
     print("%s | %s | %s" % (voce["chiave"], " ".join(sorted(opzioni)),
-                            prompt))
+                            json.dumps(prompt, ensure_ascii=False)))
 PY
 }
 

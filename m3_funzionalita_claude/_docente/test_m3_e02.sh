@@ -28,14 +28,17 @@
 #     obbligatorie; la soluzione lo rispetta, un tipo sbagliato, una chiave
 #     in più, un giorno che manca no (un validatore minimo, scritto qui);
 #   - i prompt: nel README fra i segni, uguali a esercizio/prompt-*.md,
-#     nella forma del Modulo 2 e in righe entro 66 colonne; i tre dei
-#     numeri fra i tag <istruzioni>; i due della coppia del docente con
-#     ruolo, formato e vincoli del prompt dei numeri, e diversi nel
-#     contesto e nell'istruzione, che dicono dove sta la tabella
-#     (<ticket_anonimi>) e come si calcola, il braccio file con python3
-#     come unico comando, da solo; il seguito della dashboard con le
-#     etichette e senza ruolo; il README con le dieci sezioni; nessun
-#     identificativo interno nei file per i partecipanti;
+#     nel template del Modulo 2, un tag per ingrediente, e in righe entro
+#     66 colonne; i tre dei numeri con role, context, format,
+#     constraints e, in fondo, instructions, nessuna etichetta e niente
+#     fuori dai tag; i due della coppia del docente con ruolo, formato e
+#     vincoli del prompt dei numeri, e diversi nel contesto e
+#     nell'istruzione, che dicono dove sta la tabella
+#     (<anonymized_tickets>) e come si calcola, il braccio file con
+#     python3 come unico comando, da solo; il formato «Un oggetto JSON»,
+#     non «soltanto»; il seguito della dashboard con i tag e senza ruolo;
+#     il README con le dieci sezioni; nessun identificativo interno nei
+#     file per i partecipanti;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero;
 #   - shellcheck -x su verifica.sh e su questo script.
 # Gli spazi di lavoro nascono in una cartella temporanea, nella base di
@@ -62,7 +65,7 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=79
+readonly CASES=80
 readonly FINE="Fatto: kpi.json ha le dieci chiavi, con i tipi giusti."
 # Gli identificativi interni che i file per i partecipanti non portano.
 INTERNI='FACT-|Tecnodata|[Tt]riage|Envelope|M[0-9]-X[0-9]|\bX-[0-9]'
@@ -527,6 +530,7 @@ t_readme() {
   local f trovati=''
   run python3 -B -I - "${E02}" <<'PY'
 import os
+import re
 import sys
 import textwrap
 
@@ -558,18 +562,32 @@ for nome in ("numeri", "dashboard"):
         print("%s in 66 colonne" % nome)
 
 
+ETICHETTE = ("Ruolo:", "Contesto:", "Istruzione:", "Istruzioni:",
+             "Formato:", "Vincoli:", "Esempi:")
+
+
 def ingredienti(testo):
-    """{etichetta: paragrafo} di un prompt nella forma del Modulo 2, più
-    «ruolo» (il paragrafo che comincia con «Sei ») e «tag» (le righe
-    <istruzioni> e </istruzioni> che lo racchiudono, se ci sono)."""
-    righe = testo.rstrip("\n").split("\n")
-    tag = righe[0] == "<istruzioni>" and righe[-1] == "</istruzioni>"
-    if tag:
-        righe = righe[1:-1]
-    out = {"tag": tag}
-    for p in "\n".join(righe).split("\n\n"):
-        chiave = "ruolo" if p.startswith("Sei ") else p.split(":", 1)[0]
-        out[chiave] = p
+    """{tag: contenuto} dei tag di primo livello di un prompt nel template
+    del Modulo 2, un tag per ingrediente, più «ordine» (i tag, in ordine) e
+    «difetti»: una riga fuori dai tag che non è vuota, un tag non chiuso,
+    una riga di etichetta («Contesto:» …)."""
+    out, ordine, difetti, corrente = {}, [], [], None
+    for r in testo.rstrip("\n").split("\n"):
+        m = re.fullmatch(r"<(/?)([a-z_]+)>", r)
+        if m and not m.group(1) and corrente is None:
+            corrente, righe = m.group(2), []
+            ordine.append(corrente)
+        elif m and m.group(1) and m.group(2) == corrente:
+            out[corrente], corrente = "\n".join(righe), None
+        elif corrente is not None:
+            righe.append(r)
+        elif r.strip():
+            difetti.append("fuori dai tag: %s" % r)
+        if r.startswith(ETICHETTE):
+            difetti.append("etichetta: %s" % r)
+    if corrente is not None:
+        difetti.append("tag non chiuso: %s" % corrente)
+    out["ordine"], out["difetti"] = tuple(ordine), difetti
     return out
 
 
@@ -577,35 +595,45 @@ numeri = ingredienti(leggi("esercizio", "prompt-numeri.md"))
 gemelli = [ingredienti(leggi("_docente", "prompt-%s.md" % b))
            for b in ("incollato", "file")]
 tre = [numeri] + gemelli
-etichette = ("ruolo", "Contesto", "Istruzione", "Formato", "Vincoli")
-# Il messaggio arriva con altro (il file, la tabella): le istruzioni tra i
-# tag <istruzioni>, come il prompt B nel Modulo 2.
-if all(t["tag"] and all(k in t for k in etichette) for t in tre):
-    print("tre prompt nella forma del Modulo 2")
+# Il messaggio arriva con altro (il file, la tabella): un tag per
+# ingrediente, la tabella in cima e l'istruzione in fondo, nei due bracci e
+# nel prompt dei partecipanti, il ruolo che comincia con «Sei ».
+ordine = ("role", "context", "format", "constraints", "instructions")
+if all(t["ordine"] == ordine and not t["difetti"]
+       and t["role"].startswith("Sei ") for t in tre):
+    print("tre prompt, un tag per ingrediente")
 # I due bracci, e il prompt dei partecipanti, condividono ruolo, formato e
 # vincoli byte per byte: le dieci chiavi sono le stesse.
-comuni = ("ruolo", "Formato", "Vincoli")
+comuni = ("role", "format", "constraints")
 if all(k in t for t in tre for k in comuni) and \
         all(t[k] == numeri[k] for t in gemelli for k in comuni):
     print("coppia stessa coda")
+# Il formato chiede «Un oggetto JSON», non «soltanto»: nel gemello la forma
+# la vincola lo schema di --json-schema.
+if all(t.get("format", "").startswith("Un oggetto JSON, con queste dieci")
+       and "soltanto un oggetto json" not in t.get("format", "").lower()
+       for t in tre):
+    print("formato: un oggetto JSON, senza soltanto")
 # Differiscono nel dove sta la tabella e nel come si calcola: il contesto e
 # l'istruzione.
-if len({t.get("Contesto") for t in tre}) == 3 and \
-        "<ticket_anonimi>" in gemelli[0].get("Contesto", "") and \
-        "con il codice" in gemelli[1].get("Istruzione", "") and \
-        "con il codice" not in gemelli[0].get("Istruzione", ""):
-    print("coppia primo paragrafo diverso")
-if "L'unico comando permesso è python3" in gemelli[1].get("Istruzione", "") \
-        and "senza concatenarlo ad altri" in gemelli[1].get("Istruzione", "") \
-        and "python3" not in gemelli[0].get("Istruzione", ""):
+if len({t.get("context") for t in tre}) == 3 and \
+        "<anonymized_tickets>" in gemelli[0].get("context", "") and \
+        "con il codice" in gemelli[1].get("instructions", "") and \
+        "con il codice" not in gemelli[0].get("instructions", ""):
+    print("coppia contesto e istruzione diversi")
+if "L'unico comando permesso è python3" in \
+        " ".join(gemelli[1].get("instructions", "").split()) \
+        and "senza concatenarlo ad altri" in \
+        " ".join(gemelli[1].get("instructions", "").split()) \
+        and "python3" not in gemelli[0].get("instructions", ""):
     print("coppia il braccio file dice il suo comando")
-# Il seguito della dashboard: le etichette senza il ruolo, e «crea come
+# Il seguito della dashboard: i tag senza il ruolo, e «crea come
 # artifact», la parola della frase di Anthropic che l'esercizio segue.
 d = ingredienti(leggi("esercizio", "prompt-dashboard.md"))
-if not d["tag"] and "ruolo" not in d and \
-        all(k in d for k in ("Contesto", "Istruzione", "Formato")) and \
-        "crea come artifact" in d.get("Istruzione", ""):
-    print("dashboard: le etichette e crea come artifact")
+if d["ordine"] == ("context", "instructions", "format", "constraints") \
+        and not d["difetti"] and \
+        d.get("instructions", "").startswith("Crea come artifact"):
+    print("dashboard: i tag senza il ruolo e crea come artifact")
 sezioni = ("Obiettivo", "Tempo", "Prerequisiti", "Punto di partenza",
            "Passi in Claude Code", "Che cosa osservare", "Verifica",
            "Se qualcosa va storto", "Impronta d'uso sul piano Pro",
@@ -618,16 +646,18 @@ PY
     "dashboard uguale"
   expect "prompt dei numeri in 66 colonne" 0 "numeri in 66 colonne"
   expect "prompt della dashboard in 66 colonne" 0 "dashboard in 66 colonne"
-  expect "i tre prompt dei numeri nella forma del Modulo 2, in <istruzioni>" \
-    0 "tre prompt nella forma del Modulo 2"
+  expect "i tre prompt dei numeri, un tag per ingrediente, <instructions> \
+in fondo" 0 "tre prompt, un tag per ingrediente"
   expect "coppia: ruolo, formato e vincoli uguali al prompt dei numeri" 0 \
     "coppia stessa coda"
+  expect "il formato chiede «Un oggetto JSON», senza «soltanto»: la forma \
+la vincola lo schema" 0 "formato: un oggetto JSON, senza soltanto"
   expect "coppia: contesto e istruzione dicono dove sta la tabella e come \
-si calcola" 0 "coppia primo paragrafo diverso"
+si calcola" 0 "coppia contesto e istruzione diversi"
   expect "coppia: il braccio file dice che python3 va eseguito da solo" 0 \
     "coppia il braccio file dice il suo comando"
-  expect "dashboard: le etichette senza il ruolo, «crea come artifact»" 0 \
-    "dashboard: le etichette e crea come artifact"
+  expect "dashboard: i tag senza il ruolo, «Crea come artifact»" 0 \
+    "dashboard: i tag senza il ruolo e crea come artifact"
   expect "README: le dieci sezioni" 0 "sezioni ok"
   for f in README.md verifica.sh verifica.py kpi_veri.py \
       esercizio/prompt-numeri.md esercizio/prompt-dashboard.md \

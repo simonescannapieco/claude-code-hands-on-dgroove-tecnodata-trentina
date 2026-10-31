@@ -82,15 +82,19 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
 
    <!-- prompt -->
 
+       <role>
        Sei uno sviluppatore Python dell'assistenza clienti di
        CiaspoLink e prepari la dashboard della settimana come una
        pagina che si apre senza rete.
+       </role>
 
-       Contesto: la settimana anonima è in anonimo/ticket-anonimi.csv;
-       i dieci indicatori, con le loro regole, sono in
-       kpi_definizioni.md.
+       <context>
+       La settimana anonima è in anonimo/ticket-anonimi.csv; i dieci
+       indicatori, con le loro regole, sono in kpi_definizioni.md.
+       </context>
 
-       Istruzione: scrivi ed esegui uno script, in tre passi.
+       <instructions>
+       Scrivi ed esegui uno script, in tre passi.
        1. Leggi kpi_definizioni.md.
        2. Scrivi genera_dashboard.py, che legge
           anonimo/ticket-anonimi.csv, calcola i dieci indicatori con le
@@ -102,27 +106,34 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
           che arriverebbe da fuori. Correggi genera_dashboard.py, e
           riesegui il generatore e il controllo, finché il controllo
           esce con 0.
+       </instructions>
 
-       Formato: lo script in Python 3.8 o successivo, solo libreria
-       standard. dashboard.html è un file solo, con CSS e grafici
-       dentro la pagina, per esempio barre in SVG. I numeri sono
-       scritti nel testo della pagina da genera_dashboard.py, e tutti e
-       dieci gli indicatori stanno anche in un blocco
+       <format>
+       Lo script in Python 3.8 o successivo, solo libreria standard.
+       dashboard.html è un file solo, con CSS e grafici dentro la
+       pagina, per esempio barre in SVG. I numeri sono scritti nel
+       testo della pagina da genera_dashboard.py, e tutti e dieci gli
+       indicatori stanno anche in un blocco
        <script type="application/json" id="kpi">, con le chiavi di
        kpi_definizioni.md.
+       </format>
 
-       Vincoli: anonimo/ticket-anonimi.csv lo legge soltanto lo script,
-       e il suo contenuto resta fuori da ciò che stampi. Tutto ciò che
-       la pagina usa, script, fogli di stile, font e immagini, sta
-       dentro il file. Esegui ogni comando da solo, senza concatenarlo
-       ad altri, e leggi l'uscita del controllo nella sua ultima riga.
+       <constraints>
+       anonimo/ticket-anonimi.csv lo legge soltanto lo script, e il suo
+       contenuto resta fuori da ciò che stampi. Tutto ciò che la pagina
+       usa, script, fogli di stile, font e immagini, sta dentro il
+       file. Esegui ogni comando da solo, senza concatenarlo ad altri,
+       e leggi l'uscita del controllo nella sua ultima riga.
+       </constraints>
 
    <!-- /prompt -->
 
    Il prompt segue il template del Modulo 2
-   (`riferimenti/pattern-di-prompt.md`): il ruolo, poi il contesto,
-   l'istruzione a passi con il controllo per ultimo, il formato e i
-   vincoli. La slide lo mostra così com'è, riga per riga, in due pagine.
+   (`riferimenti/pattern-di-prompt.md`), ogni ingrediente nel suo tag: il
+   ruolo in `<role>`, il contesto in `<context>`, l'istruzione a passi in
+   `<instructions>`, con il controllo per ultimo, il formato in `<format>`
+   e i vincoli in `<constraints>`. La slide lo mostra così com'è, riga per
+   riga, in tre pagine.
 
    - **Percorso A, un vostro CSV anonimo:** il file con dati inventati che
      avete anonimizzato nel percorso A di M3-E01, in `anonimo/`, con i

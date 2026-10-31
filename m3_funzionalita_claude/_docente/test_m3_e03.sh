@@ -37,15 +37,19 @@
 #     nuovo, riproduce byte per byte soluzione/dashboard.html; il registro
 #     di riferimento ha la forma di un'esecuzione passata;
 #   - .claude/settings.json (con la regola deny di Edit sul controllo); il
-#     README (il prompt fra i segni, nella forma del Modulo 2 con il
-#     controllo come ultimo passo, che chiede un comando per volta e
-#     l'uscita nell'ultima riga; righe entro 66 colonne; nessuna versione
-#     breve; le dieci sezioni; Linux e WSL 2, non macOS; nessun
-#     identificativo interno nei file per i partecipanti);
+#     README (il prompt fra i segni, nel template del Modulo 2 con un tag
+#     per ingrediente, role, context, instructions, format e constraints,
+#     il controllo come ultimo passo dentro instructions, e in constraints
+#     un comando per volta e l'uscita nell'ultima riga; righe entro 66
+#     colonne; nessuna versione breve; le dieci sezioni; Linux e WSL 2,
+#     non macOS; nessun identificativo interno nei file per i
+#     partecipanti);
 #   - _docente/live.sh con un claude finto: le precondizioni escono 2 senza
 #     chiamare claude (anche impostazioni senza regole Bash); finito al
 #     primo turno, al secondo dopo una pagina sbagliata o dopo nessuna
-#     pagina (con --resume e il seguito giusto), mai finito (quattro
+#     pagina (con --resume e il seguito giusto, byte per byte: la
+#     richiesta nel tag instructions, un comando per volta nel tag
+#     constraints, senza il ruolo), mai finito (quattro
 #     chiamate, uscita 1), una chiamata fallita; le opzioni passate a
 #     claude (Read, Write, Edit e le regole Bash delle impostazioni,
 #     --strict-mcp-config), il prompt uguale a quello del README,
@@ -87,6 +91,13 @@ check again."
 readonly FRASE_DI_PRIMA="iterates until the check passes"
 readonly UN_COMANDO="Esegui ogni comando da solo, senza concatenarlo ad \
 altri, e leggi l'uscita del controllo nella sua ultima riga."
+# Le richieste dei due seguiti di live.sh: ognuna nel tag instructions, e
+# UN_COMANDO nel tag constraints (seguito_atteso).
+readonly RICHIESTA_PAGINA="Scrivi, se manca, ed esegui genera_dashboard.py \
+come chiedeva il primo messaggio; poi esegui python3 controlla_dashboard.py \
+e correggi finché esce 0."
+readonly RICHIESTA_CONTROLLO="Esegui python3 controlla_dashboard.py e \
+correggi genera_dashboard.py finché il controllo esce con 0."
 # L'ora UTC in testa a una riga di controlli_dashboard.log.
 readonly RIGA_LOG='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
 # Gli identificativi interni che i file per i partecipanti non portano.
@@ -124,6 +135,16 @@ expect_absent() {
   else
     pass "$1"
   fi
+}
+
+# Un seguito di live.sh come deve arrivare a claude: la richiesta nel tag
+# instructions, UN_COMANDO nel tag constraints, senza il ruolo, che ha dato
+# il primo messaggio.
+# Arguments: $1 la richiesta. Outputs: il testo su STDOUT, senza a capo
+# finale.
+seguito_atteso() {
+  printf '<instructions>\n%s\n</instructions>\n\n' "$1"
+  printf '<constraints>\n%s\n</constraints>' "${UN_COMANDO}"
 }
 
 # L'ultima riga di OUT comincia con il testo atteso.
@@ -764,13 +785,16 @@ PY
   expect "settings: defaultMode default (Manual)" 0 "modo ok"
 }
 
-# Il README: il prompt (in ${TMP}/prompt-readme.txt), nella forma del
-# Modulo 2 con il controllo come ultimo passo, nessuna versione breve, le
-# dieci sezioni; nessun identificativo interno nei file per i partecipanti.
+# Il README: il prompt (in ${TMP}/prompt-readme.txt), nel template del
+# Modulo 2, un tag per ingrediente, con il controllo come ultimo passo
+# dentro <instructions> e un comando per volta in <constraints>, nessuna
+# versione breve, le dieci sezioni; nessun identificativo interno nei file
+# per i partecipanti.
 t_readme() {
   local f trovati=''
   run python3 -B -I - "${E03}/README.md" "${TMP}/prompt-readme.txt" \
     "${UN_COMANDO}" <<'PY'
+import re
 import sys
 import textwrap
 
@@ -781,27 +805,48 @@ if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
     prompt = textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
     open(sys.argv[2], "w", encoding="utf-8").write(prompt)
     print("prompt ok")
-    if sys.argv[3] in " ".join(prompt.split()):
+    righe_p = prompt.split("\n")
+    # Il template del Modulo 2, un tag per ingrediente: i cinque tag in
+    # quest'ordine, ognuno da solo sulla sua riga e chiuso, «Sei …» in
+    # <role>; nessuna riga di etichetta («Contesto:» …), niente fuori dai
+    # tag. Il blocco <script … id="kpi"> del formato sta in una frase, non
+    # è un tag.
+    ordine = ("role", "context", "instructions", "format", "constraints")
+    aperti, fuori, dentro, corrente = [], [], {}, None
+    for r in righe_p:
+        m = re.fullmatch(r"<(/?)([a-z_]+)>", r)
+        if m and not m.group(1) and corrente is None:
+            corrente = m.group(2)
+            aperti.append(corrente)
+            dentro[corrente] = []
+        elif m and m.group(1) and m.group(2) == corrente:
+            corrente = None
+        elif corrente is not None:
+            dentro[corrente].append(r)
+        elif r.strip():
+            fuori.append(r)
+    etichette = ("Ruolo:", "Contesto:", "Istruzione:", "Istruzioni:",
+                 "Formato:", "Vincoli:", "Esempi:")
+    if tuple(aperti) == ordine and corrente is None and not fuori \
+            and dentro["role"] and dentro["role"][0].startswith("Sei ") \
+            and not any(r.startswith(etichette) for r in righe_p):
+        print("un tag per ingrediente ok")
+    vincoli = " ".join(" ".join(dentro.get("constraints", [])).split())
+    if sys.argv[3] in vincoli:
         print("un comando per volta ok")
     # Lo script si esegue con il comando che le impostazioni consentono: in
     # claude -p un'altra forma (python3 -I, una redirezione) è negata, dove
     # un partecipante risponde.
     if "Eseguilo con python3 genera_dashboard.py" in " ".join(prompt.split()):
         print("il comando consentito ok")
-    righe_p = prompt.split("\n")
-    # La forma del Modulo 2: il ruolo, poi le etichette, in quest'ordine.
-    etichette = [next((k for k, r in enumerate(righe_p)
-                       if r.startswith(e)), -1)
-                 for e in ("Contesto:", "Istruzione:", "Formato:",
-                           "Vincoli:")]
-    if righe_p[0].startswith("Sei ") and -1 not in etichette \
-            and etichette == sorted(etichette):
-        print("forma del Modulo 2 ok")
-    # Il controllo è l'ultimo passo dell'istruzione.
-    passi = [r for r in righe_p[etichette[1]:etichette[2]]
-             if r[:1].isdigit()] if -1 not in etichette else []
-    if passi and passi[-1].split(". ", 1)[-1].startswith(
-            "Esegui python3 controlla_dashboard.py"):
+    # Il controllo è l'ultimo passo dentro <instructions>: il passo, le sue
+    # righe rientrate di tre spazi, poi «</instructions>».
+    istruzioni = dentro.get("instructions", [])
+    passi = [k for k, r in enumerate(istruzioni) if r[:1].isdigit()]
+    if passi and istruzioni[passi[-1]].split(". ", 1)[-1].startswith(
+            "Esegui python3 controlla_dashboard.py") \
+            and all(r.startswith("   ")
+                    for r in istruzioni[passi[-1] + 1:]):
         print("controllo all'ultimo passo ok")
     # La slide lo mostra così com'è, riga per riga, in più pagine.
     if max(len(r) for r in righe_p) <= 66:
@@ -816,13 +861,13 @@ if all(any(r.startswith("## " + s) for r in righe) for s in sezioni):
     print("sezioni ok")
 PY
   expect "README: il prompt fra i due segni" 0 "prompt ok"
-  expect "README: il prompt chiede un comando per volta e l'ultima riga" 0 \
-    "un comando per volta ok"
+  expect "README: il prompt chiede in <constraints> un comando per volta e \
+l'ultima riga" 0 "un comando per volta ok"
   expect "README: il prompt nomina il comando consentito" 0 \
     "il comando consentito ok"
-  expect "README: il prompt nella forma del Modulo 2" 0 \
-    "forma del Modulo 2 ok"
-  expect "README: il controllo è l'ultimo passo dell'istruzione" 0 \
+  expect "README: il prompt nel template del Modulo 2, un tag per \
+ingrediente" 0 "un tag per ingrediente ok"
+  expect "README: il controllo è l'ultimo passo dentro <instructions>" 0 \
     "controllo all'ultimo passo ok"
   expect "README: le righe del prompt in 66 colonne, come sulla slide" 0 \
     "righe del prompt in 66 colonne ok"
@@ -937,21 +982,23 @@ PY
     "esecuzioni registrate: 2; uscite, in ordine: 1 0"
   expect_chiamate "live.sh: finito al secondo turno, due chiamate" 2
   if sed -n 2p "${TMP}/finto.argv" | grep -qF '"--resume", "sessione-finta"' \
-      && grep -qF "controlla_dashboard.py e correggi" "${TMP}/prompt.2" \
-      && grep -qF "${UN_COMANDO}" "${TMP}/prompt.2"; then
-    pass "live.sh: il secondo turno riprende la sessione e chiede il controllo"
+      && cmp -s "${TMP}/prompt.2" \
+        <(seguito_atteso "${RICHIESTA_CONTROLLO}"); then
+    pass "live.sh: il secondo turno riprende la sessione e chiede il \
+controllo, nei tag instructions e constraints"
   else
-    fail "live.sh: il secondo turno non riprende la sessione o non chiede il" \
-      "controllo un comando per volta"
+    fail "live.sh: il secondo turno non riprende la sessione o non chiede il \
+controllo, un comando per volta, nei tag instructions e constraints"
   fi
   ws w
   live_finto "${w}" FINTO_MODO=senza_pagina
   expect "live.sh: la pagina al secondo turno esce 0" 0 "VERIFICA OK"
-  if grep -qF "Scrivi, se manca, ed esegui genera_dashboard.py" \
-      "${TMP}/prompt.2" && grep -qF "${UN_COMANDO}" "${TMP}/prompt.2"; then
-    pass "live.sh: senza pagina il secondo turno chiede lo script"
+  if cmp -s "${TMP}/prompt.2" <(seguito_atteso "${RICHIESTA_PAGINA}"); then
+    pass "live.sh: senza pagina il secondo turno chiede lo script, nei tag \
+instructions e constraints"
   else
-    fail "live.sh: senza pagina il secondo turno non chiede lo script"
+    fail "live.sh: senza pagina il secondo turno non chiede lo script, un \
+comando per volta, nei tag instructions e constraints"
   fi
   ws w
   live_finto "${w}" FINTO_MODO=mai

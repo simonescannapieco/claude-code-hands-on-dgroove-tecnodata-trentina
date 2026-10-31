@@ -11,9 +11,10 @@
 #   - il README: le dieci sezioni, i sei prompt fra i segni, il controllo e
 #     un comando per volta, il revisore con la @-mention, le parole da cui
 #     il claude finto riconosce i turni 2, 4 e 5; i prompt 1, 2, 4 e 5 e il
-#     corpo del revisore nella forma del Modulo 2 (il ruolo soltanto
-#     all'inizio di una sessione e nel subagent, poi le etichette, in
-#     ordine); le frasi di
+#     corpo del revisore nel template del corso, un tag per ingrediente
+#     (<role> soltanto all'inizio di una sessione e nel subagent, poi gli
+#     altri tag, in ordine; nessuna etichetta della forma di prima), i
+#     prompt 3 e 6 semplici; le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A; nessuna delle incoerenze dei dati di esempio nei file
 #     che arrivano ai partecipanti;
@@ -45,8 +46,10 @@
 #     chiamare claude, anche uno spazio di lavoro che ha già del lavoro (git
 #     status non vuoto, o un commit dopo il primo); le due parti (il piano
 #     in plan mode, poi --resume in dontAsk, la seconda parte in una
-#     sessione nuova), i prompt del README, gli strumenti (nessun grep,
-#     find, git log né git diff), la chiave tolta, i JSON fuori dallo
+#     sessione nuova), i prompt del README, i titoli dei turni (la prima
+#     riga dopo il tag che apre il prompt, mai un tag), gli strumenti
+#     (nessun grep, find, git log né git diff), la chiave tolta, i JSON
+#     fuori dallo
 #     spazio di lavoro; il lavoro finito nella seconda parte; mai finito (i
 #     seguiti, 1); una chiamata fallita (1); il revisore che modifica (1,
 #     senza seguiti);
@@ -74,7 +77,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e04.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=109
+readonly CASES=110
 readonly SCRIPT_REL=progetti/gestionale-php/bin/controllo-notturno.php
 readonly RIFERIMENTO="${E04}/soluzione/${SCRIPT_REL}"
 readonly CONTROLLO="python3 controlla_notturno.py"
@@ -387,10 +390,11 @@ for i in (0, 1, 4, 5):
 for i in (2, 4, 5):
     if i < len(prompt) and "@agent-revisore" not in prompt[i]:
         problemi.append("@agent-revisore nel prompt %d" % (i + 1))
-# Le parole da cui il claude finto riconosce i turni 2, 4 e 5.
-for i, parole in ((1, "Istruzione: il piano va bene"),
-                  (3, "Istruzione: scrivi NOTA.md"),
-                  (4, "Istruzione: leggi NOTA.md")):
+# Le parole da cui il claude finto riconosce i turni 2, 4 e 5, ciascuna in
+# apertura del tag <instructions>.
+for i, parole in ((1, "<instructions> Il piano va bene"),
+                  (3, "<instructions> Scrivi NOTA.md"),
+                  (4, "<instructions> Leggi NOTA.md")):
     if i < len(prompt) and parole not in prompt[i]:
         problemi.append("«%s» nel prompt %d" % (parole, i + 1))
 frasi = [
@@ -431,26 +435,45 @@ PY
   readme_lab "${E04}" M4-E04
 }
 
-# La forma del Modulo 2 nei prompt 1, 2, 4 e 5 del README e nel corpo del
-# revisore: il ruolo «Sei …» nel primo messaggio di una sessione e nel
-# subagent, mai in un seguito; poi le etichette, in quest'ordine. I prompt
-# 3 e 6 restano com'erano.
+# Il template del corso, un tag per ingrediente, nei prompt del README e
+# nel corpo del revisore: <role>, che comincia con «Sei », nel primo
+# messaggio di una sessione e nel subagent, mai in un seguito; poi gli
+# altri tag di primo livello, in quest'ordine, ciascuno solo sulla sua riga
+# e chiuso; nessuna riga che cominci con un'etichetta della forma di prima.
+# I prompt 3 e 6, richieste brevi, restano semplici.
 test_forma() {
   run python3 -B -I - "${E04}/README.md" \
     "${E04}/esercizio/.claude/agents/revisore.md" <<'PY'
+import re
 import sys
 import textwrap
 
-ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
-TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+TAG = re.compile(r"<(/?)([a-z_]+)>")
+ETICHETTE = ("Ruolo:", "Contesto:", "Istruzione:", "Istruzioni:", "Formato:",
+             "Vincoli:", "Esempi:")
+CINQUE = ["role", "context", "instructions", "format", "constraints"]
 
 
 def forma(testo):
-    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
-    righe che cominciano con un'etichetta, nell'ordine."""
-    righe = testo.strip("\n").split("\n")
-    return (righe[0].startswith("Sei "),
-            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+    """(il ruolo, i tag): se il tag <role> comincia con «Sei », e i tag di
+    primo livello, nell'ordine; («rotta», perché) se un tag non si chiude
+    o se una riga comincia con un'etichetta."""
+    pila, alto, ruolo = [], [], None
+    for riga in testo.strip("\n").split("\n"):
+        m = TAG.fullmatch(riga.strip())
+        if m is None:
+            if pila == ["role"] and ruolo is None:
+                ruolo = riga.startswith("Sei ")
+            if riga.startswith(ETICHETTE):
+                return ("rotta", "un'etichetta: %s" % riga[:24])
+        elif m.group(1):
+            if not pila or pila.pop() != m.group(2):
+                return ("rotta", "</%s>" % m.group(2))
+        else:
+            if not pila:
+                alto.append(m.group(2))
+            pila.append(m.group(2))
+    return (bool(ruolo), alto) if not pila else ("rotta", "<%s>" % pila[-1])
 
 
 def prompt(righe, n):
@@ -465,19 +488,21 @@ def prompt(righe, n):
 
 
 righe = open(sys.argv[1], encoding="utf-8").read().split("\n")
-testi = {"il prompt %d" % n: prompt(righe, n) for n in (1, 2, 4, 5)}
+testi = {"il prompt %d" % n: prompt(righe, n) for n in range(1, 7)}
 testi["revisore.md"] = open(sys.argv[2], encoding="utf-8").read() \
     .split("\n---\n", 1)[-1]
-attese = {"il prompt 1": (True, TUTTE),
-          "il prompt 2": (False, ["Istruzione:", "Vincoli:"]),
-          "il prompt 4": (False, ["Contesto:", "Istruzione:", "Formato:"]),
-          "il prompt 5": (True, ["Contesto:", "Istruzione:"]),
-          "revisore.md": (True, TUTTE)}
+attese = {"il prompt 1": (True, CINQUE),
+          "il prompt 2": (False, ["instructions", "constraints"]),
+          "il prompt 3": (False, []),
+          "il prompt 4": (False, ["context", "instructions", "format"]),
+          "il prompt 5": (True, CINQUE),
+          "il prompt 6": (False, []),
+          "revisore.md": (True, CINQUE)}
 diversi = ["%s %s" % (k, forma(testi[k])) for k in attese
            if forma(testi[k]) != attese[k]]
 print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
 PY
-  expect "README: i prompt 1, 2, 4, 5 e il revisore nella forma del Modulo 2" \
+  expect "README: i prompt e il revisore nel template, un tag per ingrediente" \
     0 "forma ok"
 }
 
@@ -850,6 +875,23 @@ live() {
     "$@" "${E04}/_docente/live.sh" "${ws}"
 }
 
+# I titoli dei turni che live.sh stampa (in OUT): per un prompt nella forma
+# a tag la prima riga dopo il tag che lo apre, per uno semplice la prima
+# riga; mai un tag.
+titoli_dei_turni() {
+  if grep -qxF -- "--- Prima parte, turno 2: Il piano va bene, eseguilo un \
+passo alla volta." <<< "${OUT}" \
+      && grep -qxF -- "--- Prima parte, turno 3: Prima del commit che chiude \
+lo script: esegui git log --oneline, poi" <<< "${OUT}" \
+      && grep -qxF -- "--- Prima parte, turno 4: Siamo alla fine della prima \
+parte del laboratorio, e la seconda" <<< "${OUT}" \
+      && ! grep -qE -- '^--- .*turno [0-9]+: <' <<< "${OUT}"; then
+    pass "live: il titolo di un turno è la prima riga dopo il tag"
+  else
+    fail "live: i titoli dei turni: $(grep -E -- 'turno [0-9]+:' <<< "${OUT}")"
+  fi
+}
+
 test_live() {
   local ws righe readme attese
   echo "== _docente/live.sh, con il claude finto"
@@ -882,6 +924,7 @@ test_live() {
   ws="$(spazio live-completo)" || rotta "lo spazio di lavoro"
   live "${ws}" completo
   expect "live: il lavoro completo, la verifica passa" 0 "Fatto"
+  titoli_dei_turni
   righe="$(chiamate "${TMP}/finto-completo.log")"
   readme="$(impronte_readme)"
   attese="$(printf '%s\t%s\tsonnet\tmedium\tmcp\t%s\tFalse\n' \

@@ -2,9 +2,9 @@
 # =====================================================================
 # lib_live_m4_e04_e05.sh -- le funzioni comuni dei _docente/live.sh di
 # M4-E04 e M4-E05, le due varianti della traccia (c) del laboratorio: lo
-# spazio di lavoro al punto di partenza, i prompt del README, i turni di
-# claude -p con il loro JSON e il loro riepilogo, le due parti della
-# prova, la verifica finale.
+# spazio di lavoro al punto di partenza, i prompt del README e il titolo
+# del loro turno, i turni di claude -p con il loro JSON e il loro
+# riepilogo, le due parti della prova, la verifica finale.
 # ---------------------------------------------------------------------
 # Libreria: si fa SOURCE dopo tools/lib_handson.sh, non si esegue (nessun
 # bit di esecuzione). Le funzioni leggono le variabili che il live.sh
@@ -55,6 +55,20 @@ if not testo.strip():
     sys.exit(2)
 print(testo)
 PY
+}
+
+# Il titolo del passo di un turno: la prima riga del prompt; se il prompt
+# comincia con un tag da solo sulla sua riga (la forma a tag, un tag per
+# ingrediente), la riga dopo quel tag: mai un tag.
+# Arguments: $1 il prompt. Outputs: la riga su STDOUT.
+lab::titolo() {
+  local testo="$1" riga tag='^<[a-z_]+>$'
+  riga="${testo%%$'\n'*}"
+  if [[ "${riga}" =~ ${tag} && "${testo}" == *$'\n'* ]]; then
+    testo="${testo#*$'\n'}"
+    riga="${testo%%$'\n'*}"
+  fi
+  printf '%s\n' "${riga}"
 }
 
 # I sei prompt del README in LAB_PROMPT; esce 2 se ne manca uno.
@@ -168,7 +182,8 @@ lab::due_parti() {
   # shellcheck disable=SC2034  # la legge handson::claude_p
   HANDSON_PERMISSION_MODE=dontAsk
   for n in 2 3 4; do
-    handson::step "Prima parte, turno ${n}: ${LAB_PROMPT[n - 1]%%$'\n'*}"
+    handson::step "Prima parte, turno ${n}:" \
+      "$(lab::titolo "${LAB_PROMPT[n - 1]}")"
     lab::turno "${n}" "${LAB_PROMPT[n - 1]}" --resume "${LAB_SESSIONE}"
   done
   handson::step "Seconda parte, turno 5: una sessione nuova, da NOTA.md"
@@ -177,7 +192,7 @@ lab::due_parti() {
     stato="$(lab::stato "${ws}")" \
       || handson::die "la verifica dell'elemento non può girare"
     [[ "${stato}" == "lavoro" ]] || break
-    handson::step "Seconda parte, turno ${n}: ${LAB_PROMPT[5]%%$'\n'*}"
+    handson::step "Seconda parte, turno ${n}: $(lab::titolo "${LAB_PROMPT[5]}")"
     lab::turno "${n}" "${LAB_PROMPT[5]}" --resume "${LAB_SESSIONE}"
   done
 }

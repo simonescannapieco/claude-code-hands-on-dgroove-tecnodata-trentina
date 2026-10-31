@@ -53,8 +53,10 @@
 #     --strict-mcp-config), il prompt uguale a quello del README,
 #     ANTHROPIC_API_KEY tolta;
 #   - .claude/settings.json (con le regole deny di Edit sul controllo e
-#     sulle impronte), il README (il prompt fra i segni, nella forma del
-#     Modulo 2, il controllo come ultimo passo; un comando alla volta,
+#     sulle impronte), il README (il prompt fra i segni, nel template del
+#     Modulo 2 con un tag per ingrediente, role, context, instructions,
+#     format e constraints, il controllo come ultimo passo dentro
+#     instructions; un comando alla volta,
 #     anche senza il passo del controllo; l'esito dalla sua ultima riga,
 #     non da $?; righe entro 66 colonne; nessuna versione breve; il
 #     percorso A con le colonne che il controllo chiede; le dieci sezioni;
@@ -1168,10 +1170,10 @@ PY
   expect "settings: defaultMode default (Manual)" 0 "modo ok"
 }
 
-# Il README: il prompt fra i segni (in ${TMP}/prompt-readme.txt), nella
-# forma del Modulo 2 con il controllo come ultimo passo, nessuna versione
-# breve, le dieci sezioni; nessun identificativo interno nei file per i
-# partecipanti.
+# Il README: il prompt fra i segni (in ${TMP}/prompt-readme.txt), nel
+# template del Modulo 2, un tag per ingrediente, con il controllo come
+# ultimo passo dentro <instructions>, nessuna versione breve, le dieci
+# sezioni; nessun identificativo interno nei file per i partecipanti.
 t_readme() {
   local f trovati=''
   run python3 -B -I - "${E01}/README.md" "${TMP}/prompt-readme.txt" <<'PY'
@@ -1187,27 +1189,41 @@ if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
     open(sys.argv[2], "w", encoding="utf-8").write(prompt)
     print("prompt ok")
     righe_p = prompt.split("\n")
-    # La forma del Modulo 2: il ruolo, poi le etichette, in quest'ordine.
-    etichette = [next((k for k, r in enumerate(righe_p)
-                       if r.startswith(e)), -1)
-                 for e in ("Contesto:", "Istruzione:", "Formato:",
-                           "Vincoli:")]
-    if righe_p[0].startswith("Sei ") and -1 not in etichette \
-            and etichette == sorted(etichette):
-        print("forma del Modulo 2 ok")
-    # Il controllo è l'ultimo passo dell'istruzione: la riga «N. Esegui
-    # python3 controlla_pii.py», le sue righe rientrate di tre spazi, poi
-    # una riga vuota e «Formato:».
+    # Il template del Modulo 2, un tag per ingrediente: i cinque tag in
+    # quest'ordine, ognuno da solo sulla sua riga e chiuso, «Sei …» in
+    # <role>; nessuna riga di etichetta («Contesto:» …), niente fuori dai
+    # tag.
+    ordine = ("role", "context", "instructions", "format", "constraints")
+    aperti, fuori, dentro, corrente = [], [], {}, None
+    for r in righe_p:
+        m = re.fullmatch(r"<(/?)([a-z_]+)>", r)
+        if m and not m.group(1) and corrente is None:
+            corrente = m.group(2)
+            aperti.append(corrente)
+            dentro[corrente] = []
+        elif m and m.group(1) and m.group(2) == corrente:
+            corrente = None
+        elif corrente is not None:
+            dentro[corrente].append(r)
+        elif r.strip():
+            fuori.append(r)
+    etichette = ("Ruolo:", "Contesto:", "Istruzione:", "Istruzioni:",
+                 "Formato:", "Vincoli:", "Esempi:")
+    if tuple(aperti) == ordine and corrente is None and not fuori \
+            and dentro["role"] and dentro["role"][0].startswith("Sei ") \
+            and not any(r.startswith(etichette) for r in righe_p):
+        print("un tag per ingrediente ok")
+    # Il controllo è l'ultimo passo dentro <instructions>: la riga «N.
+    # Esegui python3 controlla_pii.py», le sue righe rientrate di tre
+    # spazi, poi «</instructions>».
     passi = [k for k, r in enumerate(righe_p)
              if re.match(r"\d+\. Esegui python3 controlla_pii\.py", r)]
     if len(passi) == 1:
         fine = passi[0] + 1
         while fine < len(righe_p) and righe_p[fine].startswith("   "):
             fine += 1
-        dopo = [r for r in righe_p[fine:] if r.strip()]
-        if fine < len(righe_p) and not righe_p[fine].strip() \
-                and dopo and dopo[0].startswith("Formato:"):
-            print("passo del controllo, l'ultimo dell'istruzione ok")
+        if fine < len(righe_p) and righe_p[fine] == "</instructions>":
+            print("passo del controllo, l'ultimo dentro instructions ok")
         piano = " ".join(" ".join(righe_p[passi[0]:fine]).split())
         if "ultima riga" in piano and "«uscita: 0»" in piano:
             print("ultima riga nel passo del controllo ok")
@@ -1256,10 +1272,10 @@ PY
   expect "README: il prompt fra i due segni" 0 "prompt ok"
   expect "README: il percorso A dice le colonne e i limiti del controllo" 0 \
     "percorso A ok"
-  expect "README: il prompt nella forma del Modulo 2" 0 \
-    "forma del Modulo 2 ok"
-  expect "README: il controllo è l'ultimo passo dell'istruzione" 0 \
-    "passo del controllo, l'ultimo dell'istruzione ok"
+  expect "README: il prompt nel template del Modulo 2, un tag per \
+ingrediente" 0 "un tag per ingrediente ok"
+  expect "README: il controllo è l'ultimo passo dentro <instructions>" 0 \
+    "passo del controllo, l'ultimo dentro instructions ok"
   expect "README: il controllo si legge dalla sua ultima riga" 0 \
     "ultima riga nel passo del controllo ok"
   expect "README: un comando alla volta, anche senza il controllo" 0 \

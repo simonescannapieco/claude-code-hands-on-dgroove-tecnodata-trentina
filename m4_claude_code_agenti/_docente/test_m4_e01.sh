@@ -37,6 +37,9 @@
 #     quelli del README, la chiave tolta, una chiamata fallita, un test
 #     mancante (1), le dipendenze installate, prova_dal_vivo/ fuori da
 #     git status;
+#   - live::titolo della libreria dei live.sh di M4-E01 e M4-E02, il
+#     titolo del passo di un turno: la prima riga dopo il tag che apre un
+#     prompt nella forma a tag, la prima riga di uno semplice;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero;
 #   - shellcheck -x sugli script dell'elemento, sulla libreria dei live.sh
 #     di M4-E01 e M4-E02 (lib_live_m4_e01_e02.sh) e su questo.
@@ -61,7 +64,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e01_e02.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e01_e02.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=88
+readonly CASES=89
 readonly TEST_REL="progetti/gestionale-php/tests/Integrazione"
 readonly COMANDO="tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit \
 -c progetti/gestionale-php"
@@ -788,6 +791,22 @@ t_shellcheck() {
   done
 }
 
+# live::titolo (lib_live_m4_e01_e02.sh), il titolo del passo di un turno
+# nei live.sh di M4-E01 e M4-E02: di un prompt nella forma a tag la prima
+# riga dopo il tag che lo apre, di uno semplice la prima riga.
+t_titolo() {
+  run bash -c 'source "$1" && live::titolo "$2" && live::titolo "$3"' _ \
+    "${MOD}/_docente/lib_live_m4_e01_e02.sh" \
+    $'<instructions>\nIl piano va bene.\n1. Il passo.\n</instructions>' \
+    $'Una richiesta semplice.\nSu due righe.'
+  if (( RC == 0 )) \
+      && [[ "${OUT}" == $'Il piano va bene.\nUna richiesta semplice.' ]]; then
+    pass "live::titolo: la riga dopo il tag che apre il prompt, o la prima"
+  else
+    fail "live::titolo (rc=${RC}): ${OUT:0:300}"
+  fi
+}
+
 main() {
   local t
   for t in python3 jq git shellcheck; do
@@ -815,6 +834,7 @@ main() {
   t_soluzione
   t_reale
   t_live
+  t_titolo
   t_integrazione
   t_shellcheck
   echo "PASS=${PASS} FAIL=${FAIL} SKIP=${SKIP}" \

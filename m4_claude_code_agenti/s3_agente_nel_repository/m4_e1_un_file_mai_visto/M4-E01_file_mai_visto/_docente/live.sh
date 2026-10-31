@@ -92,7 +92,7 @@ main() {
   handson::step "Turno 1: la spiegazione"
   live::turno 1 "${PROMPT[0]}"
   for n in 2 3; do
-    handson::step "Turno ${n}: ${PROMPT[n - 1]%%$'\n'*}"
+    handson::step "Turno ${n}: $(live::titolo "${PROMPT[n - 1]}")"
     live::turno "${n}" "${PROMPT[n - 1]}" --resume "${LIVE_SESSIONE}"
   done
   handson::step "Le prove chieste al turno 3, come le ha date Claude"

@@ -14,9 +14,10 @@
 #     linea», il giorno locale di aperto_il);
 #   - il README: le dieci sezioni, i sei prompt fra i segni, il comando dei
 #     test e un comando per volta, i subagent con la @-mention; i prompt 1,
-#     2 e 5 e i corpi dei due subagent nella forma del Modulo 2 (il ruolo
-#     soltanto all'inizio di una sessione e nei subagent, poi le
-#     etichette, in ordine); le frasi di
+#     2, 4 e 5 e i corpi dei due subagent nel template del corso, un tag
+#     per ingrediente (<role> soltanto all'inizio di una sessione e nei
+#     subagent, poi gli altri tag, in ordine; nessuna etichetta della forma
+#     di prima), i prompt 3 e 6 semplici; le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A, nessun riferimento all'orario; la prima frase del
 #     README e di SPECIFICA.md nomina CiaspoLink, l'operatore inventato; il
@@ -43,8 +44,10 @@
 #     chiamare claude, anche uno spazio di lavoro che ha già del lavoro
 #     (git status non vuoto, o un commit dopo il primo); le due parti (il
 #     piano in plan mode, poi --resume in dontAsk; la seconda parte in una
-#     sessione nuova), i prompt del README, gli strumenti (nessun grep né
-#     find), la chiave tolta, i JSON fuori dallo spazio di lavoro; il
+#     sessione nuova), i prompt del README, i titoli dei turni (la prima
+#     riga dopo il tag che apre il prompt, mai un tag), gli strumenti
+#     (nessun grep né find), la chiave tolta, i JSON fuori dallo spazio di
+#     lavoro; il
 #     lavoro finito nella seconda parte; mai finito (i seguiti, uscita 1);
 #     una chiamata fallita; un revisore che modifica (1); il piano in
 #     piani/;
@@ -72,7 +75,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e01_e02.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e01_e02.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=100
+readonly CASES=101
 readonly PROGETTO=progetti/gestionale-php
 readonly COMANDO="tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit \
 -c progetti/gestionale-php"
@@ -470,25 +473,44 @@ PY
   expect "SPECIFICA.md: la tabella dei casi di accettazione" 0 "tabella ok"
 }
 
-# La forma del Modulo 2 nei prompt 1, 2 e 5 (in ${TMP}/prompt-<n>.txt) e
-# nei corpi dei due subagent: il ruolo «Sei …» nel primo messaggio di una
-# sessione e nel subagent, mai in un seguito; poi le etichette, in
-# quest'ordine. I prompt 3, 4 e 6 restano com'erano.
+# Il template del corso, un tag per ingrediente, nei prompt (in
+# ${TMP}/prompt-<n>.txt) e nei corpi dei due subagent: <role>, che comincia
+# con «Sei », nel primo messaggio di una sessione e nel subagent, mai in un
+# seguito; poi gli altri tag di primo livello, in quest'ordine, ciascuno
+# solo sulla sua riga e chiuso; nessuna riga che cominci con un'etichetta
+# della forma di prima. I prompt 3 e 6, richieste brevi, restano semplici.
 t_forma() {
   run python3 -B -I - "${TMP}" "${E02}/esercizio/.claude/agents" <<'PY'
 import os
+import re
 import sys
 
-ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
-TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+TAG = re.compile(r"<(/?)([a-z_]+)>")
+ETICHETTE = ("Ruolo:", "Contesto:", "Istruzione:", "Istruzioni:", "Formato:",
+             "Vincoli:", "Esempi:")
+CINQUE = ["role", "context", "instructions", "format", "constraints"]
 
 
 def forma(testo):
-    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
-    righe che cominciano con un'etichetta, nell'ordine."""
-    righe = testo.strip("\n").split("\n")
-    return (righe[0].startswith("Sei "),
-            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+    """(il ruolo, i tag): se il tag <role> comincia con «Sei », e i tag di
+    primo livello, nell'ordine; («rotta», perché) se un tag non si chiude
+    o se una riga comincia con un'etichetta."""
+    pila, alto, ruolo = [], [], None
+    for riga in testo.strip("\n").split("\n"):
+        m = TAG.fullmatch(riga.strip())
+        if m is None:
+            if pila == ["role"] and ruolo is None:
+                ruolo = riga.startswith("Sei ")
+            if riga.startswith(ETICHETTE):
+                return ("rotta", "un'etichetta: %s" % riga[:24])
+        elif m.group(1):
+            if not pila or pila.pop() != m.group(2):
+                return ("rotta", "</%s>" % m.group(2))
+        else:
+            if not pila:
+                alto.append(m.group(2))
+            pila.append(m.group(2))
+    return (bool(ruolo), alto) if not pila else ("rotta", "<%s>" % pila[-1])
 
 
 def leggi(*parti):
@@ -497,24 +519,24 @@ def leggi(*parti):
 
 
 try:
-    testi = {"il prompt 1": leggi(sys.argv[1], "prompt-1.txt"),
-             "il prompt 2": leggi(sys.argv[1], "prompt-2.txt"),
-             "il prompt 5": leggi(sys.argv[1], "prompt-5.txt"),
-             "autore-test.md": leggi(sys.argv[2], "autore-test.md")
-             .split("\n---\n", 1)[-1],
-             "revisore.md": leggi(sys.argv[2], "revisore.md")
-             .split("\n---\n", 1)[-1]}
+    testi = {"il prompt %d" % n: leggi(sys.argv[1], "prompt-%d.txt" % n)
+             for n in range(1, 7)}
+    for nome in ("autore-test.md", "revisore.md"):
+        testi[nome] = leggi(sys.argv[2], nome).split("\n---\n", 1)[-1]
 except OSError as exc:
     sys.exit("forma: non si legge %s" % exc.filename)
-attese = {"il prompt 1": (True, TUTTE),
-          "il prompt 2": (False, ["Istruzione:", "Vincoli:"]),
-          "il prompt 5": (True, ["Contesto:", "Istruzione:"]),
-          "autore-test.md": (True, TUTTE), "revisore.md": (True, TUTTE)}
+attese = {"il prompt 1": (True, CINQUE),
+          "il prompt 2": (False, ["instructions", "constraints"]),
+          "il prompt 3": (False, []),
+          "il prompt 4": (False, ["context", "instructions"]),
+          "il prompt 5": (True, CINQUE),
+          "il prompt 6": (False, []),
+          "autore-test.md": (True, CINQUE), "revisore.md": (True, CINQUE)}
 diversi = ["%s %s" % (k, forma(testi[k])) for k in attese
            if forma(testi[k]) != attese[k]]
 print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
 PY
-  expect "i prompt 1, 2 e 5 e i due subagent nella forma del Modulo 2" 0 \
+  expect "i prompt e i due subagent nel template, un tag per ingrediente" 0 \
     "forma ok"
 }
 
@@ -550,13 +572,14 @@ def uno(n):
 if all(sys.argv[3] in uno(n) for n in (1, 2, 5, 6)) and all(
         "da solo" in uno(n) for n in (1, 2, 5, 6)):
     print("comando ok")
-if re.search(r"Istruzione: leggi .*?, e prepara un piano", uno(1)) \
+if re.search(r"<instructions> Leggi .*?, e prepara un piano", uno(1)) \
         and "@agent" not in uno(1):
     print("piano ok")
 if "@agent-autore-test" in uno(2) and all(
         "@agent-revisore" in uno(n) for n in (3, 5, 6)):
     print("subagent ok")
-if "Scrivi NOTA.md" in uno(4) and "Istruzione: leggi NOTA.md" in uno(5):
+if "<instructions> Scrivi NOTA.md" in uno(4) \
+        and "<instructions> Leggi NOTA.md" in uno(5):
     print("nota ok")
 piatto = " ".join(testo.split())
 frasi = ["Running independent pieces of work at the same time",
@@ -948,6 +971,24 @@ print("opzioni ok" if ok else "opzioni diverse: %s" % righe)
 PY
 }
 
+# I titoli dei turni che live.sh stampa (in OUT): per un prompt nella forma
+# a tag la prima riga dopo il tag che lo apre, per uno semplice la prima
+# riga; mai un tag.
+titoli_dei_turni() {
+  if grep -qxF -- "--- Prima parte, turno 2: Il piano va bene, eseguilo un \
+passo alla volta." <<< "${OUT}" \
+      && grep -qxF -- "--- Prima parte, turno 3: Prima del commit che chiude \
+la funzione: esegui git log --oneline," <<< "${OUT}" \
+      && grep -qxF -- "--- Prima parte, turno 4: Siamo alla fine della prima \
+parte del laboratorio." <<< "${OUT}" \
+      && ! grep -qE -- '^--- .*turno [0-9]+: <' <<< "${OUT}"; then
+    pass "live.sh: il titolo di un turno è la prima riga dopo il tag"
+  else
+    fail "live.sh: i titoli dei turni: $(grep -E -- 'turno [0-9]+:' \
+      <<< "${OUT}")"
+  fi
+}
+
 t_live() {
   local w
   senza_chiamate "live.sh: spazio di lavoro assente esce 2" \
@@ -971,6 +1012,7 @@ t_live() {
   live_finto "${w}" ANTHROPIC_API_KEY=chiave-finta
   expect "live.sh: le due parti e la verifica, esce 0" 0 \
     "VERIFICA OK   verifica.sh dell'elemento"
+  titoli_dei_turni
   expect_chiamate "live.sh: cinque chiamate" 5
   if [[ -f "${w}.prova_dal_vivo/turno-5.json" \
       && ! -e "${w}/prova_dal_vivo" ]]; then

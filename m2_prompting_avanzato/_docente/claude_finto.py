@@ -141,7 +141,9 @@ def risposta(prompt: str) -> str:
         return "1. Verifica dei log: costo non indicato nel messaggio."
     if "stima dei costi" in prompt:
         return "1. Linea di riserva: 150 €"
-    if "Formato:" in prompt and "<messaggio>" in prompt:
+    # I prompt del template, un tag per ingrediente: il prompt B di M2-D01
+    # e la versione di riferimento di M2-E01.
+    if "<format>" in prompt and "<message>" in prompt:
         return ("| Problema | Quando |\n|---|---|\n| centralino | venerdì |\n\n"
                 "L'assistenza clienti di CiaspoLink")
     if "<messaggio>" in prompt or "<codice>" in prompt or "<log>" in prompt:

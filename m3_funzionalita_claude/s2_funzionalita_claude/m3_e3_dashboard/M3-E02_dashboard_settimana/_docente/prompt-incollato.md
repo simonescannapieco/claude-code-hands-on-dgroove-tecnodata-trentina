@@ -1,14 +1,16 @@
-<istruzioni>
+<role>
 Sei un analista dell'assistenza clienti di CiaspoLink e prepari
 i numeri della settimana per una dashboard.
+</role>
 
-Contesto: la settimana è tra i tag <ticket_anonimi>, qui sopra,
-una segnalazione per riga.
+<context>
+La settimana è tra i tag <anonymized_tickets>, qui sopra, una
+segnalazione per riga.
 I numeri li controllo con uno script prima di usarli.
+</context>
 
-Istruzione: calcola questi dieci indicatori.
-
-Formato: soltanto un oggetto JSON, con queste dieci chiavi:
+<format>
+Un oggetto JSON, con queste dieci chiavi:
 - segnalazioni: le righe (intero)
 - per_giorno: le righe per giorno della settimana di aperto_il,
   data come è scritta, chiavi lun mar mer gio ven sab dom
@@ -22,7 +24,13 @@ Formato: soltanto un oggetto JSON, con queste dieci chiavi:
 - voti: le righe con soddisfazione non vuota (intero)
 - soddisfazione_media: la media (2 decimali)
 - clienti_ricorrenti: i clienti con almeno 3 righe (intero)
+</format>
 
-Vincoli: nei conti entrano soltanto i campi con un valore, e un
-campo vuoto resta fuori; arrotonda con la metà per eccesso.
-</istruzioni>
+<constraints>
+Nei conti entrano soltanto i campi con un valore, e un campo
+vuoto resta fuori; arrotonda con la metà per eccesso.
+</constraints>
+
+<instructions>
+Calcola questi dieci indicatori.
+</instructions>

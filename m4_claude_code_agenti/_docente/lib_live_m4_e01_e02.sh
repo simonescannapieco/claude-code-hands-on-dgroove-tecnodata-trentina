@@ -2,9 +2,9 @@
 # =====================================================================
 # lib_live_m4_e01_e02.sh -- le funzioni comuni dei _docente/live.sh di
 # M4-E01 e M4-E02, le prove dal vivo sul gestionale: lo spazio di lavoro
-# al punto di partenza, i prompt del README, i turni di claude -p con il
-# loro JSON e il loro riepilogo, le dipendenze del gestionale, la
-# cartella dei JSON, la verifica finale.
+# al punto di partenza, i prompt del README e il titolo del loro turno, i
+# turni di claude -p con il loro JSON e il loro riepilogo, le dipendenze
+# del gestionale, la cartella dei JSON, la verifica finale.
 # ---------------------------------------------------------------------
 # Libreria: si fa SOURCE dopo tools/lib_handson.sh, non si esegue (nessun
 # bit di esecuzione). Le funzioni leggono le variabili che il live.sh
@@ -60,6 +60,20 @@ if not testo.strip():
     sys.exit(2)
 print(testo)
 PY
+}
+
+# Il titolo del passo di un turno: la prima riga del prompt; se il prompt
+# comincia con un tag da solo sulla sua riga (la forma a tag, un tag per
+# ingrediente), la riga dopo quel tag: mai un tag.
+# Arguments: $1 il prompt. Outputs: la riga su STDOUT.
+live::titolo() {
+  local testo="$1" riga tag='^<[a-z_]+>$'
+  riga="${testo%%$'\n'*}"
+  if [[ "${riga}" =~ ${tag} && "${testo}" == *$'\n'* ]]; then
+    testo="${testo#*$'\n'}"
+    riga="${testo%%$'\n'*}"
+  fi
+  printf '%s\n' "${riga}"
 }
 
 # Una chiamata senza risposta: il verdetto KO e la fine con uscita 1.

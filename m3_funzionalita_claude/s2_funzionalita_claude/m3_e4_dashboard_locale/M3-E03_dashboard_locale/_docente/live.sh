@@ -10,15 +10,17 @@
 # in dontAsk un altro comando viene negato, dove il partecipante si vede
 # chiedere il permesso. Finché la verifica
 # dell'elemento non passa, fino a tre turni in più nella stessa sessione,
-# ripresa con --resume e l'ID di sessione del JSON:
+# ripresa con --resume e l'ID di sessione del JSON. Ogni seguito tiene i
+# tag del prompt del README e non ripete il ruolo, che ha dato il primo
+# messaggio: la richiesta nel tag instructions,
 #   - se dashboard.html manca, «Scrivi, se manca, ed esegui
 #     genera_dashboard.py come chiedeva il primo messaggio; poi esegui
-#     python3 controlla_dashboard.py e correggi finché esce 0. …»;
+#     python3 controlla_dashboard.py e correggi finché esce 0.»;
 #   - altrimenti «Esegui python3 controlla_dashboard.py e correggi
-#     genera_dashboard.py finché il controllo esce con 0. …»;
-#   e tutti e due finiscono come il prompt del README: «Esegui ogni comando
-#   da solo, senza concatenarlo ad altri, e leggi l'uscita del controllo
-#   nella sua ultima riga.»
+#     genera_dashboard.py finché il controllo esce con 0.»;
+#   e nel tag constraints la frase con cui finisce anche quello del prompt
+#   del README: «Esegui ogni comando da solo, senza concatenarlo ad altri,
+#   e leggi l'uscita del controllo nella sua ultima riga.»
 # Ogni turno lascia il suo JSON in prova_dal_vivo/turno-<n>.json dello
 # spazio di lavoro e ne stampa i turni del modello, la durata e i token.
 # Poi verifica.sh dell'elemento.
@@ -53,14 +55,22 @@ STRUMENTI=''
 UN_COMANDO="Esegui ogni comando da solo, senza concatenarlo ad altri, e"
 UN_COMANDO+=" leggi l'uscita del controllo nella sua ultima riga."
 readonly UN_COMANDO
-SEGUITO_PAGINA='Scrivi, se manca, ed esegui genera_dashboard.py come'
-SEGUITO_PAGINA+=' chiedeva il primo messaggio; poi esegui python3'
-SEGUITO_PAGINA+=" controlla_dashboard.py e correggi finché esce 0."
-SEGUITO_PAGINA+=" ${UN_COMANDO}"
+# I due seguiti: la richiesta nel tag instructions, UN_COMANDO nel tag
+# constraints, senza il ruolo, che ha dato il primo messaggio.
+RICHIESTA_PAGINA='Scrivi, se manca, ed esegui genera_dashboard.py come'
+RICHIESTA_PAGINA+=' chiedeva il primo messaggio; poi esegui python3'
+RICHIESTA_PAGINA+=" controlla_dashboard.py e correggi finché esce 0."
+readonly RICHIESTA_PAGINA
+SEGUITO_PAGINA=$'<instructions>\n'"${RICHIESTA_PAGINA}"
+SEGUITO_PAGINA+=$'\n</instructions>\n\n<constraints>\n'"${UN_COMANDO}"
+SEGUITO_PAGINA+=$'\n</constraints>'
 readonly SEGUITO_PAGINA
-SEGUITO_CONTROLLO='Esegui python3 controlla_dashboard.py e correggi'
-SEGUITO_CONTROLLO+=" genera_dashboard.py finché il controllo esce con 0."
-SEGUITO_CONTROLLO+=" ${UN_COMANDO}"
+RICHIESTA_CONTROLLO='Esegui python3 controlla_dashboard.py e correggi'
+RICHIESTA_CONTROLLO+=" genera_dashboard.py finché il controllo esce con 0."
+readonly RICHIESTA_CONTROLLO
+SEGUITO_CONTROLLO=$'<instructions>\n'"${RICHIESTA_CONTROLLO}"
+SEGUITO_CONTROLLO+=$'\n</instructions>\n\n<constraints>\n'"${UN_COMANDO}"
+SEGUITO_CONTROLLO+=$'\n</constraints>'
 readonly SEGUITO_CONTROLLO
 readonly SEGUITI_MASSIMI=3
 readonly CARTELLA_JSON=prova_dal_vivo
