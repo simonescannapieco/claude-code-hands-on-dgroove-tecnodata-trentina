@@ -138,18 +138,31 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
-       Leggi SPECIFICA.md, gli script di progetti/gestionale-php/bin/ (sono
-       i modelli: le opzioni, le uscite, i messaggi su stderr), lo schema
-       progetti/gestionale-php/database/schema.sql e le regole di
-       progetti/gestionale-php/docs/convenzioni.md che SPECIFICA.md cita.
-       Prepara un piano a piccoli passi per scrivere
-       progetti/gestionale-php/bin/controllo-notturno.php, ciascuno con il
-       suo commit. Nel piano: dopo ogni passo esegui il controllo, questo
-       comando, da solo, senza concatenarlo ad altri:
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e
+       pianifichi uno script operativo, il controllo notturno.
+
+       Contesto: lo script da scrivere è
+       progetti/gestionale-php/bin/controllo-notturno.php, descritto in
+       SPECIFICA.md. Gli altri script di progetti/gestionale-php/bin/
+       sono i modelli: le opzioni, le uscite, i messaggi su stderr. Lo
+       schema del database è
+       progetti/gestionale-php/database/schema.sql; le regole che
+       SPECIFICA.md cita sono in
+       progetti/gestionale-php/docs/convenzioni.md. Nel progetto c'è il
+       subagent revisore, che confronta il contratto d'uscita e i
+       messaggi di uno script con SPECIFICA.md.
+
+       Istruzione: leggi SPECIFICA.md, gli script di bin/, lo schema e
+       quelle regole, e prepara un piano a piccoli passi.
+
+       Formato: ogni passo con il suo commit. Nel piano: dopo ogni
+       passo esegui il controllo e leggi l'esito nella sua ultima riga;
+       prima del commit che chiude lo script, revisore ne controlla il
+       contratto d'uscita e i messaggi con SPECIFICA.md.
+
+       Vincoli: il controllo è questo comando, eseguito da solo, senza
+       concatenarlo ad altri:
        python3 controlla_notturno.py
-       e leggi l'esito nella sua ultima riga; prima del commit che chiude lo
-       script, il subagent revisore ne controlla il contratto d'uscita e i
-       messaggi con SPECIFICA.md.
 
    <!-- /prompt 1 -->
 
@@ -163,17 +176,20 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Il piano va bene: eseguilo un passo alla volta. Dopo ogni passo
-       esegui il controllo, da solo, senza concatenarlo ad altri:
-       python3 controlla_notturno.py
-       e correggi lo script finché l'ultima riga dice uscita: 0; il
-       controllo non si cambia. Prova anche lo script sui dati di esempio,
-       da solo:
-       tools/php.sh php progetti/gestionale-php/bin/controllo-notturno.php --giorno=2026-09-13
-       Dopo ogni passo che passa il controllo fai un commit: git add, poi
-       git commit -m con il messaggio fra virgolette, un comando per volta,
-       e un messaggio come chiede la regola 11.1 di
-       progetti/gestionale-php/docs/convenzioni.md.
+       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       1. Prova lo script sui dati di esempio, da solo:
+          tools/php.sh php progetti/gestionale-php/bin/controllo-notturno.php --giorno=2026-09-13
+       2. Dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_notturno.py
+          e correggi lo script finché l'ultima riga dice uscita: 0.
+          Dopo ogni passo che passa il controllo fai un commit: git
+          add, poi git commit -m con il messaggio fra virgolette, un
+          comando per volta, e un messaggio come chiede la regola 11.1
+          di progetti/gestionale-php/docs/convenzioni.md.
+
+       Vincoli: si corregge lo script; controlla_notturno.py resta
+       com'è.
 
    <!-- /prompt 2 -->
 
@@ -201,12 +217,17 @@ quella con la barra sì.
 
    <!-- prompt 4 -->
 
-       Siamo alla fine della prima parte del laboratorio. Scrivi NOTA.md,
-       nella cartella in cui siamo: che cosa è fatto (i punti di
-       SPECIFICA.md già soddisfatti, con i loro commit), che cosa manca, e i
-       comandi per riprendere (il controllo, lo script sui dati di esempio,
-       il revisore). Poi fai un commit di NOTA.md: git add, poi git commit
-       -m, un comando per volta.
+       Contesto: siamo alla fine della prima parte del laboratorio, e
+       la seconda riparte da una sessione nuova.
+
+       Istruzione: scrivi NOTA.md, nella cartella in cui siamo; poi fai
+       un commit di NOTA.md: git add, poi git commit -m, un comando per
+       volta.
+
+       Formato: che cosa è fatto (i punti di SPECIFICA.md già
+       soddisfatti, con i loro commit), che cosa manca, e i comandi per
+       riprendere (il controllo, lo script sui dati di esempio, il
+       revisore).
 
    <!-- /prompt 4 -->
 
@@ -227,14 +248,22 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
-       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
-       fermato: finisci ciò che manca un passo alla volta, con un commit per
-       passo. Dopo ogni passo esegui il controllo, da solo, senza
-       concatenarlo ad altri:
-       python3 controlla_notturno.py
-       Prima dell'ultimo commit esegui git log --oneline e git diff dal
-       primo commit, e passa il diff a @agent-revisore perché controlli il
-       contratto d'uscita e i messaggi dello script con SPECIFICA.md.
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
+       uno script operativo lasciato a metà.
+
+       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; lo
+       script è descritto in SPECIFICA.md.
+
+       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
+       dove si era fermato.
+       1. Finisci ciò che manca un passo alla volta, con un commit per
+          passo; dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_notturno.py
+       2. Prima dell'ultimo commit esegui git log --oneline e git diff
+          dal primo commit, e passa il diff a @agent-revisore perché
+          controlli il contratto d'uscita e i messaggi dello script con
+          SPECIFICA.md.
 
    <!-- /prompt 5 -->
 
@@ -415,18 +444,19 @@ nei dati di esempio: quelle le trova lo script.
   chiamate stampa «nessun subagent trovato»: la regola del laboratorio lo
   chiede, ma la verifica non vi boccia per questo.
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
-effort medium, `_docente/live.sh` sull'account del docente, con le regole
-scritte allora senza la barra iniziale, equivalenti dalla radice dello
-spazio di lavoro): il controllo dell'esercizio, «7 casi su 7 come la
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+effort medium, `_docente/live.sh` sull'account del docente, con i prompt
+di questo README): il controllo dell'esercizio, «7 casi su 7 come la
 specifica»; sui dati di esempio, con `--giorno=2026-09-13`,
 `linea-cliente-cessato` trovate 2 su 2, `linea-senza-apparato` 1 su 1,
 `attivazione-ferma` 3 su 3, `ticket-in-attesa` 3 su 3, e i due conteggi
 giusti; senza le incoerenze, uscita 0 e nessuna segnalazione. Il
-revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
-modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 8 commit, 3 file
-cambiati, 2 sessioni, «chiamate al tool Agent: 3 (revisore 3)», e «il
-controllo eseguito da Claude: 10 volte, l'ultima con uscita 0».
+revisore (tools: Glob, Grep, Read): 7 trascrizioni, nessuno strumento che
+modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 2 commit, 3 file
+cambiati, 2 sessioni, «chiamate al tool Agent: 7 (revisore 7)», e «il
+controllo eseguito da Claude: 12 volte, l'ultima con uscita 0». La
+seconda parte ha trovato il lavoro già fatto e nel commit: il revisore ha
+dato «ESITO: OK», e nessun commit nuovo.
 
 ## Verifica (tools/verifica.sh M4-E04)
 
@@ -482,9 +512,9 @@ dipendenze del gestionale o se PHP non si avvia.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 27
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 39
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato sette volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). I subagent non sono gratis: «What
 they cost you is mostly tokens, since every subagent sends its own requests
@@ -501,13 +531,13 @@ Code, meaning all activity in both tools counts against the same limits.»
 it breaks your usage down by skill, subagent, plugin, and MCP server.»
 (https://code.claude.com/docs/en/best-practices).
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 8, 4, 7, 4 e 4 turni del modello (`num_turns`); 55,4, 10,8,
-21,9, 19,2 e 12,4 secondi; token in entrata della conversazione
-principale, cache compresa, 221.270, 211.801, 392.772, 325.926 e 91.043.
-I token del revisore si aggiungono a questi.
+seconda, con 13, 16, 5, 4 e 1 turni del modello (`num_turns`); 60,1,
+277,1, 90,4, 17,4 e 2,7 secondi; token in entrata della conversazione
+principale, cache compresa, 358.235, 1.263.715, 437.985, 372.313 e
+31.891. I token del revisore si aggiungono a questi.
 
 ## Per approfondire
 

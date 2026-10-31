@@ -13,7 +13,10 @@
 #     (SQLite in memoria, la regola «apparato del ticket, del padre o della
 #     linea», il giorno locale di aperto_il);
 #   - il README: le dieci sezioni, i sei prompt fra i segni, il comando dei
-#     test e un comando per volta, i subagent con la @-mention, le frasi di
+#     test e un comando per volta, i subagent con la @-mention; i prompt 1,
+#     2 e 5 e i corpi dei due subagent nella forma del Modulo 2 (il ruolo
+#     soltanto all'inizio di una sessione e nei subagent, poi le
+#     etichette, in ordine); le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A, nessun riferimento all'orario; la prima frase del
 #     README e di SPECIFICA.md nomina CiaspoLink, l'operatore inventato; il
@@ -69,7 +72,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e01_e02.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e01_e02.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=99
+readonly CASES=100
 readonly PROGETTO=progetti/gestionale-php
 readonly COMANDO="tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit \
 -c progetti/gestionale-php"
@@ -467,11 +470,60 @@ PY
   expect "SPECIFICA.md: la tabella dei casi di accettazione" 0 "tabella ok"
 }
 
+# La forma del Modulo 2 nei prompt 1, 2 e 5 (in ${TMP}/prompt-<n>.txt) e
+# nei corpi dei due subagent: il ruolo «Sei …» nel primo messaggio di una
+# sessione e nel subagent, mai in un seguito; poi le etichette, in
+# quest'ordine. I prompt 3, 4 e 6 restano com'erano.
+t_forma() {
+  run python3 -B -I - "${TMP}" "${E02}/esercizio/.claude/agents" <<'PY'
+import os
+import sys
+
+ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
+TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+
+
+def forma(testo):
+    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
+    righe che cominciano con un'etichetta, nell'ordine."""
+    righe = testo.strip("\n").split("\n")
+    return (righe[0].startswith("Sei "),
+            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+
+
+def leggi(*parti):
+    with open(os.path.join(*parti), encoding="utf-8") as fh:
+        return fh.read()
+
+
+try:
+    testi = {"il prompt 1": leggi(sys.argv[1], "prompt-1.txt"),
+             "il prompt 2": leggi(sys.argv[1], "prompt-2.txt"),
+             "il prompt 5": leggi(sys.argv[1], "prompt-5.txt"),
+             "autore-test.md": leggi(sys.argv[2], "autore-test.md")
+             .split("\n---\n", 1)[-1],
+             "revisore.md": leggi(sys.argv[2], "revisore.md")
+             .split("\n---\n", 1)[-1]}
+except OSError as exc:
+    sys.exit("forma: non si legge %s" % exc.filename)
+attese = {"il prompt 1": (True, TUTTE),
+          "il prompt 2": (False, ["Istruzione:", "Vincoli:"]),
+          "il prompt 5": (True, ["Contesto:", "Istruzione:"]),
+          "autore-test.md": (True, TUTTE), "revisore.md": (True, TUTTE)}
+diversi = ["%s %s" % (k, forma(testi[k])) for k in attese
+           if forma(testi[k]) != attese[k]]
+print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
+PY
+  expect "i prompt 1, 2 e 5 e i due subagent nella forma del Modulo 2" 0 \
+    "forma ok"
+}
+
 # Il README: i prompt (in ${TMP}/prompt-<n>.txt), le sezioni, le frasi.
 t_readme() {
   local f trovati=''
   run python3 -B -I - "${E02}/README.md" "${TMP}" "${COMANDO}" <<'PY'
 import os
+import re
 import sys
 import textwrap
 
@@ -498,12 +550,13 @@ def uno(n):
 if all(sys.argv[3] in uno(n) for n in (1, 2, 5, 6)) and all(
         "da solo" in uno(n) for n in (1, 2, 5, 6)):
     print("comando ok")
-if "Prepara un piano" in uno(1) and "@agent" not in uno(1):
+if re.search(r"Istruzione: leggi .*?, e prepara un piano", uno(1)) \
+        and "@agent" not in uno(1):
     print("piano ok")
 if "@agent-autore-test" in uno(2) and all(
         "@agent-revisore" in uno(n) for n in (3, 5, 6)):
     print("subagent ok")
-if "Scrivi NOTA.md" in uno(4) and "Leggi NOTA.md" in uno(5):
+if "Scrivi NOTA.md" in uno(4) and "Istruzione: leggi NOTA.md" in uno(5):
     print("nota ok")
 piatto = " ".join(testo.split())
 frasi = ["Running independent pieces of work at the same time",
@@ -538,6 +591,7 @@ PY
   expect "README: la nota e la ripresa" 0 "nota ok"
   expect "README: le frasi di Anthropic e i link" 0 "frasi ok"
   expect "README: plan mode e la seconda parte del laboratorio" 0 "parti ok"
+  t_forma
   OUT="$(cat "${E02}/README.md" "${E02}/esercizio/SPECIFICA.md")"
   expect_absent "README: gli ambienti del corso, non macOS" "macOS"
   expect_absent "README: nessun Percorso A" "Percorso A"

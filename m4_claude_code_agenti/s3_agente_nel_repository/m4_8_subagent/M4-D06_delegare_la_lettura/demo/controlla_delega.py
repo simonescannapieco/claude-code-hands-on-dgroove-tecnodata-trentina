@@ -9,7 +9,7 @@ risposta in una riga 'inizio: HH:MM | fine: HH:MM | ONT: N') con la
 richiesta di delegare la lettura dei log al subagent Explore, e
 senza-<n>.jsonl, la
 stessa domanda con la richiesta di leggerli da sé; le due esecuzioni di una
-coppia differiscono soltanto nella prima frase del prompt. Le coppie sono
+coppia differiscono soltanto nella prima frase di «Istruzione:». Le coppie sono
 i numeri per cui c'è almeno uno dei due file, e ognuna deve averli tutti e
 due.
 

@@ -37,8 +37,11 @@ Le scene, dal prompt:
                              nuovo (un file nuovo) · stile (un file nuovo
                              con $this->assert) · rosso · no
           «comando che hai eseguito»  nessun effetto
-  M4-E02  «Prepara un piano» il piano: nessuna modifica; se le impostazioni
+  M4-E02  «prepara un piano» il piano: nessuna modifica; se le impostazioni
                              hanno plansDirectory, vi scrive piano-finto.md
+                             (questa e «leggi NOTA.md», maiuscole o
+                             minuscole: nel prompt vengono dopo
+                             «Istruzione:»)
           «@agent-autore-test»  un Agent autore-test che scrive un test
                              finto (il segno FINTO-RICHIEDE del criterio
                              $dal, che il codice di partenza non ha);
@@ -47,7 +50,7 @@ Le scene, dal prompt:
                              test) · mai (niente); poi un commit
           «Prima del commit che chiude»  un Agent revisore e un commit
           «Scrivi NOTA.md»   NOTA.md (FINTO_NOTA=no: niente) e un commit
-          «Leggi NOTA.md»    sessione nuova: completa il codice che manca
+          «leggi NOTA.md»    sessione nuova: completa il codice che manca
                              (salvo FINTO_E02_MAI=1), revisore, commit
           «correggi il codice finché passa»  come la ripresa
   Il revisore: FINTO_REVISORE = pulito (default: Read e Grep) · modifica
@@ -353,7 +356,7 @@ def scena(prompt: str, opzioni: Dict[str, str], tr: Trascrizione) -> str:
         return "Test aggiunto ed eseguito (finto)."
     if "comando che hai eseguito" in prompt:
         return "Comando (finto): tools/php.sh … Output (finto): OK."
-    if "Prepara un piano" in prompt:
+    if "prepara un piano" in prompt.lower():
         cartella = plans_directory()
         if opzioni.get("--permission-mode") == "plan" and cartella:
             scrivi(os.path.join(cartella, "piano-finto.md"),
@@ -378,8 +381,8 @@ def scena(prompt: str, opzioni: Dict[str, str], tr: Trascrizione) -> str:
             scrivi("NOTA.md", "# Nota finta\n\nFatto: R1 (finto).\n")
         commit("docs: la nota della prima parte (finto)")
         return "Nota scritta (finto)."
-    if "Leggi NOTA.md" in prompt or "correggi il codice finché passa" \
-            in prompt:
+    if "leggi nota.md" in prompt.lower() \
+            or "correggi il codice finché passa" in prompt:
         if os.environ.get("FINTO_E02_MAI") != "1" and codice_mancante():
             codice_e02()
         revisore(tr)

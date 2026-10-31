@@ -10,13 +10,14 @@ Mettere alla prova che cosa cambia quando Claude delega una lettura
 pesante a un subagent. La stessa domanda su una settimana di log della
 rete di CiaspoLink, una volta chiedendo a Claude di delegare la lettura
 dei log al subagent Explore, una volta chiedendogli di leggerli da sé: le
-due esecuzioni di una coppia differiscono soltanto nella prima frase del
-prompt. La domanda è esatta, con una lettura sola: «Martedì 8 settembre
-2026 un guasto su olt-pergine-01 ha messo fuori servizio insieme più
-linee di clienti. Quando è cominciato, quando è finito (quando le ONT
-sono tornate in linea) e quante linee di clienti (ONT) ha coinvolto?
-Rispondi in una riga: 'inizio: HH:MM | fine: HH:MM | ONT: N'.» Dice che
-cosa contare, non dove trovarlo. Si guarda che cosa arriva alla
+due esecuzioni di una coppia differiscono soltanto nella prima frase di
+«Istruzione:». La domanda è esatta, con una lettura sola: sul guasto che
+il «Contesto:» descrive («martedì 8 settembre 2026 un guasto su
+olt-pergine-01 ha messo fuori servizio insieme più linee di clienti»),
+«quando è cominciato, quando è finito (quando le ONT sono tornate in
+linea) e quante linee di clienti (ONT) ha coinvolto?», con la risposta in
+«una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'». Dice che cosa
+contare, non dove trovarlo. Si guarda che cosa arriva alla
 conversazione principale, quanto contesto le resta all'ultima richiesta e
 quanti token costa il tutto.
 
@@ -165,8 +166,8 @@ predefiniti: «On macOS, Linux, and WSL, Claude Code leaves Glob and Grep
 out of the default tool set»; qui tornano perché si nominano: «You name
 Glob or Grep in --tools or --allowedTools when you start the session»
 (https://code.claude.com/docs/en/tools-reference). Le due sessioni
-differiscono ancora soltanto nella prima frase del prompt; gli strumenti
-che il subagent usa davvero, il controllo li stampa come dati.
+differiscono ancora soltanto nella prima frase di «Istruzione:»; gli
+strumenti che il subagent usa davvero, il controllo li stampa come dati.
 
 ### Che cosa misura il controllo
 
@@ -207,19 +208,19 @@ inizio, fine e numero di ONT coinvolti, sta in `verita.json` di questo
 elemento; il controllo legge dalla risposta i tre campi della riga
 'inizio: HH:MM | fine: HH:MM | ONT: N'.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
 Sonnet con effort low, tre coppie, `--tools Agent,Read,Grep,Glob`): in
 ogni esecuzione con la delega Claude ha lanciato un subagent Explore, che
 ha usato Glob e Grep, e in due su tre anche Read; i risultati dei suoi
-strumenti, 38.964, 38.995 e 12.091 caratteri, sono rimasti nel subagent,
-e alla conversazione principale ne sono arrivati 976. Senza la delega la
-conversazione principale ha usato Glob e Grep, con 11.809, 11.735 e
+strumenti, 35.094, 17.573 e 42.358 caratteri, sono rimasti nel subagent,
+e alla conversazione principale ne sono arrivati 971. Senza la delega la
+conversazione principale ha usato Glob e Grep, con 11.735, 11.735 e
 11.809 caratteri di risultati. «La conversazione principale vede solo il
 risultato del subagent»: confermata 3 su 3. «Un subagent tiene i log
 fuori dalla conversazione principale»: confermata 3 su 3, con un contesto
-principale all'ultima richiesta di 9.948 token contro 16.318, 10.014
-contro 16.150 e 9.781 contro 16.318. Come dati: tutti i modelli, 188.296
-token in entrata con la delega e 117.147 senza; le risposte giuste, 3 su
+principale all'ultima richiesta di 10.154 token contro 16.199, 9.956
+contro 16.199 e 10.214 contro 16.362. Come dati: tutti i modelli, 294.326
+token in entrata con la delega e 108.485 senza; le risposte giuste, 3 su
 3 da tutte e due le parti. Le sei esecuzioni sono nella cartella
 `soluzione/risposte/` di questo elemento.
 
@@ -260,18 +261,17 @@ in quella con la delega, se Claude delega, lavora anche un subagent
 Explore, che usa il modello della conversazione principale: «Model: the
 main conversation's model» (https://code.claude.com/docs/en/sub-agents). La lettura è
 pesante: nella registrazione del corso le tre coppie hanno usato in tutto
-188.296 token in entrata con la delega e 117.147 senza, contando tutti i
-modelli, cioè circa 100.000 per coppia. Per rifarla da soli basta una
+294.326 token in entrata con la delega e 108.485 senza, contando tutti i
+modelli, cioè circa 130.000 per coppia. Per rifarla da soli basta una
 coppia; il docente ne fa tre.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
 Sonnet con effort low, senza Bash), come le stampa il controllo: con la
-delega 16, 13 e 10 secondi dal primo all'ultimo orario dello stream e
-66.282, 66.543 e 55.471 token in entrata contando tutti i modelli; senza,
-9 secondi ciascuna e 42.108, 32.931 e 42.108 token. Dal JSON: con la
-delega ogni stream ha due risultati, 2 turni del modello (`num_turns`)
-mentre il subagent lavora in background e 1 per la risposta; senza, 4, 3
-e 4 turni.
+delega 33, 24 e 19 secondi dal primo all'ultimo orario dello stream e
+127.694, 92.123 e 74.509 token in entrata contando tutti i modelli; senza,
+5, 4 e 6 secondi e 33.088, 33.088 e 42.309 token. Dal JSON: con la delega
+ogni stream ha due risultati, 2 turni del modello (`num_turns`) mentre il
+subagent lavora in background e 1 per la risposta; senza, 3, 3 e 4 turni.
 
 ## Per approfondire
 

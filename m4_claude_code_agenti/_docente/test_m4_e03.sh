@@ -12,7 +12,10 @@
 #   - il README: le dieci sezioni; i cinque prompt fra i segni; i due
 #     subagent Explore in parallelo con il formato dei riassunti; le sei
 #     sezioni della documentazione, nell'ordine; il comando dei test, un
-#     comando per volta, la chiusura vera; il formato della proposta; le
+#     comando per volta, la chiusura vera; il formato della proposta; i
+#     prompt 1, 2, 3 e 5 nella forma del Modulo 2 (il ruolo soltanto
+#     all'inizio di una sessione, poi le etichette, in ordine); la
+#     correzione di live.sh, intera, in «Se qualcosa va storto»; le
 #     citazioni con i loro link, solo link ufficiali; nessun identificativo
 #     interno, niente macOS né Percorso A, nessun riferimento all'orario;
 #   - verifica.sh con il php.sh finto (PN_PHP_SH) e una cartella di Claude
@@ -47,9 +50,11 @@
 #     e gli strumenti, i prompt uguali a quelli del README, la chiave tolta,
 #     le dipendenze installate, i seguiti sui test, una chiamata fallita
 #     (1), legacy/ toccato (1), un test debole mai sistemato (1), una
-#     documentazione incompleta sistemata dal turno che porta le righe «Non
-#     ancora» della verifica (0), nessun subagent (0, è un dato), i JSON
-#     fuori dallo spazio di lavoro, in <spazio>.prova_dal_vivo/;
+#     documentazione incompleta sistemata dal turno che porta, dopo le
+#     istruzioni fra i tag <istruzioni>, le righe «Non ancora» della
+#     verifica fra i tag <esito_verifica> (0), nessun subagent (0, è un
+#     dato), i JSON fuori dallo spazio di lavoro, in
+#     <spazio>.prova_dal_vivo/;
 #   - il README: il passo 8 torna in esercitazioni con il suo percorso;
 #     Manual chiede per ciò che non è di sola lettura, «di regola»; i
 #     traguardi e il tool Agent; i JSON della prova del corso, fuori dallo
@@ -80,7 +85,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e03.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e03.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=189
+readonly CASES=191
 readonly PROGETTO="progetti/gestionale-php"
 readonly TEST_REL="${PROGETTO}/tests/Integrazione/ChiusuraMeseTest.php"
 readonly DOC_REL="${PROGETTO}/docs/chiusura_mese.md"
@@ -93,6 +98,20 @@ STRUMENTI="Read,Write,Edit,${REGOLA_TEST},Bash(git add *),"
 STRUMENTI+="Bash(git commit *)"
 readonly STRUMENTI
 readonly APPROVAZIONE="Il piano è approvato: procedi come dice il piano."
+# Le istruzioni del turno che live.sh manda quando la verifica dice «Non
+# ancora»; dopo, una riga vuota e le righe «Non ancora: …» della verifica
+# fra i tag <esito_verifica>.
+printf -v CORREZIONE '%s\n' \
+  '<istruzioni>' \
+  'Contesto: la verifica dello spazio di lavoro dice che manca' \
+  'ancora ciò che sta tra i tag <esito_verifica>, qui sotto.' \
+  '' \
+  'Istruzione: sistema questi punti, un comando per volta, e fai il' \
+  'commit di ciò che cambi.' \
+  '' \
+  "Vincoli: ${PROGETTO}/legacy/ resta com'è." \
+  '</istruzioni>'
+readonly CORREZIONE="${CORREZIONE%$'\n'}"
 readonly TAB=$'\t'
 readonly FINE="Fatto: documentazione e proposta complete, i test fissano \
 il comportamento e legacy/ è com'era."
@@ -595,7 +614,8 @@ t_readme() {
     fi
   done
   OUT="$(prompt_in_riga 1 2>/dev/null)"
-  expect "prompt 1: due subagent Explore" 0 "Usa due subagent Explore"
+  expect "prompt 1: due subagent Explore" 0 \
+    "Istruzione: usa due subagent Explore"
   expect "prompt 1: in parallelo" 0 "in parallelo, nello stesso messaggio"
   expect "prompt 1: un riassunto breve, in un formato" 0 \
     "un riassunto breve in questo formato"
@@ -603,7 +623,8 @@ t_readme() {
   expect "prompt 2: le sei sezioni, in ordine" 0 \
     "Che cosa fa · Ingressi e uscite · Tabelle lette e scritte · Effetti \
 collaterali · Le sei responsabilità · Rischi"
-  expect "prompt 2: descrivere senza giudicare" 0 "senza giudicarlo"
+  expect "prompt 2: descrivere senza giudicare" 0 \
+    "con i fatti del codice e nessun giudizio"
   expect "prompt 2: il controllo finale della ricetta" 0 \
     "controlla che abbia le sei sezioni"
   OUT="$(prompt_in_riga 3 2>/dev/null)"
@@ -612,7 +633,7 @@ collaterali · Le sei responsabilità · Rischi"
     "da solo, senza concatenarlo ad altri"
   expect "prompt 3: la chiusura vera" 0 "senza simulazione"
   expect "prompt 3: il legacy non si modifica" 0 \
-    "Non modificare niente in ${PROGETTO}/legacy/"
+    "Vincoli: ${PROGETTO}/legacy/ resta com'è."
   OUT="$(prompt_in_riga 4 2>/dev/null)"
   expect "prompt 4: NOTA.md" 0 "Scrivi NOTA.md"
   OUT="$(prompt_in_riga 5 2>/dev/null)"
@@ -625,8 +646,85 @@ collaterali · Le sei responsabilità · Rischi"
   else
     fail "prompt 5 assente o comincia con /"
   fi
+  t_forma
+  t_readme_correzione
   t_readme_citazioni
   t_readme_vietati
+}
+
+# La forma del Modulo 2 nei prompt 1, 2, 3 e 5 (in ${TMP}/prompt-<n>.txt):
+# il ruolo «Sei …» nel primo messaggio di una sessione, mai in un seguito;
+# poi le etichette, in quest'ordine. Il prompt 4 resta com'era.
+t_forma() {
+  run python3 -B -I - "${TMP}" <<'PY'
+import os
+import sys
+
+ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
+TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+
+
+def forma(testo):
+    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
+    righe che cominciano con un'etichetta, nell'ordine."""
+    righe = testo.strip("\n").split("\n")
+    return (righe[0].startswith("Sei "),
+            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+
+
+attese = {1: (True, TUTTE), 2: (False, TUTTE), 3: (False, TUTTE),
+          5: (True, TUTTE)}
+diversi = []
+for n, attesa in attese.items():
+    try:
+        with open(os.path.join(sys.argv[1], "prompt-%d.txt" % n),
+                  encoding="utf-8") as fh:
+            trovata = forma(fh.read())
+    except OSError:
+        trovata = "manca"
+    if trovata != attesa:
+        diversi.append("il prompt %d %s" % (n, trovata))
+print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
+PY
+  expect "i prompt 1, 2, 3 e 5 nella forma del Modulo 2" 0 "forma ok"
+}
+
+# «Se qualcosa va storto» mostra intera la correzione che live.sh manda:
+# CORREZIONE, una riga vuota e, fra i tag <esito_verifica>, una riga «Non
+# ancora: …» al posto di quelle della verifica, in un blocco rientrato di
+# sei spazi; e dice che live.sh la manda una volta sola.
+t_readme_correzione() {
+  run python3 -B -I - "${E03}/README.md" "${CORREZIONE}" <<'PY'
+import sys
+import textwrap
+
+readme, istruzioni = sys.argv[1:3]
+testo = open(readme, encoding="utf-8").read()
+sezione = testo.split("\n## Se qualcosa va storto\n", 1)[-1]
+sezione = sezione.split("\n## ", 1)[0]
+righe = sezione.split("\n")
+inizio = [i for i, r in enumerate(righe) if r == "      <istruzioni>"]
+blocco = []
+for r in righe[inizio[0]:] if len(inizio) == 1 else []:
+    if r and not r.startswith("      "):
+        break
+    blocco.append(r)
+mostrato = textwrap.dedent("\n".join(blocco)).strip("\n")
+testa = istruzioni + "\n\n<esito_verifica>\n"
+coda = "\n</esito_verifica>"
+dati = ""
+if mostrato.startswith(testa) and mostrato.endswith(coda):
+    dati = mostrato[len(testa):-len(coda)]
+piatto = " ".join(sezione.split())
+if "\n" in dati or not dati.startswith("Non ancora: "):
+    print("correzione nel README: %r" % mostrato[:300])
+elif "`_docente/live.sh`" not in piatto or "una volta sola" not in piatto:
+    print("correzione nel README: non dice che live.sh la manda una volta")
+else:
+    print("correzione nel README ok")
+PY
+  expect "README: «Se qualcosa va storto» mostra intera la correzione" 0 \
+    "correzione nel README ok"
 }
 
 # Le citazioni di Anthropic, ognuna con il suo link, e soltanto link
@@ -1196,6 +1294,43 @@ live() {
     "${E03}/_docente/live.sh" "${w}"
 }
 
+# La settima chiamata del registro del claude finto, il turno di
+# correzione, così come live.sh la manda: CORREZIONE, una riga vuota e, fra
+# i tag <esito_verifica>, soltanto righe «Non ancora: …» della verifica,
+# fra cui quella della sezione «Rischi» che manca.
+# Arguments: $1 il registro. Outputs: «correzione ok», o che cosa non torna.
+correzione_mandata() {
+  python3 -B -I - "$1" "${CORREZIONE}" <<'PY'
+import json
+import sys
+
+registro, istruzioni = sys.argv[1:3]
+prompt = []
+for riga in open(registro, encoding="utf-8"):
+    a = json.loads(riga)["argv"]
+    if a != ["--version"]:
+        prompt.append(a[a.index("--") + 1:] if "--" in a else [])
+if len(prompt) < 7 or len(prompt[6]) != 1:
+    sys.exit("correzione: nessuna settima chiamata con un prompt solo")
+testo = prompt[6][0]
+testa = istruzioni + "\n\n<esito_verifica>\n"
+coda = "\n</esito_verifica>"
+if not (testo.startswith(testa) and testo.endswith(coda)
+        and len(testo) > len(testa) + len(coda)):
+    print("correzione: non è CORREZIONE e poi <esito_verifica>: %r"
+          % testo[:300])
+    sys.exit(0)
+righe = testo[len(testa):-len(coda)].split("\n")
+if not all(r.startswith("Non ancora: ") for r in righe):
+    print("correzione: fra i tag non soltanto righe «Non ancora»: %r" % righe)
+elif not any(r.startswith("Non ancora: la documentazione non ha la sezione"
+                          " «Rischi»") for r in righe):
+    print("correzione: manca la riga della sezione «Rischi»: %r" % righe)
+else:
+    print("correzione ok")
+PY
+}
+
 # Le chiamate del registro del claude finto, in ${TMP}/chiamate.txt: una
 # riga per chiamata, separati da tabulazioni il modo, la sessione ripresa,
 # il prompt su una riga, gli strumenti, il resto delle opzioni (i prompt
@@ -1371,12 +1506,12 @@ t_live_esiti() {
   expect "live: documentazione incompleta, sistemata dopo la verifica: 0" 0 \
     "VERIFICA OK"
   leggi_chiamate
-  if (( $(wc -l < "${TMP}/chiamate.txt") == 7 )) && sed -n '7p' \
-      "${TMP}/chiamate.txt" | cut -f 3 | grep -qF \
-      "Non ancora: la documentazione non ha la sezione «Rischi»"; then
-    pass "live: il turno di correzione porta le righe «Non ancora»"
+  if (( $(wc -l < "${TMP}/chiamate.txt") == 7 )); then
+    run correzione_mandata "${TMP}/live.log"
+    expect "live: il turno di correzione, le istruzioni in <istruzioni> e \
+le righe «Non ancora» in <esito_verifica>" 0 "correzione ok"
   else
-    fail "live: correzione: $(sed -n '7p' "${TMP}/chiamate.txt" | cut -f 3)"
+    fail "live: correzione: $(wc -l < "${TMP}/chiamate.txt") chiamate, non 7"
   fi
   ws w
   live "${w}" FINTO_E03_AGENT=nessuno

@@ -9,7 +9,11 @@
 #     conferma dai log e dalla mappa del docente (0), e su una copia
 #     cambiata esce 1; sessioni_claude.py uguale a quello di M4-E04;
 #   - il README: le dieci sezioni, i sei prompt fra i segni, il controllo e
-#     un comando per volta, il revisore con la @-mention, le frasi di
+#     un comando per volta, il revisore con la @-mention, le parole da cui
+#     il claude finto riconosce i turni 2, 4 e 5; i prompt 1, 2, 4 e 5 e il
+#     corpo del revisore nella forma del Modulo 2 (il ruolo soltanto
+#     all'inizio di una sessione e nel subagent, poi le etichette, in
+#     ordine; l'esempio del prompt 2 fra i tag <example>); le frasi di
 #     Anthropic e i loro link (le cinque domande prima di un lavoro senza
 #     sorveglianza, la quinta con la risposta del laboratorio), nessun
 #     identificativo interno, niente macOS né Percorso A; il guasto che la
@@ -73,7 +77,7 @@ readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 readonly RAPPORTO_FINTO="${MOD}/_docente/rapporto_finto_m4_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=103
+readonly CASES=104
 readonly RIFERIMENTO="${E05}/soluzione/rapporto_giornaliero.py"
 STRUMENTI='Read,Write,Edit,Bash(python3 controlla_rapporto.py),'
 STRUMENTI+='Bash(python3 rapporto_giornaliero.py *),'
@@ -361,6 +365,12 @@ for i in (0, 1, 4, 5):
 for i in (2, 4, 5):
     if i < len(prompt) and "@agent-revisore" not in prompt[i]:
         problemi.append("@agent-revisore nel prompt %d" % (i + 1))
+# Le parole da cui il claude finto riconosce i turni 2, 4 e 5.
+for i, parole in ((1, "Istruzione: il piano va bene"),
+                  (3, "Istruzione: scrivi NOTA.md"),
+                  (4, "Istruzione: leggi NOTA.md")):
+    if i < len(prompt) and parole not in prompt[i]:
+        problemi.append("«%s» nel prompt %d" % (parole, i + 1))
 frasi = [
     "it's worth going through these five questions with that specific task "
     "in mind: 1. Does it know what done looks like? … 2. Can it check its "
@@ -387,6 +397,7 @@ print("README ok" if not problemi else "README: " + "; ".join(problemi))
 PY
   expect "README: sezioni, prompt, controllo, revisore, frasi, parole" 0 \
     "README ok"
+  test_forma
   run grep -rEn -- "${INTERNI}" "${E05}/README.md" "${E05}/esercizio" \
     "${E05}/verifica.sh" "${E05}/verifica.py" "${E05}/sessioni_claude.py"
   expect "nessun identificativo interno nei file dei partecipanti" 1 ""
@@ -395,6 +406,61 @@ PY
   expect "il guasto che la verifica conosce in nessun file dei partecipanti" \
     1 ""
   readme_lab "${E05}" M4-E05
+}
+
+# La forma del Modulo 2 nei prompt 1, 2, 4 e 5 del README e nel corpo del
+# revisore: il ruolo «Sei …» nel primo messaggio di una sessione e nel
+# subagent, mai in un seguito; poi le etichette, in quest'ordine; nel
+# prompt 2 l'esempio di «Esempi:» fra i tag <example>. I prompt 3 e 6
+# restano com'erano.
+test_forma() {
+  run python3 -B -I - "${E05}/README.md" \
+    "${E05}/esercizio/.claude/agents/revisore.md" <<'PY'
+import sys
+import textwrap
+
+ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
+TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+
+
+def forma(testo):
+    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
+    righe che cominciano con un'etichetta, nell'ordine."""
+    righe = testo.strip("\n").split("\n")
+    return (righe[0].startswith("Sei "),
+            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+
+
+def prompt(righe, n):
+    """Il prompt n fra i segni, senza il rientro comune; "" se non c'è."""
+    a = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- prompt %d -->" % n]
+    b = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- /prompt %d -->" % n]
+    if len(a) != 1 or len(b) != 1 or a[0] > b[0]:
+        return ""
+    return textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
+
+
+righe = open(sys.argv[1], encoding="utf-8").read().split("\n")
+testi = {"il prompt %d" % n: prompt(righe, n) for n in (1, 2, 4, 5)}
+testi["revisore.md"] = open(sys.argv[2], encoding="utf-8").read() \
+    .split("\n---\n", 1)[-1]
+attese = {"il prompt 1": (True, TUTTE),
+          "il prompt 2": (False, ["Istruzione:", "Formato:", "Vincoli:",
+                                  "Esempi:"]),
+          "il prompt 4": (False, ["Contesto:", "Istruzione:", "Formato:"]),
+          "il prompt 5": (True, ["Contesto:", "Istruzione:"]),
+          "revisore.md": (True, TUTTE)}
+diversi = ["%s %s" % (k, forma(testi[k])) for k in attese
+           if forma(testi[k]) != attese[k]]
+esempi = testi["il prompt 2"].split("\nEsempi:\n", 1)[-1]
+if not (esempi.startswith("<example>\n") and esempi.endswith("\n</example>")):
+    diversi.append("il prompt 2: «Esempi:» senza i tag <example>")
+print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
+PY
+  expect "README: i prompt 1, 2, 4, 5 e il revisore nella forma del Modulo 2" \
+    0 "forma ok"
 }
 
 # Il README e SPECIFICA.md di una traccia del laboratorio: la prima frase
@@ -845,8 +911,8 @@ diversi = [i + 1 for i, (r, s) in enumerate(zip(ricevuti, sequenza))
 print("chiamate ok" if len(ricevuti) == len(sequenza) and not diversi else
       "chiamate: %d, diverse %s" % (len(ricevuti), diversi))
 ricevuti += ["", ""]
-print("testi ok" if "scrivere rapporto_giornaliero.sh, in Bash, con "
-      "#!/bin/bash e set -euo pipefail, ciascuno" in ricevuti[0]
+print("testi ok" if "da scrivere è rapporto_giornaliero.sh, in Bash, con "
+      "#!/bin/bash e set -euo pipefail, descritto in" in ricevuti[0]
       and "bash rapporto_giornaliero.sh --giorno 2026-09-08" in ricevuti[1]
       and not any(s in p for p in ricevuti
                   for s in ("rapporto_giornaliero.py", "Python 3.8"))
@@ -904,7 +970,7 @@ test_live_bash() {
     "testi ok"
   deriva frase 's/nei prompt 1 e 2 scrivete/nei prompt 1 e 2 usate/' \
     "il passo 1 del README non dice più"
-  deriva python-3.9 '/per scrivere rapporto_giornaliero/s/3\.8/3.9/' \
+  deriva python-3.9 '/^       .*Python 3\.8/s/3\.8/3.9/' \
     "il prompt 1 nomina ancora rapporto_giornaliero.py"
   deriva senza-comando \
     '/--giorno 2026-09-08/s/python3 rapporto_giornaliero\.py/lo script/' \

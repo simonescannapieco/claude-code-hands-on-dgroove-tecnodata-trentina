@@ -130,18 +130,29 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
-       Leggi SPECIFICA.md, il codice dei ticket che la riguarda
-       (progetti/gestionale-php/src/Ticket/,
-       progetti/gestionale-php/src/Web/TicketController.php,
-       progetti/gestionale-php/templates/ticket_elenco.php) e i test che ci
-       sono in progetti/gestionale-php/tests/. Prepara un piano a piccoli
-       passi, uno per requisito, ciascuno con il suo commit. Nel piano: i
-       test li scrive dalla specifica il subagent autore-test, in
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e
+       pianifichi una funzione nuova, con i suoi test.
+
+       Contesto: la funzione è descritta in SPECIFICA.md. Il codice dei
+       ticket che la riguarda è in progetti/gestionale-php/src/Ticket/,
+       progetti/gestionale-php/src/Web/TicketController.php e
+       progetti/gestionale-php/templates/ticket_elenco.php; i test che
+       ci sono, in progetti/gestionale-php/tests/. Nel progetto ci sono
+       due subagent: autore-test scrive i test dalla specifica,
+       revisore confronta le modifiche con SPECIFICA.md.
+
+       Istruzione: leggi SPECIFICA.md, quel codice e quei test, e
+       prepara un piano a piccoli passi.
+
+       Formato: un passo per requisito, ciascuno con il suo commit. Nel
+       piano: i test li scrive autore-test dalla specifica, in
        background, mentre tu implementi; dopo ogni passo esegui il
-       controllo, questo comando, da solo, senza concatenarlo ad altri:
-       tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
-       prima del commit che chiude la funzione, il subagent revisore
+       controllo; prima del commit che chiude la funzione, revisore
        confronta le modifiche con SPECIFICA.md.
+
+       Vincoli: il controllo è questo comando, eseguito da solo, senza
+       concatenarlo ad altri:
+       tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
 
    <!-- /prompt 1 -->
 
@@ -155,18 +166,22 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Il piano va bene: eseguilo un passo alla volta. Per i test lancia
-       @agent-autore-test: scriva in progetti/gestionale-php/tests/ i test
-       di SPECIFICA.md, dalla specifica e dai test che ci sono. Mentre
-       lavora, implementa i requisiti. Quando il subagent ha finito, esegui
-       il controllo con questo comando, da solo, senza concatenarlo ad
-       altri:
-       tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
-       e correggi il codice finché passa; i test si cambiano solo se
-       contraddicono SPECIFICA.md. Dopo ogni passo che passa il controllo
-       fai un commit: git add, poi git commit -m con il messaggio fra
-       virgolette, un comando per volta, e un messaggio come chiede la
-       regola 11.1 di progetti/gestionale-php/docs/convenzioni.md.
+       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       1. Per i test lancia @agent-autore-test: scriva in
+          progetti/gestionale-php/tests/ i test di SPECIFICA.md, dalla
+          specifica e dai test che ci sono. Mentre lavora, implementa i
+          requisiti.
+       2. Quando il subagent ha finito, esegui il controllo con questo
+          comando, da solo, senza concatenarlo ad altri:
+          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
+          e correggi il codice finché passa. Dopo ogni passo che passa
+          il controllo fai un commit: git add, poi git commit -m con il
+          messaggio fra virgolette, un comando per volta, e un
+          messaggio come chiede la regola 11.1 di
+          progetti/gestionale-php/docs/convenzioni.md.
+
+       Vincoli: i test si cambiano solo dove contraddicono
+       SPECIFICA.md.
 
    <!-- /prompt 2 -->
 
@@ -213,14 +228,21 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
-       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
-       fermato: finisci ciò che manca un passo alla volta, con un commit per
-       passo. Dopo ogni passo esegui il controllo, da solo, senza
-       concatenarlo ad altri:
-       tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
-       Prima dell'ultimo commit esegui git log --oneline e git diff dal
-       primo commit, e passa il diff a @agent-revisore perché lo confronti
-       con SPECIFICA.md.
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
+       una funzione lasciata a metà.
+
+       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; la
+       funzione è descritta in SPECIFICA.md.
+
+       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
+       dove si era fermato.
+       1. Finisci ciò che manca un passo alla volta, con un commit per
+          passo; dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
+       2. Prima dell'ultimo commit esegui git log --oneline e git diff
+          dal primo commit, e passa il diff a @agent-revisore perché lo
+          confronti con SPECIFICA.md.
 
    <!-- /prompt 5 -->
 
@@ -359,19 +381,20 @@ quella con la barra sì.
   trovato»: la regola del laboratorio lo chiede, ma la verifica non vi
   boccia per questo.
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
-effort medium, `_docente/live.sh` sull'account del docente, con le regole
-scritte allora senza la barra iniziale, equivalenti dalla radice dello
-spazio di lavoro): due file di test nuovi,
-`Integrazione/TicketFiltroApparatoDateTest.php` e
-`Unit/Ticket/FiltroTicketTest.php`; la suite intera sul codice di
-Claude, «OK (100 tests, 882 assertions)»; i test nuovi, «OK (56 tests,
-775 assertions)» sul codice di Claude e, sul codice di partenza,
-«Tests: 56, Assertions: 44, Errors: 18, Failures: 6, Warnings: 17.»:
-falliscono, come devono, «il giudice è valido». Il revisore (tools:
-Glob, Grep, Read): 3 trascrizioni, nessuno strumento che modifica, «la
-garanzia vale». Come dati: `NOTA.md` di 27 righe non vuote, 7 commit, 2
-sessioni, «chiamate al tool Agent: 4 (autore-test 1, revisore 3)».
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+effort medium, `_docente/live.sh` sull'account del docente, con i prompt
+di questo README): sei file di test nuovi, quattro in `Integrazione/`
+(`TicketCriteriCombinatiTest.php`, `TicketPerApparatoCondizioniTest.php`,
+`TicketPerApparatoTest.php`, `TicketPerDateTest.php`) e due in
+`Unit/Ticket/` (`FiltroTicketIntervalloTest.php`,
+`FiltroTicketParametriTest.php`); la suite intera sul codice di Claude,
+«OK (83 tests, 811 assertions)»; i test nuovi, «OK (39 tests, 704
+assertions)» sul codice di Claude e, sul codice di partenza, «Tests: 39,
+Assertions: 24, Errors: 16, Failures: 4, Warnings: 8.»: falliscono, come
+devono, «il giudice è valido». Il revisore (tools: Glob, Grep, Read): 2
+trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
+dati: `NOTA.md` di 38 righe non vuote, 8 commit, 2 sessioni, «chiamate
+al tool Agent: 3 (autore-test 1, revisore 2)».
 
 ## Verifica (tools/verifica.sh M4-E02)
 
@@ -421,9 +444,9 @@ può partire, per esempio se mancano le dipendenze del gestionale.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 40
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 57
 turni del modello in tutto, nelle due parti (sotto); due subagent,
-`autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, tre
+`autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, due
 chiamate. I subagent non sono gratis: «What they
 cost you is mostly tokens, since every subagent sends its own requests and
 they count against the same usage as your main conversation.» Per
@@ -440,13 +463,13 @@ affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 12, 10, 8, 4 e 6 turni del modello (`num_turns`); 49,6,
-40,8, 29,2, 20,3 e 24,8 secondi; token in entrata della conversazione
-principale, cache compresa, 138.804, 558.130, 434.250, 300.882 e
-207.524. I token dei subagent si aggiungono a questi.
+seconda, con 9, 35, 4, 4 e 5 turni del modello (`num_turns`); 66,2,
+149,0, 85,8, 15,8 e 17,5 secondi; token in entrata della conversazione
+principale, cache compresa, 282.611, 2.002.519, 338.045, 375.991 e
+93.531. I token dei subagent si aggiungono a questi.
 
 ## Per approfondire
 

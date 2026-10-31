@@ -136,17 +136,31 @@ quella con la barra sì.
 
    <!-- prompt 1 -->
 
-       Leggi SPECIFICA.md e la descrizione dei log in progetti/rete/README.md
-       («I log della settimana»); dei log di progetti/rete/log/ guarda
-       poche righe per sorgente, senza leggerli interi. Prepara un piano a
-       piccoli passi per scrivere rapporto_giornaliero.py, in Python 3.8 o
-       successivo, solo libreria standard, ciascuno con il suo commit. Nel
-       piano: dopo ogni passo esegui il controllo, questo comando, da solo,
-       senza concatenarlo ad altri:
+       Sei uno sviluppatore della rete di CiaspoLink e pianifichi uno
+       script operativo, il rapporto quotidiano dei disservizi.
+
+       Contesto: lo script da scrivere è rapporto_giornaliero.py, in
+       Python 3.8 o successivo, solo libreria standard, descritto in
+       SPECIFICA.md.
+       I log della settimana sono in progetti/rete/log/, e la loro
+       forma è descritta in progetti/rete/README.md («I log della
+       settimana»). Nel progetto c'è il subagent revisore, che
+       confronta il contratto d'uscita e i messaggi di uno script con
+       SPECIFICA.md.
+
+       Istruzione: leggi SPECIFICA.md e la descrizione dei log, guarda
+       poche righe per sorgente dei log, e prepara un piano a piccoli
+       passi.
+
+       Formato: ogni passo con il suo commit. Nel piano: dopo ogni
+       passo esegui il controllo e leggi l'esito nella sua ultima riga;
+       prima del commit che chiude lo script, revisore ne controlla il
+       contratto d'uscita e i messaggi con SPECIFICA.md.
+
+       Vincoli: dei log leggi poche righe per sorgente; i file interi
+       li legge lo script. Il controllo è questo comando, eseguito da
+       solo, senza concatenarlo ad altri:
        python3 controlla_rapporto.py
-       e leggi l'esito nella sua ultima riga; prima del commit che chiude lo
-       script, il subagent revisore ne controlla il contratto d'uscita e i
-       messaggi con SPECIFICA.md.
 
    <!-- /prompt 1 -->
 
@@ -161,17 +175,28 @@ quella con la barra sì.
 
    <!-- prompt 2 -->
 
-       Il piano va bene: eseguilo un passo alla volta. Dopo ogni passo
-       esegui il controllo, da solo, senza concatenarlo ad altri:
-       python3 controlla_rapporto.py
-       e correggi lo script finché l'ultima riga dice uscita: 0; il
-       controllo non si cambia. Prova anche lo script su un giorno della
-       settimana dei log, da solo:
-       python3 rapporto_giornaliero.py --giorno 2026-09-08
-       Dopo ogni passo che passa il controllo fai un commit: git add, poi
-       git commit -m con il messaggio fra virgolette, un comando per volta,
-       e un messaggio breve nella forma tipo(ambito): descrizione, per
-       esempio feat(rapporto): legge il syslog.
+       Istruzione: il piano va bene, eseguilo un passo alla volta.
+       1. Prova lo script su un giorno della settimana dei log, da
+          solo:
+          python3 rapporto_giornaliero.py --giorno 2026-09-08
+       2. Dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_rapporto.py
+          e correggi lo script finché l'ultima riga dice uscita: 0.
+          Dopo ogni passo che passa il controllo fai un commit: git
+          add, poi git commit -m con il messaggio fra virgolette, un
+          comando per volta.
+
+       Formato: il messaggio di commit è breve, nella forma
+       tipo(ambito): descrizione.
+
+       Vincoli: si corregge lo script; controlla_rapporto.py resta
+       com'è.
+
+       Esempi:
+       <example>
+       feat(rapporto): legge il syslog
+       </example>
 
    <!-- /prompt 2 -->
 
@@ -200,12 +225,17 @@ quella con la barra sì.
 
    <!-- prompt 4 -->
 
-       Siamo alla fine della prima parte del laboratorio. Scrivi NOTA.md,
-       nella cartella in cui siamo: che cosa è fatto (i punti di
-       SPECIFICA.md già soddisfatti, con i loro commit), che cosa manca, e i
-       comandi per riprendere (il controllo, lo script su un giorno della
-       settimana, il revisore). Poi fai un commit di NOTA.md: git add, poi
-       git commit -m, un comando per volta.
+       Contesto: siamo alla fine della prima parte del laboratorio, e
+       la seconda riparte da una sessione nuova.
+
+       Istruzione: scrivi NOTA.md, nella cartella in cui siamo; poi fai
+       un commit di NOTA.md: git add, poi git commit -m, un comando per
+       volta.
+
+       Formato: che cosa è fatto (i punti di SPECIFICA.md già
+       soddisfatti, con i loro commit), che cosa manca, e i comandi per
+       riprendere (il controllo, lo script su un giorno della
+       settimana, il revisore).
 
    <!-- /prompt 4 -->
 
@@ -226,14 +256,22 @@ quella con la barra sì.
 
    <!-- prompt 5 -->
 
-       Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
-       fermato: finisci ciò che manca un passo alla volta, con un commit per
-       passo. Dopo ogni passo esegui il controllo, da solo, senza
-       concatenarlo ad altri:
-       python3 controlla_rapporto.py
-       Prima dell'ultimo commit esegui git log --oneline e git diff dal
-       primo commit, e passa il diff a @agent-revisore perché controlli il
-       contratto d'uscita e i messaggi dello script con SPECIFICA.md.
+       Sei uno sviluppatore della rete di CiaspoLink e riprendi uno
+       script operativo lasciato a metà.
+
+       Contesto: NOTA.md dice che cosa è fatto e che cosa manca; lo
+       script è descritto in SPECIFICA.md.
+
+       Istruzione: leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da
+       dove si era fermato.
+       1. Finisci ciò che manca un passo alla volta, con un commit per
+          passo; dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_rapporto.py
+       2. Prima dell'ultimo commit esegui git log --oneline e git diff
+          dal primo commit, e passa il diff a @agent-revisore perché
+          controlli il contratto d'uscita e i messaggi dello script con
+          SPECIFICA.md.
 
    <!-- /prompt 5 -->
 
@@ -426,36 +464,35 @@ nella settimana dei log di esempio: quelli li trova lo script.
   chiamate stampa «nessun subagent trovato»: la regola del laboratorio lo
   chiede, ma la verifica non vi boccia per questo.
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, la variante in Python, `_docente/live.sh` sull'account del
-docente, con le regole scritte allora senza la barra iniziale,
-equivalenti dalla radice dello spazio di lavoro): il controllo
-dell'esercizio, «8 casi su 8 come la specifica»; martedì 8 settembre,
-uscita 1 e una riga, con il disservizio che la verifica conosce,
-«apparato sì · porta sì · inizio sì · fine sì · linee sì»; lunedì 7,
-uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read): 3
-trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
-dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
-negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
-c'è, 4 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
-(revisore 3)», e «il controllo eseguito da Claude: 11 volte, l'ultima con
-uscita 0».
+docente, con i prompt di questo README): il controllo dell'esercizio, «8
+casi su 8 come la specifica»; martedì 8 settembre, uscita 1 e una riga,
+con il disservizio che la verifica conosce, «apparato sì · porta sì ·
+inizio sì · fine sì · linee sì»; lunedì 7, uscita 0 e nessuna riga. Il
+revisore (tools: Glob, Grep, Read): 2 trascrizioni, nessuno strumento che
+modifica, «la garanzia vale». Come dati: gli altri giorni, uscita 1, con
+18 righe mercoledì 9 e una sola negli altri, e il disservizio conosciuto
+trovato in ognuno; `NOTA.md` c'è, 3 commit, 3 file cambiati, 2 sessioni,
+«chiamate al tool Agent: 2 (revisore 2)», e «il controllo eseguito da
+Claude: 7 volte, l'ultima con uscita 0».
 
 La variante in Bash si prova con lo stesso `_docente/live.sh` e
 `PN_VARIANTE=bash`: nei prompt 1 e 2 fa le due sostituzioni del passo 1,
-come chi sceglie Bash. Nella prova del corso in Bash (28 ottobre 2026,
-Claude Code 2.1.312, Sonnet con effort medium, sull'account del docente):
+come chi sceglie Bash. Nella prova del corso in Bash (31 ottobre 2026,
+Claude Code 2.1.316, Sonnet con effort medium, sull'account del docente):
 `rapporto_giornaliero.sh`, con `#!/bin/bash` e `set -euo pipefail`; il
 controllo dell'esercizio, «8 casi su 8 come la specifica»; martedì 8
 settembre, uscita 1 e una riga, con il disservizio che la verifica
 conosce, «apparato sì · porta sì · inizio sì · fine sì · linee sì»;
 lunedì 7, uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read):
-2 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
+3 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
 dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
 negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
-c'è, 4 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 2
-(revisore 2)», e «il controllo eseguito da Claude: 6 volte, l'ultima con
-uscita 0».
+c'è, 7 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
+(revisore 3)», e «il controllo eseguito da Claude: 10 volte, l'ultima
+con uscita 0». La seconda parte ha trovato il lavoro già fatto e nel
+commit: il revisore ha dato esito OK, e nessun commit nuovo.
 
 ## Verifica (tools/verifica.sh M4-E05)
 
@@ -509,10 +546,10 @@ se mancano i log della rete nel repository.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 26
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. In Bash, 30 turni e il revisore
-chiamato due volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato due volte. In Bash, 25 turni e il revisore
+chiamato tre volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). Leggere i log a pezzi tiene
 piccola la conversazione; i subagent non sono gratis: «What they cost you
@@ -530,16 +567,16 @@ Code, meaning all activity in both tools counts against the same limits.»
 it breaks your usage down by skill, subagent, plugin, and MCP server.»
 (https://code.claude.com/docs/en/best-practices).
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 11, 6, 3, 4 e 4 turni del modello (`num_turns`); 74,0, 16,7,
-7,4, 18,6 e 14,0 secondi; token in entrata della conversazione
-principale, cache compresa, 194.792, 306.986, 177.656, 244.259 e
-171.550. I token del revisore si aggiungono a questi. In Bash, con
-`PN_VARIANTE=bash`: 7, 5, 8, 4 e 6 turni del modello; 45,5, 23,6, 13,5,
-15,8 e 19,2 secondi; 148.811, 158.781, 336.713, 234.027 e 200.596 token
-in entrata.
+seconda, con 7, 5, 3, 4 e 7 turni del modello (`num_turns`); 37,8, 15,5,
+8,4, 23,1 e 15,2 secondi; token in entrata della conversazione
+principale, cache compresa, 115.762, 261.050, 119.127, 245.993 e 88.135.
+I token del revisore si aggiungono a questi. In Bash, con
+`PN_VARIANTE=bash`: 7, 10, 3, 4 e 1 turni del modello; 33,7, 24,1, 6,4,
+23,6 e 6,6 secondi; 114.903, 276.728, 189.717, 260.823 e 32.944 token in
+entrata.
 
 ## Per approfondire
 

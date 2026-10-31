@@ -1,1 +1,14 @@
-Non delegare a subagent: leggi tu i log. Martedì 8 settembre 2026 un guasto su olt-pergine-01 ha messo fuori servizio insieme più linee di clienti. Quando è cominciato, quando è finito (quando le ONT sono tornate in linea) e quante linee di clienti (ONT) ha coinvolto? Rispondi in una riga: 'inizio: HH:MM | fine: HH:MM | ONT: N'.
+Sei un tecnico della rete di CiaspoLink e ricostruisci un guasto
+dai log degli apparati.
+
+Contesto: martedì 8 settembre 2026 un guasto su olt-pergine-01
+ha messo fuori servizio insieme più linee di clienti. I log
+della settimana sono nella cartella in cui siamo.
+
+Istruzione: leggi tu i log, con i tuoi strumenti Read, Grep e
+Glob.
+Poi rispondi: quando è cominciato, quando è finito (quando le
+ONT sono tornate in linea) e quante linee di clienti (ONT) ha
+coinvolto?
+
+Formato: una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'.

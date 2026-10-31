@@ -28,17 +28,20 @@ sessione in <id>.jsonl, ogni subagent in <id>/subagents/agent-<agentId>
 .jsonl, con il suo agent-<agentId>.meta.json.
 
 L'elemento si riconosce dalla cartella corrente: controlla_notturno.py
-(M4-E04) o controlla_rapporto.py (M4-E05). Le scene, dal prompt:
-  «Prepara un piano»   il piano: nessuna modifica; se le impostazioni hanno
-                       plansDirectory, vi scrive piano-finto.md
-  «Il piano va bene»   lo script, secondo FINTO_LAVORO = completo (default:
+(M4-E04) o controlla_rapporto.py (M4-E05). In plan mode
+(--permission-mode plan, il prompt 1, «prepara un piano») il piano:
+nessuna modifica; se le impostazioni hanno plansDirectory, vi scrive
+piano-finto.md. Nelle altre modalità le scene, dal prompt («il piano va
+bene», «scrivi NOTA.md» e «leggi NOTA.md» maiuscole o minuscole: nei
+prompt vengono dopo «Istruzione:»):
+  «il piano va bene»   lo script, secondo FINTO_LAVORO = completo (default:
                        la copia di FINTO_SOLUZIONE) · a_meta (una variante
                        che il controllo boccia) · mai (niente); poi una
                        chiamata al controllo nella trascrizione (Bash, con
                        l'ultima riga «uscita: 0» o «uscita: 1») e un commit
   «Prima del commit che chiude»  un Agent revisore e un commit
-  «Scrivi NOTA.md»     NOTA.md (FINTO_NOTA=no: niente) e un commit
-  «Leggi NOTA.md»      sessione nuova: completa lo script (salvo
+  «scrivi NOTA.md»     NOTA.md (FINTO_NOTA=no: niente) e un commit
+  «leggi NOTA.md»      sessione nuova: completa lo script (salvo
                        FINTO_MAI=1), il controllo, il revisore, un commit
   «Esegui il controllo, da solo»  come la ripresa
   Le varianti di a_meta: M4-E04 uno script con «FINTO-VARIANTE:
@@ -265,7 +268,8 @@ def lavoro(t: Trascrizione, item: str, prompt: str, chiamata: int) -> None:
     """Gli effetti di una chiamata, secondo il prompt."""
     modo = os.environ.get("FINTO_LAVORO", "completo")
     mai = os.environ.get("FINTO_MAI") == "1"
-    if "Il piano va bene" in prompt:
+    basso = prompt.lower()
+    if "il piano va bene" in basso:
         if modo != "mai":
             scrivi_script(item, modo == "completo")
             controllo(t, item)
@@ -273,13 +277,13 @@ def lavoro(t: Trascrizione, item: str, prompt: str, chiamata: int) -> None:
     elif "Prima del commit che chiude" in prompt:
         revisore(t, item, chiamata)
         commit("feat(controllo): dopo la revisione (finto)")
-    elif "Scrivi NOTA.md" in prompt:
+    elif "scrivi nota.md" in basso:
         if os.environ.get("FINTO_NOTA", "si") == "si":
             with open("NOTA.md", "w", encoding="utf-8") as fh:
                 fh.write("# Nota finta\n\nScritta dal claude finto della "
                          "suite.\n")
             commit("docs: nota della prima parte (finto)")
-    elif "Leggi NOTA.md" in prompt or "Esegui il controllo, da solo" in prompt:
+    elif "leggi nota.md" in basso or "Esegui il controllo, da solo" in prompt:
         if not mai:
             scrivi_script(item, True)
         controllo(t, item)

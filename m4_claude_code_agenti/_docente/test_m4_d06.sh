@@ -3,8 +3,9 @@
 # test_m4_d06.sh -- le prove di M4-D06 «Delegare la lettura», per il
 # docente (sta in _docente/, il materiale del docente):
 #   - l'elemento: progetti.txt; i due prompt, che differiscono soltanto
-#     nella prima frase; la verità in verita.json, accanto all'elemento e
-#     fuori da demo/, uguale a quella di progetti/rete/_docente/README.md;
+#     nella prima frase di «Istruzione:»; la verità in verita.json, accanto
+#     all'elemento e fuori da demo/, uguale a quella di
+#     progetti/rete/_docente/README.md;
 #     il controllo senza la verità dentro; le dieci sezioni del README, le
 #     frasi di Anthropic con il loro indirizzo; nessun nome interno,
 #     nessun percorso personale, nessuna «smentita»;
@@ -61,16 +62,34 @@ readonly RETE_DOCENTE="${RADICE}/progetti/rete/_docente/README.md"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
 readonly CASES=142
-DOMANDA="Martedì 8 settembre 2026 un guasto su olt-pergine-01 ha messo fuori"
-DOMANDA+=" servizio insieme più linee di clienti. Quando è cominciato, quando è"
-DOMANDA+=" finito (quando le ONT sono tornate in linea) e quante linee di"
-DOMANDA+=" clienti (ONT) ha coinvolto? Rispondi in una riga: 'inizio: HH:MM |"
-DOMANDA+=" fine: HH:MM | ONT: N'."
-readonly DOMANDA
-P_DELEGA="Delega la lettura dei log a un subagent Explore e fatti riportare"
-P_DELEGA+=" solo un riassunto breve. ${DOMANDA}"
-readonly P_DELEGA
-readonly P_SENZA="Non delegare a subagent: leggi tu i log. ${DOMANDA}"
+# I due prompt, riga per riga: la parte comune (il ruolo, «Contesto:» e
+# l'inizio di «Istruzione:»; poi «Poi rispondi: …» e «Formato:») e, in
+# mezzo, la prima frase di «Istruzione:», la sola che cambia.
+printf -v INIZIO '%s\n' \
+  'Sei un tecnico della rete di CiaspoLink e ricostruisci un guasto' \
+  'dai log degli apparati.' \
+  '' \
+  'Contesto: martedì 8 settembre 2026 un guasto su olt-pergine-01' \
+  'ha messo fuori servizio insieme più linee di clienti. I log' \
+  'della settimana sono nella cartella in cui siamo.' \
+  ''
+INIZIO+='Istruzione: '
+readonly INIZIO
+printf -v DOMANDA '%s\n' \
+  'Poi rispondi: quando è cominciato, quando è finito (quando le' \
+  'ONT sono tornate in linea) e quante linee di clienti (ONT) ha' \
+  'coinvolto?' \
+  '' \
+  "Formato: una riga, 'inizio: HH:MM | fine: HH:MM | ONT: N'."
+readonly DOMANDA="${DOMANDA%$'\n'}"
+FRASE_DELEGA='delega la lettura dei log a un subagent Explore e'
+FRASE_DELEGA+=$'\nfatti riportare solo un riassunto breve.'
+readonly FRASE_DELEGA
+FRASE_SENZA='leggi tu i log, con i tuoi strumenti Read, Grep e'
+FRASE_SENZA+=$'\nGlob.'
+readonly FRASE_SENZA
+readonly P_DELEGA="${INIZIO}${FRASE_DELEGA}"$'\n'"${DOMANDA}"
+readonly P_SENZA="${INIZIO}${FRASE_SENZA}"$'\n'"${DOMANDA}"
 S_GARANZIA='La conversazione principale vede solo il risultato del'
 S_GARANZIA+=' subagent'
 readonly S_GARANZIA
@@ -370,24 +389,38 @@ t_elemento() {
   done
   run cat -- "${D06}/progetti.txt"
   expect "elemento: progetti.txt porta la rete" 0 "progetti/rete"
-  run python3 -B -I - "${D06}" "${P_DELEGA}" "${P_SENZA}" "${DOMANDA}" <<'PY'
+  run python3 -B -I - "${D06}" "${P_DELEGA}" "${P_SENZA}" <<'PY'
 import os, sys
-item, delega, senza, domanda = sys.argv[1:5]
-problemi = []
+item, delega, senza = sys.argv[1:4]
+ISTRUZIONE = "\nIstruzione: "
+problemi, testi = [], []
 for nome, atteso in (("prompt_delega.txt", delega),
                      ("prompt_senza.txt", senza)):
     try:
         with open(os.path.join(item, "demo", nome), encoding="utf-8") as fh:
-            if fh.read().rstrip("\n") != atteso:
-                problemi.append(nome)
+            testi.append(fh.read().rstrip("\n"))
     except OSError:
         problemi.append("manca " + nome)
-if not (delega.endswith(domanda) and senza.endswith(domanda)):
-    problemi.append("la domanda comune")
+        continue
+    if testi[-1] != atteso:
+        problemi.append(nome)
+# Sui file: tolta la prima frase di «Istruzione:» (fino al primo punto), i
+# due testi sono uguali; le due frasi no.
+resti, frasi = [], []
+for testo in testi:
+    i = testo.find(ISTRUZIONE) + len(ISTRUZIONE)
+    j = testo.find(".", i)
+    if i < len(ISTRUZIONE) or j < 0:
+        break
+    resti.append(testo[:i] + testo[j + 1:])
+    frasi.append(testo[i:j + 1])
+if len(resti) != 2 or resti[0] != resti[1] or frasi[0] == frasi[1]:
+    problemi.append("non differiscono soltanto nella prima frase di"
+                    " «Istruzione:»")
 print("; ".join(problemi) or "prompt giusti")
 PY
-  expect "elemento: i due prompt, che differiscono nella prima frase" 0 \
-    "prompt giusti"
+  expect "elemento: i due prompt, che differiscono nella prima frase di \
+«Istruzione:»" 0 "prompt giusti"
 }
 
 # La verità: accanto all'elemento, uguale a quella del docente della rete;
@@ -538,11 +571,13 @@ frasi = [
 for frase, url in frasi:
     if frase not in piatto or url not in readme:
         problemi.append("manca la frase «%s…»" % frase[:40])
-for atteso in ("di regola", "su macOS, Linux e WSL", "188.296", "117.147",
-               "circa 100.000", "il tool Agent", "ONT coinvolti"):
+for atteso in ("di regola", "su macOS, Linux e WSL", "294.326", "108.485",
+               "circa 130.000", "il tool Agent", "ONT coinvolti",
+               "31 ottobre 2026, Claude Code 2.1.316"):
     if atteso not in piatto:
         problemi.append("manca «%s»" % atteso)
-for vecchio in ("solo se", "290.000", "strumento Agent", "ONT coinvolte"):
+for vecchio in ("solo se", "290.000", "strumento Agent", "ONT coinvolte",
+                "188.296", "117.147", "circa 100.000"):
     if vecchio in piatto:
         problemi.append("c'è ancora «%s»" % vecchio)
 # «le ONT» soltanto dentro la domanda, che si cita com'è nei prompt.
@@ -1010,7 +1045,7 @@ print(len([x for x in r if x["argv"][:1] != ["--version"]]))' \
   # La seconda chiamata (senza la delega) fallisce dopo una riuscita: lo
   # stream finito non si perde con la cartella temporanea, va in risposte/.
   nuovo_ws w || return 0
-  finto "${w}" FINTO_ESITO_KO_SE="Non delegare"
+  finto "${w}" FINTO_ESITO_KO_SE="leggi tu i log"
   if (( RC == 1 )) && grep -qF 'VERIFICA KO' <<< "${OUT}" \
       && [[ -s "${w}/risposte/delega-1.jsonl" ]]; then
     pass "live: una chiamata fallita, lo stream finito resta in risposte/"

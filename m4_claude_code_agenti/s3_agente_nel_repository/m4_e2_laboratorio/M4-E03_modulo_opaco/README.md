@@ -133,20 +133,31 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 1 -->
 
-       Usa due subagent Explore in parallelo, nello stesso messaggio, per
-       mappare progetti/gestionale-php/legacy/chiusura_mese.inc.php senza
-       leggere tu tutto il progetto:
-       (a) chi chiama chiusura_mese() nel progetto e come: file e riga, chi
-       la chiama, con quali argomenti e opzioni;
-       (b) quali tabelle del database la funzione legge e quali scrive,
-       anche attraverso le funzioni del legacy che chiama.
-       Ciascuno risponda con un riassunto breve in questo formato, al
-       massimo 12 righe:
-       (a) una riga per chiamata: «file:riga | chi chiama | argomenti e
-       opzioni»;
-       (b) una riga per tabella: «tabella | legge, scrive o tutti e due |
-       dove: riga o funzione».
-       Poi mostrami i due riassunti così come sono.
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e
+       documenti un modulo legacy che nessuno conosce più.
+
+       Contesto: il modulo è
+       progetti/gestionale-php/legacy/chiusura_mese.inc.php. Due
+       ricerche indipendenti bastano a mapparlo: chi lo chiama, e quali
+       tabelle tocca.
+
+       Istruzione: usa due subagent Explore in parallelo, nello stesso
+       messaggio, per mappare chiusura_mese().
+       1. Il subagent (a) trova chi chiama chiusura_mese() nel progetto
+          e come: file e riga, chi la chiama, con quali argomenti e
+          opzioni.
+       2. Il subagent (b) trova quali tabelle del database la funzione
+          legge e quali scrive, anche attraverso le funzioni del legacy
+          che chiama.
+       3. Mostrami i due riassunti così come sono.
+
+       Formato: ciascun subagent risponde con un riassunto breve in
+       questo formato, al massimo 12 righe: (a) una riga per chiamata,
+       «file:riga | chi chiama | argomenti e opzioni»; (b) una riga per
+       tabella, «tabella | legge, scrive o tutti e due | dove: riga o
+       funzione».
+
+       Vincoli: tu leggi soltanto i due riassunti.
 
    <!-- /prompt 1 -->
 
@@ -159,22 +170,30 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 2 -->
 
-       Scrivi la documentazione di chiusura_mese() in
-       progetti/gestionale-php/docs/chiusura_mese.md, in italiano, dai due
-       riassunti e dal codice del modulo, con queste sezioni, in
-       quest'ordine, come titoli «## »: Che cosa fa · Ingressi e uscite ·
-       Tabelle lette e scritte · Effetti collaterali · Le sei
-       responsabilità · Rischi.
-       Descrivi che cosa fa il codice così com'è, senza giudicarlo e senza
-       proporre correzioni: le proposte vengono dopo. In «Tabelle lette e
-       scritte» tutte le tabelle del riassunto (b), ciascuna con il suo nome
-       nel database; in «Le sei responsabilità» una voce per ciascuna,
-       nell'ordine in cui la funzione le esegue, con le righe del file.
-       Non modificare niente in progetti/gestionale-php/legacy/. Alla fine
-       rileggi il file e controlla che abbia le sei sezioni, in
-       quell'ordine, ognuna con il suo testo. Poi fai il commit del file,
-       con un messaggio come quelli della regola 11.1 di
-       progetti/gestionale-php/docs/convenzioni.md, un comando per volta.
+       Contesto: la documentazione di chiusura_mese() si scrive dai due
+       riassunti e dal codice del modulo; le proposte di correzione
+       vengono dopo, nella seconda parte.
+
+       Istruzione:
+       1. Scrivi la documentazione in
+          progetti/gestionale-php/docs/chiusura_mese.md, in italiano.
+       2. Rileggi il file e controlla che abbia le sei sezioni, in
+          quell'ordine, ognuna con il suo testo. Poi fai il commit del
+          file, con un messaggio come quelli della regola 11.1 di
+          progetti/gestionale-php/docs/convenzioni.md, un comando per
+          volta.
+
+       Formato: queste sezioni, in quest'ordine, come titoli «## »: Che
+       cosa fa · Ingressi e uscite · Tabelle lette e scritte · Effetti
+       collaterali · Le sei responsabilità · Rischi. In «Tabelle lette
+       e scritte» tutte le tabelle del riassunto (b), ciascuna con il
+       suo nome nel database; in «Le sei responsabilità» una voce per
+       ciascuna, nell'ordine in cui la funzione le esegue, con le righe
+       del file.
+
+       Vincoli: descrivi che cosa fa il codice così com'è, con i fatti
+       del codice e nessun giudizio. progetti/gestionale-php/legacy/
+       resta com'è.
 
    <!-- /prompt 2 -->
 
@@ -185,25 +204,30 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 3 -->
 
-       Scrivi i test di caratterizzazione di chiusura_mese() in
-       progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php, con
-       PHPUnit, come i test che il progetto ha già (sezioni 9 e 10 di
-       progetti/gestionale-php/docs/convenzioni.md). Un test di
-       caratterizzazione fissa ciò che il codice fa adesso, anche dove
-       sembra strano: se un test non passa, si corregge il test, non il
-       modulo.
-       I test girano su un database di prova con pochi dati scritti dal
-       test e passano sempre la data di riferimento nelle opzioni, come
-       progetti/gestionale-php/bin/chiusura-mese.php. Eseguono la chiusura
-       vera, senza simulazione, e controllano che cosa scrive nel database:
-       le fatture che diventano scadute, i clienti e le linee sospesi e
-       riattivati, le note di credito degli indennizzi con le righe e gli
-       importi; e che cosa restituisce. In più un test in simulazione.
-       Esegui i test con questo comando, da solo, senza concatenarlo ad
-       altri, e correggi i test finché passano:
-       tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php
-       Non modificare niente in progetti/gestionale-php/legacy/. Poi fai il
-       commit del test, un comando per volta.
+       Contesto: un test di caratterizzazione fissa ciò che il codice
+       fa adesso, anche dove sembra strano: se un test non passa, si
+       corregge il test, e il modulo resta com'è.
+
+       Istruzione:
+       1. Scrivi i test di caratterizzazione di chiusura_mese() in
+          progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php,
+          con PHPUnit, come i test che il progetto ha già (sezioni 9 e
+          10 di progetti/gestionale-php/docs/convenzioni.md).
+       2. Esegui i test con questo comando, da solo, senza concatenarlo
+          ad altri, e correggi i test finché passano:
+          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php
+          Poi fai il commit del test, un comando per volta.
+
+       Formato: i test girano su un database di prova con pochi dati
+       scritti dal test e passano sempre la data di riferimento nelle
+       opzioni, come progetti/gestionale-php/bin/chiusura-mese.php.
+       Eseguono la chiusura vera, senza simulazione, e controllano che
+       cosa scrive nel database: le fatture che diventano scadute, i
+       clienti e le linee sospesi e riattivati, le note di credito
+       degli indennizzi con le righe e gli importi; e che cosa
+       restituisce. In più un test in simulazione.
+
+       Vincoli: progetti/gestionale-php/legacy/ resta com'è.
 
    <!-- /prompt 3 -->
 
@@ -258,23 +282,36 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
    <!-- prompt 5 -->
 
-       Leggi NOTA.md, progetti/gestionale-php/docs/chiusura_mese.md e
-       progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php.
-       Proponi il refactoring di chiusura_mese() in passi piccoli, ciascuno
-       con lo stesso comportamento e con il controllo che lo prova: i test
-       di caratterizzazione. Tieni conto delle regole del team sul codice
-       legacy (sezione 9 di progetti/gestionale-php/docs/convenzioni.md),
-       del commento del modulo «non spezzare in piu funzioni» e di chi
-       chiama la funzione. Il codice legacy non si modifica: la proposta lo
-       descrive soltanto.
-       Il piano è il contenuto di PROPOSTA.md, nella radice dello spazio di
-       lavoro, in questo formato: un titolo «## Passo N — titolo» per
-       passo, numerati da 1, almeno tre; per ogni passo che cosa cambia e
-       perché, in poche righe; e una riga «Controllo: » con il comando dei
-       test da eseguire dopo il passo e che cosa deve dire.
-       Quando approvo il piano, scrivi PROPOSTA.md, esegui una volta il
-       controllo del primo passo, da solo, e fai il commit di PROPOSTA.md,
-       un comando per volta.
+       Sei uno sviluppatore PHP del gestionale di CiaspoLink e proponi
+       il refactoring di un modulo legacy già documentato e coperto da
+       test.
+
+       Contesto: NOTA.md dice che cosa è fatto;
+       progetti/gestionale-php/docs/chiusura_mese.md documenta
+       chiusura_mese(), e
+       progetti/gestionale-php/tests/Integrazione/ChiusuraMeseTest.php
+       ne fissa il comportamento. Valgono le regole del team sul codice
+       legacy (sezione 9 di
+       progetti/gestionale-php/docs/convenzioni.md), il commento del
+       modulo «non spezzare in piu funzioni» e chi chiama la funzione.
+
+       Istruzione:
+       1. Leggi NOTA.md, la documentazione e i test.
+       2. Proponi il refactoring di chiusura_mese() in passi piccoli,
+          ciascuno con lo stesso comportamento e con il controllo che
+          lo prova: i test di caratterizzazione.
+       3. Quando approvo il piano, scrivi PROPOSTA.md, esegui una volta
+          il controllo del primo passo, da solo, e fai il commit di
+          PROPOSTA.md, un comando per volta.
+
+       Formato: il piano è il contenuto di PROPOSTA.md, nella radice
+       dello spazio di lavoro: un titolo «## Passo N — titolo» per
+       passo, numerati da 1, almeno tre; per ogni passo che cosa cambia
+       e perché, in poche righe; e una riga «Controllo: » con il
+       comando dei test da eseguire dopo il passo e che cosa deve dire.
+
+       Vincoli: il codice legacy resta com'è: la proposta lo descrive
+       soltanto.
 
    <!-- /prompt 5 -->
 
@@ -411,19 +448,19 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
   `M4-E03.prova_dal_vivo/`: la sessione della seconda parte non lo vede,
   come nel vostro spazio di lavoro.
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con il JSON
-di ogni chiamata fuori dallo spazio di lavoro): dopo i prompt la verifica
-ha detto «Non ancora», perché i controlli dei passi 5–7 di `PROPOSTA.md`
-non eseguivano i test; il turno in più con quelle righe li ha sistemati.
-Poi «VERIFICA OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 8
-passi, ognuno con il suo controllo; `legacy/` com'era; i test verdi sul
-codice originale, «OK (14 tests, 31 assertions)», e rossi sulla copia
-rotta, «Tests: 14, Assertions: 21, Failures: 10.». Come dati: la regola
-`deny` c'era; nessun piano in `piani/`; 5 commit; 2 sessioni; «chiamate
-Agent: 2 (Explore 2); nello stesso messaggio: 2», con 2 trascrizioni di
-subagent; nessun `ExitPlanMode`; nessuna chiamata di Edit o Write su
-`legacy/`.
+di ogni chiamata fuori dallo spazio di lavoro e i prompt di questo
+README): dopo i prompt la verifica ha detto «Non ancora», perché i
+controlli dei passi 2, 4, 5 e 7 di `PROPOSTA.md` non eseguivano i test;
+il turno di correzione con quelle righe li ha sistemati. Poi «VERIFICA
+OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 8 passi, ognuno
+con il suo controllo; `legacy/` com'era; i test verdi sul codice
+originale, «OK (14 tests, 38 assertions)», e rossi sulla copia rotta,
+«Tests: 14, Assertions: 21, Failures: 11.». Come dati: la regola `deny`
+c'era; un piano in `piani/`; 5 commit; 2 sessioni; «chiamate Agent: 2
+(Explore 2); nello stesso messaggio: 2», con 2 trascrizioni di subagent;
+nessun `ExitPlanMode`; nessuna chiamata di Edit o Write su `legacy/`.
 
 ## Verifica (tools/verifica.sh M4-E03)
 
@@ -459,11 +496,28 @@ scrive niente nello spazio di lavoro.
   controllano ciò che la chiusura vera scrive nel database. Chiedete un
   test che esegue la chiusura senza simulazione e legge le tabelle.
 - La verifica dice «Non ancora» per la proposta o la documentazione:
-  incollate a Claude quelle righe, seguite da «Sistema questi punti, un
-  comando per volta, senza modificare niente in
-  progetti/gestionale-php/legacy/, e fai il commit di ciò che cambi.»,
-  poi verificate di nuovo. Nella prova del corso è servito per i
-  controlli dei passi di `PROPOSTA.md` che non eseguivano i test.
+  incollate a Claude questo messaggio, con le righe «Non ancora: …» della
+  verifica al posto della riga fra i tag `<esito_verifica>`, poi
+  verificate di nuovo:
+
+      <istruzioni>
+      Contesto: la verifica dello spazio di lavoro dice che manca
+      ancora ciò che sta tra i tag <esito_verifica>, qui sotto.
+
+      Istruzione: sistema questi punti, un comando per volta, e fai il
+      commit di ciò che cambi.
+
+      Vincoli: progetti/gestionale-php/legacy/ resta com'è.
+      </istruzioni>
+
+      <esito_verifica>
+      Non ancora: …
+      </esito_verifica>
+
+  `_docente/live.sh` manda questo messaggio, una volta sola, quando la
+  verifica dice «Non ancora». Nella prova del corso il turno di correzione
+  è servito per i controlli dei passi di `PROPOSTA.md` che non eseguivano
+  i test.
 - La verifica dice che `legacy/` è cambiato: guardate che cosa con
   `git diff $(git rev-list --max-parents=0 HEAD) --
   progetti/gestionale-php/legacy`, e riportatelo com'era con
@@ -489,7 +543,7 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 64 turni del modello in tutto, 28 soltanto per i test (sotto). Due
+corso 68 turni del modello in tutto, 26 soltanto per i test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -506,15 +560,15 @@ Enterprise it breaks your usage down by skill, subagent, plugin, and MCP
 server.» (https://code.claude.com/docs/en/best-practices). Alla fine di
 ogni parte, `/exit`.
 
-Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
+Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: sette chiamate, i cinque prompt, l'approvazione del piano e il
-turno in più per sistemare la proposta, con 1, 10, 28, 4, 10, 5 e 6
-turni del modello (`num_turns`); 11,1, 69,4, 183,9, 24,1, 106,6, 47,7 e
-19,3 secondi; token in entrata della conversazione principale, cache
-compresa, 21.555, 269.773, 1.190.420, 359.040, 200.884, 317.660 e
-265.139. Nella prima chiamata i due subagent Explore portano il totale di
-tutti i modelli a 193.122 token in entrata.
+turno di correzione per sistemare la proposta, con 1, 10, 26, 4, 14, 5 e
+8 turni del modello (`num_turns`); 6,7, 77,7, 175,9, 19,2, 76,2, 29,2 e
+17,5 secondi; token in entrata della conversazione principale, cache
+compresa, 21.700, 264.671, 879.085, 368.493, 255.215, 278.856 e 366.152.
+Nella prima chiamata i due subagent Explore portano il totale di tutti i
+modelli a 172.794 token in entrata.
 
 ## Per approfondire
 

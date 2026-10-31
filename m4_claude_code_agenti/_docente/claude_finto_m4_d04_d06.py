@@ -48,10 +48,11 @@ Le scene, dal prompt:
                         FINTO_HOOK_IGNORA, FINTO_HOOK_NON_TENTA,
                         FINTO_HOOK_SENZA_ELENCO, FINTO_HOOK_FERMO come per
                         la regola deny.
-  olt-pergine-01        M4-D06. Con il prompt che comincia con «Delega» un
-                        Agent (Explore) e i passaggi del subagent, con
-                        parent_tool_use_id, poi due risultati; senza, i
-                        passaggi nella conversazione principale. Senza
+  olt-pergine-01        M4-D06. Con il prompt che chiede «delega la lettura
+                        dei log» (maiuscole o minuscole) un Agent (Explore)
+                        e i passaggi del subagent, con parent_tool_use_id,
+                        poi due risultati; senza, i passaggi nella
+                        conversazione principale. Senza
                         Agent fra gli strumenti nessuna delega; i passaggi
                         leggono con Bash se c'è, altrimenti con Read, e
                         cercano con Grep se c'è.
@@ -59,7 +60,7 @@ Le scene, dal prompt:
                         contesto dell'ultima richiesta principale (default
                         21000 e 29000); FINTO_RISPOSTA_DELEGA,
                         FINTO_RISPOSTA_SENZA: la risposta; FINTO_NON_DELEGA=1
-                        niente Agent nemmeno con «Delega»;
+                        niente Agent nemmeno con la delega chiesta;
                         FINTO_DELEGA_SEMPRE=1 un Agent anche senza;
                         FINTO_PERDITA=1 un risultato del subagent anche in
                         un messaggio della conversazione principale;
@@ -409,7 +410,7 @@ def passaggi(s: Stream, contesti: Tuple[int, int],
 def scena_delega(s: Stream, prompt: str) -> List[Tuple[str, dict]]:
     """M4-D06: delegare la lettura dei log, oppure no.
     Returns: i testi dei risultati, ciascuno con il suo modelUsage."""
-    chiesta = prompt.startswith("Delega")
+    chiesta = "delega la lettura dei log" in prompt.lower()
     lato = "DELEGA" if chiesta else "SENZA"
     contesto = int(os.environ.get("FINTO_CONTESTO_" + lato,
                                   "21000" if chiesta else "29000"))

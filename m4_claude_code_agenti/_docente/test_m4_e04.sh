@@ -9,7 +9,11 @@
 #     conferma dai dati del gestionale e dall'elenco del docente (0), e su
 #     una copia cambiata esce 1;
 #   - il README: le dieci sezioni, i sei prompt fra i segni, il controllo e
-#     un comando per volta, il revisore con la @-mention, le frasi di
+#     un comando per volta, il revisore con la @-mention, le parole da cui
+#     il claude finto riconosce i turni 2, 4 e 5; i prompt 1, 2, 4 e 5 e il
+#     corpo del revisore nella forma del Modulo 2 (il ruolo soltanto
+#     all'inizio di una sessione e nel subagent, poi le etichette, in
+#     ordine); le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A; nessuna delle incoerenze dei dati di esempio nei file
 #     che arrivano ai partecipanti;
@@ -70,7 +74,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e04.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=108
+readonly CASES=109
 readonly SCRIPT_REL=progetti/gestionale-php/bin/controllo-notturno.php
 readonly RIFERIMENTO="${E04}/soluzione/${SCRIPT_REL}"
 readonly CONTROLLO="python3 controlla_notturno.py"
@@ -383,6 +387,12 @@ for i in (0, 1, 4, 5):
 for i in (2, 4, 5):
     if i < len(prompt) and "@agent-revisore" not in prompt[i]:
         problemi.append("@agent-revisore nel prompt %d" % (i + 1))
+# Le parole da cui il claude finto riconosce i turni 2, 4 e 5.
+for i, parole in ((1, "Istruzione: il piano va bene"),
+                  (3, "Istruzione: scrivi NOTA.md"),
+                  (4, "Istruzione: leggi NOTA.md")):
+    if i < len(prompt) and parole not in prompt[i]:
+        problemi.append("«%s» nel prompt %d" % (parole, i + 1))
 frasi = [
     "it's worth going through these five questions with that specific task "
     "in mind: 1. Does it know what done looks like? … 2. Can it check its "
@@ -409,6 +419,7 @@ print("README ok" if not problemi else "README: " + "; ".join(problemi))
 PY
   expect "README: sezioni, prompt, controllo, revisore, frasi, parole" 0 \
     "README ok"
+  test_forma
   run grep -rEn -- "${INTERNI}" "${E04}/README.md" "${E04}/esercizio" \
     "${E04}/verifica.sh" "${E04}/verifica.py" "${E04}/sessioni_claude.py"
   expect "nessun identificativo interno nei file dei partecipanti" 1 ""
@@ -418,6 +429,56 @@ PY
   expect "nessuna incoerenza dei dati di esempio nei file dei partecipanti" \
     1 ""
   readme_lab "${E04}" M4-E04
+}
+
+# La forma del Modulo 2 nei prompt 1, 2, 4 e 5 del README e nel corpo del
+# revisore: il ruolo «Sei …» nel primo messaggio di una sessione e nel
+# subagent, mai in un seguito; poi le etichette, in quest'ordine. I prompt
+# 3 e 6 restano com'erano.
+test_forma() {
+  run python3 -B -I - "${E04}/README.md" \
+    "${E04}/esercizio/.claude/agents/revisore.md" <<'PY'
+import sys
+import textwrap
+
+ETICHETTE = ("Contesto:", "Istruzione:", "Formato:", "Vincoli:", "Esempi:")
+TUTTE = ["Contesto:", "Istruzione:", "Formato:", "Vincoli:"]
+
+
+def forma(testo):
+    """(il ruolo, le etichette): se la prima riga comincia con «Sei », e le
+    righe che cominciano con un'etichetta, nell'ordine."""
+    righe = testo.strip("\n").split("\n")
+    return (righe[0].startswith("Sei "),
+            [e for r in righe for e in ETICHETTE if r.startswith(e)])
+
+
+def prompt(righe, n):
+    """Il prompt n fra i segni, senza il rientro comune; "" se non c'è."""
+    a = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- prompt %d -->" % n]
+    b = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- /prompt %d -->" % n]
+    if len(a) != 1 or len(b) != 1 or a[0] > b[0]:
+        return ""
+    return textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
+
+
+righe = open(sys.argv[1], encoding="utf-8").read().split("\n")
+testi = {"il prompt %d" % n: prompt(righe, n) for n in (1, 2, 4, 5)}
+testi["revisore.md"] = open(sys.argv[2], encoding="utf-8").read() \
+    .split("\n---\n", 1)[-1]
+attese = {"il prompt 1": (True, TUTTE),
+          "il prompt 2": (False, ["Istruzione:", "Vincoli:"]),
+          "il prompt 4": (False, ["Contesto:", "Istruzione:", "Formato:"]),
+          "il prompt 5": (True, ["Contesto:", "Istruzione:"]),
+          "revisore.md": (True, TUTTE)}
+diversi = ["%s %s" % (k, forma(testi[k])) for k in attese
+           if forma(testi[k]) != attese[k]]
+print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
+PY
+  expect "README: i prompt 1, 2, 4, 5 e il revisore nella forma del Modulo 2" \
+    0 "forma ok"
 }
 
 # Il README e SPECIFICA.md di una traccia del laboratorio: la prima frase

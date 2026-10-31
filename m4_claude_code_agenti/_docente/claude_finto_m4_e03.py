@@ -48,9 +48,11 @@ Le scene, dal prompt:
                                 plan mode, niente
   «Il piano è approvato»        PROPOSTA.md e un commit; FINTO_E03_PROPOSTA =
                                 buona (default) · senza_controlli
-  «La verifica dello spazio di lavoro dice»  riscrive buone documentazione,
-                                test e proposta, con un commit (salvo
-                                FINTO_E03_MAI=1); legacy/ non lo tocca
+  «la verifica dello spazio di lavoro dice» (maiuscole o minuscole: è nel
+                                «Contesto:» della correzione)  riscrive buone
+                                documentazione, test e proposta, con un
+                                commit (salvo FINTO_E03_MAI=1); legacy/ non
+                                lo tocca
   FINTO_ESITO=ko                esce 1 senza stampare nulla;
   FINTO_KO_ALLA=<n>             lo stesso, solo alla chiamata n.
 Uscita: 0 risposta · 1 FINTO_ESITO=ko, FINTO_KO_ALLA o un argomento rifiutato
@@ -274,7 +276,7 @@ def correggi() -> str:
 
 def scena(prompt: str, sessione: str, n: int, modo: str) -> str:
     """Gli effetti della chiamata; il testo della risposta."""
-    if "La verifica dello spazio di lavoro dice" in prompt:
+    if "la verifica dello spazio di lavoro dice" in prompt.lower():
         return correggi()
     if "due subagent Explore" in prompt:
         return mappa(sessione, n)

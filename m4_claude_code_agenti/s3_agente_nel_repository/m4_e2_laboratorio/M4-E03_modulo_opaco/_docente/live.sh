@@ -17,8 +17,11 @@
 #     messaggio «Il piano è approvato: procedi come dice il piano.», che fa
 #     le veci dell'approvazione che il partecipante dà con un clic;
 #   - la verifica, come la lancerebbe il partecipante: se dice «Non
-#     ancora», un turno in più nella stessa sessione le passa le sue righe
-#     «Non ancora: …» e chiede di sistemarle (una volta sola).
+#     ancora», un turno in più nella stessa sessione, una volta sola, manda
+#     le istruzioni di CORREZIONE fra i tag <istruzioni> e, dopo una riga
+#     vuota, le righe «Non ancora: …» della verifica fra i tag
+#     <esito_verifica>: lo stesso messaggio che il README mostra in «Se
+#     qualcosa va storto».
 # Gli strumenti consentiti: Read, Write, Edit, il comando dei test (la regola
 # allow delle impostazioni, che in -p in una cartella mai approvata non vale
 # e va ripetuta qui) e i due comandi dei commit, git add e git commit; in
@@ -75,11 +78,22 @@ SEGUITO_TEST+=" correggi i test finché passano. Non modificare niente in"
 SEGUITO_TEST+=" ${PROGETTO}/legacy/. Poi fai il commit del test."
 readonly SEGUITO_TEST
 readonly SEGUITI_MASSIMI=2
-readonly CORREZIONE="La verifica dello spazio di lavoro dice che manca ancora"
-CORREZIONE_FINE="Sistema questi punti, un comando per volta, senza modificare"
-CORREZIONE_FINE+=" niente in ${PROGETTO}/legacy/, e fai il commit di ciò che"
-CORREZIONE_FINE+=" cambi."
-readonly CORREZIONE_FINE
+# Le istruzioni del turno di correzione, fra i tag <istruzioni>: correggi()
+# vi aggiunge una riga vuota e le righe «Non ancora: …» della verifica fra
+# i tag <esito_verifica>. Due contenuti diversi, ciascuno nel suo tag,
+# come insegna il Modulo 2: prima le istruzioni, perché i dati sono poche
+# righe; il tag dei dati ha il nome di ciò che contiene.
+printf -v CORREZIONE '%s\n' \
+  '<istruzioni>' \
+  'Contesto: la verifica dello spazio di lavoro dice che manca' \
+  'ancora ciò che sta tra i tag <esito_verifica>, qui sotto.' \
+  '' \
+  'Istruzione: sistema questi punti, un comando per volta, e fai il' \
+  'commit di ciò che cambi.' \
+  '' \
+  "Vincoli: ${PROGETTO}/legacy/ resta com'è." \
+  '</istruzioni>'
+readonly CORREZIONE="${CORREZIONE%$'\n'}"
 readonly TITOLO="Un modulo opaco: documentarlo e proporre il refactoring"
 readonly DOVE="Modulo 4, laboratorio, traccia (b): la prova del partecipante"
 N_TURNO=0
@@ -135,14 +149,16 @@ seconda_parte() {
 }
 
 # La verifica come la lancia il partecipante; se dice «Non ancora», un turno
-# con le sue righe «Non ancora: …». Arguments: $1 lo spazio di lavoro.
+# con CORREZIONE, una riga vuota e le sue righe «Non ancora: …» fra i tag
+# <esito_verifica>. Arguments: $1 lo spazio di lavoro.
 correggi() {
   local out righe rc=0
   out="$("${CONTROLLO}" "$1" 2>&1)" || rc=$?
   (( rc == 1 )) || return 0
   righe="$(grep '^Non ancora: ' <<< "${out}")" || return 0
   handson::step "La verifica dice «Non ancora»: un turno per sistemare"
-  turno "${SESSIONE}" "${CORREZIONE}:"$'\n'"${righe}"$'\n'"${CORREZIONE_FINE}"
+  turno "${SESSIONE}" \
+    "${CORREZIONE}"$'\n\n<esito_verifica>\n'"${righe}"$'\n</esito_verifica>'
 }
 
 main() {
