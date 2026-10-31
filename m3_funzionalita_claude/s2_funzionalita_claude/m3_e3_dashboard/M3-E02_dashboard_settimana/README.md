@@ -110,16 +110,22 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
 
    <!-- prompt: numeri -->
 
-       Nel file ticket-anonimi.csv che ti ho caricato c'è una settimana
-       di segnalazioni, una per riga: calcola con il codice, sul file,
-       questi indicatori.
+       <istruzioni>
+       Sei un analista dell'assistenza clienti di CiaspoLink e prepari
+       i numeri della settimana per una dashboard.
 
-       Rispondi con un solo oggetto JSON, senza altro testo, con queste
-       dieci chiavi. Un campo vuoto non vale zero e non entra nei conti;
-       arrotonda con la metà per eccesso.
+       Contesto: la settimana è nel file ticket-anonimi.csv che ti ho
+       caricato, una segnalazione per riga.
+       I numeri li controllo con uno script prima di usarli.
+
+       Istruzione: calcola con il codice, sul file, questi dieci
+       indicatori.
+
+       Formato: soltanto un oggetto JSON, con queste dieci chiavi:
        - segnalazioni: le righe (intero)
        - per_giorno: le righe per giorno della settimana di aperto_il,
-         data come è scritta, chiavi lun mar mer gio ven sab dom (interi)
+         data come è scritta, chiavi lun mar mer gio ven sab dom
+         (interi)
        - aperte_fine_settimana: le righe con chiuso_il vuoto (intero)
        - annullate: le righe con stato annullato (intero)
        - per_categoria: le righe per ogni categoria presente (interi)
@@ -130,6 +136,10 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
        - soddisfazione_media: la media (2 decimali)
        - clienti_ricorrenti: i clienti con almeno 3 righe (intero)
 
+       Vincoli: nei conti entrano soltanto i campi con un valore, e un
+       campo vuoto resta fuori; arrotonda con la metà per eccesso.
+       </istruzioni>
+
    <!-- /prompt: numeri -->
 
    Claude scrive ed esegue il codice sul file, nel suo ambiente di
@@ -137,8 +147,10 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
    «Copy», il primo sotto la risposta, non selezionando il testo: nella
    registrazione del corso la risposta non stava in un blocco di codice, e
    il testo della pagina aveva le virgolette tipografiche “ ”, che in JSON
-   non valgono, mentre il pulsante ha copiato quelle dritte. Incollatelo
-   in `kpi.json`, nello spazio di lavoro: con un editor di testo semplice,
+   non valgono, mentre il pulsante ha copiato quelle dritte; e il
+   pulsante ha preso anche le due frasi che Claude aveva scritto prima
+   dell'oggetto. In `kpi.json` va soltanto l'oggetto, dalla `{` alla `}`.
+   Incollatelo nello spazio di lavoro: con un editor di testo semplice,
    oppure dal terminale, sempre dalla cartella `esercitazioni`, con
 
        cat > ~/corso-claude-code/M3-E02/kpi.json
@@ -167,14 +179,20 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
 
    <!-- prompt: dashboard -->
 
-       Crea come artifact una dashboard della settimana con esattamente
-       i numeri del JSON qui sopra, quelli che ho verificato: le
-       segnalazioni per giorno in barre, le categorie dalla più
-       frequente, le aperte a fine settimana e le annullate, la mediana
-       dei minuti alla prima risposta, la media dei minuti di
+       Contesto: i numeri del JSON qui sopra li ho verificati con lo
+       script del corso, e la dashboard li mostra così come sono.
+
+       Istruzione: crea come artifact una dashboard della settimana con
+       esattamente quei numeri.
+
+       Formato: le segnalazioni per giorno in barre, le categorie dalla
+       più frequente, le aperte a fine settimana e le annullate, la
+       mediana dei minuti alla prima risposta, la media dei minuti di
        risoluzione per tecnologia, la soddisfazione media con il numero
-       dei voti, i clienti ricorrenti. Ogni numero scritto accanto al suo
-       grafico, testi in italiano.
+       dei voti, i clienti ricorrenti; ogni numero scritto accanto al
+       suo grafico.
+
+       Vincoli: testi in italiano.
 
    <!-- /prompt: dashboard -->
 
@@ -312,26 +330,30 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   Haiku 5.5, or the Fable models.»
   (https://code.claude.com/docs/en/model-config). I numeri della coppia
   sono del corso, non quelli di Anthropic. Nella registrazione del corso
-  (21 ottobre 2026, Claude Code 2.1.306, Sonnet con effort low):
-  incollando 9, 10 e 10 indicatori giusti su dieci, con il file e il
-  codice 10, 9 e 9, cioè confermata nella prima coppia e non confermata in
-  questa esecuzione nelle altre due: confermata 1 su 3. L'indicatore
-  sbagliato era `voti` (107 invece di 106) incollando, `clienti_ricorrenti`
-  (28 invece di 27) due volte con il file. Come dato, i token in entrata:
-  da 57.142 a 206.372 per esecuzione incollando, da 29.565 a 30.247 con il
-  file.
-- Nella registrazione del corso in claude.ai (21 ottobre 2026, nuova
+  (31 ottobre 2026, Claude Code 2.1.316, Sonnet con effort low, la tabella
+  nel messaggio fra i tag `<ticket_anonimi>`): incollando 10, 9 e 7
+  indicatori giusti su dieci, con il file e il codice 10, 10 e 9, cioè non
+  distinguibile nella prima coppia e confermata nelle altre due:
+  confermata 2 su 3. Incollando erano sbagliati `voti` nella seconda
+  coppia, e `voti`, `soddisfazione_media` e `mediana_minuti_prima_risposta`
+  nella terza; con il file, `clienti_ricorrenti` nella terza. Come dato, i
+  token in entrata: da 57.228 a 57.230 per esecuzione incollando, da
+  21.161 a 31.081 con il file.
+- Nella registrazione del corso in claude.ai (31 ottobre 2026, nuova
   esperienza, Sonnet 5.5, la chat con la memoria spenta): la prima
-  risposta, dopo il passo «Ran 3 commands», dava 9 indicatori su 10 che
-  corrispondevano, con `clienti_ricorrenti` 28 invece di 27. Detto a
-  Claude con la frase del passo 5, il passo «Recheck customer counts» e
-  poi 10 su 10. Un indizio: contando come cliente il campo vuoto di
-  `cliente`, che ha 25 righe, si ottiene proprio 28, mentre la regola del
-  prompt dice che un campo vuoto non entra nei conti. La dashboard, un
-  artifact con quei numeri, si è aperta accanto alla conversazione (la sua
-  scheda, nella chat, portava l'etichetta «Dashboard»); dopo
-  una modifica (quattro riquadri in alto, un colore solo) i numeri erano
-  gli stessi, e la condivisione è rimasta su «Only you».
+  risposta, dopo i passi «Updated tasks, ran a command» e «Ran 2
+  commands», dava 10 indicatori su 10 che corrispondevano. Copiata con
+  «Copy», portava anche le due frasi che Claude aveva scritto fra un
+  comando e l'altro, prima dell'oggetto: la verifica ha detto che
+  `kpi.json` non era un JSON valido, e con il solo oggetto, dalla { alla },
+  10 su 10. Nella registrazione del 21 ottobre la prima risposta dava 9 su
+  10, con `clienti_ricorrenti` 28 invece di 27, e dopo la frase del passo
+  5 10 su 10: contando come cliente il campo vuoto di `cliente`, che ha 25
+  righe, si ottiene proprio 28, mentre la regola del prompt dice che un
+  campo vuoto non entra nei conti. La dashboard, un artifact con quei
+  numeri, si è aperta accanto alla conversazione (la sua scheda, nella
+  chat, portava l'etichetta «Dashboard»), e ogni numero era quello di
+  `kpi.json`.
 
 ## Verifica (tools/verifica.sh M3-E02)
 
@@ -398,10 +420,11 @@ Claude and Claude Code, meaning all activity in both tools counts against
 the same limits.»
 (https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan).
 Nessuna sessione di Claude Code, nessun subagent: la verifica è uno
-script. Nella registrazione del corso, sull'account del docente: quattro
-messaggi (i numeri, la correzione del passo 5, la dashboard, una
-modifica). La sua durata non dice quella di un partecipante: ogni passo
-è stato copiato e fotografato per il corso.
+script. Nella registrazione del corso del 31 ottobre, sull'account del
+docente: due messaggi, i numeri e la dashboard, senza modifiche; in
+quella del 21 ottobre quattro (i numeri, la correzione del passo 5, la
+dashboard, una modifica). La sua durata non dice quella di un
+partecipante: ogni passo è stato copiato e fotografato per il corso.
 
 ## Per approfondire
 

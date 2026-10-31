@@ -53,13 +53,13 @@
 #     --strict-mcp-config), il prompt uguale a quello del README,
 #     ANTHROPIC_API_KEY tolta;
 #   - .claude/settings.json (con le regole deny di Edit sul controllo e
-#     sulle impronte), il README (il prompt fra i segni; un comando alla
-#     volta, anche senza il paragrafo del controllo; l'esito dalla sua
-#     ultima riga, non da $?; la versione breve in 19 righe × 66 colonne,
-#     con le stesse due regole; il percorso A con le colonne che il
-#     controllo chiede; le dieci sezioni; nessun identificativo interno nei
-#     file per i partecipanti); i turni di live.sh dopo il primo chiedono
-#     anche loro un comando alla volta;
+#     sulle impronte), il README (il prompt fra i segni, nella forma del
+#     Modulo 2, il controllo come ultimo passo; un comando alla volta,
+#     anche senza il passo del controllo; l'esito dalla sua ultima riga,
+#     non da $?; righe entro 66 colonne; nessuna versione breve; il
+#     percorso A con le colonne che il controllo chiede; le dieci sezioni;
+#     nessun identificativo interno nei file per i partecipanti); i turni
+#     di live.sh dopo il primo chiedono anche loro un comando alla volta;
 #   - shellcheck -x sugli script dell'elemento e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea, nella base di
 # handson::init_temp_base (mai dentro ~/.claude, anche se TMPDIR punta
@@ -89,7 +89,7 @@ readonly PROGETTO="${RADICE}/progetti/assistenza-clienti"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=178
+readonly CASES=179
 readonly FINE="Fatto: il file anonimo, i dati personali rimasti e il \
 profilo sono quelli attesi."
 # La frase della guida di Claude Code che la verifica stampa, com'è oggi
@@ -1168,12 +1168,14 @@ PY
   expect "settings: defaultMode default (Manual)" 0 "modo ok"
 }
 
-# Il README: il prompt fra i segni (in ${TMP}/prompt-readme.txt), il
-# paragrafo del controllo, la versione breve, le dieci sezioni; nessun
-# identificativo interno nei file per i partecipanti.
+# Il README: il prompt fra i segni (in ${TMP}/prompt-readme.txt), nella
+# forma del Modulo 2 con il controllo come ultimo passo, nessuna versione
+# breve, le dieci sezioni; nessun identificativo interno nei file per i
+# partecipanti.
 t_readme() {
   local f trovati=''
   run python3 -B -I - "${E01}/README.md" "${TMP}/prompt-readme.txt" <<'PY'
+import re
 import sys
 import textwrap
 
@@ -1184,45 +1186,52 @@ if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
     prompt = textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
     open(sys.argv[2], "w", encoding="utf-8").write(prompt)
     print("prompt ok")
-    paragrafi = prompt.split("\n\n")
-    controllo = [p for p in paragrafi
-                 if p.startswith("Poi esegui python3 controlla_pii.py")]
-    if len(controllo) == 1:
-        print("paragrafo del controllo ok")
-        piano = " ".join(controllo[0].split())
-        if "ultima riga" in piano and "«uscita: 0»" in piano \
-                and "$?" in piano:
-            print("ultima riga nel paragrafo del controllo ok")
-    # Il prompt senza il paragrafo del controllo (la coppia del docente)
-    # chiede ancora un comando alla volta: le due metà differiscono in una
-    # cosa sola.
-    senza = " ".join(" ".join(p for p in paragrafi
-                              if p not in controllo).split())
-    if "Esegui ogni comando da solo" in senza and "&&" in senza \
-            and "echo" in senza:
-        print("un comando alla volta anche senza il controllo ok")
-    # Gli script si eseguono con i comandi che le impostazioni consentono,
-    # nominati anche senza il controllo: in claude -p un'altra forma
-    # (python3 -I, una redirezione) è negata, dove un partecipante risponde.
-    if "Eseguilo con python3 anonimizza.py" in senza \
-            and "Eseguilo con python3 profilo.py" in senza:
-        print("i comandi consentiti anche senza il controllo ok")
-i = next(k for k, r in enumerate(righe) if "La versione breve" in r)
-breve = []
-for r in righe[i + 1:]:
-    if r.startswith("       "):
-        breve.append(r[7:])
-    elif breve:
-        break
-if 0 < len(breve) <= 19 and max(len(r) for r in breve) <= 66:
-    print("breve ok: %d righe" % len(breve))
-breve_piano = " ".join(" ".join(breve).split())
-if "Esegui ogni comando da solo" in breve_piano \
-        and "ultima riga dice uscita: 0" in breve_piano:
-    print("breve: un comando alla volta e l'ultima riga ok")
-if "Eseguilo con python3 anonimizza.py" in breve_piano \
-        and "Eseguilo con python3 profilo.py" in breve_piano:
-    print("breve: i comandi consentiti ok")
+    righe_p = prompt.split("\n")
+    # La forma del Modulo 2: il ruolo, poi le etichette, in quest'ordine.
+    etichette = [next((k for k, r in enumerate(righe_p)
+                       if r.startswith(e)), -1)
+                 for e in ("Contesto:", "Istruzione:", "Formato:",
+                           "Vincoli:")]
+    if righe_p[0].startswith("Sei ") and -1 not in etichette \
+            and etichette == sorted(etichette):
+        print("forma del Modulo 2 ok")
+    # Il controllo è l'ultimo passo dell'istruzione: la riga «N. Esegui
+    # python3 controlla_pii.py», le sue righe rientrate di tre spazi, poi
+    # una riga vuota e «Formato:».
+    passi = [k for k, r in enumerate(righe_p)
+             if re.match(r"\d+\. Esegui python3 controlla_pii\.py", r)]
+    if len(passi) == 1:
+        fine = passi[0] + 1
+        while fine < len(righe_p) and righe_p[fine].startswith("   "):
+            fine += 1
+        dopo = [r for r in righe_p[fine:] if r.strip()]
+        if fine < len(righe_p) and not righe_p[fine].strip() \
+                and dopo and dopo[0].startswith("Formato:"):
+            print("passo del controllo, l'ultimo dell'istruzione ok")
+        piano = " ".join(" ".join(righe_p[passi[0]:fine]).split())
+        if "ultima riga" in piano and "«uscita: 0»" in piano:
+            print("ultima riga nel passo del controllo ok")
+        # Il prompt senza quel passo (la coppia del docente) chiede ancora
+        # un comando alla volta e nomina i comandi che le impostazioni
+        # consentono (in claude -p un'altra forma, python3 -I, è negata,
+        # dove un partecipante risponde): le due metà differiscono in una
+        # cosa sola, e senza il passo il controllo non è nominato.
+        senza = " ".join(" ".join(righe_p[:passi[0]]
+                                  + righe_p[fine:]).split())
+        if "Esegui ogni comando da solo" in senza:
+            print("un comando alla volta anche senza il controllo ok")
+        if "Eseguilo con python3 anonimizza.py" in senza \
+                and "Eseguilo con python3 profilo.py" in senza:
+            print("i comandi consentiti anche senza il controllo ok")
+        if not any(p in senza for p in ("controlla_pii", "impronte",
+                                        "--forme")):
+            print("senza il controllo, nessuna sua parola ok")
+    # La slide mostra il prompt così com'è, riga per riga, in più pagine:
+    # righe di 66 colonne al più.
+    if max(len(r) for r in righe_p) <= 66:
+        print("righe del prompt in 66 colonne ok")
+if not any("La versione breve" in r for r in righe):
+    print("nessuna versione breve ok")
 sezioni = ("Obiettivo", "Tempo", "Prerequisiti", "Punto di partenza",
            "Passi in Claude Code", "Che cosa osservare", "Verifica",
            "Se qualcosa va storto", "Impronta d'uso sul piano Pro",
@@ -1247,19 +1256,22 @@ PY
   expect "README: il prompt fra i due segni" 0 "prompt ok"
   expect "README: il percorso A dice le colonne e i limiti del controllo" 0 \
     "percorso A ok"
-  expect "README: il paragrafo del controllo, separabile" 0 \
-    "paragrafo del controllo ok"
-  expect "README: il controllo si legge dalla sua ultima riga, non da \$?" 0 \
-    "ultima riga nel paragrafo del controllo ok"
+  expect "README: il prompt nella forma del Modulo 2" 0 \
+    "forma del Modulo 2 ok"
+  expect "README: il controllo è l'ultimo passo dell'istruzione" 0 \
+    "passo del controllo, l'ultimo dell'istruzione ok"
+  expect "README: il controllo si legge dalla sua ultima riga" 0 \
+    "ultima riga nel passo del controllo ok"
   expect "README: un comando alla volta, anche senza il controllo" 0 \
     "un comando alla volta anche senza il controllo ok"
   expect "README: i comandi consentiti nominati, anche senza il controllo" \
     0 "i comandi consentiti anche senza il controllo ok"
-  expect "README: la versione breve in 19 righe × 66 colonne" 0 "breve ok"
-  expect "README: la versione breve, un comando alla volta e l'ultima riga" \
-    0 "breve: un comando alla volta e l'ultima riga ok"
-  expect "README: la versione breve nomina i comandi consentiti" 0 \
-    "breve: i comandi consentiti ok"
+  expect "README: senza il suo passo, il controllo non è nominato" 0 \
+    "senza il controllo, nessuna sua parola ok"
+  expect "README: le righe del prompt in 66 colonne, come sulla slide" 0 \
+    "righe del prompt in 66 colonne ok"
+  expect "README: nessuna versione breve, la slide mostra il prompt" 0 \
+    "nessuna versione breve ok"
   expect "README: le dieci sezioni" 0 "sezioni ok"
   for f in README.md verifica.sh verifica.py kpi_veri.py \
       esercizio/controlla_pii.py esercizio/kpi_definizioni.md \

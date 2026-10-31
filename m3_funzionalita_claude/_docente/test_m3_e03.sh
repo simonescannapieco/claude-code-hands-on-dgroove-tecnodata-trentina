@@ -37,9 +37,10 @@
 #     nuovo, riproduce byte per byte soluzione/dashboard.html; il registro
 #     di riferimento ha la forma di un'esecuzione passata;
 #   - .claude/settings.json (con la regola deny di Edit sul controllo); il
-#     README (il prompt fra i segni, che chiede un comando per volta e
-#     l'uscita nell'ultima riga; la versione breve in 19 righe × 66
-#     colonne; le dieci sezioni; Linux e WSL 2, non macOS; nessun
+#     README (il prompt fra i segni, nella forma del Modulo 2 con il
+#     controllo come ultimo passo, che chiede un comando per volta e
+#     l'uscita nell'ultima riga; righe entro 66 colonne; nessuna versione
+#     breve; le dieci sezioni; Linux e WSL 2, non macOS; nessun
 #     identificativo interno nei file per i partecipanti);
 #   - _docente/live.sh con un claude finto: le precondizioni escono 2 senza
 #     chiamare claude (anche impostazioni senza regole Bash); finito al
@@ -75,7 +76,7 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=122
+readonly CASES=124
 readonly FINE="Fatto: la pagina c'è, i suoi KPI sono quelli veri e non \
 carica niente da fuori."
 # La frase della guida di Claude Code che la verifica stampa, com'è oggi
@@ -763,7 +764,8 @@ PY
   expect "settings: defaultMode default (Manual)" 0 "modo ok"
 }
 
-# Il README: il prompt (in ${TMP}/prompt-readme.txt), la versione breve, le
+# Il README: il prompt (in ${TMP}/prompt-readme.txt), nella forma del
+# Modulo 2 con il controllo come ultimo passo, nessuna versione breve, le
 # dieci sezioni; nessun identificativo interno nei file per i partecipanti.
 t_readme() {
   local f trovati=''
@@ -786,18 +788,26 @@ if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
     # un partecipante risponde.
     if "Eseguilo con python3 genera_dashboard.py" in " ".join(prompt.split()):
         print("il comando consentito ok")
-i = next(k for k, r in enumerate(righe) if "La versione breve" in r)
-breve = []
-for r in righe[i + 1:]:
-    if r.startswith("       "):
-        breve.append(r[7:])
-    elif breve:
-        break
-if 0 < len(breve) <= 19 and max(len(r) for r in breve) <= 66:
-    print("breve ok: %d righe" % len(breve))
-if "Eseguilo con python3 genera_dashboard.py" in " ".join(" ".join(
-        breve).split()):
-    print("breve: il comando consentito ok")
+    righe_p = prompt.split("\n")
+    # La forma del Modulo 2: il ruolo, poi le etichette, in quest'ordine.
+    etichette = [next((k for k, r in enumerate(righe_p)
+                       if r.startswith(e)), -1)
+                 for e in ("Contesto:", "Istruzione:", "Formato:",
+                           "Vincoli:")]
+    if righe_p[0].startswith("Sei ") and -1 not in etichette \
+            and etichette == sorted(etichette):
+        print("forma del Modulo 2 ok")
+    # Il controllo è l'ultimo passo dell'istruzione.
+    passi = [r for r in righe_p[etichette[1]:etichette[2]]
+             if r[:1].isdigit()] if -1 not in etichette else []
+    if passi and passi[-1].split(". ", 1)[-1].startswith(
+            "Esegui python3 controlla_dashboard.py"):
+        print("controllo all'ultimo passo ok")
+    # La slide lo mostra così com'è, riga per riga, in più pagine.
+    if max(len(r) for r in righe_p) <= 66:
+        print("righe del prompt in 66 colonne ok")
+if not any("La versione breve" in r for r in righe):
+    print("nessuna versione breve ok")
 sezioni = ("Obiettivo", "Tempo", "Prerequisiti", "Punto di partenza",
            "Passi in Claude Code", "Che cosa osservare", "Verifica",
            "Se qualcosa va storto", "Impronta d'uso sul piano Pro",
@@ -810,9 +820,14 @@ PY
     "un comando per volta ok"
   expect "README: il prompt nomina il comando consentito" 0 \
     "il comando consentito ok"
-  expect "README: la versione breve in 19 righe × 66 colonne" 0 "breve ok"
-  expect "README: la versione breve nomina il comando consentito" 0 \
-    "breve: il comando consentito ok"
+  expect "README: il prompt nella forma del Modulo 2" 0 \
+    "forma del Modulo 2 ok"
+  expect "README: il controllo è l'ultimo passo dell'istruzione" 0 \
+    "controllo all'ultimo passo ok"
+  expect "README: le righe del prompt in 66 colonne, come sulla slide" 0 \
+    "righe del prompt in 66 colonne ok"
+  expect "README: nessuna versione breve, la slide mostra il prompt" 0 \
+    "nessuna versione breve ok"
   expect "README: le dieci sezioni" 0 "sezioni ok"
   OUT="$(cat "${E03}/README.md")"
   expect_absent "README: gli ambienti del corso, non macOS" "macOS"

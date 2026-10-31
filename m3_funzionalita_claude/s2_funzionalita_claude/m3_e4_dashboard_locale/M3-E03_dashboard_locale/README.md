@@ -82,45 +82,47 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
 
    <!-- prompt -->
 
-       Leggi kpi_definizioni.md. Non aprire anonimo/ticket-anonimi.csv e
-       non stamparne il contenuto con nessun comando: lo legge lo script.
+       Sei uno sviluppatore Python dell'assistenza clienti di
+       CiaspoLink e prepari la dashboard della settimana come una
+       pagina che si apre senza rete.
 
-       Scrivi genera_dashboard.py (Python 3.8 o successivo, solo libreria
-       standard): legge anonimo/ticket-anonimi.csv, calcola i dieci
-       indicatori di kpi_definizioni.md con le sue regole e scrive
-       dashboard.html, la dashboard della settimana. Un file solo, che si
-       apre senza rete: CSS e grafici dentro la pagina, per esempio barre
-       in SVG, e niente da fuori, né script, né fogli di stile, né font,
-       né immagini. I numeri sono scritti nel testo della pagina, non
-       generati da JavaScript, e tutti e dieci gli indicatori stanno
-       anche in un blocco <script type="application/json" id="kpi">, con
-       le chiavi di kpi_definizioni.md. Eseguilo con
-       python3 genera_dashboard.py.
+       Contesto: la settimana anonima è in anonimo/ticket-anonimi.csv;
+       i dieci indicatori, con le loro regole, sono in
+       kpi_definizioni.md.
 
-       Poi esegui python3 controlla_dashboard.py e correggi
-       genera_dashboard.py finché il controllo esce con 0: confronta i
-       numeri del blocco kpi con anonimo/profilo.json e cerca nella
-       pagina ciò che arriverebbe da fuori. Esegui ogni comando da solo,
-       senza concatenarlo ad altri, e leggi l'uscita del controllo nella
-       sua ultima riga.
+       Istruzione: scrivi ed esegui uno script, in tre passi.
+       1. Leggi kpi_definizioni.md.
+       2. Scrivi genera_dashboard.py, che legge
+          anonimo/ticket-anonimi.csv, calcola i dieci indicatori con le
+          regole di kpi_definizioni.md e scrive dashboard.html, la
+          dashboard della settimana. Eseguilo con
+          python3 genera_dashboard.py.
+       3. Esegui python3 controlla_dashboard.py: confronta i numeri del
+          blocco kpi con anonimo/profilo.json e cerca nella pagina ciò
+          che arriverebbe da fuori. Correggi genera_dashboard.py, e
+          riesegui il generatore e il controllo, finché il controllo
+          esce con 0.
+
+       Formato: lo script in Python 3.8 o successivo, solo libreria
+       standard. dashboard.html è un file solo, con CSS e grafici
+       dentro la pagina, per esempio barre in SVG. I numeri sono
+       scritti nel testo della pagina da genera_dashboard.py, e tutti e
+       dieci gli indicatori stanno anche in un blocco
+       <script type="application/json" id="kpi">, con le chiavi di
+       kpi_definizioni.md.
+
+       Vincoli: anonimo/ticket-anonimi.csv lo legge soltanto lo script,
+       e il suo contenuto resta fuori da ciò che stampi. Tutto ciò che
+       la pagina usa, script, fogli di stile, font e immagini, sta
+       dentro il file. Esegui ogni comando da solo, senza concatenarlo
+       ad altri, e leggi l'uscita del controllo nella sua ultima riga.
 
    <!-- /prompt -->
 
-   La versione breve, quella della slide, chiede le stesse cose in meno
-   parole:
-
-       Leggi kpi_definizioni.md. Non aprire né stampare
-       anonimo/ticket-anonimi.csv: lo legge lo script.
-       Scrivi genera_dashboard.py (Python 3.8+, libreria standard):
-       legge anonimo/ticket-anonimi.csv, calcola gli indicatori di
-       kpi_definizioni.md e scrive dashboard.html. Un file solo, che si
-       apre senza rete: CSS e barre SVG nella pagina, niente da fuori.
-       I numeri scritti nel testo della pagina e, tutti e dieci, anche in
-       <script type="application/json" id="kpi">, con le chiavi di
-       kpi_definizioni.md. Eseguilo con python3 genera_dashboard.py.
-       Poi esegui python3 controlla_dashboard.py e correggi finché esce
-       0. Ogni comando da solo, senza concatenarlo ad altri: l'uscita del
-       controllo è nella sua ultima riga.
+   Il prompt segue il template del Modulo 2
+   (`riferimenti/pattern-di-prompt.md`): il ruolo, poi il contesto,
+   l'istruzione a passi con il controllo per ultimo, il formato e i
+   vincoli. La slide lo mostra così com'è, riga per riga, in due pagine.
 
    - **Percorso A, un vostro CSV anonimo:** il file con dati inventati che
      avete anonimizzato nel percorso A di M3-E01, in `anonimo/`, con i
@@ -246,7 +248,7 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
   esito: il registro lo scrive il controllo a ogni esecuzione, e che
   l'abbia eseguito Claude lo dicono le sue chiamate nella sessione, non il
   registro.
-- Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
+- Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
   Sonnet con effort medium, tre sessioni, il prompt in un solo messaggio)
   le sessioni sono `claude -p` in modalità `dontAsk`, che «denies every
   call that would otherwise prompt … though a mod you installed can still
@@ -256,8 +258,8 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
   installata può ancora approvare. In tutte e tre la verifica è uscita
   con 0: i dieci indicatori del blocco `kpi` quelli veri, i sette numeri
   singoli nel testo della pagina, niente da fuori. Il ciclo della guida,
-  dalle chiamate di ogni sessione: il controllo eseguito una, due e una
-  volta, l'ultima con uscita 0; confermata 3 su 3.
+  dalle chiamate di ogni sessione: il controllo eseguito una volta in
+  ognuna, con uscita 0; confermata 3 su 3.
 
 ### Il confronto con M3-E02
 
@@ -353,13 +355,13 @@ e fra ciò che pesa ci sono il modello e l'effort: «Additional factors that
 affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
-Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
+Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
-approvazioni, il prompt in un solo messaggio), le tre sessioni: 8, 10 e 8
-turni (`num_turns`) in 35,6, 50,3 e 38,7 secondi; nel JSON delle
-risposte, token in entrata 12, 18 e 14, scritti in cache 24.868, 16.745 e
-25.718, letti dalla cache 150.297, 203.525 e 190.896, in uscita 4.907,
-5.623 e 5.778. Alla fine, `/exit`.
+approvazioni, il prompt in un solo messaggio), le tre sessioni: 7, 6 e 9
+turni (`num_turns`) in 39,7, 40,3 e 45,4 secondi; nel JSON delle
+risposte, token in entrata 10, 10 e 12, scritti in cache 23.634, 23.643 e
+25.027, letti dalla cache 127.446, 127.249 e 160.073, in uscita 5.289,
+5.645 e 6.412. Alla fine, `/exit`.
 
 ## Per approfondire
 

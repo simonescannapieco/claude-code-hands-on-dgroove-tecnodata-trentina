@@ -78,10 +78,10 @@ FONTE_VERIFICARE = ("https://support.claude.com/en/articles/10366421-how-"
 # Il risultato della coppia registrata dal docente (README, «Che cosa
 # misura il controllo»).
 REGISTRAZIONE = (
-    "Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,",
-    "Sonnet con effort low, tre coppie): KPI giusti incollando 9, 10 e 10,",
-    "con il file e il codice 10, 9 e 9: confermata 1 su 3. Come dato, i",
-    "token in entrata: da 57.142 a 206.372 incollando, da 29.565 a 30.247",
+    "Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,",
+    "Sonnet con effort low, tre coppie): KPI giusti incollando 10, 9 e 7,",
+    "con il file e il codice 10, 10 e 9: confermata 2 su 3. Come dato, i",
+    "token in entrata: da 57.228 a 57.230 incollando, da 21.161 a 31.081",
     "con il file.",
 )
 FINE = ("Fatto: kpi.json ha le dieci chiavi, con i tipi giusti. Quanti KPI "

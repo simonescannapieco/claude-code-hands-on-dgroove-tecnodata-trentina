@@ -77,68 +77,61 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
 
    <!-- prompt -->
 
-       Leggi dati/README.md, il dizionario delle colonne di
-       dati/ticket-settimana.csv, e kpi_definizioni.md. Non aprire
-       dati/ticket-settimana.csv né anonimo/ticket-anonimi.csv e non
-       stamparne il contenuto con nessun comando: contengono dati
-       personali, che non devono entrare in questa conversazione.
-       Esegui ogni comando da solo, uno alla volta: mai concatenato
-       ad altri con && o con ;, e senza echo.
+       Sei uno sviluppatore Python dell'assistenza clienti di
+       CiaspoLink e prepari per il team di analisi una copia anonima
+       della settimana di ticket.
 
-       Scrivi anonimizza.py (Python 3.8 o successivo, solo libreria
-       standard): legge dati/ticket-settimana.csv e scrive
-       anonimo/ticket-anonimi.csv, UTF-8 senza BOM, fine riga LF, con
-       tutte le righe nell'ordine originale e queste 17 colonne in
-       quest'ordine: id_ticket, aperto_il, chiuso_il, canale, cliente,
-       tipo_cliente, comune, tecnologia, categoria, priorita, stato,
-       oggetto, descrizione, team, minuti_prima_risposta,
-       minuti_risoluzione, soddisfazione. Togli nome_cliente, telefono,
-       email e id_linea. In cliente metti uno pseudonimo al posto di
-       id_cliente: C-001, C-002, … in ordine di prima comparsa, lo
-       stesso codice sempre con lo stesso pseudonimo, vuoto se il codice
-       è vuoto. In oggetto e descrizione sostituisci con [OMESSO] ogni
-       dato personale, senza cambiare il resto del testo: telefoni,
-       e-mail, indirizzi, nomi di persone e di clienti, indirizzi MAC e
-       IP, codici cliente e di linea, utenze PPPoE, informazioni sulla
-       salute. Le altre colonne restano come sono. Eseguilo con
-       python3 anonimizza.py.
+       Contesto: la settimana è in dati/ticket-settimana.csv, 343
+       segnalazioni con dati personali, che devono restare fuori da
+       questa conversazione. Il dizionario delle sue colonne è
+       dati/README.md; gli indicatori del profilo sono in
+       kpi_definizioni.md.
 
-       Poi esegui python3 controlla_pii.py e correggi anonimizza.py
-       finché il controllo esce con 0: l'esito è nella sua ultima
-       riga, «uscita: 0» oppure «uscita: 1», e si legge lì, non con
-       $?. Il controllo conosce i dati personali solo come impronte:
-       per ogni classe dice quanti ne restano e in quali
-       segnalazioni, mai i valori; con --forme mostra la forma di
-       ciascuno (lettere x, cifre 9).
+       Istruzione: scrivi ed esegui due script, in quest'ordine.
+       1. Leggi dati/README.md e kpi_definizioni.md.
+       2. Scrivi anonimizza.py, che legge dati/ticket-settimana.csv e
+          scrive anonimo/ticket-anonimi.csv. Eseguilo con
+          python3 anonimizza.py.
+       3. Scrivi profilo.py, che legge anonimo/ticket-anonimi.csv e
+          scrive anonimo/profilo.json. Eseguilo con python3 profilo.py.
+       4. Esegui python3 controlla_pii.py: conosce i dati personali
+          solo come impronte, e per ogni classe dice quanti ne restano
+          e in quali segnalazioni, mai i valori; con --forme mostra la
+          forma di ciascuno (lettere x, cifre 9). L'esito è nella sua
+          ultima riga, «uscita: 0» oppure «uscita: 1»: finché dice 1,
+          correggi anonimizza.py e riesegui anonimizza.py, profilo.py e
+          il controllo.
 
-       Infine scrivi profilo.py, che legge anonimo/ticket-anonimi.csv e
-       scrive anonimo/profilo.json: la chiave "kpi" con gli indicatori
-       di kpi_definizioni.md e, accanto, quello che trova una
-       profilazione del file (campi vuoti, comuni scritti in modi
-       diversi, segnalazioni doppie). Eseguilo con python3 profilo.py.
+       Formato: gli script in Python 3.8 o successivo, solo libreria
+       standard. anonimo/ticket-anonimi.csv in UTF-8 senza BOM, fine
+       riga LF, con tutte le righe nell'ordine originale e queste 17
+       colonne in quest'ordine: id_ticket, aperto_il, chiuso_il,
+       canale, cliente, tipo_cliente, comune, tecnologia, categoria,
+       priorita, stato, oggetto, descrizione, team,
+       minuti_prima_risposta, minuti_risoluzione, soddisfazione.
+       anonimo/profilo.json con la chiave "kpi", gli indicatori di
+       kpi_definizioni.md, e accanto ciò che trova una profilazione del
+       file: campi vuoti, comuni scritti in modi diversi, segnalazioni
+       doppie.
+
+       Vincoli: i due CSV li aprono soltanto i tuoi script, e il loro
+       contenuto resta fuori da ciò che stampi. In cliente metti uno
+       pseudonimo al posto di id_cliente: C-001, C-002, … in ordine di
+       prima comparsa, lo stesso codice sempre con lo stesso
+       pseudonimo, vuoto se il codice è vuoto. Togli nome_cliente,
+       telefono, email e id_linea. In oggetto e descrizione sostituisci
+       con [OMESSO] ogni dato personale (telefoni, e-mail, indirizzi,
+       nomi di persone e di clienti, indirizzi MAC e IP, codici cliente
+       e di linea, utenze PPPoE, informazioni sulla salute); il resto
+       del testo e le altre colonne restano come sono. Esegui ogni
+       comando da solo, senza concatenarlo ad altri.
 
    <!-- /prompt -->
 
-   La versione breve, quella della slide, chiede le stesse cose in meno
-   parole:
-
-       Leggi dati/README.md e kpi_definizioni.md. Non aprire né stampare
-       dati/ticket-settimana.csv e anonimo/ticket-anonimi.csv.
-       Esegui ogni comando da solo, mai concatenato con &&, ; o echo.
-       Scrivi anonimizza.py (Python 3.8+, libreria standard): scrive
-       anonimo/ticket-anonimi.csv, UTF-8, LF, tutte le righe in ordine,
-       colonne id_ticket, aperto_il, chiuso_il, canale, cliente,
-       tipo_cliente, comune, tecnologia, categoria, priorita, stato,
-       oggetto, descrizione, team, minuti_prima_risposta,
-       minuti_risoluzione, soddisfazione. Via nome_cliente, telefono,
-       email, id_linea; cliente = C-001, C-002… per id_cliente, in
-       ordine di prima comparsa. In oggetto e descrizione ogni dato
-       personale diventa [OMESSO], il resto non cambia. Eseguilo con
-       python3 anonimizza.py. Poi esegui python3 controlla_pii.py e
-       correggi finché l'ultima riga dice uscita: 0; --forme mostra le
-       forme, mai i valori. Poi scrivi profilo.py: anonimo/profilo.json
-       con "kpi" come in kpi_definizioni.md, più campi vuoti, comuni
-       scritti in più modi, doppioni. Eseguilo con python3 profilo.py.
+   Il prompt segue il template del Modulo 2
+   (`riferimenti/pattern-di-prompt.md`): il ruolo, poi il contesto,
+   l'istruzione a passi con il controllo per ultimo, il formato e i
+   vincoli. La slide lo mostra così com'è, riga per riga, in tre pagine.
 
    - **Percorso A, un vostro CSV:** un'esportazione come quelle del vostro
      lavoro, ma con dati inventati al posto di quelli veri (le regole di
@@ -309,7 +302,7 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   controllo a ogni esecuzione, e che l'abbia eseguito Claude lo dicono le
   sue chiamate nella sessione, non il registro.
 - La coppia del docente, con e senza il controllo: lo stesso prompt senza
-  il paragrafo «Poi esegui python3 controlla_pii.py …», in uno spazio di
+  il passo 4, «Esegui python3 controlla_pii.py …», in uno spazio di
   lavoro senza `controlla_pii.py` né `impronte.json`, contro il prompt
   intero; per ogni sessione, il file anonimo misurato con il controllo
   originale: prima la forma giusta del file, poi meno dati personali
