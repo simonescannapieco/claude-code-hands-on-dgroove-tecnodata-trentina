@@ -496,6 +496,28 @@ sessioni;
 trascrizioni di subagent; nessun `ExitPlanMode`; nessuna chiamata di
 Edit o Write su `legacy/`.
 
+Nella stessa prova, però, alcuni passi non sono arrivati al loro
+traguardo:
+- prompt 1: il subagent (a), i chiamanti, ha provato una sola ricerca,
+  un comando Bash composto, negato in dontAsk, e non ha restituito il
+  riassunto; è tornato soltanto quello di (b);
+- prompt 2: `docs/chiusura_mese.md` scritto; un comando composto
+  (`cd … && grep … && awk …`), negato in dontAsk, e la risposta dice
+  che «il commit non è stato fatto»;
+- prompt 3: `ChiusuraMeseTest.php` scritto, ma non eseguito né messo in
+  un commit, senza comandi negati;
+- turno di correzione: `sed -i …` negato in dontAsk; `PROPOSTA.md`
+  corretto con Edit, ma non messo in un commit.
+
+I 2 commit sono quelli di `NOTA.md` e della prima versione di
+`PROPOSTA.md`; i test sono stati eseguiti la prima volta dopo
+l'approvazione del piano, «OK (13 tests, 69 assertions)». Alla fine la
+documentazione e i test erano fuori dai commit, e `PROPOSTA.md` aveva
+le correzioni non messe in un commit. La verifica legge i file dello
+spazio di lavoro ed esegue lei i test; i commit e i subagent li conta
+soltanto come dati: «VERIFICA OK» non dice se i passi hanno fatto i
+loro commit.
+
 ## Verifica (tools/verifica.sh M4-E03)
 
 Dalla cartella `esercitazioni`:
@@ -560,6 +582,10 @@ scrive niente nello spazio di lavoro.
   verifica dice «Non ancora». Nella prova del corso è servito: dopo i
   prompt la verifica ha detto che i controlli dei sei passi della
   proposta non eseguivano i test, e dopo la correzione «VERIFICA OK».
+  Il commit che il messaggio chiede non c'è stato: `sed -i` negato in
+  dontAsk, `PROPOSTA.md` corretto con Edit e lasciato fuori dai commit,
+  e la verifica non guarda i commit. Dopo la correzione controllate con
+  `git status` che il lavoro sia nei commit.
 - La verifica dice che `legacy/` è cambiato: guardate che cosa con
   `git diff $(git rev-list --max-parents=0 HEAD) --
   progetti/gestionale-php/legacy`, e riportatelo com'era con
@@ -585,7 +611,7 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 44 turni del modello in tutto, 12 soltanto per i test (sotto). Due
+corso 48 turni del modello in tutto, 12 soltanto per i test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -603,14 +629,19 @@ server.» (https://code.claude.com/docs/en/best-practices). Alla fine di
 ogni parte, `/exit`.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
-effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata: sette chiamate, i cinque prompt, l'approvazione del piano e il
-turno di correzione, con 1, 6, 12, 4, 8, 5 e 8 turni del modello
-(`num_turns`); 5,4, 53,6, 132,3, 17,2, 49,4, 20,1 e 17,9 secondi; token
-in entrata della conversazione principale, cache compresa, 21.636,
-175.429, 270.581, 227.583, 173.459, 155.497 e 124.174. Nella prima
-chiamata i due subagent Explore portano il totale di tutti i modelli a
-151.997 token in entrata.
+effort medium, `claude -p` sull'account del docente): sette chiamate, i
+cinque prompt, l'approvazione del piano e il turno di correzione, con 5,
+6, 12, 4, 8, 5 e 8 turni del modello; 25,8, 53,5, 132,2, 17,0, 49,3,
+20,0 e 17,8 secondi; token in entrata della conversazione principale,
+cache compresa, 78.887, 175.429, 270.581, 227.583, 173.459, 155.497 e
+124.174. Nella prima chiamata i due subagent Explore portano il totale
+di tutti i modelli a 151.997 token in entrata. Ogni chiamata è contata
+su tutti i suoi segmenti, dalla trascrizione della sessione, perché il
+JSON di `claude -p` descriveva solo l'ultimo: quando un subagent
+lavorava in background, la conversazione principale rispondeva prima, e
+la notifica del subagent apriva un altro segmento della stessa
+chiamata. Nella prima chiamata, tre segmenti, il JSON dice 1 turno
+(`num_turns`), 5,4 secondi e 21.636 token.
 
 ## Per approfondire
 

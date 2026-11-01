@@ -114,9 +114,10 @@ Poi il controllo, che legge le sei risposte e nient'altro:
   il thinking non si spegne: «You can't turn thinking off on Opus 5.5,
   Sonnet 5.5, Haiku 5.5, or the Fable models.»
   (https://code.claude.com/docs/en/model-config). Le due braccia girano
-  con lo stesso effort, il primo dell'elenco di `claude --help`: «--effort
-  <level> Effort level for the current session (low, medium, high, xhigh,
-  max)». I numeri della coppia sono del corso, non quelli di Anthropic.
+  con lo stesso effort, il primo dell'elenco di `claude --help`:
+  «`--effort <level>` Effort level for the current session (low, medium,
+  high, xhigh, max)». I numeri della coppia sono del corso, non quelli di
+  Anthropic.
 - Nel braccio `file`, `python3` può anche stampare tutta la tabella: i
   token in entrata, stampati come dato, lo mostrano.
 
@@ -127,10 +128,10 @@ Poi il controllo, che legge le sei risposte e nient'altro:
   e l'oggetto: «The response includes metadata about the request (session
   ID, usage, etc.) with the structured output in the structured_output
   field.» (https://code.claude.com/docs/en/headless)
-- Le richieste di permesso: «--permission-prompts <target> Who answers
+- Le richieste di permesso: «`--permission-prompts <target>` Who answers
   permission prompts with --print: … "none" (nobody: anything that would
   prompt is denied automatically» (`claude --help`, 2.1.310).
-- Gli strumenti: «--tools <tools...> Specify the list of available tools
+- Gli strumenti: «`--tools <tools...>` Specify the list of available tools
   from the built-in set. Use "" to disable all tools» (`claude --help`); e
   «The --allowedTools flag uses permission rule syntax. The trailing *
   enables prefix matching, so Bash(git diff *) allows any command starting

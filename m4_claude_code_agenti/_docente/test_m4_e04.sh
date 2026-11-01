@@ -18,7 +18,7 @@
 #     frase sola, che nei prompt 1 e 5 dice per chi si lavora; la seconda
 #     frase del revisore in testa al tag <context>; la forma del messaggio
 #     di commit nel tag <format>; il controllo l'ultimo passo dei prompt 2
-#     e 5); le frasi di
+#     e 5, e nel 5 anche nel passo 1, nell'ordine del lavoro); le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A; nessuna delle incoerenze dei dati di esempio nei file
 #     che arrivano ai partecipanti;
@@ -515,9 +515,12 @@ PY
 # e la lista di controllo), nei prompt del README e nel revisore: il ruolo
 # è una frase sola, e nei prompt 1 e 5 dice per chi si lavora; la seconda
 # frase del revisore apre il tag <context>, con le sue parole; la forma del
-# messaggio di commit del prompt 2 sta nel tag <format>, con le sue parole;
-# nei prompt 2 e 5 il controllo, da solo, è l'ultimo passo numerato del tag
-# <instructions>, e nessun altro passo lo nomina.
+# messaggio di commit del prompt 2 sta nel tag <format>, con le sue parole.
+# Il controllo, da solo: nel prompt 2 l'ultimo passo numerato del tag
+# <instructions>, e nessun altro passo lo nomina; nel prompt 5,
+# nell'ordine del lavoro, nel passo 1 (un commit per passo, il controllo
+# dopo ogni passo) e nel 3, l'ultimo (le correzioni del revisore, il
+# controllo di nuovo, l'ultimo commit), con il revisore nel 2.
 test_ingredienti() {
   run python3 -B -I - "${E04}/README.md" \
     "${E04}/esercizio/.claude/agents/revisore.md" "${CONTROLLO}" <<'PY'
@@ -597,12 +600,22 @@ print("revisore ok" if apre == [FUORI] else "revisore: <context> apre %s"
 f2, i2 = (piatto(p[2].get(k, [])) for k in ("format", "instructions"))
 print("formato ok" if REGOLA in f2 and "11.1" not in i2 else
       "formato: prompt 2 %r | %r" % (f2, i2))
+# Il controllo: nel prompt 2 l'ultimo passo, e nessun altro lo nomina; nel
+# prompt 5, nell'ordine del lavoro, nel passo 1 e nel 3, l'ultimo.
 male = []
-for n in (2, 5):
-    s = passi(p[n].get("instructions", []))
-    if not s or comando not in s[-1] or "da solo" not in s[-1] \
-            or any(comando in x for x in s[:-1]):
-        male.append(n)
+s = passi(p[2].get("instructions", []))
+if not s or comando not in s[-1] or "da solo" not in s[-1] \
+        or any(comando in x for x in s[:-1]):
+    male.append(2)
+s = passi(p[5].get("instructions", []))
+if len(s) != 3 or not all(comando in x and "da solo" in x
+                          for x in (s[0], s[2])) \
+        or "un commit per passo; dopo ogni passo esegui il controllo" \
+        not in s[0] or "Prima dell'ultimo commit" not in s[1] \
+        or "@agent-revisore" not in s[1] or comando in s[1] \
+        or not s[2].startswith("3. Correggi ciò che il revisore segnala") \
+        or not s[2].endswith("e fai l'ultimo commit."):
+    male.append(5)
 print("ultimo passo ok" if not male else "ultimo passo: i prompt %s" % male)
 PY
   expect "README: i ruoli, una frase; nei prompt 1 e 5 per chi si lavora" 0 \
@@ -611,7 +624,8 @@ PY
     "revisore ok"
   expect "README: il messaggio di commit del prompt 2 nel tag <format>" 0 \
     "formato ok"
-  expect "README: nei prompt 2 e 5 il controllo è l'ultimo passo numerato" 0 \
+  expect "README: il controllo, l'ultimo passo del prompt 2; nel 5 il passo \
+1 e il 3, l'ultimo, nell'ordine del lavoro" 0 \
     "ultimo passo ok"
 }
 

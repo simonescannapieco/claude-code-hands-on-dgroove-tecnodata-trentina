@@ -20,8 +20,10 @@
 #     di prima), i prompt 3 e 6 semplici; ogni ingrediente nel suo tag (il
 #     ruolo una frase sola, che nei prompt 1 e 5 dice per chi si lavora; la
 #     seconda frase del revisore in testa al tag <context>; la forma del
-#     messaggio di commit e il contenuto di NOTA.md nel tag <format>; il
-#     controllo l'ultimo passo dei prompt 2 e 5); le frasi di
+#     messaggio di commit nel tag <format>; il prompt 4, un testo P, con le
+#     sue frasi intere in <instructions>; il controllo l'ultimo passo dei
+#     prompt 2 e 5, e nel 5 anche nel passo 1, nell'ordine del lavoro); le
+#     frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A, nessun riferimento all'orario; la prima frase del
 #     README e di SPECIFICA.md nomina CiaspoLink, l'operatore inventato; il
@@ -532,7 +534,7 @@ except OSError as exc:
 attese = {"il prompt 1": (True, CINQUE),
           "il prompt 2": (False, ["instructions", "format", "constraints"]),
           "il prompt 3": (False, []),
-          "il prompt 4": (False, ["context", "instructions", "format"]),
+          "il prompt 4": (False, ["context", "instructions"]),
           "il prompt 5": (True, CINQUE),
           "il prompt 6": (False, []),
           "autore-test.md": (True, CINQUE), "revisore.md": (True, CINQUE)}
@@ -548,10 +550,14 @@ PY
 # e la lista di controllo), nei prompt (in ${TMP}/prompt-<n>.txt) e nei due
 # subagent: il ruolo è una frase sola, e nei prompt 1 e 5 dice per chi si
 # lavora; la seconda frase del revisore apre il tag <context>, con le sue
-# parole; la forma del messaggio di commit (prompt 2) e il contenuto di
-# NOTA.md (prompt 4) stanno nel tag <format>, con le loro parole; nei
-# prompt 2 e 5 il controllo, il comando dei test da solo, è l'ultimo passo
-# numerato del tag <instructions>, e nessun altro passo lo nomina.
+# parole; la forma del messaggio di commit (prompt 2) sta nel tag <format>,
+# con le sue parole; il prompt 4, un testo P, tiene le sue due frasi intere
+# nel tag <instructions>, senza <format> (la regola P del docente al
+# cancello). Il controllo, il comando dei test da solo: nel prompt 2
+# l'ultimo passo numerato, e nessun altro passo lo nomina; nel prompt 5,
+# nell'ordine del lavoro, nel passo 1 (un commit per passo, il controllo
+# dopo ogni passo) e nel 3, l'ultimo (le correzioni del revisore, il
+# controllo di nuovo, l'ultimo commit), con il revisore nel 2.
 t_ingredienti() {
   run python3 -B -I - "${TMP}" "${E02}/esercizio/.claude/agents" \
     "${COMANDO}" <<'PY'
@@ -565,9 +571,11 @@ LETTORE = ", per il team del gestionale."
 FUORI = "Non hai visto scrivere il codice: lo guardi da fuori."
 REGOLA = ("un messaggio come chiede la regola 11.1 di "
           "progetti/gestionale-php/docs/convenzioni.md.")
-NOTA = ("Che cosa è fatto (i requisiti di SPECIFICA.md già soddisfatti, con "
-        "i loro commit), che cosa manca, e i comandi per riprendere (il "
-        "controllo, il revisore).")
+NOTA = ("Scrivi NOTA.md, nella cartella in cui siamo: che cosa è fatto (i "
+        "requisiti di SPECIFICA.md già soddisfatti, con i loro commit), che "
+        "cosa manca, e i comandi per riprendere (il controllo, il "
+        "revisore). Poi fai un commit di NOTA.md: git add, poi git commit "
+        "-m, un comando per volta.")
 
 
 def leggi(*parti):
@@ -630,26 +638,36 @@ apre = a["revisore.md"].get("context", [])[:1]
 print("revisore ok" if apre == [FUORI] else "revisore: <context> apre %s"
       % apre)
 f2, i2 = (piatto(p[2].get(k, [])) for k in ("format", "instructions"))
-f4, i4 = (piatto(p[4].get(k, [])) for k in ("format", "instructions"))
-print("formato ok" if REGOLA in f2 and "11.1" not in i2 and f4 == NOTA
-      and "che cosa manca" not in i4 else
-      "formato: prompt 2 %r | %r; prompt 4 %r | %r" % (f2, i2, f4, i4))
+i4 = piatto(p[4].get("instructions", []))
+print("formato ok" if REGOLA in f2 and "11.1" not in i2
+      and "format" not in p[4] and i4 == NOTA else
+      "formato: prompt 2 %r | %r; prompt 4 %r" % (f2, i2, i4))
+# Il controllo: nel prompt 2 l'ultimo passo, e nessun altro lo nomina; nel
+# prompt 5, nell'ordine del lavoro, nel passo 1 e nel 3, l'ultimo.
 male = []
-for n in (2, 5):
-    s = passi(p[n].get("instructions", []))
-    if not s or comando not in s[-1] or "da solo" not in s[-1] \
-            or any(comando in x for x in s[:-1]):
-        male.append(n)
+s = passi(p[2].get("instructions", []))
+if not s or comando not in s[-1] or "da solo" not in s[-1] \
+        or any(comando in x for x in s[:-1]):
+    male.append(2)
+s = passi(p[5].get("instructions", []))
+if len(s) != 3 or not all(comando in x and "da solo" in x
+                          for x in (s[0], s[2])) \
+        or "un commit per passo; dopo ogni passo esegui il controllo" \
+        not in s[0] or "Prima dell'ultimo commit" not in s[1] \
+        or "@agent-revisore" not in s[1] or comando in s[1] \
+        or not s[2].startswith("3. Correggi ciò che il revisore segnala") \
+        or not s[2].endswith("e fai l'ultimo commit."):
+    male.append(5)
 print("ultimo passo ok" if not male else "ultimo passo: i prompt %s" % male)
 PY
   expect "i ruoli: una frase; nei prompt 1 e 5 per chi si lavora" 0 \
     "ruoli ok"
   expect "revisore.md: la seconda frase del ruolo apre il tag <context>" 0 \
     "revisore ok"
-  expect "i prompt 2 e 4: il messaggio di commit e NOTA.md nel tag <format>" \
-    0 "formato ok"
-  expect "i prompt 2 e 5: il controllo è l'ultimo passo numerato" 0 \
-    "ultimo passo ok"
+  expect "il prompt 2: il messaggio di commit nel tag <format>; il 4, un \
+testo P, con le frasi intere in <instructions>" 0 "formato ok"
+  expect "il controllo: l'ultimo passo del prompt 2; nel 5 il passo 1 e il \
+3, l'ultimo, nell'ordine del lavoro" 0 "ultimo passo ok"
 }
 
 # Il README: i prompt (in ${TMP}/prompt-<n>.txt), le sezioni, le frasi.

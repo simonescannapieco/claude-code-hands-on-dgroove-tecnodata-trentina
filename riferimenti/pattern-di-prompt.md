@@ -74,7 +74,7 @@ anche Claude.
 | ingrediente | tag | la domanda | per esempio |
 |---|---|---|---|
 | ruolo | `<role>` | chi scrive, e a chi? | «Sei l'assistenza clienti di CiaspoLink e rispondi per e-mail a un cliente business.» |
-| contesto | `<context>` | che cosa deve sapere, e perché? | lo scopo, chi legge, le procedure che valgono, e in quale tag stanno i dati |
+| contesto | `<context>` | che cosa deve sapere, e perché? | lo scopo, chi legge, e in quali tag stanno i dati e le procedure che valgono |
 | istruzione | `<instructions>` | che cosa deve fare? | «Rispondi alle due richieste del cliente, con le sole informazioni delle procedure.» |
 | formato | `<format>` | in che forma? | «al massimo 120 parole, senza oggetto; firma: L'assistenza clienti di CiaspoLink» |
 | vincoli | `<constraints>` | che cosa fare invece di ciò che non va? | «Dove un dato manca, scrivi “non indicato”.» |

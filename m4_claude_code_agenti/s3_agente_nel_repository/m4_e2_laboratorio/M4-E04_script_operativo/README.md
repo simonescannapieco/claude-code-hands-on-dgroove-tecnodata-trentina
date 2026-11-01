@@ -285,14 +285,17 @@ quella con la barra sì.
        Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
        fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
-          passo.
+          passo; dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_notturno.py
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché
           controlli il contratto d'uscita e i messaggi dello script con
           SPECIFICA.md.
-       3. Dopo ogni passo esegui il controllo, da solo, senza
-          concatenarlo ad altri:
+       3. Correggi ciò che il revisore segnala, poi esegui di nuovo il
+          controllo, da solo:
           python3 controlla_notturno.py
+          e fai l'ultimo commit.
        </instructions>
 
        <format>
@@ -490,10 +493,10 @@ specifica»; sui dati di esempio, con `--giorno=2026-09-13`,
 `linea-cliente-cessato` trovate 2 su 2, `linea-senza-apparato` 1 su 1,
 `attivazione-ferma` 3 su 3, `ticket-in-attesa` 3 su 3, e i due conteggi
 giusti; senza le incoerenze, uscita 0 e nessuna segnalazione. Il
-revisore (tools: Glob, Grep, Read): 4 trascrizioni, nessuno strumento che
-modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 5 commit, 3 file
-cambiati, 2 sessioni, «chiamate al tool Agent: 4 (revisore 4)», e «il
-controllo eseguito da Claude: 8 volte, l'ultima con uscita 0». La
+revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
+modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 2 commit, 3 file
+cambiati, 2 sessioni, «chiamate al tool Agent: 3 (revisore 3)», e «il
+controllo eseguito da Claude: 9 volte, l'ultima con uscita 0». La
 seconda parte ha trovato lo script già completo: il revisore ha dato
 «ESITO: OK», e nessun commit nuovo.
 
@@ -551,9 +554,9 @@ dipendenze del gestionale o se PHP non si avvia.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 60
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato quattro volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato tre volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). I subagent non sono gratis: «What
 they cost you is mostly tokens, since every subagent sends its own requests
@@ -571,12 +574,18 @@ it breaks your usage down by skill, subagent, plugin, and MCP server.»
 (https://code.claude.com/docs/en/best-practices).
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
-effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 17, 3, 3, 4 e 1 turni del modello (`num_turns`); 59,8,
-14,0, 13,1, 25,9 e 3,7 secondi; token in entrata della conversazione
-principale, cache compresa, 311.370, 236.468, 263.255, 359.292 e
-33.353. I token del revisore si aggiungono a questi.
+effort medium, `claude -p` sull'account del docente): cinque chiamate,
+quattro nella prima parte e una nella seconda, con 18, 21, 7, 4 e 10
+turni del modello; 56,7, 173,0, 88,1, 16,9 e 113,2 secondi; token in
+entrata della conversazione principale, cache compresa, 291.998,
+1.113.223, 430.452, 307.864 e 216.645. I token del revisore si
+aggiungono a questi. Ogni chiamata è contata su tutti i suoi segmenti,
+dalla trascrizione della sessione, perché il JSON di `claude -p`
+descriveva solo l'ultimo: quando il revisore lavorava in background, la
+conversazione principale rispondeva prima, e la notifica del revisore
+apriva un altro segmento della stessa chiamata. Nella seconda chiamata,
+due segmenti, il JSON dice 7 turni (`num_turns`), 24,3 secondi e
+396.029 token.
 
 ## Per approfondire
 

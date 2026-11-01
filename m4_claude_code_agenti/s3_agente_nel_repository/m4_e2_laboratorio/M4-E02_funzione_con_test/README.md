@@ -225,15 +225,12 @@ quella con la barra sì.
        </context>
 
        <instructions>
-       Scrivi NOTA.md, nella cartella in cui siamo; poi fai un commit
-       di NOTA.md: git add, poi git commit -m, un comando per volta.
+       Scrivi NOTA.md, nella cartella in cui siamo: che cosa è fatto (i
+       requisiti di SPECIFICA.md già soddisfatti, con i loro commit),
+       che cosa manca, e i comandi per riprendere (il controllo, il
+       revisore). Poi fai un commit di NOTA.md: git add, poi git commit
+       -m, un comando per volta.
        </instructions>
-
-       <format>
-       Che cosa è fatto (i requisiti di SPECIFICA.md già soddisfatti,
-       con i loro commit), che cosa manca, e i comandi per riprendere
-       (il controllo, il revisore).
-       </format>
 
    <!-- /prompt 4 -->
 
@@ -268,13 +265,16 @@ quella con la barra sì.
        Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
        fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
-          passo.
+          passo; dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché lo
           confronti con SPECIFICA.md.
-       3. Dopo ogni passo esegui il controllo, da solo, senza
-          concatenarlo ad altri:
+       3. Correggi ciò che il revisore segnala, poi esegui di nuovo il
+          controllo, da solo:
           tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
+          e fai l'ultimo commit.
        </instructions>
 
        <format>
@@ -425,16 +425,22 @@ quella con la barra sì.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README): due file di test nuovi, uno in `Integrazione/`
-(`TicketRepositoryFiltriTest.php`) e uno in `Unit/Ticket/`
-(`FiltroTicketTest.php`); la suite intera sul codice di Claude, «OK (89
-tests, 393 assertions)»; i test nuovi, «OK (45 tests, 286 assertions)»
-sul codice di Claude e, sul codice di partenza, «Tests: 45, Assertions:
-34, Errors: 15, Failures: 4, Warnings: 11.»: falliscono, come devono,
-«il giudice è valido». Il revisore (tools: Glob, Grep, Read): 3
+di questo README): tre file di test nuovi, due in `Integrazione/`
+(`TicketRepositoryApparatoDateTest.php` e
+`TicketRepositoryEstremiDateTest.php`) e uno in `Unit/Ticket/`
+(`FiltroTicketTest.php`); la suite intera sul codice di Claude, «OK (70
+tests, 195 assertions)»; i test nuovi, «OK (26 tests, 88 assertions)»
+sul codice di Claude e, sul codice di partenza, «Tests: 26, Assertions:
+21, Errors: 11, Failures: 3, Warnings: 7.»: falliscono, come devono,
+«il giudice è valido». Il revisore (tools: Glob, Grep, Read): 2
 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
-dati: `NOTA.md` di 30 righe non vuote, 6 commit, 2 sessioni, «chiamate
-al tool Agent: 4 (autore-test 1, revisore 3)».
+dati: `NOTA.md` di 48 righe non vuote, 7 commit, 2 sessioni, «chiamate
+al tool Agent: 4 (autore-test 2, revisore 2)». I 7 commit sono tutti
+della prima parte. La seconda parte non ha fatto commit né chiamato il
+revisore: `NOTA.md` diceva tutti i requisiti soddisfatti; Claude ha
+eseguito il controllo, che passava, e due comandi di phpcs, negati in
+dontAsk, e si è fermato: la risposta chiede il permesso di eseguire
+phpcs, il suo output, o di chiudere senza.
 
 ## Verifica (tools/verifica.sh M4-E02)
 
@@ -484,10 +490,10 @@ può partire, per esempio se mancano le dipendenze del gestionale.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 66
 turni del modello in tutto, nelle due parti (sotto); due subagent,
-`autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, tre
-chiamate. I subagent non sono gratis: «What they
+`autore-test` su Sonnet e `revisore` su Haiku, due chiamate ciascuno.
+I subagent non sono gratis: «What they
 cost you is mostly tokens, since every subagent sends its own requests and
 they count against the same usage as your main conversation.» Per
 spendere meno, risposte brevi: «Ask for short summaries back, so twenty
@@ -504,12 +510,17 @@ search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
-effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 6, 9, 5, 4 e 4 turni del modello (`num_turns`); 43,8,
-97,6, 84,3, 18,3 e 13,2 secondi; token in entrata della conversazione
-principale, cache compresa, 151.772, 479.591, 312.542, 281.866 e
-200.528. I token dei subagent si aggiungono a questi.
+effort medium, `claude -p` sull'account del docente): cinque chiamate,
+quattro nella prima parte e una nella seconda, con 7, 39, 9, 4 e 7 turni
+del modello; 56,9, 341,9, 161,0, 24,0 e 20,4 secondi; token in entrata
+della conversazione principale, cache compresa, 156.416, 1.761.656,
+636.340, 351.175 e 127.322. I token dei subagent si aggiungono a questi.
+Ogni chiamata è contata su tutti i suoi segmenti, dalla trascrizione
+della sessione, perché il JSON di `claude -p` descriveva solo l'ultimo:
+quando un subagent lavorava in background, la conversazione principale
+rispondeva prima, e la notifica del subagent apriva un altro segmento
+della stessa chiamata. Nella seconda chiamata, quattro segmenti, il JSON
+dice 4 turni (`num_turns`), 13,0 secondi e 271.171 token.
 
 ## Per approfondire
 

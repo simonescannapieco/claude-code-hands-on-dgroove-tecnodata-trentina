@@ -299,11 +299,11 @@ se mancano le dipendenze del gestionale.
 ## Impronta d'uso sul piano Pro
 
 Una sessione interattiva su Sonnet, effort medium: tre prompt. Nella
-prova del corso, fatta tre volte, 6, 15 e 11 turni del modello in tutto;
-nessun subagent chiesto, ma Claude ne ha avviati da sé: due Explore nella
-prima prova, al primo e al secondo prompt, uno nella terza, al primo,
-nessuno nella seconda. I test e la verifica girano sul vostro
-computer, senza chiamate al modello. I limiti sono gli stessi di
+prova del corso, fatta tre volte, 16, 15 e 15 turni del modello in tutto
+(sotto); nessun subagent chiesto, ma Claude ne ha avviati da sé: due
+Explore nella prima prova, al primo e al secondo prompt, uno nella
+terza, al primo, nessuno nella seconda. I test e la verifica girano sul
+vostro computer, senza chiamate al modello. I limiti sono gli stessi di
 claude.ai: «These limits are shared across Claude and Claude Code, meaning
 all activity in both tools counts against the same limits.»
 (https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan),
@@ -314,15 +314,20 @@ search) | Model choice | Effort level»
 Alla fine, `/exit`.
 
 Nella prova del corso (28 ottobre 2026, Claude Code 2.1.312, Sonnet con
-effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata, prompt per prompt: nella prima prova 2, 3 e 1 turni del
-modello (`num_turns`), 10,5, 10,1 e 3,4 secondi, 43.503, 61.315 e 31.525
-token in entrata della conversazione principale, cache compresa; nella
-seconda 6, 8 e 1 turni, 21,2, 31,1 e 4,1 secondi, 99.446, 195.635 e
-31.403 token; nella terza 2, 8 e 1 turni, 11,1, 23,3 e 5,1 secondi,
-43.996, 167.724 e 34.502 token. Al primo prompt della prima e della
-terza prova, con i subagent, il totale di tutti i modelli sale a 126.756
-e 140.278 token in entrata.
+effort medium, `claude -p` sull'account del docente), prompt per prompt:
+nella prima prova 6, 9 e 1 turni del modello, 30,2, 50,4 e 3,2 secondi,
+99.622, 188.170 e 31.525 token in entrata della conversazione
+principale, cache compresa; nella seconda 6, 8 e 1 turni, 21,0, 30,9 e
+3,9 secondi, 99.446, 195.635 e 31.403 token; nella terza 6, 8 e 1
+turni, 39,9, 23,1 e 4,9 secondi, 100.055, 167.724 e 34.502 token. Al
+primo prompt della prima e della terza prova, con i subagent, il totale
+di tutti i modelli sale a 126.756 e 140.278 token in entrata. Ogni
+chiamata è contata su tutti i suoi segmenti, dalla trascrizione della
+sessione, perché il JSON di `claude -p` descriveva solo l'ultimo:
+quando un subagent lavorava in background, la conversazione principale
+rispondeva prima, e la notifica del subagent apriva un altro segmento
+della stessa chiamata. Al primo prompt della prima prova, due segmenti,
+il JSON dice 2 turni (`num_turns`), 10,5 secondi e 43.503 token.
 
 ## Per approfondire
 
