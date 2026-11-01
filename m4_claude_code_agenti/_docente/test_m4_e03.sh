@@ -15,8 +15,10 @@
 #     comando per volta, la chiusura vera; il formato della proposta; i
 #     prompt 1, 2, 3 e 5 nel template del corso, un tag per ingrediente
 #     (<role> soltanto all'inizio di una sessione, poi gli altri tag, in
-#     ordine; nessuna etichetta della forma di prima), il 4 semplice; la
-#     correzione di live.sh, intera, in «Se qualcosa va storto»; le
+#     ordine; nessuna etichetta della forma di prima), il 4 semplice; il
+#     ruolo dei prompt 1 e 5 una frase sola, che dice per chi si lavora; la
+#     correzione di live.sh, intera, fra i segni «prompt: correzione», in
+#     «Se qualcosa va storto»; le
 #     citazioni con i loro link, solo link ufficiali; nessun identificativo
 #     interno, niente macOS né Percorso A, nessun riferimento all'orario;
 #   - verifica.sh con il php.sh finto (PN_PHP_SH) e una cartella di Claude
@@ -86,7 +88,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e03.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e03.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=192
+readonly CASES=193
 readonly PROGETTO="progetti/gestionale-php"
 readonly TEST_REL="${PROGETTO}/tests/Integrazione/ChiusuraMeseTest.php"
 readonly DOC_REL="${PROGETTO}/docs/chiusura_mese.md"
@@ -663,6 +665,7 @@ codice."
     fail "prompt 5 assente o comincia con /"
   fi
   t_forma
+  t_ruoli
   t_readme_correzione
   t_readme_citazioni
   t_readme_vietati
@@ -726,10 +729,12 @@ PY
     "forma ok"
 }
 
-# «Se qualcosa va storto» mostra intera la correzione che live.sh manda:
-# CORREZIONE, una riga vuota e, fra i tag <verification_result>, una riga
-# «Non ancora: …» al posto di quelle della verifica, in un blocco rientrato
-# di sei spazi; e dice che live.sh la manda una volta sola.
+# «Se qualcosa va storto» mostra intera la correzione che live.sh manda,
+# fra i segni «<!-- prompt: correzione -->» e «<!-- /prompt: correzione
+# -->», che il gate dei prompt legge: CORREZIONE, una riga vuota e, fra i
+# tag <verification_result>, una riga «Non ancora: …» al posto di quelle
+# della verifica, in un blocco rientrato di sei spazi; e dice che live.sh
+# la manda una volta sola.
 t_readme_correzione() {
   run python3 -B -I - "${E03}/README.md" "${CORREZIONE}" <<'PY'
 import sys
@@ -740,12 +745,12 @@ testo = open(readme, encoding="utf-8").read()
 sezione = testo.split("\n## Se qualcosa va storto\n", 1)[-1]
 sezione = sezione.split("\n## ", 1)[0]
 righe = sezione.split("\n")
-inizio = [i for i, r in enumerate(righe) if r == "      <context>"]
-blocco = []
-for r in righe[inizio[0]:] if len(inizio) == 1 else []:
-    if r and not r.startswith("      "):
-        break
-    blocco.append(r)
+a = [i for i, r in enumerate(righe) if r == "  <!-- prompt: correzione -->"]
+b = [i for i, r in enumerate(righe) if r == "  <!-- /prompt: correzione -->"]
+blocco = (righe[a[0] + 1:b[0]] if len(a) == len(b) == 1 and a[0] < b[0]
+          else [])
+if any(r and not r.startswith("      ") for r in blocco):
+    blocco = []
 mostrato = textwrap.dedent("\n".join(blocco)).strip("\n")
 testa = istruzioni + "\n\n<verification_result>\n"
 coda = "\n</verification_result>"
@@ -760,8 +765,38 @@ elif "`_docente/live.sh`" not in piatto or "una volta sola" not in piatto:
 else:
     print("correzione nel README ok")
 PY
-  expect "README: «Se qualcosa va storto» mostra intera la correzione" 0 \
-    "correzione nel README ok"
+  expect "README: «Se qualcosa va storto» mostra intera la correzione, fra \
+i segni" 0 "correzione nel README ok"
+}
+
+# Il ruolo dei prompt 1 e 5 (in ${TMP}/prompt-<n>.txt), che aprono una
+# sessione: una frase sola, che dice per chi si lavora
+# (riferimenti/pattern-di-prompt.md, la scheda e la lista di controllo).
+t_ruoli() {
+  run python3 -B -I - "${TMP}" <<'PY'
+import os
+import re
+import sys
+
+LETTORE = ", per il team del gestionale."
+male = []
+for n in (1, 5):
+    try:
+        with open(os.path.join(sys.argv[1], "prompt-%d.txt" % n),
+                  encoding="utf-8") as fh:
+            testo = fh.read()
+    except OSError:
+        male.append("il prompt %d manca" % n)
+        continue
+    ruolo = re.search(r"^<role>\n(.*?)\n</role>$", testo, re.S | re.M)
+    ruolo = " ".join(ruolo.group(1).split()) if ruolo else ""
+    if not ruolo.endswith(LETTORE) or re.search(r"[.!?] [A-ZÀ-Ý]",
+                                                ruolo[:-1]):
+        male.append("il prompt %d: %r" % (n, ruolo))
+print("ruoli ok" if not male else "ruoli: %s" % male)
+PY
+  expect "i prompt 1 e 5: il ruolo, una frase, per chi si lavora" 0 \
+    "ruoli ok"
 }
 
 # Le citazioni di Anthropic, ognuna con il suo link, e soltanto link

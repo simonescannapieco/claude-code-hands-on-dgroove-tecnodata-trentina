@@ -138,7 +138,8 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore della rete di CiaspoLink e pianifichi uno
-       script operativo, il rapporto quotidiano dei disservizi.
+       script operativo, il rapporto quotidiano dei disservizi, per il
+       NOC.
        </role>
 
        <context>
@@ -282,7 +283,7 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore della rete di CiaspoLink e riprendi uno
-       script operativo lasciato a metà.
+       script operativo lasciato a metà, per il NOC.
        </role>
 
        <context>
@@ -294,13 +295,14 @@ quella con la barra sì.
        Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
        fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
-          passo; dopo ogni passo esegui il controllo, da solo, senza
-          concatenarlo ad altri:
-          python3 controlla_rapporto.py
+          passo.
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché
           controlli il contratto d'uscita e i messaggi dello script con
           SPECIFICA.md.
+       3. Dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_rapporto.py
        </instructions>
 
        <format>

@@ -31,13 +31,17 @@
 #     nel template del Modulo 2, un tag per ingrediente, e in righe entro
 #     66 colonne; i tre dei numeri con role, context, format,
 #     constraints e, in fondo, instructions, nessuna etichetta e niente
-#     fuori dai tag; i due della coppia del docente con ruolo, formato e
-#     vincoli del prompt dei numeri, e diversi nel contesto e
-#     nell'istruzione, che dicono dove sta la tabella
-#     (<anonymized_tickets>) e come si calcola, il braccio file con
-#     python3 come unico comando, da solo; il formato «Un oggetto JSON»,
-#     non «soltanto»; il seguito della dashboard con i tag e senza ruolo;
-#     il README con le dieci sezioni; nessun identificativo interno nei
+#     fuori dai tag; i due della coppia del docente con il ruolo, il
+#     formato e i vincoli del prompt dei numeri, byte per byte, e il
+#     braccio file che aggiunge in fondo ai vincoli python3 come unico
+#     comando, da solo, mai nell'istruzione; diversi nel contesto,
+#     nell'istruzione e in quella frase, che dicono dove sta la tabella
+#     (<anonymized_tickets>) e come si legge; il formato «Un oggetto
+#     JSON», non «soltanto»; il seguito della dashboard con i tag e senza
+#     ruolo; il README con le dieci sezioni e, prima del passo 4, il testo
+#     dei due file di prompt, non una loro vista formattata («Raw»); i
+#     comandi di _docente/README-gemello.md con --permission-prompts none,
+#     come li passa il registratore; nessun identificativo interno nei
 #     file per i partecipanti;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero;
 #   - shellcheck -x su verifica.sh e su questo script.
@@ -65,7 +69,7 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=80
+readonly CASES=82
 readonly FINE="Fatto: kpi.json ha le dieci chiavi, con i tipi giusti."
 # Gli identificativi interni che i file per i partecipanti non portano.
 INTERNI='FACT-|Tecnodata|[Tt]riage|Envelope|M[0-9]-X[0-9]|\bX-[0-9]'
@@ -602,11 +606,19 @@ ordine = ("role", "context", "format", "constraints", "instructions")
 if all(t["ordine"] == ordine and not t["difetti"]
        and t["role"].startswith("Sei ") for t in tre):
     print("tre prompt, un tag per ingrediente")
-# I due bracci, e il prompt dei partecipanti, condividono ruolo, formato e
-# vincoli byte per byte: le dieci chiavi sono le stesse.
+# I due bracci, e il prompt dei partecipanti, condividono ruolo e formato
+# byte per byte (le dieci chiavi sono le stesse) e le regole di
+# <constraints>; il braccio file vi aggiunge in fondo, a capo, il suo solo
+# comando (UNICO).
+UNICO = ("L'unico comando permesso è python3: eseguilo da solo, senza "
+         "concatenarlo ad altri comandi.")
 comuni = ("role", "format", "constraints")
 if all(k in t for t in tre for k in comuni) and \
-        all(t[k] == numeri[k] for t in gemelli for k in comuni):
+        all(gemelli[0][k] == numeri[k] for k in comuni) and \
+        all(gemelli[1][k] == numeri[k] for k in ("role", "format")) and \
+        gemelli[1]["constraints"].startswith(numeri["constraints"] + "\n") \
+        and " ".join(gemelli[1]["constraints"][len(numeri["constraints"]):]
+                     .split()) == UNICO:
     print("coppia stessa coda")
 # Il formato chiede «Un oggetto JSON», non «soltanto»: nel gemello la forma
 # la vincola lo schema di --json-schema.
@@ -621,12 +633,41 @@ if len({t.get("context") for t in tre}) == 3 and \
         "con il codice" in gemelli[1].get("instructions", "") and \
         "con il codice" not in gemelli[0].get("instructions", ""):
     print("coppia contesto e istruzione diversi")
-if "L'unico comando permesso è python3" in \
-        " ".join(gemelli[1].get("instructions", "").split()) \
-        and "senza concatenarlo ad altri" in \
-        " ".join(gemelli[1].get("instructions", "").split()) \
-        and "python3" not in gemelli[0].get("instructions", ""):
+# Il solo comando del braccio file è un vincolo: sta in <constraints>, non
+# in <instructions>, e il braccio incollato non nomina python3.
+if UNICO in " ".join(gemelli[1].get("constraints", "").split()) \
+        and "python3" not in gemelli[1].get("instructions", "") \
+        and "python3" not in leggi("_docente", "prompt-incollato.md"):
     print("coppia il braccio file dice il suo comando")
+# Prima del passo 4, l'avvertenza dei file .md di prompt, come in M1-D05:
+# il testo dei due file, non una loro vista formattata, da un editor o
+# dalla vista «Raw» di GitHub.
+p3 = [k for k, r in enumerate(righe) if r.startswith("3. **Il caricamento")]
+p4 = [k for k, r in enumerate(righe) if r.startswith("4. **Prima i numeri")]
+if len(p3) == 1 and len(p4) == 1 and p3[0] < p4[0]:
+    prima = " ".join(" ".join(righe[p3[0]:p4[0]]).split())
+    if all(s in prima for s in ("`prompt-numeri.md`", "`prompt-dashboard.md`",
+                                "vista formattata", "vista «Raw»")):
+        print("README: il testo dei file, prima del passo 4")
+# I comandi della coppia in README-gemello.md: --permission-prompts none,
+# come li passa il registratore, nei due claude -p e nell'elenco di ciò
+# che è uguale nelle due braccia.
+g = leggi("_docente", "README-gemello.md").split("\n")
+logiche, riga = [], ""
+for r in g + [""]:
+    if r.startswith("    "):
+        riga += " " + r.strip().rstrip("\\").strip()
+        if r.rstrip().endswith("\\"):
+            continue
+    if riga:
+        logiche.append(riga)
+        riga = ""
+comandi = [c for c in logiche if "claude -p" in c]
+if len(comandi) == 2 and \
+        all("--permission-prompts none" in c for c in comandi) and \
+        "`--permission-mode dontAsk --permission-prompts none" in \
+        " ".join(" ".join(g).split()):
+    print("gemello: --permission-prompts none, come il registratore")
 # Il seguito della dashboard: i tag senza il ruolo, e «crea come
 # artifact», la parola della frase di Anthropic che l'esercizio segue.
 d = ingredienti(leggi("esercizio", "prompt-dashboard.md"))
@@ -648,14 +689,21 @@ PY
   expect "prompt della dashboard in 66 colonne" 0 "dashboard in 66 colonne"
   expect "i tre prompt dei numeri, un tag per ingrediente, <instructions> \
 in fondo" 0 "tre prompt, un tag per ingrediente"
-  expect "coppia: ruolo, formato e vincoli uguali al prompt dei numeri" 0 \
-    "coppia stessa coda"
+  expect "coppia: ruolo, formato e vincoli uguali al prompt dei numeri, e \
+in fondo ai vincoli del braccio file il suo comando" 0 "coppia stessa coda"
   expect "il formato chiede «Un oggetto JSON», senza «soltanto»: la forma \
 la vincola lo schema" 0 "formato: un oggetto JSON, senza soltanto"
   expect "coppia: contesto e istruzione dicono dove sta la tabella e come \
 si calcola" 0 "coppia contesto e istruzione diversi"
-  expect "coppia: il braccio file dice che python3 va eseguito da solo" 0 \
+  expect "coppia: il braccio file dice in <constraints>, non in \
+<instructions>, che python3 va eseguito da solo" 0 \
     "coppia il braccio file dice il suo comando"
+  expect "README: prima del passo 4, il testo dei due file di prompt, non \
+una loro vista formattata («Raw»)" 0 \
+    "README: il testo dei file, prima del passo 4"
+  expect "README-gemello: i due claude -p e l'elenco con \
+--permission-prompts none, come il registratore" 0 \
+    "gemello: --permission-prompts none, come il registratore"
   expect "dashboard: i tag senza il ruolo, «Crea come artifact»" 0 \
     "dashboard: i tag senza il ruolo e crea come artifact"
   expect "README: le dieci sezioni" 0 "sezioni ok"

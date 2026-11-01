@@ -105,6 +105,10 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
    `ticket-anonimi.csv` dello spazio di lavoro: nella casella compare una
    scheda con il nome del file e l'etichetta CSV.
 
+**I due prompt.** Copiate il testo di `prompt-numeri.md` e di
+`prompt-dashboard.md`, non una loro vista formattata: apriteli in un
+editor, o su GitHub nella vista «Raw», e copiate tutto.
+
 4. **Prima i numeri.** Incollate il prompt di `prompt-numeri.md` e
    inviate:
 
@@ -338,8 +342,9 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   l'istruzione (il tag `<instructions>`) che dice come calcolare, una volta
   con il CSV incollato in cima al messaggio, fra i tag
   `<anonymized_tickets>`, e nessuno strumento, una volta con il file nella
-  cartella di lavoro e il solo `python3` per interrogarlo, un comando alla
-  volta; tutte e due su Sonnet, con l'oggetto vincolato allo schema
+  cartella di lavoro e, nei vincoli (il tag `<constraints>`), il solo
+  `python3` per interrogarlo, un comando alla volta; tutte e due su
+  Sonnet, con l'oggetto vincolato allo schema
   dei dieci indicatori, tre esecuzioni per parte. Per ogni coppia: confermata
   se con il file e il codice tornano più indicatori, non distinguibile se
   ne tornano tanti quanti, non confermata in questa esecuzione se ne

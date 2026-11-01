@@ -140,7 +140,8 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
-       pianifichi uno script operativo, il controllo notturno.
+       pianifichi uno script operativo, il controllo notturno, per il
+       team del gestionale.
        </role>
 
        <context>
@@ -196,9 +197,13 @@ quella con la barra sì.
           e correggi lo script finché l'ultima riga dice uscita: 0.
           Dopo ogni passo che passa il controllo fai un commit: git
           add, poi git commit -m con il messaggio fra virgolette, un
-          comando per volta, e un messaggio come chiede la regola 11.1
-          di progetti/gestionale-php/docs/convenzioni.md.
+          comando per volta.
        </instructions>
+
+       <format>
+       Ogni commit ha un messaggio come chiede la regola 11.1 di
+       progetti/gestionale-php/docs/convenzioni.md.
+       </format>
 
        <constraints>
        Si corregge lo script; controlla_notturno.py resta com'è.
@@ -267,7 +272,8 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
-       uno script operativo lasciato a metà.
+       uno script operativo lasciato a metà, per il team del
+       gestionale.
        </role>
 
        <context>
@@ -279,13 +285,14 @@ quella con la barra sì.
        Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
        fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
-          passo; dopo ogni passo esegui il controllo, da solo, senza
-          concatenarlo ad altri:
-          python3 controlla_notturno.py
+          passo.
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché
           controlli il contratto d'uscita e i messaggi dello script con
           SPECIFICA.md.
+       3. Dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          python3 controlla_notturno.py
        </instructions>
 
        <format>

@@ -132,7 +132,8 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
-       pianifichi una funzione nuova, con i suoi test.
+       pianifichi una funzione nuova, con i suoi test, per il team del
+       gestionale.
        </role>
 
        <context>
@@ -187,10 +188,13 @@ quella con la barra sì.
           tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
           e correggi il codice finché passa. Dopo ogni passo che passa
           il controllo fai un commit: git add, poi git commit -m con il
-          messaggio fra virgolette, un comando per volta, e un
-          messaggio come chiede la regola 11.1 di
-          progetti/gestionale-php/docs/convenzioni.md.
+          messaggio fra virgolette, un comando per volta.
        </instructions>
+
+       <format>
+       Ogni commit ha un messaggio come chiede la regola 11.1 di
+       progetti/gestionale-php/docs/convenzioni.md.
+       </format>
 
        <constraints>
        I test si cambiano solo dove contraddicono SPECIFICA.md.
@@ -221,12 +225,15 @@ quella con la barra sì.
        </context>
 
        <instructions>
-       Scrivi NOTA.md, nella cartella in cui siamo: che cosa è fatto (i
-       requisiti di SPECIFICA.md già soddisfatti, con i loro commit),
-       che cosa manca, e i comandi per riprendere (il controllo, il
-       revisore). Poi fai un commit di NOTA.md: git add, poi git commit
-       -m, un comando per volta.
+       Scrivi NOTA.md, nella cartella in cui siamo; poi fai un commit
+       di NOTA.md: git add, poi git commit -m, un comando per volta.
        </instructions>
+
+       <format>
+       Che cosa è fatto (i requisiti di SPECIFICA.md già soddisfatti,
+       con i loro commit), che cosa manca, e i comandi per riprendere
+       (il controllo, il revisore).
+       </format>
 
    <!-- /prompt 4 -->
 
@@ -249,7 +256,7 @@ quella con la barra sì.
 
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e riprendi
-       una funzione lasciata a metà.
+       una funzione lasciata a metà, per il team del gestionale.
        </role>
 
        <context>
@@ -261,12 +268,13 @@ quella con la barra sì.
        Leggi NOTA.md e SPECIFICA.md e riprendi il lavoro da dove si era
        fermato.
        1. Finisci ciò che manca un passo alla volta, con un commit per
-          passo; dopo ogni passo esegui il controllo, da solo, senza
-          concatenarlo ad altri:
-          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
+          passo.
        2. Prima dell'ultimo commit esegui git log --oneline e git diff
           dal primo commit, e passa il diff a @agent-revisore perché lo
           confronti con SPECIFICA.md.
+       3. Dopo ogni passo esegui il controllo, da solo, senza
+          concatenarlo ad altri:
+          tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
        </instructions>
 
        <format>

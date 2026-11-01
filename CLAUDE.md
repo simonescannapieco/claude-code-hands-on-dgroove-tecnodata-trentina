@@ -55,9 +55,11 @@ verificano ogni elemento.
   nomi in inglese. Nel Modulo 2 lo seguono il prompt B e la versione di
   riferimento della prima esercitazione; i prompt che il modulo mette alla
   prova restano come sono.
-  - `<role>` in una frase, «Sei …»; poi `<context>`, `<instructions>`
-    (passi numerati, il controllo che Claude esegue per ultimo),
-    `<format>` (un contratto che un controllo legge, alla lettera),
+  - `<role>` in una frase, «Sei …, e …», che dice anche per chi lavora o
+    a chi scrive; poi `<context>` (con i dati, in quali tag stanno),
+    `<instructions>` (passi numerati, il controllo che Claude esegue per
+    ultimo), `<format>` (la forma della risposta, lunghezza e tono
+    compresi; un contratto che un controllo legge, alla lettera),
     `<constraints>` detti in positivo, `<examples>` con da tre a cinque
     `<example>`.
   - I dati vanno ciascuno in un tag che dice che cosa contengono

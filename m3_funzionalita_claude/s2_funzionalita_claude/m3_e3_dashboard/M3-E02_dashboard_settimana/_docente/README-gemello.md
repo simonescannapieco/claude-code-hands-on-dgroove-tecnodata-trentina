@@ -22,22 +22,25 @@ contratto; i comandi qui sotto non vanno lanciati dai partecipanti.
 | `file` | `ticket-anonimi.csv` nella cartella di lavoro | `--tools Bash` con `--allowedTools "Bash(python3 *)"`: solo `python3`, niente Read | `_docente/prompt-file.md` | `gemello/file-<n>.json` |
 
 I due prompt sono il prompt dei partecipanti, `esercizio/prompt-numeri.md`,
-un tag per ingrediente, con un contesto e un'istruzione diversi: il tag
-`<context>` dice dove sta la tabella, e il tag `<instructions>` del
-braccio `file` dice «Calcola con il codice, sul file» e il suo solo
-comando, «L'unico comando permesso è python3: eseguilo da solo, senza
-concatenarlo ad altri comandi.» Senza quella frase, nella prima
-registrazione del 21 ottobre 2026 Claude ha messo un `cd` o un `cat`
-davanti al suo `python3` in due esecuzioni su tre: con
-`--permission-mode dontAsk` il comando è stato rifiutato e l'oggetto è
-arrivato con tutti i valori a zero, una misura dei permessi, non della
-strada. I tag `<role>`, `<format>` e `<constraints>`, cioè il ruolo, le
-dieci chiavi e le regole, sono uguali byte per byte nei tre file (lo
-controlla `m3_funzionalita_claude/_docente/test_m3_e02.sh`). In tutti e
-tre `<instructions>` è l'ultimo tag: nel braccio `incollato` la tabella
-sta in cima al messaggio e la domanda in fondo, e i tre prompt hanno lo
-stesso ordine. Il formato chiede «Un oggetto JSON», e nei due bracci la
-forma la vincola lo schema di `--json-schema`.
+un tag per ingrediente, diversi soltanto in ciò che dice dove sta la
+tabella e come si legge: il tag `<context>` dice dove sta la tabella; il
+tag `<instructions>` del braccio `file` dice, come quello dei
+partecipanti, «Calcola con il codice, sul file», e quello del braccio
+`incollato` «Calcola questi dieci indicatori.»; il braccio `file`
+aggiunge in fondo al tag `<constraints>` il suo solo comando, «L'unico
+comando permesso è python3: eseguilo da solo, senza concatenarlo ad altri
+comandi.» Senza quella frase, nella prima registrazione del 21 ottobre
+2026 Claude ha messo un `cd` o un `cat` davanti al suo `python3` in due
+esecuzioni su tre: con `--permission-mode dontAsk` il comando è stato
+rifiutato e l'oggetto è arrivato con tutti i valori a zero, una misura dei
+permessi, non della strada. I tag `<role>` e `<format>`, cioè il ruolo e
+le dieci chiavi, sono uguali byte per byte nei tre file, e così le regole
+di `<constraints>` che vengono prima di quella frase (lo controlla
+`m3_funzionalita_claude/_docente/test_m3_e02.sh`). In tutti e tre
+`<instructions>` è l'ultimo tag: nel braccio `incollato` la tabella sta in
+cima al messaggio e la domanda in fondo, e i tre prompt hanno lo stesso
+ordine. Il formato chiede «Un oggetto JSON», e nei due bracci la forma la
+vincola lo schema di `--json-schema`.
 
 Tutto il resto è uguale nelle due braccia:
 
@@ -45,8 +48,8 @@ Tutto il resto è uguale nelle due braccia:
 - `--output-format json --json-schema "$(cat _docente/schema_kpi.json)"`:
   lo schema dei dieci KPI, con tutte le chiavi obbligatorie e nessuna in
   più;
-- `--permission-mode dontAsk --setting-sources project,local
-  --strict-mcp-config --no-session-persistence`;
+- `--permission-mode dontAsk --permission-prompts none --setting-sources
+  project,local --strict-mcp-config --no-session-persistence`;
 - tre esecuzioni per braccio, n = 1, 2, 3, ognuna in una cartella di
   lavoro nuova sotto `/tmp`, fuori da ogni repository (niente `CLAUDE.md`
   né `.claude/` che entrino in un braccio e non nell'altro) e mai sotto
@@ -72,13 +75,15 @@ di circa 100 KB, sotto il limite di 128 KB di un argomento su Linux:
       "$(cat "$E/_docente/prompt-incollato.md")")"
     (cd "$U" && claude -p --model sonnet --effort low --tools "" \
       --output-format json --json-schema "$(cat "$E/_docente/schema_kpi.json")" \
-      --permission-mode dontAsk --setting-sources project,local \
+      --permission-mode dontAsk --permission-prompts none \
+      --setting-sources project,local \
       --strict-mcp-config --no-session-persistence \
       -- "$m" < /dev/null) > "$R/gemello/incollato-1.json"
     (cd "$T" && claude -p --model sonnet --effort low --tools Bash \
       --allowedTools "Bash(python3 *)" \
       --output-format json --json-schema "$(cat "$E/_docente/schema_kpi.json")" \
-      --permission-mode dontAsk --setting-sources project,local \
+      --permission-mode dontAsk --permission-prompts none \
+      --setting-sources project,local \
       --strict-mcp-config --no-session-persistence \
       -- "$(cat "$E/_docente/prompt-file.md")" < /dev/null) \
       > "$R/gemello/file-1.json"
@@ -122,6 +127,9 @@ Poi il controllo, che legge le sei risposte e nient'altro:
   e l'oggetto: «The response includes metadata about the request (session
   ID, usage, etc.) with the structured output in the structured_output
   field.» (https://code.claude.com/docs/en/headless)
+- Le richieste di permesso: «--permission-prompts <target> Who answers
+  permission prompts with --print: … "none" (nobody: anything that would
+  prompt is denied automatically» (`claude --help`, 2.1.310).
 - Gli strumenti: «--tools <tools...> Specify the list of available tools
   from the built-in set. Use "" to disable all tools» (`claude --help`); e
   «The --allowedTools flag uses permission rule syntax. The trailing *

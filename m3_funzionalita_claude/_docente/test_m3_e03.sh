@@ -39,7 +39,8 @@
 #   - .claude/settings.json (con la regola deny di Edit sul controllo); il
 #     README (il prompt fra i segni, nel template del Modulo 2 con un tag
 #     per ingrediente, role, context, instructions, format e constraints,
-#     il controllo come ultimo passo dentro instructions, e in constraints
+#     il ruolo in una frase sola che dice anche per chi lavora, il
+#     controllo come ultimo passo dentro instructions, e in constraints
 #     un comando per volta e l'uscita nell'ultima riga; righe entro 66
 #     colonne; nessuna versione breve; le dieci sezioni; Linux e WSL 2,
 #     non macOS; nessun identificativo interno nei file per i
@@ -49,11 +50,12 @@
 #     primo turno, al secondo dopo una pagina sbagliata o dopo nessuna
 #     pagina (con --resume e il seguito giusto, byte per byte: la
 #     richiesta nel tag instructions, un comando per volta nel tag
-#     constraints, senza il ruolo), mai finito (quattro
-#     chiamate, uscita 1), una chiamata fallita; le opzioni passate a
-#     claude (Read, Write, Edit e le regole Bash delle impostazioni,
-#     --strict-mcp-config), il prompt uguale a quello del README,
-#     ANTHROPIC_API_KEY tolta;
+#     constraints, senza il ruolo; il passo stampato «Turno n: <titolo>»,
+#     con un titolo semplice per ogni seguito, mai un tag), mai finito
+#     (quattro chiamate, uscita 1), una chiamata fallita; le opzioni
+#     passate a claude (Read, Write, Edit e le regole Bash delle
+#     impostazioni, --strict-mcp-config), il prompt uguale a quello del
+#     README, ANTHROPIC_API_KEY tolta;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero;
 #   - shellcheck -x sugli script dell'elemento e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea, nella base di
@@ -80,7 +82,7 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=124
+readonly CASES=128
 readonly FINE="Fatto: la pagina c'è, i suoi KPI sono quelli veri e non \
 carica niente da fuori."
 # La frase della guida di Claude Code che la verifica stampa, com'è oggi
@@ -98,6 +100,13 @@ come chiedeva il primo messaggio; poi esegui python3 controlla_dashboard.py \
 e correggi finché esce 0."
 readonly RICHIESTA_CONTROLLO="Esegui python3 controlla_dashboard.py e \
 correggi genera_dashboard.py finché il controllo esce con 0."
+# I titoli dei passi dei due seguiti, come live.sh li stampa («--- Turno
+# n: <titolo>»): una frase semplice, mai un tag (expect_titolo).
+readonly TITOLO_PAGINA="il seguito, perché la pagina manca"
+readonly TITOLO_CONTROLLO="il seguito, perché il controllo non passa"
+# Per chi lavora Claude, nel ruolo del prompt del README: lo stesso
+# lettore del ruolo di M3-E01.
+readonly LETTORE="per il team di analisi"
 # L'ora UTC in testa a una riga di controlli_dashboard.log.
 readonly RIGA_LOG='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'
 # Gli identificativi interni che i file per i partecipanti non portano.
@@ -145,6 +154,20 @@ expect_absent() {
 seguito_atteso() {
   printf '<instructions>\n%s\n</instructions>\n\n' "$1"
   printf '<constraints>\n%s\n</constraints>' "${UN_COMANDO}"
+}
+
+# Il titolo di un seguito di live.sh: la riga «--- Turno n: <titolo>» c'è,
+# e nessun titolo di passo («--- …») comincia con «<», come quando il
+# seguito, che si apre con un tag, era stampato come titolo. (Le righe del
+# prompt nel comando che handson::run mostra non sono titoli.)
+# Arguments: $1 il nome, $2 l'uscita attesa, $3 la riga attesa.
+expect_titolo() {
+  if (( RC == $2 )) && grep -qxF -- "$3" <<< "${OUT}" \
+      && ! grep -qE -- '^--- (Turno [0-9]+: )?<' <<< "${OUT}"; then
+    pass "$1"
+  else
+    fail "$1 (rc=${RC}, attesa $2, riga «$3»): ${OUT:0:600}"
+  fi
 }
 
 # L'ultima riga di OUT comincia con il testo atteso.
@@ -786,14 +809,15 @@ PY
 }
 
 # Il README: il prompt (in ${TMP}/prompt-readme.txt), nel template del
-# Modulo 2, un tag per ingrediente, con il controllo come ultimo passo
-# dentro <instructions> e un comando per volta in <constraints>, nessuna
+# Modulo 2, un tag per ingrediente, con il ruolo in una frase sola che
+# dice per chi lavora (LETTORE), il controllo come ultimo passo dentro
+# <instructions> e un comando per volta in <constraints>, nessuna
 # versione breve, le dieci sezioni; nessun identificativo interno nei file
 # per i partecipanti.
 t_readme() {
   local f trovati=''
   run python3 -B -I - "${E03}/README.md" "${TMP}/prompt-readme.txt" \
-    "${UN_COMANDO}" <<'PY'
+    "${UN_COMANDO}" "${LETTORE}" <<'PY'
 import re
 import sys
 import textwrap
@@ -831,6 +855,12 @@ if len(a) == 1 and len(b) == 1 and a[0] < b[0]:
             and dentro["role"] and dentro["role"][0].startswith("Sei ") \
             and not any(r.startswith(etichette) for r in righe_p):
         print("un tag per ingrediente ok")
+    # Il ruolo in una frase sola, «Sei …, e per chi lavora»: chi è Claude
+    # in questo compito, e il lettore, lo stesso del ruolo di M3-E01.
+    ruolo = " ".join(" ".join(dentro.get("role", [])).split())
+    if re.fullmatch(r"Sei [^.!?;:]+\.", ruolo) \
+            and " %s " % sys.argv[4] in ruolo:
+        print("il ruolo in una frase, con il lettore ok")
     vincoli = " ".join(" ".join(dentro.get("constraints", [])).split())
     if sys.argv[3] in vincoli:
         print("un comando per volta ok")
@@ -867,6 +897,8 @@ l'ultima riga" 0 "un comando per volta ok"
     "il comando consentito ok"
   expect "README: il prompt nel template del Modulo 2, un tag per \
 ingrediente" 0 "un tag per ingrediente ok"
+  expect "README: il ruolo in una frase sola, che dice per chi lavora \
+(${LETTORE})" 0 "il ruolo in una frase, con il lettore ok"
   expect "README: il controllo è l'ultimo passo dentro <instructions>" 0 \
     "controllo all'ultimo passo ok"
   expect "README: le righe del prompt in 66 colonne, come sulla slide" 0 \
@@ -990,6 +1022,8 @@ controllo, nei tag instructions e constraints"
     fail "live.sh: il secondo turno non riprende la sessione o non chiede il \
 controllo, un comando per volta, nei tag instructions e constraints"
   fi
+  expect_titolo "live.sh: il secondo turno stampato con il titolo del \
+seguito, mai un tag" 0 "--- Turno 2: ${TITOLO_CONTROLLO}"
   ws w
   live_finto "${w}" FINTO_MODO=senza_pagina
   expect "live.sh: la pagina al secondo turno esce 0" 0 "VERIFICA OK"
@@ -1000,10 +1034,14 @@ instructions e constraints"
     fail "live.sh: senza pagina il secondo turno non chiede lo script, un \
 comando per volta, nei tag instructions e constraints"
   fi
+  expect_titolo "live.sh: senza pagina il secondo turno stampato con il suo \
+titolo, mai un tag" 0 "--- Turno 2: ${TITOLO_PAGINA}"
   ws w
   live_finto "${w}" FINTO_MODO=mai
   expect "live.sh: mai finito esce 1" 1 "VERIFICA KO"
   expect_chiamate "live.sh: mai finito, quattro chiamate" 4
+  expect_titolo "live.sh: mai finito, i turni 2-4 stampati con il titolo \
+del seguito, mai un tag" 1 "--- Turno 4: ${TITOLO_CONTROLLO}"
   ws w
   live_finto "${w}" FINTO_ESITO=ko
   expect "live.sh: una chiamata fallita esce 1" 1 \

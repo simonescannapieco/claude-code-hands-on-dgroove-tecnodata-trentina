@@ -21,6 +21,9 @@
 #   e nel tag constraints la frase con cui finisce anche quello del prompt
 #   del README: «Esegui ogni comando da solo, senza concatenarlo ad altri,
 #   e leggi l'uscita del controllo nella sua ultima riga.»
+# Il passo di un seguito si stampa «Turno <n>: <titolo>», con il titolo
+# semplice di quel seguito (TITOLO_PAGINA, TITOLO_CONTROLLO), mai il suo
+# testo, che comincia con un tag.
 # Ogni turno lascia il suo JSON in prova_dal_vivo/turno-<n>.json dello
 # spazio di lavoro e ne stampa i turni del modello, la durata e i token.
 # Poi verifica.sh dell'elemento.
@@ -72,6 +75,9 @@ SEGUITO_CONTROLLO=$'<instructions>\n'"${RICHIESTA_CONTROLLO}"
 SEGUITO_CONTROLLO+=$'\n</instructions>\n\n<constraints>\n'"${UN_COMANDO}"
 SEGUITO_CONTROLLO+=$'\n</constraints>'
 readonly SEGUITO_CONTROLLO
+# I titoli dei passi dei due seguiti: una frase semplice, mai un tag.
+readonly TITOLO_PAGINA='il seguito, perché la pagina manca'
+readonly TITOLO_CONTROLLO='il seguito, perché il controllo non passa'
 readonly SEGUITI_MASSIMI=3
 readonly CARTELLA_JSON=prova_dal_vivo
 # Il riepilogo di un turno, dal JSON di claude -p (filtro di jq).
@@ -170,7 +176,7 @@ fallita() {
 }
 
 main() {
-  local ws="${1:-}" prompt sessione stato seguito n f out rc=0
+  local ws="${1:-}" prompt sessione stato seguito titolo n f out rc=0
   [[ -n "${ws}" && -d "${ws}" ]] \
     || handson::die "spazio di lavoro assente: ${ws}"
   cd "${ws}"
@@ -199,10 +205,16 @@ main() {
       || handson::die "la verifica dell'elemento non può girare"
     case "${stato}" in
       fatto) break ;;
-      pagina) seguito="${SEGUITO_PAGINA}" ;;
-      *) seguito="${SEGUITO_CONTROLLO}" ;;
+      pagina)
+        seguito="${SEGUITO_PAGINA}"
+        titolo="${TITOLO_PAGINA}"
+        ;;
+      *)
+        seguito="${SEGUITO_CONTROLLO}"
+        titolo="${TITOLO_CONTROLLO}"
+        ;;
     esac
-    handson::step "Turno ${n}: ${seguito}"
+    handson::step "Turno ${n}: ${titolo}"
     turno "${n}" "${seguito}" --resume "${sessione}" \
       || fallita "il turno ${n} non ha dato una risposta"
     riepilogo "${n}"

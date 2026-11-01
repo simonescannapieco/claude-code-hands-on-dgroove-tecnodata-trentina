@@ -84,8 +84,8 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
 
        <role>
        Sei uno sviluppatore Python dell'assistenza clienti di
-       CiaspoLink e prepari la dashboard della settimana come una
-       pagina che si apre senza rete.
+       CiaspoLink e prepari per il team di analisi la dashboard della
+       settimana come una pagina che si apre senza rete.
        </role>
 
        <context>

@@ -29,10 +29,10 @@ Un oggetto JSON, con queste dieci chiavi:
 <constraints>
 Nei conti entrano soltanto i campi con un valore, e un campo
 vuoto resta fuori; arrotonda con la metà per eccesso.
+L'unico comando permesso è python3: eseguilo da solo, senza
+concatenarlo ad altri comandi.
 </constraints>
 
 <instructions>
 Calcola con il codice, sul file, questi dieci indicatori.
-L'unico comando permesso è python3: eseguilo da solo, senza
-concatenarlo ad altri comandi.
 </instructions>

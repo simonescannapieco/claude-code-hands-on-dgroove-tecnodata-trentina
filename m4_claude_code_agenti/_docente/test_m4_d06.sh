@@ -72,7 +72,7 @@ readonly CASES=143
 printf -v INIZIO '%s\n' \
   '<role>' \
   'Sei un tecnico della rete di CiaspoLink e ricostruisci un guasto' \
-  'dai log degli apparati.' \
+  "dai log degli apparati, per l'assistenza clienti." \
   '</role>' \
   '' \
   '<context>' \

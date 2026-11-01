@@ -135,7 +135,8 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
 
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e
-       documenti un modulo legacy che nessuno conosce più.
+       documenti un modulo legacy che nessuno conosce più, per il team
+       del gestionale.
        </role>
 
        <context>
@@ -308,7 +309,7 @@ e, una volta sola, si installano le dipendenze del gestionale (PHPUnit):
        <role>
        Sei uno sviluppatore PHP del gestionale di CiaspoLink e proponi
        il refactoring di un modulo legacy già documentato e coperto da
-       test.
+       test, per il team del gestionale.
        </role>
 
        <context>
@@ -530,6 +531,8 @@ scrive niente nello spazio di lavoro.
   verifica al posto della riga fra i tag `<verification_result>`, poi
   verificate di nuovo:
 
+  <!-- prompt: correzione -->
+
       <context>
       La verifica dello spazio di lavoro dice che manca ancora ciò che
       sta tra i tag <verification_result>, qui sotto.
@@ -547,6 +550,8 @@ scrive niente nello spazio di lavoro.
       <verification_result>
       Non ancora: …
       </verification_result>
+
+  <!-- /prompt: correzione -->
 
   `_docente/live.sh` manda questo messaggio, una volta sola, quando la
   verifica dice «Non ancora». Nella prova del corso la verifica è passata

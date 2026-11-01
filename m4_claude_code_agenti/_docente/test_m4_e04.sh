@@ -14,7 +14,11 @@
 #     corpo del revisore nel template del corso, un tag per ingrediente
 #     (<role> soltanto all'inizio di una sessione e nel subagent, poi gli
 #     altri tag, in ordine; nessuna etichetta della forma di prima), i
-#     prompt 3 e 6 semplici; le frasi di
+#     prompt 3 e 6 semplici; ogni ingrediente nel suo tag (il ruolo una
+#     frase sola, che nei prompt 1 e 5 dice per chi si lavora; la seconda
+#     frase del revisore in testa al tag <context>; la forma del messaggio
+#     di commit nel tag <format>; il controllo l'ultimo passo dei prompt 2
+#     e 5); le frasi di
 #     Anthropic e i loro link, nessun identificativo interno, niente macOS
 #     né Percorso A; nessuna delle incoerenze dei dati di esempio nei file
 #     che arrivano ai partecipanti;
@@ -77,7 +81,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e04.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=110
+readonly CASES=114
 readonly SCRIPT_REL=progetti/gestionale-php/bin/controllo-notturno.php
 readonly RIFERIMENTO="${E04}/soluzione/${SCRIPT_REL}"
 readonly CONTROLLO="python3 controlla_notturno.py"
@@ -424,6 +428,7 @@ PY
   expect "README: sezioni, prompt, controllo, revisore, frasi, parole" 0 \
     "README ok"
   test_forma
+  test_ingredienti
   run grep -rEn -- "${INTERNI}" "${E04}/README.md" "${E04}/esercizio" \
     "${E04}/verifica.sh" "${E04}/verifica.py" "${E04}/sessioni_claude.py"
   expect "nessun identificativo interno nei file dei partecipanti" 1 ""
@@ -492,7 +497,7 @@ testi = {"il prompt %d" % n: prompt(righe, n) for n in range(1, 7)}
 testi["revisore.md"] = open(sys.argv[2], encoding="utf-8").read() \
     .split("\n---\n", 1)[-1]
 attese = {"il prompt 1": (True, CINQUE),
-          "il prompt 2": (False, ["instructions", "constraints"]),
+          "il prompt 2": (False, ["instructions", "format", "constraints"]),
           "il prompt 3": (False, []),
           "il prompt 4": (False, ["context", "instructions", "format"]),
           "il prompt 5": (True, CINQUE),
@@ -504,6 +509,110 @@ print("forma ok" if not diversi else "forma: " + "; ".join(diversi))
 PY
   expect "README: i prompt e il revisore nel template, un tag per ingrediente" \
     0 "forma ok"
+}
+
+# Ogni ingrediente nel suo tag (riferimenti/pattern-di-prompt.md, la scheda
+# e la lista di controllo), nei prompt del README e nel revisore: il ruolo
+# è una frase sola, e nei prompt 1 e 5 dice per chi si lavora; la seconda
+# frase del revisore apre il tag <context>, con le sue parole; la forma del
+# messaggio di commit del prompt 2 sta nel tag <format>, con le sue parole;
+# nei prompt 2 e 5 il controllo, da solo, è l'ultimo passo numerato del tag
+# <instructions>, e nessun altro passo lo nomina.
+test_ingredienti() {
+  run python3 -B -I - "${E04}/README.md" \
+    "${E04}/esercizio/.claude/agents/revisore.md" "${CONTROLLO}" <<'PY'
+import re
+import sys
+import textwrap
+
+readme, revisore, comando = sys.argv[1:4]
+TAG = re.compile(r"<(/?)([a-z_]+)>")
+LETTORE = ", per il team del gestionale."
+FUORI = "Non hai visto scrivere lo script: lo guardi da fuori."
+REGOLA = ("un messaggio come chiede la regola 11.1 di "
+          "progetti/gestionale-php/docs/convenzioni.md.")
+
+
+def prompt(righe, n):
+    """Il prompt n fra i segni, senza il rientro comune; "" se non c'è."""
+    a = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- prompt %d -->" % n]
+    b = [i for i, r in enumerate(righe)
+         if r.strip() == "<!-- /prompt %d -->" % n]
+    if len(a) != 1 or len(b) != 1 or a[0] > b[0]:
+        return ""
+    return textwrap.dedent("\n".join(righe[a[0] + 1:b[0]])).strip("\n")
+
+
+def tag(testo):
+    """{nome: [righe]}: i tag di primo livello e le loro righe."""
+    fuori, nome, dentro = {}, None, []
+    for riga in testo.split("\n"):
+        m = TAG.fullmatch(riga.strip())
+        if m and nome is None and not m.group(1):
+            nome, dentro = m.group(2), []
+        elif m and m.group(1) and m.group(2) == nome:
+            fuori[nome], nome = dentro, None
+        elif nome is not None:
+            dentro.append(riga)
+    return fuori
+
+
+def piatto(righe):
+    return " ".join(" ".join(righe).split())
+
+
+def una_frase(righe):
+    """Una frase sola: finisce con il punto, e nessun punto prima apre
+    un'altra frase."""
+    testo = piatto(righe)
+    return testo.endswith(".") and not re.search(r"[.!?] [A-ZÀ-Ý]",
+                                                 testo[:-1])
+
+
+def passi(righe):
+    """I passi numerati, ciascuno su una riga, con le sue righe rientrate."""
+    out = []
+    for riga in righe:
+        if re.match(r"\d+\. ", riga):
+            out.append(riga)
+        elif out and riga.startswith("   "):
+            out[-1] += " " + riga
+        elif out:
+            break
+    return [" ".join(p.split()) for p in out]
+
+
+righe = open(readme, encoding="utf-8").read().split("\n")
+p = {n: tag(prompt(righe, n)) for n in (1, 2, 5)}
+r = tag(open(revisore, encoding="utf-8").read().split("\n---\n", 1)[-1])
+ruoli = {"il prompt 1": p[1], "il prompt 5": p[5], "revisore.md": r}
+male = [k for k, t in ruoli.items() if not una_frase(t.get("role", []))]
+male += ["%s senza il lettore" % k for k in ("il prompt 1", "il prompt 5")
+         if not piatto(ruoli[k].get("role", [])).endswith(LETTORE)]
+print("ruoli ok" if not male else "ruoli: %s" % male)
+apre = r.get("context", [])[:1]
+print("revisore ok" if apre == [FUORI] else "revisore: <context> apre %s"
+      % apre)
+f2, i2 = (piatto(p[2].get(k, [])) for k in ("format", "instructions"))
+print("formato ok" if REGOLA in f2 and "11.1" not in i2 else
+      "formato: prompt 2 %r | %r" % (f2, i2))
+male = []
+for n in (2, 5):
+    s = passi(p[n].get("instructions", []))
+    if not s or comando not in s[-1] or "da solo" not in s[-1] \
+            or any(comando in x for x in s[:-1]):
+        male.append(n)
+print("ultimo passo ok" if not male else "ultimo passo: i prompt %s" % male)
+PY
+  expect "README: i ruoli, una frase; nei prompt 1 e 5 per chi si lavora" 0 \
+    "ruoli ok"
+  expect "revisore.md: la seconda frase del ruolo apre il tag <context>" 0 \
+    "revisore ok"
+  expect "README: il messaggio di commit del prompt 2 nel tag <format>" 0 \
+    "formato ok"
+  expect "README: nei prompt 2 e 5 il controllo è l'ultimo passo numerato" 0 \
+    "ultimo passo ok"
 }
 
 # Il README e SPECIFICA.md di una traccia del laboratorio: la prima frase

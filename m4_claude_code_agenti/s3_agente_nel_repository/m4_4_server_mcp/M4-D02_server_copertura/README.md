@@ -263,7 +263,8 @@ con il server. Come dati: lo strumento del server chiamato 3 su 3;
 risposte con esattamente i comuni giusti, con il server 3 su 3, senza 0
 su 3. Le sei esecuzioni sono nella cartella `soluzione/risposte/` di
 questo elemento. La vostra prova, rifatta dal docente con `claude -p`
-invece che in una sessione il 28 ottobre 2026, con Claude Code 2.1.312:
+invece che in una sessione il 28 ottobre 2026, con Claude Code 2.1.312 e
+con la domanda di allora, le stesse parole in una riga e senza tag:
 `claude mcp get copertura` ha detto «Status: ✔ Connected», la risposta ha
 nominato i 13 comuni e la verifica è passata.
 
@@ -319,7 +320,8 @@ Sonnet con effort low), dal JSON di ogni esecuzione: le tre con il server,
 in entrata ciascuna, cache compresa; le tre senza, 3, 4 e 3 turni, in
 7,4, 14,8 e 6,5 secondi, con 12.626, 12.728 e 12.627 token in entrata.
 La vostra prova, rifatta dal docente con `claude -p` il 28 ottobre 2026
-(Claude Code 2.1.312): la domanda 3 turni, 5,7 secondi e 81.080 token in
+(Claude Code 2.1.312), con la domanda di allora, le stesse parole in una
+riga e senza tag: la domanda 3 turni, 5,7 secondi e 81.080 token in
 entrata; il salvataggio di `risposta.txt` 2 turni, 7,1 secondi e 56.315
 token.
 

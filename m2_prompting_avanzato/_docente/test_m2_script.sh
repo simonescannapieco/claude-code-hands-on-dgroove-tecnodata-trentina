@@ -12,7 +12,9 @@
 #   - i due prompt del template (il prompt B di M2-D01, la versione di
 #     riferimento di M2-E01): un tag per ingrediente, ogni tag su una riga
 #     sua e nell'ordine, poi i dati nei loro tag; il ruolo che comincia
-#     con «Sei »; nessuna etichetta; v2 uguale a v1 byte per byte;
+#     con «Sei »; nessuna etichetta; la lunghezza e il tono nel tag
+#     format, nessuno dei due in constraints; il contesto che dice in
+#     quali tag sono i dati; v2 uguale a v1 byte per byte;
 #   - kit.py senza claude: i segnaposto, le versioni, i controlli, la
 #     consegna al giudice, il giudizio incompleto, il confronto; l'uscita di
 #     controlla (0 tutto superato, 1 un controllo no, 2 un errore); i
@@ -109,7 +111,7 @@ rispettati in v1: impegni)"
 # verifica.py, quelli del confronto di v0 e v1.
 readonly E02_SUP_V1='  v1: controlli 4/4, giudice 4/5'
 readonly E02_SUP_TOTALI='  totali: controlli 2/4 → 4/4; giudice 4 → 4 su 5'
-readonly CASES=316
+readonly CASES=323
 TMP=''
 PASS=0
 FAIL=0
@@ -312,15 +314,23 @@ tag_del_prompt() {
   grep -E '^</?[a-z_]+>$' -- "$1" | tr '\n' ' '
 }
 
+# Il testo di un tag del template, fra la riga che lo apre e quella che
+# lo chiude. Arguments: $1 il file, $2 il nome del tag. Outputs: il testo.
+blocco() {
+  sed -n "/^<$2>\$/,/^<\/$2>\$/p" -- "$1" | sed '1d;$d'
+}
+
 # I due prompt del template del modulo: il prompt B di M2-D01 e la
 # versione di riferimento di M2-E01. Ogni ingrediente nel suo tag, ogni
 # tag da solo su una riga e nell'ordine del modulo (ruolo, contesto,
 # istruzione, formato, vincoli), poi i dati, ciascuno nel suo tag; il ruolo
 # comincia con «Sei »; nessuna riga comincia con un'etichetta («Ruolo:»,
-# «Contesto:», …); e v2, la rimisura, è v1 byte per byte.
+# «Contesto:», …); la lunghezza e il tono stanno nel tag format, come dice
+# la scheda dei pattern, e nessuno dei due in constraints; il contesto
+# dice in quali tag sono i dati; e v2, la rimisura, è v1 byte per byte.
 t_template() {
-  local p f t tags line
-  local -a nomi
+  local p f t tags line fmt vin ctx
+  local -a nomi dati
   for p in "${D01}/demo/prompt-b.md:message" \
       "${E01}/soluzione/prompt/v1.md:message procedures"; do
     f="${p%%:*}"
@@ -340,6 +350,21 @@ t_template() {
         -- "${f}"; then
       fail "${f##*/}: una riga comincia con un'etichetta"
     else pass "${f##*/}: nessuna riga comincia con un'etichetta"; fi
+    fmt="$(blocco "${f}" format)"
+    vin="$(blocco "${f}" constraints)"
+    ctx="$(blocco "${f}" context)"
+    if [[ "${fmt}" == *"120 parole"* && "${fmt}" == *tono* ]]; then
+      pass "${f##*/}: la lunghezza e il tono nel tag format"
+    else fail "${f##*/}: il tag format non dice lunghezza e tono"; fi
+    if [[ "${vin}" != *parole* && "${vin}" != *tono* ]]; then
+      pass "${f##*/}: nel tag constraints né lunghezza né tono"
+    else fail "${f##*/}: lunghezza o tono nel tag constraints"; fi
+    read -ra dati <<< "${p#*:}"
+    for t in "${dati[@]}"; do
+      if [[ "${ctx}" == *"<${t}>"* ]]; then
+        pass "${f##*/}: il contesto dice che i dati sono tra i tag <${t}>"
+      else fail "${f##*/}: il contesto non nomina i tag <${t}>"; fi
+    done
   done
   if cmp -s "${E01}/soluzione/prompt/v1.md" "${E01}/soluzione/prompt/v2.md"
   then pass "M2-E01: v2, la rimisura, è v1 byte per byte"

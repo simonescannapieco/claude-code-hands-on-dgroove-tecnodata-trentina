@@ -57,7 +57,8 @@
 #     i due bracci hanno soltanto Read e le risposte entrano alla fine,
 #     «braccio» e mai «ramo», nessuna sigla interna; i passi nell'ordine
 #     del deck (la preparazione e il passo 1 durante la demo, poi la
-#     prova) e «Tempo» come il deck;
+#     prova) e «Tempo» come il deck; la prova rifatta dal docente il 28
+#     ottobre detta con la domanda di allora, in una riga e senza tag;
 #   - shellcheck -x su verifica.sh, live.sh, lib_mcp.sh (che non è
 #     eseguibile: si carica con source) e questo file.
 # Mai il claude vero: il finto e l'esca stanno davanti nel PATH, e dietro a
@@ -88,7 +89,7 @@ readonly DATI="${RADICE}/progetti/gestionale-php/database"
 readonly FINTO_PY="${MOD}/_docente/claude_finto_m4_d01_d02_d08.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=107
+readonly CASES=108
 VERITA='Ala|Arco|Baselga di Pinè|Borgo Valsugana|Caldonazzo|Lavis'
 VERITA+='|Levico Terme|Mezzolombardo|Mori|Pergine Valsugana|Riva del Garda'
 VERITA+='|Rovereto|Trento'
@@ -1313,6 +1314,22 @@ print("; ".join(problemi) or "passi come il deck")
 PY
   expect "README: bracci, i passi e «Tempo» come il deck" 0 \
     "passi come il deck"
+  # La vostra prova rifatta dal docente il 28 ottobre mandò la domanda di
+  # allora, le stesse parole in una riga e senza tag: le due frasi che ne
+  # danno i numeri lo dicono, prima dei due punti.
+  run python3 -B -I - "${D02}/README.md" <<'PY'
+import re, sys
+piatto = " ".join(open(sys.argv[1], encoding="utf-8").read().split())
+RIFATTA = "rifatta dal docente con `claude -p`"
+DETTA = re.compile(re.escape(RIFATTA) + r"[^:]*?con la domanda di allora, "
+                   r"le stesse parole in una riga e senza tag:")
+n, dette = piatto.count(RIFATTA), len(DETTA.findall(piatto))
+print("prova di allora detta" if n == dette == 2 else
+      "la prova del 28 ottobre: %d frasi, %d dicono la domanda di allora"
+      % (n, dette))
+PY
+  expect "README: la prova del 28 ottobre, con la domanda di allora in una \
+riga" 0 "prova di allora detta"
 }
 
 # Gli script di M4-D02, la sua libreria e questo file, con shellcheck -x.

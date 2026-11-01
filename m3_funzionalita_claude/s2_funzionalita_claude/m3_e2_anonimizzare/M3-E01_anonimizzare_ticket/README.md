@@ -329,8 +329,10 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   controllo, 0 dati personali rimasti in tutte e tre le sessioni; senza,
   1, 16 e 7, nomi e informazioni sulla salute. Nella prima coppia tutti
   e due i file avevano testi riscritti invece che sostituiti, cinque con
-  il controllo e tre senza: la forma non li distingue, e decidono i dati
-  rimasti. Confermata 3 su 3. Il ciclo della guida, dalle chiamate di
+  il controllo e tre senza: la forma è giusta o sbagliata, non si
+  contano i testi, e ne basta uno riscritto a sbagliarla; così la forma
+  non li distingue, e decidono i dati rimasti. Confermata 3 su 3. Il
+  ciclo della guida, dalle chiamate di
   ogni sessione con il controllo: il controllo eseguito 6, 6 e 3 volte,
   l'ultima con uscita 0; confermata 3 su 3. In quattro sessioni su sei,
   una con il controllo e tre senza, una chiamata Bash ha nominato il
