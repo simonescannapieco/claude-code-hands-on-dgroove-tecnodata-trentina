@@ -188,14 +188,17 @@ dalle risposte, non legge `esiti.tsv` e non scrive niente.
 
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Haiku e Sonnet, tre coppie per modello): l'immagine grande è stata letta
-giusta in tutte e sei le chiamate, «critici: 3» e i tre apparati;
-quella piccola ha avuto sei volte su sei la risposta «non leggibile».
-Per ciascuno dei due modelli: «Testo leggibile, immagine grande»
-confermata 3 su 3; «Sotto i 200 pixel, Claude può sbagliare» confermata
-0 su 3, perché un rifiuto non è un errore: la frase di Anthropic dice
-che può sbagliare, e in questa registrazione Claude non ha sbagliato, ha
-detto che non riusciva a leggere. Le dodici risposte sono nella cartella
-`soluzione/risposte/` di questo elemento.
+giusta in cinque chiamate su sei, «critici: 3» e i tre apparati; nella
+prima di Haiku la risposta è stata «critici: 4», con i tre apparati
+giusti e uno ripetuto. Quella piccola ha avuto sei volte su sei la
+risposta «non leggibile». «Testo leggibile, immagine grande»: su Sonnet
+confermata 3 su 3, su Haiku 2 su 3, perché nella prima coppia nessuna
+delle due immagini è stata letta giusta, e la coppia non distingue.
+Per ciascuno dei due modelli, «Sotto i 200 pixel, Claude può sbagliare»
+confermata 0 su 3, perché un rifiuto non è un errore: la frase di
+Anthropic dice che può sbagliare, e sulla piccola Claude non ha
+sbagliato, ha detto che non riusciva a leggere. Le dodici risposte sono
+nella cartella `soluzione/risposte/` di questo elemento.
 
 ## Verifica (tools/verifica.sh M3-D01)
 

@@ -268,15 +268,19 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
   mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
   installata può ancora approvare. Nella prima e nella terza sessione la
   verifica è uscita con 0: i dieci indicatori del blocco `kpi` quelli
-  veri, i sette numeri singoli nel testo della pagina, niente da fuori.
-  Nella seconda è stata negata una chiamata Bash, nessuno dei due comandi
+  veri, nel testo della pagina sei e sette dei sette numeri singoli,
+  niente da fuori; nella terza dopo due chiamate Bash negate. Nella
+  seconda è stata negata una chiamata Bash, nessuno dei due comandi
   consentiti, e la sessione è finita senza la pagina e senza il
   controllo: `genera_dashboard.py` scritto, `dashboard.html` assente, la
-  verifica uscita con 1. Nella vostra sessione una richiesta così la
-  vedete voi, e la decidete come dice il passo 3. Il ciclo della guida,
+  verifica uscita con 1; nella risposta Claude chiedeva il permesso di
+  eseguire i due script, o che li lanciasse chi legge, uno alla volta.
+  Nella vostra sessione una richiesta così la vedete voi, e la decidete
+  come dice il passo 3. Il ciclo della guida,
   dalle chiamate di ogni sessione: il controllo eseguito una volta nella
-  prima e nella terza, con uscita 0, mai nella seconda; confermata
-  2 su 3.
+  prima e nella terza, con uscita 0, mai nella seconda, che è non
+  decidibile: la richiesta negata l'ha fermata prima della pagina, dove
+  un partecipante risponde. Confermata 2 su 3, non decidibile 1.
 
 ### Il confronto con M3-E02
 
@@ -374,11 +378,11 @@ search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
-approvazioni, il prompt in un solo messaggio), le tre sessioni: 6, 5 e 7
-turni (`num_turns`) in 30,9, 35,4 e 43,3 secondi, la seconda senza la
-pagina; nel JSON delle risposte, token in entrata 10, 8 e 10, scritti in
-cache 22.651, 22.214 e 22.938, letti dalla cache 125.287, 88.881 e
-121.962, in uscita 4.359, 4.780 e 4.705. Alla fine, `/exit`.
+approvazioni, il prompt in un solo messaggio), le tre sessioni: 8, 5 e 9
+turni (`num_turns`) in 45,7, 37,0 e 39,9 secondi, la seconda senza la
+pagina; nel JSON delle risposte, token in entrata 10, 8 e 16, scritti in
+cache 24.668, 22.373 e 23.528, letti dalla cache 129.235, 88.825 e
+216.543, in uscita 5.862, 4.954 e 5.017. Alla fine, `/exit`.
 
 ## Per approfondire
 

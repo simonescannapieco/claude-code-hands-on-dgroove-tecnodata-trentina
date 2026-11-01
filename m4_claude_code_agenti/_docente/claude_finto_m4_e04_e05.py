@@ -12,14 +12,19 @@ produrrebbe una sessione: provano i controlli, non il modello.
 Gli argomenti: le opzioni di handson::claude_p e dei live.sh (OPZIONI, con
 quanti valori prendono), poi «--» e il prompt. Un'opzione che non conosce
 la rifiuta («error: unknown option», uscita 1), come un --output-format
-diverso da json. «--version» stampa una versione finta.
+che non è json né stream-json, o stream-json senza --verbose. «--version»
+stampa una versione finta.
 
 Ogni invocazione aggiunge a FINTO_LOG (obbligatorio, tranne --version) una
 riga JSON: argv, cwd, chiave (se ANTHROPIC_API_KEY era nell'ambiente). Il
 numero della chiamata è il numero di righe del registro. Una chiamata
 senza --resume apre la sessione «sessione-finta-<numero>», con --resume
 continua quella data. La risposta è un JSON come quello di
-`claude -p --output-format json`.
+`claude -p --output-format json`; con stream-json, lo stream: l'avvio, un
+messaggio, il risultato (3 turni, 1000+n ms, 1110 token in entrata e 50
+in uscita) e, quando la chiamata ha chiamato il revisore, che lavora in
+background, la sua notifica e un secondo risultato (2 turni, 500 ms, 555
+e 25; result_index 1, origin task-notification).
 
 Le trascrizioni, solo se c'è PN_CLAUDE_DIR (mai in ~/.claude): la
 cartella del progetto è PN_CLAUDE_DIR/projects/<percorso della cartella
@@ -70,7 +75,7 @@ from typing import Dict, List, Optional, Tuple
 OPZIONI = {"-p": 0, "--print": 0, "--allowedTools": 1, "--model": 1,
            "--permission-mode": 1, "--permission-prompts": 1,
            "--output-format": 1, "--setting-sources": 1, "--effort": 1,
-           "--strict-mcp-config": 0, "--resume": 1}
+           "--strict-mcp-config": 0, "--resume": 1, "--verbose": 0}
 SCRIPT = {"M4-E04": "progetti/gestionale-php/bin/controllo-notturno.php",
           "M4-E05": "rapporto_giornaliero.py"}
 CONTROLLO = {"M4-E04": "python3 controlla_notturno.py",
@@ -177,6 +182,7 @@ class Trascrizione:
         self.cartella = None  # type: Optional[str]
         self.sessione = sessione
         self.n = 0
+        self.subagenti = 0
         if base:
             self.cartella = os.path.join(base, "projects", re.sub(
                 r"[^A-Za-z0-9]", "-", os.getcwd()))
@@ -212,6 +218,7 @@ class Trascrizione:
 
 def revisore(t: Trascrizione, item: str, chiamata: int) -> None:
     """Una chiamata Agent al revisore, con la sua trascrizione."""
+    t.subagenti += 1
     agente = "a%05dfinto" % chiamata
     prompt = ("Ecco il diff dal primo commit dello spazio di lavoro (finto): "
               "controlla il contratto d'uscita e i messaggi dello script con "
@@ -301,6 +308,34 @@ def risposta(sessione: str, numero: int) -> dict:
                       "cache_read_input_tokens": 1000, "output_tokens": 50}}
 
 
+def stampa(valori: Dict[str, str], sessione: str, primo: dict,
+           background: bool) -> None:
+    """La risposta: il JSON di --output-format json, oppure lo stream di
+    stream-json, un evento per riga; con un subagent in background due
+    risultati, il secondo dopo la notifica del subagent."""
+    if valori.get("--output-format") == "json":
+        print(json.dumps(primo, ensure_ascii=False))
+        return
+    testo = {"type": "text", "text": "(risposta finta, non di Claude)"}
+    eventi = [{"type": "system", "subtype": "init", "session_id": sessione},
+              {"type": "assistant", "session_id": sessione,
+               "message": {"role": "assistant", "content": [testo]}},
+              dict(primo, result_index=0)]
+    if background:
+        eventi += [{"type": "user", "session_id": sessione,
+                    "message": {"role": "user", "content":
+                                "<task-notification>(finta)"
+                                "</task-notification>"}},
+                   dict(primo, num_turns=2, duration_ms=500, result_index=1,
+                        origin={"kind": "task-notification"},
+                        usage={"input_tokens": 5,
+                               "cache_creation_input_tokens": 50,
+                               "cache_read_input_tokens": 500,
+                               "output_tokens": 25})]
+    for evento in eventi:
+        print(json.dumps(evento, ensure_ascii=False))
+
+
 def main(argv: List[str]) -> int:
     if argv == ["--version"]:
         print("2.1.312 (Claude Code, finto)")
@@ -310,8 +345,12 @@ def main(argv: List[str]) -> int:
         if argv[:1] not in (["-p"], ["--print"]):
             raise Rifiuto("claude finto: serve -p")
         valori, prompt = leggi_argomenti(argv[1:])
-        if valori.get("--output-format") != "json":
-            raise Rifiuto("error: --output-format diverso da json")
+        formato = valori.get("--output-format")
+        if formato not in ("json", "stream-json"):
+            raise Rifiuto("error: --output-format né json né stream-json")
+        if formato == "stream-json" and "--verbose" not in valori:
+            raise Rifiuto("error: il finto vuole --verbose con "
+                          "--output-format stream-json")
     except Rifiuto as exc:
         sys.stderr.write("%s\n" % exc)
         return 1
@@ -328,7 +367,7 @@ def main(argv: List[str]) -> int:
         lavoro(t, item, prompt, numero)
     t.messaggio("assistant", [{"type": "text",
                                "text": "(risposta finta, non di Claude)"}])
-    print(json.dumps(risposta(sessione, numero), ensure_ascii=False))
+    stampa(valori, sessione, risposta(sessione, numero), t.subagenti > 0)
     return 0
 
 

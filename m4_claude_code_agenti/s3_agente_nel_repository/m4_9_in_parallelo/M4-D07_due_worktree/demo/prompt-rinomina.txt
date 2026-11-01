@@ -3,5 +3,5 @@ Rinomina il parametro giorni_aperta della funzione urgente in giorni_di_apertura
 </instructions>
 
 <constraints>
-Non cambiare altro.
+Lascia invariato tutto il resto.
 </constraints>

@@ -40,7 +40,8 @@ un commit e nessuna modifica, con:
 - `progetti/urgenze/`: il progetto più piccolo del corso, la funzione
   `urgente(clienti, giorni_aperta)` di CiaspoLink e i suoi tre test;
 - `prompt-esempio.txt` e `prompt-rinomina.txt`: le due richieste, che
-  nominano il file con il suo percorso e chiedono di non cambiare altro;
+  nominano il file con il suo percorso e chiedono di lasciare invariato
+  tutto il resto;
 - `fotografa.sh`: la fotografia di git dopo un braccio, da prendere
   subito: lo stato del checkout principale (`git status --porcelain`) e,
   secondo il braccio, una copia del suo `urgenza.py` oppure, per ogni
@@ -275,10 +276,10 @@ due bracci.
 
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low), dal JSON di ogni sessione: senza worktree,
-l'esempio 3 turni (`num_turns`), 6,6 secondi e 52.778 token in entrata,
-cache compresa, la rinomina 6 turni, 10,4 secondi e 90.645 token; con i
-worktree, l'esempio 3 turni, 6,9 secondi e 53.599 token, la rinomina 6
-turni, 10,2 secondi e 91.941 token.
+l'esempio 3 turni (`num_turns`), 6,6 secondi e 52.788 token in entrata,
+cache compresa, la rinomina 4 turni, 10,9 secondi e 71.570 token; con i
+worktree, l'esempio 3 turni, 6,8 secondi e 53.603 token, la rinomina 6
+turni, 14,2 secondi e 91.611 token.
 
 ## Per approfondire
 

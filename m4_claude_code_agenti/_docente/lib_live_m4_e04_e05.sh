@@ -3,8 +3,9 @@
 # lib_live_m4_e04_e05.sh -- le funzioni comuni dei _docente/live.sh di
 # M4-E04 e M4-E05, le due varianti della traccia (c) del laboratorio: lo
 # spazio di lavoro al punto di partenza, i prompt del README e il titolo
-# del loro turno, i turni di claude -p con il loro JSON e il loro
-# riepilogo, le due parti della prova, la verifica finale.
+# del loro turno, i turni di claude -p con il loro stream, il loro ultimo
+# risultato e il riepilogo che somma tutti i risultati (lib_turni_m4.sh),
+# le due parti della prova, la verifica finale.
 # ---------------------------------------------------------------------
 # Libreria: si fa SOURCE dopo tools/lib_handson.sh, non si esegue (nessun
 # bit di esecuzione). Le funzioni leggono le variabili che il live.sh
@@ -13,24 +14,19 @@
 #   LAB_CONTROLLO  il verifica.sh dell'elemento
 #   LAB_STRUMENTI  gli strumenti consentiti (--allowedTools)
 # e lavorano nella cartella corrente, lo spazio di lavoro.
-# I JSON dei turni stanno FUORI dallo spazio di lavoro: in PN_LIVE_JSON,
+# I file dei turni (lo stream turno-<n>.jsonl e il suo ultimo risultato,
+# turno-<n>.json) stanno FUORI dallo spazio di lavoro: in PN_LIVE_JSON,
 # oppure accanto, in <spazio di lavoro>.prova_dal_vivo/. Una sessione
 # non deve poter leggere le risposte delle sessioni prima: la seconda
 # parte riparte dalla nota, non dal JSON della prima.
 # =====================================================================
 
+# shellcheck source=lib_turni_m4.sh
+source "${BASH_SOURCE[0]%/*}/lib_turni_m4.sh"
+
 readonly LAB_MODELLO=sonnet
 readonly LAB_SEGUITI=2
 readonly LAB_SEGNO_REVISORE="non ha tenuto"
-# Il riepilogo di un turno, dal JSON di claude -p (filtro di jq).
-# shellcheck disable=SC2016  # \(…) è di jq, non un'espansione della shell
-LAB_RIEPILOGO='"  turno \($n): \(.num_turns // "?") turni del modello, '
-LAB_RIEPILOGO+='\(((.duration_ms // 0) / 1000) | floor) s, token in '
-LAB_RIEPILOGO+='entrata \((.usage.input_tokens // 0)'
-LAB_RIEPILOGO+=' + (.usage.cache_creation_input_tokens // 0)'
-LAB_RIEPILOGO+=' + (.usage.cache_read_input_tokens // 0)), in uscita '
-LAB_RIEPILOGO+='\(.usage.output_tokens // 0)"'
-readonly LAB_RIEPILOGO
 LAB_JSON=''
 LAB_SESSIONE=''
 LAB_PROMPT=()
@@ -128,25 +124,27 @@ lab::cartella_json() {
   handson::note "i JSON dei turni in ${LAB_JSON}"
 }
 
-# Un turno: claude -p con il JSON in LAB_JSON/turno-<n>.json, nella
-# modalità di permesso di HANDSON_PERMISSION_MODE; poi il riepilogo e
-# l'ID di sessione in LAB_SESSIONE. Va chiamata nella shell dello script,
-# non dentro $(…): così una precondizione di handson::claude_p esce davvero
-# con 2, e una risposta che manca chiude con 1.
+# Un turno: claude -p in stream-json, lo stream in
+# LAB_JSON/turno-<n>.jsonl e il suo ultimo risultato in turno-<n>.json
+# (turni::chiama), nella modalità di permesso di HANDSON_PERMISSION_MODE;
+# poi il riepilogo di tutti i risultati e l'ID di sessione in
+# LAB_SESSIONE. Va chiamata nella shell dello script, non dentro $(…):
+# così una precondizione di handson::claude_p esce davvero con 2, e una
+# risposta che manca chiude con 1.
 # Globals: LAB_STRUMENTI, LAB_JSON (lette); LAB_SESSIONE (assegnata).
 # Arguments: $1 il numero del turno, $2 il testo, poi le opzioni in più
 # (per esempio --resume <ID>).
 lab::turno() {
-  local n="$1" testo="$2" file
+  local n="$1" testo="$2" base
   shift 2
-  file="${LAB_JSON}/turno-${n}.json"
-  handson::claude_p "${LAB_MODELLO}" "${LAB_STRUMENTI}" "${testo}" \
-    --effort medium --strict-mcp-config "$@" > "${file}" \
+  base="${LAB_JSON}/turno-${n}"
+  turni::chiama "${base}" "${LAB_MODELLO}" "${LAB_STRUMENTI}" "${testo}" \
+    --effort medium --strict-mcp-config "$@" \
     || lab::fallita "il turno ${n} non ha dato una risposta"
-  jq -r --arg n "${n}" "${LAB_RIEPILOGO}" "${file}" \
-    || printf '  turno %s: il JSON non si legge\n' "${n}"
+  turni::riepilogo "${n}" "${base}.jsonl"
   LAB_SESSIONE="$(jq -er \
-    '.session_id | select(type == "string" and length > 0)' "${file}")" \
+    '.session_id | select(type == "string" and length > 0)' \
+    "${base}.json")" \
     || lab::fallita "il turno ${n} non ha un ID di sessione"
 }
 

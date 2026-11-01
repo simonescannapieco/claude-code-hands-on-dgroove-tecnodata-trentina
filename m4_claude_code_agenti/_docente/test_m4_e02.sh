@@ -81,7 +81,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e01_e02.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e01_e02.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=105
+readonly CASES=107
 readonly PROGETTO=progetti/gestionale-php
 readonly COMANDO="tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit \
 -c progetti/gestionale-php"
@@ -656,7 +656,7 @@ if len(s) != 3 or not all(comando in x and "da solo" in x
         not in s[0] or "Prima dell'ultimo commit" not in s[1] \
         or "@agent-revisore" not in s[1] or comando in s[1] \
         or not s[2].startswith("3. Correggi ciò che il revisore segnala") \
-        or not s[2].endswith("e fai l'ultimo commit."):
+        or not s[2].endswith("e, quando passa, fai l'ultimo commit."):
     male.append(5)
 print("ultimo passo ok" if not male else "ultimo passo: i prompt %s" % male)
 PY
@@ -1092,7 +1092,8 @@ for n, r in enumerate(righe, 1):
     c = {a[i]: a[i + 1] for i in range(len(a) - 1)}
     ok &= c.get("--model") == "sonnet" and c.get("--effort") == "medium"
     ok &= c.get("--allowedTools") == strumenti
-    ok &= c.get("--output-format") == "json" and "--strict-mcp-config" in a
+    ok &= c.get("--output-format") == "stream-json" and "--verbose" in a
+    ok &= "--strict-mcp-config" in a
     ok &= c.get("--permission-mode") == ("plan" if n == 1 else "dontAsk")
     ok &= c.get("--resume") == {1: None, 5: None}.get(n, "sessione-finta-1")
     prompt = open(os.path.join(sys.argv[3], "prompt-%d.txt" % n),
@@ -1120,6 +1121,34 @@ parte del laboratorio." <<< "${OUT}" \
   fi
 }
 
+# Il riepilogo di ogni turno (in OUT) somma tutti i risultati della sua
+# chiamata. Il claude finto dà un risultato solo (4 turni, 2500 ms, 2510
+# token in entrata e 300 in uscita), e due quando la chiamata ha un
+# subagent che lavora in background, come il turno 2 con autore-test (poi
+# 2 turni, 1000 ms, 1255 e 150): il JSON del turno è l'ultimo risultato,
+# lo stream intero gli sta accanto. Arguments: $1 lo spazio di lavoro.
+riepiloghi() {
+  local j="$1.prova_dal_vivo"
+  if grep -qxF "  turno 1: 4 turni del modello, 2 s, token in entrata 2510, \
+in uscita 300" <<< "${OUT}" \
+      && grep -qxF "  turno 2: 6 turni del modello in 2 segmenti, 3 s, token \
+in entrata 3765, in uscita 450" <<< "${OUT}"; then
+    pass "live.sh: il riepilogo somma i risultati; un risultato, come prima"
+  else
+    fail "live.sh: i riepiloghi: $(grep -E '^  turno [12]:' <<< "${OUT}")"
+  fi
+  if [[ "$(jq -r '[.type, .result_index, .origin.kind] | join(" ")' \
+      "${j}/turno-2.json" 2> /dev/null)" == "result 1 task-notification" \
+      && "$(jq -s 'map(select(.type == "result")) | length' \
+        "${j}/turno-2.jsonl" 2> /dev/null)" == 2 \
+      && "$(jq -s 'map(select(.type == "result")) | length' \
+        "${j}/turno-1.jsonl" 2> /dev/null)" == 1 ]]; then
+    pass "live.sh: lo stream in turno-<n>.jsonl, l'ultimo risultato nel JSON"
+  else
+    fail "live.sh: turno-2.json o gli stream non sono quelli attesi"
+  fi
+}
+
 t_live() {
   local w
   senza_chiamate "live.sh: spazio di lavoro assente esce 2" \
@@ -1144,6 +1173,7 @@ t_live() {
   expect "live.sh: le due parti e la verifica, esce 0" 0 \
     "VERIFICA OK   verifica.sh dell'elemento"
   titoli_dei_turni
+  riepiloghi "${w}"
   expect_chiamate "live.sh: cinque chiamate" 5
   if [[ -f "${w}.prova_dal_vivo/turno-5.json" \
       && ! -e "${w}/prova_dal_vivo" ]]; then

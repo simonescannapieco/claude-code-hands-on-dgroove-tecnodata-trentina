@@ -30,11 +30,13 @@
 # (grep, find, le forme di sola lettura di git), di regola, non lo
 # chiedono. Lo spazio di lavoro dev'essere al punto di partenza (git status
 # vuoto, nessun commit dopo il primo): altrimenti esce 2 e indica
-# tools/reset_esercizio.sh M4-E03. Ogni turno lascia il suo JSON FUORI
-# dallo spazio di lavoro, in PN_LIVE_JSON oppure accanto, in <spazio di
-# lavoro>.prova_dal_vivo/: la seconda parte, una sessione nuova, non deve
-# poter leggere le risposte della prima. Ne stampa i turni del modello, la
-# durata e i token. Poi verifica.sh.
+# tools/reset_esercizio.sh M4-E03. Ogni turno, in stream-json, lascia il
+# suo stream (turno-<n>.jsonl) e il suo ultimo risultato (turno-<n>.json)
+# FUORI dallo spazio di lavoro, in PN_LIVE_JSON oppure accanto, in <spazio
+# di lavoro>.prova_dal_vivo/: la seconda parte, una sessione nuova, non
+# deve poter leggere le risposte della prima. Ne stampa i turni del
+# modello, la durata e i token di tutti i risultati, sommati (con un
+# subagent in background la chiamata ne ha più d'uno). Poi verifica.sh.
 #
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    PN_PHP_SH     il php.sh da usare (default: tools/php.sh del
@@ -58,6 +60,8 @@ readonly CONTROLLO="${ELEMENTO}/verifica.sh"
 readonly README="${ELEMENTO}/README.md"
 # shellcheck source=../../../../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
+# shellcheck source=../../../../_docente/lib_turni_m4.sh
+source "${RADICE}/m4_claude_code_agenti/_docente/lib_turni_m4.sh"
 # shellcheck source=lib_prova_dal_vivo.sh
 source "${SELF%/*}/lib_prova_dal_vivo.sh"
 
@@ -79,7 +83,7 @@ SEGUITO_TEST+=" ${TEST_REL}, da solo, senza concatenarlo ad altri, e"
 SEGUITO_TEST+=" correggi i test finché passano. Poi fai il commit del test."
 printf -v SEGUITO_TEST '%s\n' '<instructions>' "${SEGUITO_TEST}" \
   '</instructions>' '' '<constraints>' \
-  "Non modificare niente in ${PROGETTO}/legacy/." '</constraints>'
+  "${PROGETTO}/legacy/ resta com'è." '</constraints>'
 readonly SEGUITO_TEST="${SEGUITO_TEST%$'\n'}"
 readonly SEGUITI_MASSIMI=2
 # Il turno di correzione, un tag per ingrediente: il contesto, le

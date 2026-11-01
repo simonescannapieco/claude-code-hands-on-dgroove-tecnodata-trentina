@@ -3,10 +3,12 @@
 # lib_prova_dal_vivo.sh -- le funzioni di _docente/live.sh di M4-E03: lo
 # spazio di lavoro al punto di partenza, la cartella dei JSON fuori dallo
 # spazio di lavoro, i prompt del README, un turno di claude -p con il suo
-# JSON, il riepilogo di un turno, l'ID di sessione e la prova dei test fra
-# un turno e l'altro.
-# Libreria: si fa source, non si esegue. Usa tools/lib_handson.sh e queste
-# variabili, che live.sh definisce prima di chiamarla: README, CONTROLLO,
+# stream e il suo ultimo risultato, il riepilogo che somma tutti i
+# risultati di un turno, l'ID di sessione e la prova dei test fra un turno
+# e l'altro.
+# Libreria: si fa source, non si esegue. Usa tools/lib_handson.sh,
+# ../../../../_docente/lib_turni_m4.sh (turni::chiama, turni::riepilogo) e
+# queste variabili, che live.sh definisce prima di chiamarla: README, CONTROLLO,
 # MODELLO, STRUMENTI, PHP_SH, PROGETTO, TEST_REL; e N_TURNO, il contatore
 # dei turni, PROMPT, i prompt del README, e CARTELLA_JSON, che assegna
 # prova::cartella_json.
@@ -105,19 +107,22 @@ PY
 }
 
 # Un turno: claude -p su ${MODELLO}, effort medium, senza server MCP, con
-# gli strumenti di ${STRUMENTI}; il JSON in ${CARTELLA_JSON}/turno-<n>.json.
-# La modalità di permesso è HANDSON_PERMISSION_MODE (dontAsk, o plan per la
-# proposta). Va chiamata nella shell dello script, non dentro $(…): così
-# una precondizione di handson::claude_p esce davvero con 2.
+# gli strumenti di ${STRUMENTI}, in stream-json: lo stream in
+# ${CARTELLA_JSON}/turno-<n>.jsonl, il suo ultimo risultato in
+# turno-<n>.json (turni::chiama). La modalità di permesso è
+# HANDSON_PERMISSION_MODE (dontAsk, o plan per la proposta). Va chiamata
+# nella shell dello script, non dentro $(…): così una precondizione di
+# handson::claude_p esce davvero con 2.
 # Globals: N_TURNO (incrementata). Arguments: $1 il testo, poi le opzioni
-# in più (--resume <id>). Returns: l'uscita di claude.
+# in più (--resume <id>). Returns: 0; 1 se claude fallisce o non dà un
+# risultato.
 prova::turno() {
   local testo="$1"
   shift
   N_TURNO=$((N_TURNO + 1))
   handson::step "Turno ${N_TURNO} (${HANDSON_PERMISSION_MODE})"
-  handson::claude_p "${MODELLO}" "${STRUMENTI}" "${testo}" --effort medium \
-    --strict-mcp-config "$@" > "${CARTELLA_JSON}/turno-${N_TURNO}.json"
+  turni::chiama "${CARTELLA_JSON}/turno-${N_TURNO}" "${MODELLO}" \
+    "${STRUMENTI}" "${testo}" --effort medium --strict-mcp-config "$@"
 }
 
 # Il turno della proposta, in plan mode: la stessa prova::turno con
@@ -135,18 +140,10 @@ prova::sessione() {
     "${CARTELLA_JSON}/turno-${N_TURNO}.json"
 }
 
-# Turni del modello, durata e token dell'ultimo turno, su STDOUT.
+# Turni del modello, durata e token dell'ultimo turno, sommati su tutti i
+# risultati del suo stream, su STDOUT.
 prova::riepilogo() {
-  # shellcheck disable=SC2016  # \(…) è di jq, non un'espansione della shell
-  local filtro='"  turno \($n): \(.num_turns // "?") turni del modello, '
-  filtro+='\(((.duration_ms // 0) / 1000) | floor) s, token in entrata '
-  filtro+='\((.usage.input_tokens // 0)'
-  filtro+=' + (.usage.cache_creation_input_tokens // 0)'
-  filtro+=' + (.usage.cache_read_input_tokens // 0)), in uscita '
-  filtro+='\(.usage.output_tokens // 0)"'
-  jq -r --arg n "${N_TURNO}" "${filtro}" \
-    "${CARTELLA_JSON}/turno-${N_TURNO}.json" \
-    || printf '  turno %s: il JSON non si legge\n' "${N_TURNO}"
+  turni::riepilogo "${N_TURNO}" "${CARTELLA_JSON}/turno-${N_TURNO}.jsonl"
 }
 
 # I test di caratterizzazione sono verdi? Il comando del README, dalla

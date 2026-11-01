@@ -64,7 +64,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e01_e02.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e01_e02.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=89
+readonly CASES=90
 readonly TEST_REL="progetti/gestionale-php/tests/Integrazione"
 readonly COMANDO="tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit \
 -c progetti/gestionale-php"
@@ -706,6 +706,17 @@ t_live() {
   live_finto "${w}"
   expect "live.sh: tre turni e la verifica, esce 0" 0 \
     "VERIFICA OK   verifica.sh dell'elemento"
+  if grep -qxF "  turno 1: 4 turni del modello, 2 s, token in entrata 2510, \
+in uscita 300" <<< "${OUT}" \
+      && [[ "$(jq -s 'map(select(.type == "result")) | length' \
+        "${w}/prova_dal_vivo/turno-3.jsonl" 2> /dev/null)" == 1 \
+        && "$(jq -r '.type' "${w}/prova_dal_vivo/turno-3.json" \
+          2> /dev/null)" == result ]]; then
+    pass "live.sh: un turno con un risultato; lo stream accanto al JSON"
+  else
+    fail "live.sh: il riepilogo o i file del turno: $(grep -E '^  turno' \
+      <<< "${OUT}")"
+  fi
   expect_chiamate "live.sh: tre chiamate" 3
   run python3 -B -I - "${TMP}/finto.log" "${REGOLA}" "${TMP}" <<'PY'
 import json
@@ -716,13 +727,14 @@ righe = [json.loads(r) for r in open(sys.argv[1], encoding="utf-8")]
 attese = {"--model": "sonnet", "--effort": "medium",
           "--allowedTools": "Read,Write,Edit,%s" % sys.argv[2],
           "--permission-mode": "dontAsk", "--permission-prompts": "none",
-          "--output-format": "json", "--setting-sources": "project,local"}
+          "--output-format": "stream-json",
+          "--setting-sources": "project,local"}
 ok = True
 for n, r in enumerate(righe, 1):
     a = r["argv"]
     coppie = {a[i]: a[i + 1] for i in range(len(a) - 1)}
     ok &= all(coppie.get(k) == v for k, v in attese.items())
-    ok &= "--strict-mcp-config" in a and "-p" in a
+    ok &= "--strict-mcp-config" in a and "-p" in a and "--verbose" in a
     ok &= (coppie.get("--resume") == "sessione-finta-1") == (n > 1)
     prompt = open(os.path.join(sys.argv[3], "prompt-%d.txt" % n),
                   encoding="utf-8").read()

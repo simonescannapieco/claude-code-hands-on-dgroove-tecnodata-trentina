@@ -274,7 +274,7 @@ quella con la barra sì.
        3. Correggi ciò che il revisore segnala, poi esegui di nuovo il
           controllo, da solo:
           tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit -c progetti/gestionale-php
-          e fai l'ultimo commit.
+          e, quando passa, fai l'ultimo commit.
        </instructions>
 
        <format>
@@ -425,22 +425,24 @@ quella con la barra sì.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README): tre file di test nuovi, due in `Integrazione/`
-(`TicketRepositoryApparatoDateTest.php` e
-`TicketRepositoryEstremiDateTest.php`) e uno in `Unit/Ticket/`
-(`FiltroTicketTest.php`); la suite intera sul codice di Claude, «OK (70
-tests, 195 assertions)»; i test nuovi, «OK (26 tests, 88 assertions)»
-sul codice di Claude e, sul codice di partenza, «Tests: 26, Assertions:
-21, Errors: 11, Failures: 3, Warnings: 7.»: falliscono, come devono,
-«il giudice è valido». Il revisore (tools: Glob, Grep, Read): 2
+di questo README): due file di test nuovi, uno in `Integrazione/`
+(`TicketRepositoryApparatoDateTest.php`) e uno in `Unit/Ticket/`
+(`FiltroTicketTest.php`); la suite intera sul codice di Claude, «OK (62
+tests, 368 assertions)»; i test nuovi, «OK (18 tests, 261 assertions)»
+sul codice di Claude e, sul codice di partenza, «Tests: 18, Assertions:
+7, Errors: 13, Failures: 3, Warnings: 6.»: falliscono, come devono, «il
+giudice è valido». Il revisore (tools: Glob, Grep, Read): 2
 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
-dati: `NOTA.md` di 48 righe non vuote, 7 commit, 2 sessioni, «chiamate
-al tool Agent: 4 (autore-test 2, revisore 2)». I 7 commit sono tutti
-della prima parte. La seconda parte non ha fatto commit né chiamato il
-revisore: `NOTA.md` diceva tutti i requisiti soddisfatti; Claude ha
-eseguito il controllo, che passava, e due comandi di phpcs, negati in
-dontAsk, e si è fermato: la risposta chiede il permesso di eseguire
-phpcs, il suo output, o di chiudere senza.
+dati: `NOTA.md` di 28 righe non vuote, 4 commit, 2 sessioni, «chiamate
+al tool Agent: 3 (autore-test 1, revisore 2)». I 4 commit sono tutti
+della prima parte: tre della funzione e quello di `NOTA.md`; un comando
+composto (`mkdir … && mv …`) è stato negato in dontAsk. La seconda parte
+non ha fatto commit né chiamato il revisore: Claude ha letto `NOTA.md`,
+`SPECIFICA.md` e le convenzioni, ha provato un comando composto
+(`cd … && cat … && cat … && grep …`), negato in dontAsk, e si è
+fermato: la risposta dice che senza Bash non può eseguire phpunit né
+fare i commit. Era negato soltanto quel comando composto: il comando
+dei test, `git add` e `git commit`, uno per volta, hanno il permesso.
 
 ## Verifica (tools/verifica.sh M4-E02)
 
@@ -490,9 +492,10 @@ può partire, per esempio se mancano le dipendenze del gestionale.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 66
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 50
 turni del modello in tutto, nelle due parti (sotto); due subagent,
-`autore-test` su Sonnet e `revisore` su Haiku, due chiamate ciascuno.
+`autore-test` su Sonnet, chiamato una volta, e `revisore` su Haiku,
+chiamato due volte.
 I subagent non sono gratis: «What they
 cost you is mostly tokens, since every subagent sends its own requests and
 they count against the same usage as your main conversation.» Per
@@ -511,16 +514,18 @@ search) | Model choice | Effort level»
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente): cinque chiamate,
-quattro nella prima parte e una nella seconda, con 7, 39, 9, 4 e 7 turni
-del modello; 56,9, 341,9, 161,0, 24,0 e 20,4 secondi; token in entrata
-della conversazione principale, cache compresa, 156.416, 1.761.656,
-636.340, 351.175 e 127.322. I token dei subagent si aggiungono a questi.
-Ogni chiamata è contata su tutti i suoi segmenti, dalla trascrizione
-della sessione, perché il JSON di `claude -p` descriveva solo l'ultimo:
-quando un subagent lavorava in background, la conversazione principale
-rispondeva prima, e la notifica del subagent apriva un altro segmento
-della stessa chiamata. Nella seconda chiamata, quattro segmenti, il JSON
-dice 4 turni (`num_turns`), 13,0 secondi e 271.171 token.
+quattro nella prima parte e una nella seconda, con 6, 29, 6, 4 e 5 turni
+del modello; 38,9, 86,6, 23,0, 14,1 e 11,7 secondi; token in entrata
+della conversazione principale, cache compresa, 116.993, 1.013.139,
+327.559, 285.196 e 70.728. I token dei subagent si aggiungono a questi.
+Ogni chiamata è contata su tutti i suoi risultati, come la riga che
+`_docente/live.sh` stampa a ogni turno: quando un subagent lavora in
+background, la conversazione principale risponde prima, e la notifica
+del subagent apre un altro segmento della stessa chiamata, con il suo
+risultato; i secondi sono il tempo di lavoro dei segmenti, senza le
+attese fra uno e l'altro. Nella seconda chiamata, tre segmenti, l'ultimo
+risultato da solo, quello che riporta il JSON di `--output-format json`,
+dice 3 turni, 10,1 secondi e 168.934 token.
 
 ## Per approfondire
 

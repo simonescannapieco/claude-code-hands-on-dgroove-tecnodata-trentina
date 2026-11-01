@@ -9,7 +9,9 @@
 #     immagini sono PNG di 1600×1000 e di 160×100, la grande sotto i 256
 #     KB; prompt.txt chiede le due righe o «non leggibile» e nomina
 #     IMMAGINE una volta, ogni frase nel tag del suo ingrediente
-#     (instructions, format, constraints); .claude/settings.json tiene le
+#     (instructions, format, constraints), il formato in parole positive
+#     («Rispondi soltanto con queste due righe:», nessun «nient'altro»);
+#     .claude/settings.json tiene le
 #     regole prudenti
 #     del repository e nega a Read la pagina, la verità, gli esiti e le
 #     risposte; prepara_esercizio.sh porta tutto nello spazio di lavoro, e
@@ -83,7 +85,9 @@ readonly FINTO_PY="${MOD}/_docente/claude_finto_m3_demo.py"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=144
+readonly CASES=145
+# La prima riga del tag format di prompt.txt, in parole positive.
+readonly POSITIVA="Rispondi soltanto con queste due righe:"
 readonly NA='—'
 FINE='Fatto: ogni affermazione è stata messa alla prova;'
 FINE+=' gli esiti sono qui sopra.'
@@ -494,6 +498,15 @@ t_prompt() {
     pass "prompt: le due righe, oppure «non leggibile»"
   else
     fail "prompt: «${p}»"
+  fi
+  # Il formato in parole positive, la frase intera nel suo tag: che cosa
+  # scrivere, non che cosa evitare.
+  if [[ "${p}" == *"<format>"$'\n'"${POSITIVA}"$'\n'* \
+      && "${p}" != *"nient'altro"* ]]; then
+    pass "prompt: il formato in positivo, «${POSITIVA}»"
+  else
+    fail "prompt: il formato non dice «${POSITIVA}», o dice ancora \
+«nient'altro»"
   fi
   run python3 -B -I - "${D01}/demo/prompt.txt" <<'PY'
 import re

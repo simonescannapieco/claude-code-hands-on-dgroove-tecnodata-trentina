@@ -305,7 +305,7 @@ quella con la barra sì.
        3. Correggi ciò che il revisore segnala, poi esegui di nuovo il
           controllo, da solo:
           python3 controlla_rapporto.py
-          e fai l'ultimo commit.
+          e, quando passa, fai l'ultimo commit.
        </instructions>
 
        <format>
@@ -517,12 +517,24 @@ inizio sì · fine sì · linee sì»; lunedì 7, uscita 0 e nessuna riga. Il
 revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
 modifica, «la garanzia vale». Come dati: gli altri giorni, uscita 1, con
 18 righe mercoledì 9 e una sola negli altri, e il disservizio conosciuto
-trovato in ognuno; `NOTA.md` c'è, 3 commit, 3 file cambiati, 2 sessioni,
+trovato in ognuno; `NOTA.md` c'è, 7 commit, 3 file cambiati, 2 sessioni,
 «chiamate al tool Agent: 3 (revisore 3)», e «il controllo eseguito da
-Claude: 7 volte, l'ultima con uscita 0». Nella seconda parte il revisore
-ha dato «ESITO: OK» con un solo problema, segnato come cosmetico: l'uso
-mostrava `-h, --help`, la specifica soltanto `--help`; Claude l'ha
-corretto, ha eseguito di nuovo il controllo e ha fatto l'ultimo commit.
+Claude: 9 volte, l'ultima con uscita 0». Il revisore ha dato tre volte
+«ESITO: DA CORREGGERE». La prima, nella prima parte: con un file del
+giorno che non si legge lo script usciva con 1 e un traceback; Claude
+l'ha corretto, uscita 2 e un messaggio, nel suo commit. La seconda e la
+terza, sul diff completo prima dell'ultimo commit e nella seconda parte:
+il revisore ha applicato il suo contratto, in
+`.claude/agents/revisore.md`, che elenca le cause dell'uscita 2 «e
+soltanto queste», e un file che non si legge non è nell'elenco. La riga
+79 di `SPECIFICA.md` elenca gli stessi casi dopo «il rapporto non si può
+fare», senza quella clausola: i due testi non dicono la stessa cosa.
+Claude non ha cambiato lo script: secondo la sua risposta, un file che
+non si legge rientra in «il rapporto non si può fare». Nella seconda parte una
+prova a mano di quel caso, con `chmod 000` in una cartella temporanea, è
+stata negata in dontAsk, e Claude si è fermato senza l'ultimo commit: la
+risposta chiede il permesso per quella prova, o di chiudere con un
+commit di `NOTA.md`.
 
 La variante in Bash si prova con lo stesso `_docente/live.sh` e
 `PN_VARIANTE=bash`: nei prompt 1 e 2 fa le due sostituzioni del passo 1,
@@ -536,12 +548,18 @@ lunedì 7, uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read):
 3 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
 dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
 negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
-c'è, 3 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
+c'è, 4 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
 (revisore 3)», e «il controllo eseguito da Claude: 6 volte, l'ultima
-con uscita 0». Nella seconda parte il revisore ha dato «ESITO: OK», e
-l'ultimo commit ha aggiunto la cartella `piani/`; in dontAsk sono stati
-negati sei comandi, una prova a mano dello script in un ciclo `for` e
-cinque prove a mano, ognuna con `; echo …`.
+con uscita 0». Il revisore ha dato «ESITO: OK» nella prima parte, poi
+due volte «ESITO: DA CORREGGERE»: sul diff completo, `--giorno ""`
+preso per il giorno prima invece di uscire con 2; nella seconda parte,
+un file di syslog o SIP che non si legge, che non faceva uscire con 2.
+Claude ha corretto lo script tutte e due le volte, ha eseguito di nuovo
+il controllo e ha fatto il commit; l'ultimo, nella seconda parte, come
+chiede il passo 3 del prompt 5. In dontAsk sono stati negati due
+comandi: una modifica con uno script `python3` letto dallo stdin, nella
+prima parte, e una prova a mano dello script in un ciclo `for`, nella
+seconda.
 
 ## Verifica (tools/verifica.sh M4-E05)
 
@@ -595,9 +613,9 @@ se mancano i log della rete nel repository.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 55
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 63
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. In Bash, 52 turni e il revisore
+revisore, su Haiku, chiamato tre volte. In Bash, 56 turni e il revisore
 chiamato tre volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). Leggere i log a pezzi tiene
@@ -618,19 +636,21 @@ it breaks your usage down by skill, subagent, plugin, and MCP server.»
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente): cinque chiamate,
-quattro nella prima parte e una nella seconda, con 9, 24, 6, 4 e 12
-turni del modello; 42,3, 214,8, 155,1, 19,2 e 137,8 secondi; token in
-entrata della conversazione principale, cache compresa, 185.586,
-826.594, 366.152, 267.037 e 290.183. I token del revisore si aggiungono
-a questi. In Bash, con `PN_VARIANTE=bash`: 8, 14, 7, 4 e 19 turni del
-modello; 41,9, 142,2, 138,7, 20,8 e 131,8 secondi; 150.750, 499.391,
-317.929, 228.676 e 346.369 token in entrata. Ogni chiamata è contata su
-tutti i suoi segmenti, dalla trascrizione della sessione, perché il JSON
-di `claude -p` descriveva solo l'ultimo: quando il revisore lavorava in
-background, la conversazione principale rispondeva prima, e la notifica
-del revisore apriva un altro segmento della stessa chiamata. Nella
-seconda chiamata in Python, due segmenti, il JSON dice 2 turni
-(`num_turns`), 10,2 secondi e 112.059 token.
+quattro nella prima parte e una nella seconda, con 8, 34, 7, 4 e 10
+turni del modello; 46,6, 101,1, 42,2, 17,3 e 32,2 secondi; token in
+entrata della conversazione principale, cache compresa, 147.701,
+1.099.373, 376.910, 283.967 e 195.647. I token del revisore si
+aggiungono a questi. In Bash, con `PN_VARIANTE=bash`: 8, 15, 14, 4 e 15
+turni del modello; 38,5, 83,2, 41,9, 28,2 e 46,8 secondi; 180.237,
+571.284, 498.231, 244.814 e 315.030 token in entrata. Ogni chiamata è
+contata su tutti i suoi risultati, come la riga che `_docente/live.sh`
+stampa a ogni turno: quando il revisore lavora in background, la
+conversazione principale risponde prima, e la notifica del revisore apre
+un altro segmento della stessa chiamata, con il suo risultato; i secondi
+sono il tempo di lavoro dei segmenti, senza le attese fra uno e l'altro.
+Nella seconda chiamata in Python, due segmenti, l'ultimo risultato da
+solo, quello che riporta il JSON di `--output-format json`, dice 5
+turni, 14,8 secondi e 217.953 token.
 
 ## Per approfondire
 

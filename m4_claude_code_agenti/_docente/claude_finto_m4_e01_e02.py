@@ -13,14 +13,19 @@ non il modello.
 Gli argomenti: le opzioni di handson::claude_p e dei live.sh (OPZIONI, con
 quanti valori prendono), poi «--» e il prompt. Un'opzione che non conosce
 la rifiuta («error: unknown option», uscita 1), come un --output-format
-diverso da json. «--version» stampa una versione finta.
+che non è json né stream-json, o stream-json senza --verbose. «--version»
+stampa una versione finta.
 
 Ogni invocazione aggiunge a FINTO_LOG (obbligatorio, tranne --version) una
 riga JSON: argv, cwd, chiave (se ANTHROPIC_API_KEY era nell'ambiente). Il
 numero della chiamata è il numero di righe del registro. Una chiamata
 senza --resume apre la sessione «sessione-finta-<numero>», con --resume
 continua quella data. La risposta è un JSON come quello di
-`claude -p --output-format json`.
+`claude -p --output-format json`; con stream-json, lo stream: l'avvio, un
+messaggio, il risultato (4 turni, 2500 ms, 2510 token in entrata e 300 in
+uscita) e, quando la chiamata ha chiamato un subagent, che lavora in
+background, la sua notifica e un secondo risultato (2 turni, 1000 ms, 1255
+e 150; result_index 1, origin task-notification).
 
 Le trascrizioni, solo se c'è PN_CLAUDE_DIR (mai in ~/.claude): la
 cartella del progetto è PN_CLAUDE_DIR/projects/<percorso della cartella
@@ -74,7 +79,7 @@ OPZIONI = {"-p": 0, "--print": 0, "--strict-mcp-config": 0,
            "--model": 1, "--effort": 1, "--allowedTools": 1,
            "--output-format": 1, "--permission-mode": 1,
            "--permission-prompts": 1, "--setting-sources": 1,
-           "--resume": 1}
+           "--resume": 1, "--verbose": 0}
 PROGETTO = "progetti/gestionale-php"
 TEST_COPERTURA = PROGETTO + "/tests/Integrazione/VerificaCoperturaTest.php"
 TEST_NUOVO_E01 = PROGETTO + "/tests/Integrazione/CoperturaDalGiornoTest.php"
@@ -168,8 +173,13 @@ def argomenti(argv: List[str]) -> Tuple[Dict[str, str], str]:
         i += 1 + OPZIONI[parola]
     if i + 2 != len(argv):
         raise Rifiutato("error: il finto vuole «--» e un solo prompt")
-    if opzioni.get("--output-format") != "json":
-        raise Rifiutato("error: il finto vuole --output-format json")
+    formato = opzioni.get("--output-format")
+    if formato not in ("json", "stream-json"):
+        raise Rifiutato("error: il finto vuole --output-format json o "
+                        "stream-json")
+    if formato == "stream-json" and "--verbose" not in opzioni:
+        raise Rifiutato("error: il finto vuole --verbose con "
+                        "--output-format stream-json")
     return opzioni, argv[i + 1]
 
 
@@ -220,6 +230,7 @@ class Trascrizione:
         self.sessione = sessione
         self.numero = numero
         self.conta = 0
+        self.subagenti = 0
 
     def _id(self, prefisso: str) -> str:
         self.conta += 1
@@ -247,6 +258,7 @@ class Trascrizione:
 
     def subagent(self, tipo: str, prompt: str, strumenti: List[str]) -> None:
         """Una chiamata Agent con la trascrizione del subagent."""
+        self.subagenti += 1
         uso = self._id("toolu_finto_")
         agente = "a%013d" % (self.numero * 1000 + self.conta)
         self.messaggio("assistant", [{
@@ -402,6 +414,34 @@ def risposta(sessione: str, testo: str) -> dict:
                       "output_tokens": 300}}
 
 
+def stampa(opzioni: Dict[str, str], sessione: str, primo: dict,
+           background: bool) -> None:
+    """La risposta: il JSON di --output-format json, oppure lo stream di
+    stream-json, un evento per riga; con un subagent in background due
+    risultati, il secondo dopo la notifica del subagent."""
+    if opzioni.get("--output-format") == "json":
+        print(json.dumps(primo, ensure_ascii=False))
+        return
+    testo = {"type": "text", "text": primo["result"]}
+    eventi = [{"type": "system", "subtype": "init", "session_id": sessione},
+              {"type": "assistant", "session_id": sessione,
+               "message": {"role": "assistant", "content": [testo]}},
+              dict(primo, result_index=0)]
+    if background:
+        eventi += [{"type": "user", "session_id": sessione,
+                    "message": {"role": "user", "content":
+                                "<task-notification>(finta)"
+                                "</task-notification>"}},
+                   dict(primo, num_turns=2, duration_ms=1000, result_index=1,
+                        origin={"kind": "task-notification"},
+                        usage={"input_tokens": 5,
+                               "cache_creation_input_tokens": 1000,
+                               "cache_read_input_tokens": 250,
+                               "output_tokens": 150})]
+    for evento in eventi:
+        print(json.dumps(evento, ensure_ascii=False))
+
+
 def main(argv: List[str]) -> int:
     if argv[:1] == ["--version"]:
         print("0.0.0 (Claude Code, finto)")
@@ -420,7 +460,7 @@ def main(argv: List[str]) -> int:
     tr.messaggio("user", prompt)
     testo = scena(prompt, opzioni, tr)
     tr.messaggio("assistant", [{"type": "text", "text": testo}])
-    print(json.dumps(risposta(sessione, testo), ensure_ascii=False))
+    stampa(opzioni, sessione, risposta(sessione, testo), tr.subagenti > 0)
     return 0
 
 

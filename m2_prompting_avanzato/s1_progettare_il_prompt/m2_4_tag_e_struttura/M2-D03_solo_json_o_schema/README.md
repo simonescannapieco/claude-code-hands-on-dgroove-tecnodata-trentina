@@ -198,7 +198,7 @@ la dimostrazione) e i numeri letti.
    un dato e non un verdetto: in quante risposte c'è il telefono del
    cliente, un dato personale di cui la richiesta non dice che cosa fare.
 
-Nella registrazione del corso (20 ottobre 2026, Claude Code 2.1.305):
+Nella registrazione del corso (1° novembre 2026, Claude Code 2.1.316):
 l'affermazione 1, 3 su 3 validi e conformi; la 2, confermata; la 3,
 confermata, con uscita 1 e la riga «Error: --json-schema is not a valid
 JSON Schema: data/type must be equal to one of the allowed values,

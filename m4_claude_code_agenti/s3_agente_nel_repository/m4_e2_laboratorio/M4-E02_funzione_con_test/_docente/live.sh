@@ -28,11 +28,14 @@
 # servono qui: sono comandi di sola lettura, che Claude Code di regola
 # esegue senza chiedere. Lo spazio di lavoro dev'essere al punto di
 # partenza (git status vuoto, nessun commit dopo il primo): altrimenti
-# esce 2 e indica tools/reset_esercizio.sh M4-E02. Ogni turno lascia il
-# suo JSON FUORI dallo spazio di lavoro, in PN_LIVE_JSON oppure accanto, in
-# <spazio di lavoro>.prova_dal_vivo/: la seconda parte, una sessione nuova,
-# non deve poter leggere le risposte della prima. Ne stampa turni del
-# modello, durata e token. Poi verifica.sh dell'elemento. Le funzioni
+# esce 2 e indica tools/reset_esercizio.sh M4-E02. Ogni turno, in
+# stream-json, lascia il suo stream (turno-<n>.jsonl) e il suo ultimo
+# risultato (turno-<n>.json) FUORI dallo spazio di lavoro, in PN_LIVE_JSON
+# oppure accanto, in <spazio di lavoro>.prova_dal_vivo/: la seconda parte,
+# una sessione nuova, non deve poter leggere le risposte della prima. Ne
+# stampa turni del modello, durata e token di tutti i risultati, sommati
+# (con un subagent in background la chiamata ne ha più d'uno). Poi
+# verifica.sh dell'elemento. Le funzioni
 # comuni con il live.sh di M4-E01 stanno in
 # m4_claude_code_agenti/_docente/lib_live_m4_e01_e02.sh.
 #

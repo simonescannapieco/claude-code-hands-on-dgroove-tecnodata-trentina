@@ -31,16 +31,24 @@
 #     non parte sull'originale o sulla copia rotta, una precondizione e mai
 #     «falliscono»; un file che non è un test non conta), legacy/ cambiato
 #     (nel commit, fuori, un file nuovo; i test girano lo stesso sul modulo
-#     originale); i dati (la regola deny, NOTA.md, i piani, i commit, le
-#     sessioni con le chiamate Agent e Task, i doppioni, le righe dei
+#     originale); i commit che i passi chiedono (la documentazione con
+#     modifiche fuori dai commit, il test fuori dai commit, NOTA.md che
+#     manca, la proposta corretta e non registrata, soltanto NOTA.md con la
+#     riga che dice i file che ci sono; i prompt 2-5 che li chiedono, la
+#     voce del README); i dati (la regola deny, NOTA.md, i
+#     piani, i commit, le sessioni con le chiamate Agent e Task, i
+#     doppioni, le righe dei
 #     subagent, una riga rotta, ExitPlanMode, le modifiche tentate su
 #     legacy/, U+2028 dentro una riga, una riga troppo annidata, una cartella
 #     oltre i 200 caratteri, la copia di una richiesta che ripete le chiamate
 #     senza il loro messaggio) mai come uscita; la verifica non scrive nello
 #     spazio di lavoro, nemmeno in .git/index, e non usa il suo php.sh; le
 #     precondizioni (2), anche un errore inatteso e python3 o git mancanti;
-#   - soluzione/: applica.sh con il finto (copia e installa; con vendor/ non
-#     reinstalla; precondizioni; una copia che non riesce, 2); il test di
+#   - soluzione/: applica.sh con il finto (copia, un commit per passo e
+#     installa: i quattro messaggi nell'ordine dei passi, ogni commit con
+#     il suo file; con vendor/ non reinstalla né registra; precondizioni;
+#     una copia che non riesce, 2; mai un commit nella sottocartella di un
+#     altro repository o nel repository del corso, 2); il test di
 #     riferimento nelle convenzioni del progetto; la documentazione che
 #     descrive senza giudicare;
 #   - con PHP o Docker davvero (altrimenti SKIP): la soluzione passa, un
@@ -50,7 +58,10 @@
 #     chiamare claude, anche uno spazio di lavoro che ha già del lavoro (git
 #     status non vuoto, o un commit dopo il primo); le due parti, sei
 #     chiamate, --resume giusti, plan mode solo per la proposta, le opzioni
-#     e gli strumenti, i prompt uguali a quelli del README, la chiave tolta,
+#     (lo stream-json con --verbose) e gli strumenti, il riepilogo di un
+#     turno che somma i suoi risultati (due, con un subagent in background)
+#     e il suo ultimo risultato in turno-<n>.json, lo stream accanto, i
+#     prompt uguali a quelli del README, la chiave tolta,
 #     le dipendenze installate, i seguiti sui test (nei tag <instructions>
 #     e <constraints>), una chiamata fallita (1), legacy/ toccato (1), un
 #     test debole mai sistemato (1), una documentazione incompleta
@@ -60,8 +71,8 @@
 #     fuori dallo spazio di lavoro, in <spazio>.prova_dal_vivo/;
 #   - il README: il passo 8 torna in esercitazioni con il suo percorso;
 #     Manual chiede per ciò che non è di sola lettura, «di regola»; i
-#     traguardi e il tool Agent; i JSON della prova del corso, fuori dallo
-#     spazio di lavoro;
+#     traguardi e il tool Agent; lo stream e l'ultimo risultato di ogni
+#     chiamata della prova del corso, fuori dallo spazio di lavoro;
 #   - prepara_esercizio.sh e tools/verifica.sh con l'elemento vero, e
 #     check_handson.sh senza segnalazioni su M4-E03;
 #   - shellcheck -x sugli script dell'elemento e su questo; la sintassi dei
@@ -88,7 +99,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e03.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e03.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=193
+readonly CASES=215
 readonly PROGETTO="progetti/gestionale-php"
 readonly TEST_REL="${PROGETTO}/tests/Integrazione/ChiusuraMeseTest.php"
 readonly DOC_REL="${PROGETTO}/docs/chiusura_mese.md"
@@ -126,7 +137,7 @@ SEGUITO="Esegui di nuovo i test con ${COMANDO} ${TEST_REL}, da solo, senza"
 SEGUITO+=" concatenarlo ad altri, e correggi i test finché passano. Poi fai"
 SEGUITO+=" il commit del test."
 printf -v SEGUITO '%s\n' '<instructions>' "${SEGUITO}" '</instructions>' '' \
-  '<constraints>' "Non modificare niente in ${PROGETTO}/legacy/." \
+  '<constraints>' "${PROGETTO}/legacy/ resta com'è." \
   '</constraints>'
 readonly SEGUITO="${SEGUITO%$'\n'}"
 readonly TAB=$'\t'
@@ -893,17 +904,19 @@ print("manual ok" if "non è di sola lettura" in piatto
 print("termini ok" if "Checkpoint" not in piatto and "Traguardo:" in piatto
       and "strumento Agent" not in piatto
       else "termini: «Checkpoint» o «strumento Agent»")
-print("json ok" if "con il JSON di ogni chiamata fuori dallo spazio di "
-      "lavoro" in piatto and "letto con `grep` anche i JSON" not in piatto
-      else "json: la prova del corso non dice che i JSON erano fuori")
+print("json ok" if "con lo stream e l'ultimo risultato di ogni chiamata "
+      "fuori dallo spazio di lavoro" in piatto
+      and "letto con `grep` anche i JSON" not in piatto
+      else "json: la prova del corso non dice che stream e risultati erano "
+      "fuori")
 PY
   expect "README: il passo 8 torna in esercitazioni, non con cd -" 0 \
     "ritorno ok"
   expect "README: Manual chiede per ciò che non è di sola lettura" 0 \
     "manual ok"
   expect "README: Traguardo, non Checkpoint; il tool Agent" 0 "termini ok"
-  expect "README: la prova del corso, i JSON fuori dallo spazio di lavoro" 0 \
-    "json ok"
+  expect "README: la prova del corso, stream e risultati fuori dallo spazio" \
+    0 "json ok"
 }
 
 # verifica.sh sul punto di partenza e con la soluzione.
@@ -927,7 +940,9 @@ t_partenza_soluzione() {
     "sulla copia rotta apposta i test falliscono"
   expect "soluzione: che cosa rompe la copia" 0 "riga 29"
   expect "soluzione: legacy/ com'era" 0 "legacy/ è com'era"
-  expect "soluzione: NOTA.md come dato" 0 "Dati: NOTA.md: non c'è"
+  expect "soluzione: i file che i passi chiedono, nei commit" 0 \
+    "sono nei commit, senza modifiche fuori"
+  expect "soluzione: NOTA.md come dato" 0 "Dati: NOTA.md: c'è"
   expect "soluzione: la regola deny come dato" 0 "${REGOLA_DENY}"
   expect_absent "soluzione: nessun «Non ancora»" "Non ancora:"
 }
@@ -966,6 +981,7 @@ t_documentazione() {
   ws w
   soluzione "${w}"
   fx "${w}" doc_numerati
+  fai_commit "${w}" "titoli numerati"
   verifica "${w}"
   expect "i titoli numerati vanno bene: 0" 0 "${FINE}"
 }
@@ -1003,6 +1019,7 @@ t_proposta() {
   ws w
   soluzione "${w}"
   fx "${w}" prop_grassetto
+  fai_commit "${w}" "controlli in grassetto"
   verifica "${w}"
   expect "il controllo in grassetto va bene: 0" 0 "${FINE}"
 }
@@ -1087,6 +1104,94 @@ t_legacy() {
   expect "...e lo dice" 0 "nelle impostazioni dello spazio di lavoro: non c'è"
 }
 
+# La soluzione, con tutti i suoi file nei commit (un commit in più se ne
+# resta fuori qualcuno): i casi dei commit non dipendono da come li fa
+# applica.sh. Arguments: $1 lo spazio di lavoro.
+soluzione_nei_commit() {
+  soluzione "$1"
+  git -C "$1" add -A > /dev/null 2>&1 || rotta "git add"
+  if ! git -C "$1" diff --cached --quiet; then
+    git -C "$1" -c user.name=prova -c user.email=prova@example.org \
+      -c commit.gpgsign=false commit -q -m "la soluzione" > /dev/null 2>&1 \
+      || rotta "git commit"
+  fi
+}
+
+# Toglie un file dai commit, lasciandolo (con --cached) o no nello spazio
+# di lavoro, con un commit. Arguments: $1 lo spazio, $2 il file, $3
+# «--cached» o niente.
+togli_dal_commit() {
+  git -C "$1" rm -q ${3:+"$3"} -- "$2" > /dev/null 2>&1 || rotta "git rm"
+  git -C "$1" -c user.name=prova -c user.email=prova@example.org \
+    -c commit.gpgsign=false commit -q -m "senza $2" > /dev/null 2>&1 \
+    || rotta "git commit"
+}
+
+# I commit che i passi chiedono: la documentazione (prompt 2), il test
+# (prompt 3), NOTA.md (prompt 4) e PROPOSTA.md (prompt 5), ognuno in un
+# commit e senza modifiche fuori dai commit.
+t_commit() {
+  local w
+  if grep -qF "Poi fai il commit del file" <<< "$(prompt_in_riga 2)" \
+      && grep -qF "Poi fai il commit del test" <<< "$(prompt_in_riga 3)" \
+      && grep -qF "Poi fai il commit di NOTA.md" <<< "$(prompt_in_riga 4)" \
+      && grep -qF "fai il commit di PROPOSTA.md" <<< "$(prompt_in_riga 5)"
+  then
+    pass "README: i prompt 2, 3, 4 e 5 chiedono i commit che si leggono"
+  else
+    fail "README: i prompt 2-5 non chiedono più quei commit"
+  fi
+  if grep -qF -- "- **I commit:**" "${E03}/README.md"; then
+    pass "README: «Che cosa misura il controllo» dice dei commit"
+  else
+    fail "README: manca la voce «I commit» del controllo"
+  fi
+  ws w
+  soluzione_nei_commit "${w}"
+  printf 'Una riga in più.\n' >> "${w}/${DOC_REL}"
+  verifica "${w}"
+  expect "la documentazione cambiata dopo il suo commit: 1" 1 \
+    "Non ancora: ${DOC_REL} ha modifiche fuori dai commit (il prompt 2 ne \
+chiede il commit)."
+  ws w
+  soluzione_nei_commit "${w}"
+  togli_dal_commit "${w}" "${TEST_REL}" --cached
+  verifica "${w}"
+  expect "il test fuori dai commit: 1" 1 \
+    "Non ancora: ${TEST_REL} non è in un commit (il prompt 3 ne chiede il \
+commit)."
+  expect "...e i test girano lo stesso" 1 "sul codice originale i test passano"
+  ws w
+  soluzione_nei_commit "${w}"
+  if git -C "${w}" ls-files --error-unmatch NOTA.md > /dev/null 2>&1; then
+    togli_dal_commit "${w}" NOTA.md
+  else
+    rm -f -- "${w}/NOTA.md"
+  fi
+  verifica "${w}"
+  expect "senza NOTA.md: 1" 1 \
+    "Non ancora: manca NOTA.md (il prompt 4 chiede di scriverla e di farne il \
+commit)."
+  ws w
+  soluzione_nei_commit "${w}"
+  printf '\nUna correzione.\n' >> "${w}/PROPOSTA.md"
+  verifica "${w}"
+  expect "PROPOSTA.md corretta e non nei commit: 1" 1 \
+    "Non ancora: PROPOSTA.md ha modifiche fuori dai commit (il prompt 5 ne \
+chiede il commit)."
+  # Soltanto NOTA.md, nel suo commit: la riga dei commit dice i file che ha
+  # letto, mai che tutti e quattro sono nei commit.
+  ws w
+  printf '# Nota\n' > "${w}/NOTA.md"
+  fai_commit "${w}" "la nota"
+  verifica "${w}"
+  expect "solo NOTA.md nei commit: la riga dice che cosa c'è" 1 \
+    "ok  NOTA.md è nei commit, senza modifiche fuori; la documentazione, i \
+test e PROPOSTA.md non ci sono ancora: lo dicono le sezioni qui sopra"
+  expect_absent "...e non che tutti e quattro sono nei commit" \
+    "la documentazione, i test, NOTA.md e PROPOSTA.md sono nei commit"
+}
+
 # I dati: mai un'uscita.
 t_dati() {
   local w c
@@ -1098,7 +1203,8 @@ t_dati() {
   verifica "${w}"
   expect "dati: NOTA.md c'è" 0 "Dati: NOTA.md: c'è"
   expect "dati: un piano in piani/" 0 "piani di plan mode in piani/: 1"
-  expect "dati: un commit" 0 "commit dopo il punto di partenza: 1"
+  expect "dati: i quattro commit della soluzione e uno in più" 0 \
+    "commit dopo il punto di partenza: 5"
   expect "dati: nessuna sessione" 0 "nessuna sessione di Claude Code"
   c="$(mktemp -d "${TMP}/claude.XXXXXX")" || rotta "mktemp"
   python3 -B -I "${TMP}/sessioni.py" "${c}" "${w}" due || rotta "sessioni"
@@ -1270,6 +1376,15 @@ t_soluzione() {
   else
     fail "applica.sh: manca qualcosa nello spazio di lavoro"
   fi
+  if [[ -f "${w}/NOTA.md" \
+      && "$(git -C "${w}" rev-list --count HEAD)" == 5 \
+      && -z "$(git -C "${w}" status --porcelain -- NOTA.md PROPOSTA.md \
+        "${DOC_REL}" "${TEST_REL}")" ]]; then
+    pass "applica.sh: NOTA.md, e un commit per ciascuno dei quattro passi"
+  else
+    fail "applica.sh: i commit dei passi: $(git -C "${w}" log --oneline)"
+  fi
+  t_soluzione_commit "${w}"
   : > "${log}"
   run env PN_PHP_SH="${PHP_FINTO}" FINTO_PHP_LOG="${log}" \
     "${SOL}/applica.sh" "${w}"
@@ -1277,6 +1392,11 @@ t_soluzione() {
     pass "applica.sh: con vendor/ non reinstalla"
   else
     fail "applica.sh: rc=${RC}, composer di nuovo: $(cat "${log}")"
+  fi
+  if [[ "$(git -C "${w}" rev-list --count HEAD)" == 5 ]]; then
+    pass "applica.sh di nuovo: nessun commit in più, niente da registrare"
+  else
+    fail "applica.sh di nuovo: $(git -C "${w}" log --oneline)"
   fi
   run env PN_PHP_SH="${PHP_FINTO}" "${SOL}/applica.sh" "${TMP}/non-esiste"
   expect "applica.sh senza spazio di lavoro: 2" 2 "spazio di lavoro assente"
@@ -1290,7 +1410,71 @@ t_soluzione() {
   run env PN_PHP_SH="${PHP_FINTO}" "${SOL}/applica.sh" "${w}"
   expect "applica.sh: una copia che non riesce esce 2, mai 1" 2 \
     "la copia della soluzione non riesce"
+  t_soluzione_altrove
   t_soluzione_file
+}
+
+# I commit di applica.sh: i messaggi nell'ordine dei passi, ogni commit con
+# il suo file. Arguments: $1 lo spazio di lavoro, appena applicato.
+t_soluzione_commit() {
+  local radice soggetti attesi file="" c
+  radice="$(git -C "$1" rev-list --max-parents=0 HEAD)" || rotta "rev-list"
+  soggetti="$(git -C "$1" log --reverse --format=%s "${radice}..HEAD")"
+  attesi="$(printf '%s\n' \
+    "docs(chiusura-mese): documenta chiusura_mese()" \
+    "test(chiusura-mese): fissa il comportamento di chiusura_mese()" \
+    "docs(nota): riassume la prima parte e come riprendere" \
+    "docs(proposta): propone il refactoring di chiusura_mese()")"
+  if [[ "${soggetti}" == "${attesi}" ]]; then
+    pass "applica.sh: i quattro messaggi, nell'ordine dei passi"
+  else
+    fail "applica.sh: i messaggi dei commit: ${soggetti}"
+  fi
+  while read -r c; do
+    file+="$(git -C "$1" diff-tree --no-commit-id --name-only -r "${c}")"
+    file+=$'\n'
+  done < <(git -C "$1" rev-list --reverse "${radice}..HEAD")
+  if [[ "${file}" == "$(printf '%s\n' "${DOC_REL}" "${TEST_REL}" NOTA.md \
+      PROPOSTA.md)"$'\n' ]]; then
+    pass "applica.sh: ogni commit con il suo file, e soltanto quello"
+  else
+    fail "applica.sh: i file dei commit: ${file}"
+  fi
+}
+
+# Mai un commit fuori da uno spazio di lavoro: nella sottocartella di un
+# altro repository, o nel repository del corso (PN_HANDSON_ROOT).
+t_soluzione_altrove() {
+  local estraneo finta
+  estraneo="$(mktemp -d "${TMP}/estraneo.XXXXXX")" || rotta "mktemp"
+  git -C "${estraneo}" init -q > /dev/null 2>&1 || rotta "git init"
+  mkdir -p "${estraneo}/sotto/${PROGETTO}/vendor/bin" || rotta "mkdir"
+  : > "${estraneo}/sotto/${PROGETTO}/vendor/bin/phpunit" || rotta "phpunit"
+  fai_commit "${estraneo}" "il primo"
+  run env PN_PHP_SH="${PHP_FINTO}" "${SOL}/applica.sh" "${estraneo}/sotto"
+  expect "applica.sh nella sottocartella di un altro repository: 2" 2 \
+    "non è la radice di un repository git"
+  if [[ "$(git -C "${estraneo}" rev-list --count HEAD)" == 1 ]]; then
+    pass "...e nessun commit in quel repository"
+  else
+    fail "...commit nell'altro repository: $(git -C "${estraneo}" log \
+      --oneline)"
+  fi
+  finta="$(mktemp -d "${TMP}/radice.XXXXXX")" || rotta "mktemp"
+  git -C "${finta}" init -q > /dev/null 2>&1 || rotta "git init"
+  mkdir -p "${finta}/${PROGETTO}/vendor/bin" || rotta "mkdir"
+  : > "${finta}/${PROGETTO}/vendor/bin/phpunit" || rotta "phpunit"
+  fai_commit "${finta}" "il primo"
+  run env PN_PHP_SH="${PHP_FINTO}" PN_HANDSON_ROOT="${finta}" \
+    "${SOL}/applica.sh" "${finta}"
+  expect "applica.sh sul repository del corso: 2" 2 \
+    "è il repository del corso"
+  if [[ "$(git -C "${finta}" rev-list --count HEAD)" == 1 ]]; then
+    pass "...e nessun commit nel repository del corso"
+  else
+    fail "...commit nel repository del corso: $(git -C "${finta}" log \
+      --oneline)"
+  fi
 }
 
 # Il test e la documentazione di riferimento.
@@ -1306,7 +1490,8 @@ t_soluzione_file() {
   else
     fail "il test di riferimento non segue le convenzioni"
   fi
-  if grep -q 'FINTO' "${t}" "${d}" "${SOL}/PROPOSTA.md"; then
+  if grep -q 'FINTO' "${t}" "${d}" "${SOL}/PROPOSTA.md" "${SOL}/NOTA.md"
+  then
     fail "un segno FINTO nella soluzione"
   else
     pass "nessun segno FINTO nella soluzione"
@@ -1442,7 +1627,8 @@ for riga in open(sys.argv[1], encoding="utf-8"):
     def val(nome):
         return opz[opz.index(nome) + 1] if nome in opz else "-"
 
-    altro = " ".join(x for x in ("--strict-mcp-config",) if x in opz)
+    altro = " ".join(x for x in ("--verbose", "--strict-mcp-config")
+                     if x in opz)
     print("\t".join([val("--permission-mode"), val("--resume"),
                     " ".join(" ".join(a[i + 1:]).split()),
                     val("--allowedTools"),
@@ -1500,6 +1686,7 @@ t_live() {
   live "${w}"
   expect "live: 0, la verifica passa" 0 "VERIFICA OK"
   expect "live: i subagent come dato" 0 "chiamate Agent: 2 (Explore 2)"
+  local uscita="${OUT}"
   leggi_chiamate
   n="$(wc -l < "${TMP}/chiamate.txt")"
   if (( n == 6 )); then
@@ -1519,12 +1706,14 @@ t_live() {
   fi
   t_live_prompt
   run cut -f 4,5 "${TMP}/chiamate.txt"
-  if [[ "$(sort -u <<< "${OUT}")" == "${STRUMENTI}${TAB}sonnet medium json \
---strict-mcp-config chiave=False" ]]; then
-    pass "live: strumenti, modello, effort, json, niente MCP, chiave tolta"
+  if [[ "$(sort -u <<< "${OUT}")" == "${STRUMENTI}${TAB}sonnet medium \
+stream-json --verbose --strict-mcp-config chiave=False" ]]; then
+    pass "live: strumenti, modello, effort, stream-json, niente MCP, chiave \
+tolta"
   else
     fail "live: opzioni: $(sort -u <<< "${OUT}")"
   fi
+  t_live_riepiloghi "${w}" "${uscita}"
   if grep -q '"composer"' "${TMP}/live-php.log" \
       && [[ -f "${w}/${PROGETTO}/vendor/bin/phpunit" ]]; then
     pass "live: installa le dipendenze del gestionale"
@@ -1538,6 +1727,32 @@ t_live() {
     fail "live: prova_dal_vivo/ manca o è in git status"
   fi
   t_live_esiti
+}
+
+# live.sh: il riepilogo di ogni turno somma tutti i risultati della
+# chiamata. Il claude finto dà, per la mappa con i subagent Explore (il
+# turno 1), due risultati, come una chiamata il cui subagent lavora in
+# background (3 turni e 1001 ms, poi 2 turni e 500 ms; 1110 e 555 token in
+# entrata, 50 e 25 in uscita); per il turno 2 un risultato solo.
+# Arguments: $1 lo spazio di lavoro, $2 l'uscita di live.sh.
+t_live_riepiloghi() {
+  local j="$1.prova_dal_vivo"
+  if grep -qxF "  turno 1: 5 turni del modello in 2 segmenti, 1 s, token in \
+entrata 1665, in uscita 75" <<< "$2" \
+      && grep -qxF "  turno 2: 3 turni del modello, 1 s, token in entrata \
+1110, in uscita 50" <<< "$2"; then
+    pass "live: il riepilogo somma i risultati; un risultato, come prima"
+  else
+    fail "live: i riepiloghi: $(grep -E '^  turno [12]:' <<< "$2")"
+  fi
+  if [[ "$(jq -r '[.type, .result_index, .origin.kind] | join(" ")' \
+      "${j}/turno-1.json" 2> /dev/null)" == "result 1 task-notification" \
+      && "$(jq -s 'map(select(.type == "result")) | length' \
+        "${j}/turno-1.jsonl" 2> /dev/null)" == 2 ]]; then
+    pass "live: lo stream in turno-1.jsonl, l'ultimo risultato in turno-1.json"
+  else
+    fail "live: turno-1.json o turno-1.jsonl non sono quelli attesi"
+  fi
 }
 
 # live.sh: i prompt uguali a quelli del README, poi l'approvazione.
@@ -1608,6 +1823,19 @@ t_live_esiti() {
     fail "live: correzione: $(wc -l < "${TMP}/chiamate.txt") chiamate, non 7"
   fi
   ws w
+  live "${w}" FINTO_E03_COMMIT=senza_doc
+  expect "live: la documentazione fuori dai commit, poi corretta: 0" 0 \
+    "VERIFICA OK"
+  leggi_chiamate
+  if (( $(wc -l < "${TMP}/chiamate.txt") == 7 )) \
+      && sed -n '7p' "${TMP}/chiamate.txt" | cut -f 3 \
+        | grep -qF "Non ancora: ${DOC_REL} non è in un commit"; then
+    pass "live: il turno di correzione porta il commit che manca"
+  else
+    fail "live: il commit mancante: $(cut -f 3 "${TMP}/chiamate.txt" \
+      | tail -n 1 | cut -c1-200)"
+  fi
+  ws w
   live "${w}" FINTO_E03_AGENT=nessuno
   expect "live: nessun subagent, 0 (è un dato)" 0 "chiamate Agent: 0"
   local qui="${PWD}"
@@ -1676,6 +1904,7 @@ main() {
     t_proposta
     t_test
     t_legacy
+    t_commit
     t_dati
     t_pulizia
     t_precondizioni

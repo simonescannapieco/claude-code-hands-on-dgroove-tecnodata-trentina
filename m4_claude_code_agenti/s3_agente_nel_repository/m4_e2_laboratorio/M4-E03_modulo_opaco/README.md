@@ -446,6 +446,12 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
 - **Il modulo legacy:** `progetti/gestionale-php/legacy/` uguale al primo
   commit: un file cambiato, nel commit o fuori, o un file nuovo è una
   segnalazione, qualunque cosa l'abbia cambiato.
+- **I commit:** i passi chiedono il commit della documentazione (prompt
+  2), del test (prompt 3), di `NOTA.md` (prompt 4) e di `PROPOSTA.md`
+  (prompt 5). Ognuno di questi file dev'essere in un commit, uguale al
+  file che avete nello spazio di lavoro: un file fuori dai commit, uno con
+  modifiche fuori dai commit, o `NOTA.md` che manca, è un «Non ancora» che
+  lo nomina.
 - **Come dati, mai come esito:** se la regola `deny` è ancora nelle
   impostazioni; se c'è `NOTA.md`; i piani in `piani/`; i commit dopo il
   primo; e, dalle trascrizioni delle sessioni di Claude Code di questo
@@ -475,48 +481,58 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
   Write, Edit, il comando dei test, `git add` e `git commit`; in modalità
   `dontAsk` il resto che chiederebbe un permesso viene negato:
   «Auto-denies every call that would otherwise prompt»
-  (https://code.claude.com/docs/en/permissions). Il JSON di ogni
-  chiamata resta fuori dallo spazio di lavoro, accanto, in
-  `M4-E03.prova_dal_vivo/`: la sessione della seconda parte non lo vede,
-  come nel vostro spazio di lavoro.
+  (https://code.claude.com/docs/en/permissions). Lo stream di ogni
+  chiamata, con il suo ultimo risultato in un JSON, resta fuori dallo
+  spazio di lavoro, accanto, in `M4-E03.prova_dal_vivo/`: la sessione
+  della seconda parte non lo vede, come nel vostro spazio di lavoro. Di
+  ogni chiamata stampa i turni del modello, la durata e i token di tutti
+  i suoi risultati, sommati: quando un subagent lavora in background, la
+  conversazione principale risponde prima, e la notifica del subagent
+  apre un altro segmento della stessa chiamata, con il suo risultato.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
-effort medium, `_docente/live.sh` sull'account del docente, con il JSON
-di ogni chiamata fuori dallo spazio di lavoro e i prompt di questo
-README): dopo i prompt la verifica ha detto «Non ancora» sei volte, una
-per passo della proposta, «il controllo del passo N non esegue i test
-(phpunit)»; `_docente/live.sh` ha mandato il turno di correzione, e la
-verifica ha detto «VERIFICA OK»: le sei sezioni, le 9 tabelle e sei
-responsabilità; 6 passi, ognuno con il suo controllo; `legacy/` com'era;
-i test verdi sul codice originale, «OK (13 tests, 69 assertions)», e
-rossi sulla copia rotta, «Tests: 13, Assertions: 44, Failures: 10.».
-Come dati: la regola `deny` c'era; un piano in `piani/`; 2 commit; 2
-sessioni;
-«chiamate Agent: 2 (Explore 2); nello stesso messaggio: 2», con 2
-trascrizioni di subagent; nessun `ExitPlanMode`; nessuna chiamata di
-Edit o Write su `legacy/`.
+effort medium, `_docente/live.sh` sull'account del docente, con lo
+stream e l'ultimo risultato di ogni chiamata fuori dallo spazio di
+lavoro e i prompt di questo README): dopo il prompt 3 i test non c'erano
+ancora, e `_docente/live.sh` ha mandato una volta il suo seguito sui
+test. Dopo i prompt la verifica ha detto «Non ancora:
+progetti/gestionale-php/docs/chiusura_mese.md non è in un commit (il
+prompt 2 ne chiede il commit).»; `_docente/live.sh` ha mandato il turno
+di correzione, Claude ha fatto quel commit, e la verifica ha detto
+«VERIFICA OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 5
+passi, ognuno con il suo controllo; `legacy/` com'era; i test verdi sul
+codice originale, «OK (16 tests, 69 assertions)», e rossi sulla copia
+rotta, «Tests: 16, Assertions: 42, Failures: 10.»; «la documentazione, i
+test, NOTA.md e PROPOSTA.md sono nei commit, senza modifiche fuori».
+Come dati: la regola `deny` c'era; un piano in `piani/`; 4 commit; 2
+sessioni; «chiamate Agent: 2 (Explore 2); nello stesso messaggio: 2»,
+con 2 trascrizioni di subagent; nessun `ExitPlanMode`; nessuna chiamata
+di Edit o Write su `legacy/`.
 
-Nella stessa prova, però, alcuni passi non sono arrivati al loro
-traguardo:
-- prompt 1: il subagent (a), i chiamanti, ha provato una sola ricerca,
-  un comando Bash composto, negato in dontAsk, e non ha restituito il
-  riassunto; è tornato soltanto quello di (b);
+Passo per passo, nella stessa prova:
+- prompt 1: i due riassunti, (a) e (b); al subagent dei chiamanti una
+  seconda ricerca, un comando Bash composto, è stata negata in dontAsk,
+  e il suo riassunto lo dice;
 - prompt 2: `docs/chiusura_mese.md` scritto; un comando composto
-  (`cd … && grep … && awk …`), negato in dontAsk, e la risposta dice
-  che «il commit non è stato fatto»;
-- prompt 3: `ChiusuraMeseTest.php` scritto, ma non eseguito né messo in
-  un commit, senza comandi negati;
-- turno di correzione: `sed -i …` negato in dontAsk; `PROPOSTA.md`
-  corretto con Edit, ma non messo in un commit.
+  (`cd … && grep … && wc … && awk …`), negato in dontAsk, e la risposta
+  dice che il commit non è stato fatto;
+- prompt 3: un comando composto (`cd … && ls … | head …; cat …`),
+  negato in dontAsk, e Claude si è fermato prima di scrivere il test;
+- il seguito sui test: un comando composto
+  (`cd … && ls … && cat … && cat …`), negato in dontAsk; poi
+  `ChiusuraMeseTest.php` scritto, eseguito, corretto finché passava e
+  messo in un commit;
+- prompt 4: `NOTA.md`, nel suo commit;
+- prompt 5: in plan mode il piano in `piani/`; dopo l'approvazione
+  `PROPOSTA.md`, il controllo del passo 1 eseguito una volta e il commit;
+- turno di correzione: il commit della documentazione.
 
-I 2 commit sono quelli di `NOTA.md` e della prima versione di
-`PROPOSTA.md`; i test sono stati eseguiti la prima volta dopo
-l'approvazione del piano, «OK (13 tests, 69 assertions)». Alla fine la
-documentazione e i test erano fuori dai commit, e `PROPOSTA.md` aveva
-le correzioni non messe in un commit. La verifica legge i file dello
-spazio di lavoro ed esegue lei i test; i commit e i subagent li conta
-soltanto come dati: «VERIFICA OK» non dice se i passi hanno fatto i
-loro commit.
+I 4 commit sono, nell'ordine, il test, `NOTA.md`, `PROPOSTA.md` e la
+documentazione. In una prova di prima con questi prompt, quando la
+verifica non leggeva i commit, alla fine la documentazione e i test
+erano fuori dai commit e `PROPOSTA.md` aveva correzioni fuori dai
+commit, con «VERIFICA OK»: per questo la verifica adesso li legge
+(sopra, «I commit»).
 
 ## Verifica (tools/verifica.sh M4-E03)
 
@@ -551,10 +567,10 @@ scrive niente nello spazio di lavoro.
 - La verifica dice che i test passano anche sulla copia rotta: i test non
   controllano ciò che la chiusura vera scrive nel database. Chiedete un
   test che esegue la chiusura senza simulazione e legge le tabelle.
-- La verifica dice «Non ancora» per la proposta o la documentazione:
-  incollate a Claude questo messaggio, con le righe «Non ancora: …» della
-  verifica al posto della riga fra i tag `<verification_result>`, poi
-  verificate di nuovo:
+- La verifica dice «Non ancora» per la proposta, la documentazione o un
+  commit che manca: incollate a Claude questo messaggio, con le righe
+  «Non ancora: …» della verifica al posto della riga fra i tag
+  `<verification_result>`, poi verificate di nuovo:
 
   <!-- prompt: correzione -->
 
@@ -580,12 +596,11 @@ scrive niente nello spazio di lavoro.
 
   `_docente/live.sh` manda questo messaggio, una volta sola, quando la
   verifica dice «Non ancora». Nella prova del corso è servito: dopo i
-  prompt la verifica ha detto che i controlli dei sei passi della
-  proposta non eseguivano i test, e dopo la correzione «VERIFICA OK».
-  Il commit che il messaggio chiede non c'è stato: `sed -i` negato in
-  dontAsk, `PROPOSTA.md` corretto con Edit e lasciato fuori dai commit,
-  e la verifica non guarda i commit. Dopo la correzione controllate con
-  `git status` che il lavoro sia nei commit.
+  prompt la verifica ha detto che la documentazione non era in un
+  commit, e il prompt 2 lo chiede; Claude ha fatto quel commit, e la
+  verifica ha detto «VERIFICA OK». Per ogni file che i passi chiedono e
+  che è fuori dai commit, o ha modifiche fuori, la verifica dice «Non
+  ancora» e lo nomina.
 - La verifica dice che `legacy/` è cambiato: guardate che cosa con
   `git diff $(git rev-list --max-parents=0 HEAD) --
   progetti/gestionale-php/legacy`, e riportatelo com'era con
@@ -611,7 +626,8 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 48 turni del modello in tutto, 12 soltanto per i test (sotto). Due
+corso 48 turni del modello in tutto, 21 per i test, il prompt 3 e il
+seguito sui test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -629,19 +645,21 @@ server.» (https://code.claude.com/docs/en/best-practices). Alla fine di
 ogni parte, `/exit`.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
-effort medium, `claude -p` sull'account del docente): sette chiamate, i
-cinque prompt, l'approvazione del piano e il turno di correzione, con 5,
-6, 12, 4, 8, 5 e 8 turni del modello; 25,8, 53,5, 132,2, 17,0, 49,3,
-20,0 e 17,8 secondi; token in entrata della conversazione principale,
-cache compresa, 78.887, 175.429, 270.581, 227.583, 173.459, 155.497 e
-124.174. Nella prima chiamata i due subagent Explore portano il totale
-di tutti i modelli a 151.997 token in entrata. Ogni chiamata è contata
-su tutti i suoi segmenti, dalla trascrizione della sessione, perché il
-JSON di `claude -p` descriveva solo l'ultimo: quando un subagent
-lavorava in background, la conversazione principale rispondeva prima, e
-la notifica del subagent apriva un altro segmento della stessa
-chiamata. Nella prima chiamata, tre segmenti, il JSON dice 1 turno
-(`num_turns`), 5,4 secondi e 21.636 token.
+effort medium, `claude -p` sull'account del docente): otto chiamate, i
+prompt 1–3, il seguito sui test, i prompt 4 e 5, l'approvazione del
+piano e il turno di correzione, con 3, 7, 2, 19, 4, 5, 5 e 3 turni del
+modello; 28,8, 53,1, 9,9, 137,0, 22,6, 55,5, 18,2 e 6,4 secondi; token
+in entrata della conversazione principale, cache compresa, 37.769,
+176.491, 85.640, 698.911, 317.839, 150.082, 200.437 e 154.379. Nella
+prima chiamata i due subagent Explore portano il totale di tutti i
+modelli a 142.758 token in entrata. Ogni chiamata è contata su tutti i
+suoi risultati, come la riga che `_docente/live.sh` stampa a ogni
+turno: quando un subagent lavora in background, la conversazione
+principale risponde prima, e la notifica del subagent apre un altro
+segmento della stessa chiamata, con il suo risultato; i secondi sono il
+tempo di lavoro dei segmenti, senza le attese fra uno e l'altro. In
+questa prova ogni chiamata ha avuto un risultato solo, anche la prima,
+con i due Explore.
 
 ## Per approfondire
 

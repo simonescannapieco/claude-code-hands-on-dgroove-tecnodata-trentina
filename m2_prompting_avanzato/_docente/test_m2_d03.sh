@@ -44,6 +44,9 @@
 #     non valido separati; uno schema non valido accettato esce 1; una
 #     chiamata fallita ferma la demo (1); controlla_json.py che non può
 #     girare esce 2; ANTHROPIC_API_KEY non arriva a claude;
+#   - la richiesta, demo/richiesta-json.md (classe X): la frase sotto prova
+#     byte per byte; il messaggio tra i tag <message>, il nome del lessico
+#     del corso, ed è quello di demo/messaggio.md;
 #   - il README: il passo dello schema non valido e le opzioni di live.sh,
 #     le due sottosezioni di «Che cosa osservare»;
 #   - shellcheck -x su verifica.sh, live.sh e su questa prova.
@@ -66,8 +69,15 @@ ELEMENTO+='/M2-D03_solo_json_o_schema'
 readonly ELEMENTO
 readonly LIVE="${ELEMENTO}/_docente/live.sh"
 readonly VERIFICA="${ELEMENTO}/verifica.sh"
-readonly CASES=122
+readonly CASES=125
 readonly T=$'\t'
+# La frase della richiesta che la demo mette alla prova, byte per byte.
+RICHIESTA='Estrai dal messaggio i campi seguenti e rispondi SOLO con un'
+RICHIESTA+=' JSON valido, senza testo prima o dopo, con esattamente queste'
+RICHIESTA+=' chiavi: tipo_cliente (privato, azienda o associazione),'
+RICHIESTA+=' servizio, problema, urgenza (bassa, media, alta o urgente),'
+RICHIESTA+=' azione_richiesta.'
+readonly RICHIESTA
 ERRORE='Error: --json-schema is not a valid JSON Schema: data/type must'
 ERRORE+=' be equal to one of the allowed values'
 readonly ERRORE
@@ -915,7 +925,26 @@ t_live() {
   fi
 }
 
-# --- Il README e shellcheck -------------------------------------------------
+# --- La richiesta, il README e shellcheck -----------------------------------
+
+# La richiesta della demo, classe X: la frase sotto prova resta byte per
+# byte; il messaggio sta tra i tag <message>, il nome del lessico del
+# corso, ciascuno su una riga sua, ed è quello di demo/messaggio.md.
+t_richiesta() {
+  local r="${ELEMENTO}/demo/richiesta-json.md" prima tag dentro
+  prima="$(head -n 1 -- "${r}")"
+  [[ "${prima}" == "${RICHIESTA}" ]]
+  check "richiesta: la frase sotto prova, invariata" $? "${prima}"
+  tag="$(grep -E '^</?[a-z_]+>$' -- "${r}" | tr '\n' ' ')"
+  [[ "${tag}" == '<message> </message> ' ]]
+  check "richiesta: il messaggio tra i tag <message>" $? "i tag: ${tag}"
+  dentro="$(sed -n '/^<message>$/,/^<\/message>$/p' -- "${r}" \
+    | sed '1d;$d')"
+  [[ -n "${dentro}" \
+      && "${dentro}" == "$(cat -- "${ELEMENTO}/demo/messaggio.md")" ]]
+  check "richiesta: tra i tag, il messaggio di demo/messaggio.md" $? \
+    "${dentro:0:80}"
+}
 
 # Il README: il passo dello schema non valido come lo manda live.sh, le
 # stesse opzioni nei tre passi con claude, le due sottosezioni.
@@ -991,6 +1020,7 @@ main() {
   t_verifica_risposte
   t_live_precondizioni
   t_live
+  t_richiesta
   t_readme
   t_shellcheck
   echo "PASS=${PASS} FAIL=${FAIL} SKIP=${SKIP}"

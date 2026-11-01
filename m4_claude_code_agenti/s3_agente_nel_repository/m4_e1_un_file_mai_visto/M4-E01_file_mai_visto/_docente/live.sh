@@ -15,11 +15,13 @@
 # Write, Edit, il comando dei test (la regola allow delle impostazioni
 # dello spazio di lavoro). Per cercare, grep e find non servono qui: sono
 # comandi di sola lettura, che Claude Code di regola esegue senza chiedere.
-# Ogni turno lascia il suo JSON in prova_dal_vivo/turno-<n>.json, una
-# cartella che lo script mette in .git/info/exclude dello spazio di lavoro
-# (così resta fuori da git status e dalla verifica; dentro, perché la
-# registrazione del corso la legge lì), e ne stampa i turni del modello, la
-# durata e i token; del terzo turno, le prove chieste, stampa la risposta.
+# Ogni turno, in stream-json, lascia il suo stream in
+# prova_dal_vivo/turno-<n>.jsonl e il suo ultimo risultato in
+# prova_dal_vivo/turno-<n>.json, una cartella che lo script mette in
+# .git/info/exclude dello spazio di lavoro (così resta fuori da git status
+# e dalla verifica; dentro, perché la registrazione del corso la legge lì),
+# e ne stampa i turni del modello, la durata e i token di tutti i
+# risultati, sommati; del terzo turno, le prove chieste, stampa la risposta.
 # Poi verifica.sh dell'elemento. Le funzioni comuni con il live.sh di
 # M4-E02 stanno in m4_claude_code_agenti/_docente/lib_live_m4_e01_e02.sh.
 #

@@ -16,7 +16,9 @@
 # Poi handson::claude_p con un claude finto: l'argv esatto (-p, strumenti
 # consentiti, modello, modalità di permesso, --permission-prompts none,
 # --output-format json, gli argomenti in più, poi «--» e per ultimo il
-# prompt, anche quando comincia con «-» o cita un'opzione),
+# prompt, anche quando comincia con «-» o cita un'opzione; con
+# HANDSON_OUTPUT_FORMAT=stream-json lo stream e --verbose, un altro formato
+# rifiutato, come un valore di due parole per formato, modalità e ambiente),
 # ANTHROPIC_API_KEY tolta fuori dagli elementi trainer-api e passata a
 # quelli, mai stampata; i rifiuti (bypassPermissions, auto,
 # --dangerously-skip-permissions, anche dentro il valore di un argomento in
@@ -346,6 +348,14 @@ t_claude_argv() {
   expect_absent "con strumenti vuoti niente --allowedTools" "ARG:--allowedTools"
   scenario HANDSON_PERMISSION_MODE=acceptEdits -- claude haiku Edit 'Correggi'
   expect "acceptEdits ammessa" 0 "ARG:acceptEdits"
+  scenario HANDSON_OUTPUT_FORMAT=stream-json -- claude sonnet Read 'Leggi'
+  local flusso='ARG:--output-format ARG:stream-json ARG:--verbose '
+  flusso+='ARG:--setting-sources '
+  if (( RC == 0 )) && [[ "$(argv_finto)" == *"${flusso}"* ]]; then
+    pass "HANDSON_OUTPUT_FORMAT=stream-json: lo stream, con --verbose"
+  else
+    fail "stream-json: «$(argv_finto)» (rc=${RC})"
+  fi
   scenario -- claude sonnet Read '- Leggi il file, poi riassumi' --effort low
   if (( RC == 0 )) && [[ "$(argv_finto)" \
       == *'ARG:low ARG:-- ARG:- Leggi il file, poi riassumi ' ]]; then
@@ -370,6 +380,23 @@ t_claude_rifiuti() {
   expect "bypassPermissions rifiutata" 2 "modalità di permesso non ammessa"
   scenario HANDSON_PERMISSION_MODE=auto -- claude sonnet Read 'Leggi'
   expect "auto rifiutata" 2 "modalità di permesso non ammessa"
+  scenario HANDSON_OUTPUT_FORMAT=text -- claude sonnet Read 'Leggi'
+  expect "un formato d'uscita che non è json né stream-json" 2 \
+    "formato d'uscita non ammesso"
+  # Due parole ammesse insieme non sono un valore ammesso: il confronto è
+  # con una parola intera della lista.
+  scenario "HANDSON_OUTPUT_FORMAT=json stream-json" -- \
+    claude sonnet Read 'Leggi'
+  expect "un formato di due parole, «json stream-json», rifiutato" 2 \
+    "formato d'uscita non ammesso"
+  scenario "HANDSON_PERMISSION_MODE=dontAsk manual" -- \
+    claude sonnet Read 'Leggi'
+  expect "una modalità di due parole, «dontAsk manual», rifiutata" 2 \
+    "modalità di permesso non ammessa"
+  scenario "HANDSON_ENV=claude-ai-pro trainer-api" -- \
+    claude sonnet Read 'Leggi'
+  expect "un ambiente di due parole, «claude-ai-pro trainer-api», rifiutato" \
+    2 "HANDSON_ENV non valido"
   scenario -- claude sonnet Read 'Leggi' --dangerously-skip-permissions
   expect "--dangerously-skip-permissions rifiutato" 2 "salta i controlli"
   scenario -- claude sonnet Read 'Leggi' --append-system-prompt \

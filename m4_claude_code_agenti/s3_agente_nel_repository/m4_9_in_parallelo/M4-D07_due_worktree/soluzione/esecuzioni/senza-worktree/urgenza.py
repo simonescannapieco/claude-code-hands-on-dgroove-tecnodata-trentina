@@ -5,7 +5,7 @@ oppure quando è aperta da almeno 7 giorni.
 
 Esempio d'uso:
 
->>> urgente(10, 0)
+>>> urgente(12, 1)
 True
 >>> urgente(3, 2)
 False

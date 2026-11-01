@@ -17,7 +17,15 @@ Controlla, nello spazio di lavoro:
     non scrive più niente, come in simulazione. PHP gira con tools/php.sh
     del repository, mai con la copia dello spazio di lavoro;
   - progetti/gestionale-php/legacy/ uguale al primo commit: un file cambiato,
-    nel commit o fuori, o un file nuovo è una segnalazione.
+    nel commit o fuori, o un file nuovo è una segnalazione;
+  - i commit che i passi del README chiedono, con le loro parole: la
+    documentazione («Poi fai il commit del file», prompt 2), i test di
+    caratterizzazione («Poi fai il commit del test», prompt 3), NOTA.md
+    («Poi fai il commit di NOTA.md», prompt 4) e PROPOSTA.md («fai il commit
+    di PROPOSTA.md», prompt 5; e il turno di correzione: «fai il commit di
+    ciò che cambi»): ognuno in HEAD, uguale al file dello spazio di lavoro.
+    Un file fuori dai commit, o con modifiche fuori dai commit, e NOTA.md
+    che manca, sono segnalazioni che lo nominano.
 Poi stampa come dati, mai come esito: la regola deny nelle impostazioni,
 NOTA.md, i piani di plan mode in piani/, i commit e, dalle trascrizioni
 delle sessioni di Claude Code di questo spazio di lavoro, le chiamate al
@@ -55,6 +63,7 @@ from typing import Dict, Iterator, List, Sequence, Set, Tuple
 PROGETTO = "progetti/gestionale-php"
 DOC = PROGETTO + "/docs/chiusura_mese.md"
 PROPOSTA = "PROPOSTA.md"
+NOTA = "NOTA.md"
 LEGACY = PROGETTO + "/legacy"
 TESTS = PROGETTO + "/tests/"
 MODULO = "legacy/chiusura_mese.inc.php"
@@ -440,6 +449,83 @@ def controlla_legacy(ws: str, radice: str) -> List[str]:
     return esito([], "legacy/ è com'era al punto di partenza")
 
 
+# --- I commit che i passi chiedono -----------------------------------------
+
+def nei_commit(ws: str, percorsi: Sequence[str]) -> Dict[str, str]:
+    """Per ogni file: «assente» se non c'è nello spazio di lavoro, «fuori»
+    se HEAD non lo ha, «cambiato» se nello spazio di lavoro è diverso da
+    HEAD, «ok» se è lo stesso. Confronta i contenuti, con git ls-tree su
+    HEAD e git hash-object sui file, che non scrivono niente."""
+    in_head: Dict[str, str] = {}
+    for voce in git(ws, "ls-tree", "-r", "-z", "HEAD", "--",
+                    *percorsi).split("\0"):
+        if voce:
+            info, percorso = voce.split("\t", 1)
+            in_head[percorso] = info.split()[2]
+    presenti = [p for p in percorsi if os.path.isfile(os.path.join(ws, p))]
+    impronte = git(ws, "hash-object", "--stdin-paths",
+                   entrata="".join(p + "\n" for p in presenti)).split()
+    stato = {p: "assente" for p in percorsi}
+    for p, h in zip(presenti, impronte):
+        stato[p] = ("fuori" if p not in in_head else
+                    "ok" if in_head[p] == h else "cambiato")
+    return stato
+
+
+def controlla_commit(ws: str, radice: str) -> List[str]:
+    """I file di cui i passi del README chiedono il commit, ognuno con il
+    numero del suo prompt: in HEAD e senza modifiche fuori dai commit. Un
+    file che manca lo segnalano i controlli che lo leggono; NOTA.md,
+    che nessun altro controllo legge, lo segnala questo."""
+    test = [r for r in cambiati(ws, radice, TESTS) if r.endswith("Test.php")
+            and os.path.isfile(os.path.join(ws, r))]
+    chiesti = [(DOC, 2)] + [(t, 3) for t in test] + [(NOTA, 4), (PROPOSTA, 5)]
+    stato = nei_commit(ws, [p for p, _ in chiesti])
+    problemi: List[str] = []
+    for percorso, prompt in chiesti:
+        quale = stato[percorso]
+        if quale == "assente" and percorso == NOTA:
+            problemi.append("manca NOTA.md (il prompt 4 chiede di scriverla "
+                            "e di farne il commit)")
+        elif quale == "fuori":
+            problemi.append("%s non è in un commit (il prompt %d ne chiede "
+                            "il commit)" % (percorso, prompt))
+        elif quale == "cambiato":
+            problemi.append("%s ha modifiche fuori dai commit (il prompt %d "
+                            "ne chiede il commit)" % (percorso, prompt))
+    return esito(problemi, riga_commit([
+        ("la documentazione", stato[DOC] != "assente"),
+        ("i test", bool(test)),
+        ("NOTA.md", stato[NOTA] != "assente"),
+        ("PROPOSTA.md", stato[PROPOSTA] != "assente")]))
+
+
+def riga_commit(voci: Sequence[Tuple[str, bool]]) -> str:
+    """La riga dei commit quando nessun file ne è fuori: dice i file che ci
+    sono, e quelli che mancano li lascia alle sezioni che li leggono, così
+    da sola non dice mai che tutti e quattro sono nei commit."""
+    ci_sono = [nome for nome, c in voci if c]
+    mancano = [nome for nome, c in voci if not c]
+
+    def elenco(nomi: List[str]) -> str:
+        return nomi[0] if len(nomi) == 1 else (
+            ", ".join(nomi[:-1]) + " e " + nomi[-1])
+
+    def plurale(nomi: List[str]) -> bool:
+        return len(nomi) > 1 or nomi == ["i test"]
+
+    if not mancano:
+        return ("la documentazione, i test, NOTA.md e PROPOSTA.md sono nei "
+                "commit, senza modifiche fuori")
+    if not ci_sono:
+        return ("nessuno dei file che i passi chiedono c'è ancora: lo dicono "
+                "le sezioni qui sopra")
+    return "%s %s nei commit, senza modifiche fuori; %s non %s ancora: lo " \
+        "dicono le sezioni qui sopra" % (
+            elenco(ci_sono), "sono" if plurale(ci_sono) else "è",
+            elenco(mancano), "ci sono" if plurale(mancano) else "c'è")
+
+
 def regola_deny(ws: str) -> bool:
     try:
         with open(os.path.join(ws, ".claude", "settings.json"),
@@ -455,7 +541,7 @@ def dati_lavoro(ws: str, radice: str) -> None:
     print("  Dati: la regola deny %s nelle impostazioni dello spazio di "
           "lavoro: %s" % (REGOLA_DENY, c if regola_deny(ws) else "non " + c))
     print("  Dati: NOTA.md: %s" % (c if os.path.isfile(
-        os.path.join(ws, "NOTA.md")) else "non " + c))
+        os.path.join(ws, NOTA)) else "non " + c))
     piani = glob.glob(os.path.join(ws, "piani", "*.md"))
     print("  Dati: piani di plan mode in piani/: %d" % len(piani))
     commit = git(ws, "rev-list", "--count", radice + "..HEAD").strip()
@@ -609,6 +695,8 @@ def esamina(ws: str) -> int:
     problemi += controlla_legacy(ws, radice)
     sezione("I test di caratterizzazione")
     problemi += controlla_test(ws, radice)
+    sezione("I commit che i passi chiedono")
+    problemi += controlla_commit(ws, radice)
     sezione("Dati, mai esiti")
     dati_lavoro(ws, radice)
     dati_sessioni(ws)

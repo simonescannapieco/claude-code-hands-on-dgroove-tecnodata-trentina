@@ -12,15 +12,20 @@ controlli, non il modello.
 
 Gli argomenti: le opzioni di handson::claude_p e di live.sh (OPZIONI, con
 quanti valori prendono), poi «--» e il prompt. Un'opzione che non conosce la
-rifiuta («error: unknown option», uscita 1), come un --output-format diverso
-da json. «--version» stampa una versione finta.
+rifiuta («error: unknown option», uscita 1), come un --output-format che non
+è json né stream-json, o stream-json senza --verbose. «--version» stampa una
+versione finta.
 
 Ogni invocazione aggiunge a FINTO_LOG (obbligatorio, tranne --version) una
 riga JSON: argv, cwd, chiave (se ANTHROPIC_API_KEY era nell'ambiente). Il
 numero della chiamata è il numero di righe del registro. Una chiamata senza
 --resume apre la sessione «sessione-finta-<numero>», con --resume continua
 quella data. La risposta è un JSON come quello di
-`claude -p --output-format json`.
+`claude -p --output-format json`; con stream-json, lo stream: l'avvio, un
+messaggio, il risultato (3 turni, 1000+n ms, 1110 token in entrata e 50 in
+uscita) e, quando la chiamata ha avviato i subagent Explore, che lavorano in
+background, la loro notifica e un secondo risultato (2 turni, 500 ms, 555 e
+25; result_index 1, origin task-notification).
 
 Le trascrizioni, solo se c'è PN_CLAUDE_DIR (mai in ~/.claude): la cartella
 del progetto è PN_CLAUDE_DIR/projects/<la cartella corrente, ogni carattere
@@ -33,7 +38,8 @@ Le scene, dal prompt:
                                 FINTO_E03_AGENT=nessuno: nessuna chiamata
   «Scrivi la documentazione»    la documentazione e un commit;
                                 FINTO_E03_DOC = buona (default) ·
-                                senza_rischi · no
+                                senza_rischi · no; FINTO_E03_COMMIT =
+                                senza_doc: il file senza il commit
   «Scrivi i test di caratterizzazione»  il test e un commit;
                                 FINTO_E03_TEST = caratterizza (default, nessun
                                 segno) · debole · rosso · no;
@@ -68,7 +74,7 @@ OPZIONI = {"-p": 0, "--print": 0, "--strict-mcp-config": 0,
            "--model": 1, "--effort": 1, "--allowedTools": 1,
            "--output-format": 1, "--permission-mode": 1,
            "--permission-prompts": 1, "--setting-sources": 1,
-           "--resume": 1}
+           "--resume": 1, "--verbose": 0}
 PROGETTO = "progetti/gestionale-php"
 DOC = PROGETTO + "/docs/chiusura_mese.md"
 TEST = PROGETTO + "/tests/Integrazione/ChiusuraMeseTest.php"
@@ -79,6 +85,9 @@ TABELLE = ("fatture, righe_fattura, clienti, linee, ticket, provvigioni, "
            "attivazioni, offerte, registro_operazioni")
 COMANDO = ("tools/php.sh php progetti/gestionale-php/vendor/bin/phpunit "
            "-c progetti/gestionale-php")
+# Quanti subagent ha avviato questa chiamata: lavorano in background, e
+# allora lo stream ha un secondo risultato.
+SUBAGENTI = []  # type: List[str]
 
 
 def leggi_argomenti(argv: List[str]) -> Tuple[Dict[str, str], str]:
@@ -180,6 +189,7 @@ def mappa(sessione: str, n: int) -> str:
     trascrizione(sessione, [messaggio(sessione, n, chiamate)])
     subagente(sessione, 1)
     subagente(sessione, 2)
+    SUBAGENTI.extend(["Explore", "Explore"])
     return "(a) bin/chiusura-mese.php:35 (finto) (b) tabelle (finto)"
 
 
@@ -200,7 +210,8 @@ def documentazione() -> str:
         else:
             testo += ["Testo finto.", ""]
     scrivi(DOC, "\n".join(testo))
-    commit([DOC], "docs(legacy): documentazione finta")
+    if os.environ.get("FINTO_E03_COMMIT") != "senza_doc":
+        commit([DOC], "docs(legacy): documentazione finta")
     return "Documentazione scritta (finto)."
 
 
@@ -266,7 +277,7 @@ def correggi() -> str:
     """Il turno dopo la verifica: tutto buono, salvo FINTO_E03_MAI=1."""
     if os.environ.get("FINTO_E03_MAI") == "1":
         return "Non riesco a sistemare (finto)."
-    for chiave in ("FINTO_E03_DOC", "FINTO_E03_PROPOSTA"):
+    for chiave in ("FINTO_E03_DOC", "FINTO_E03_PROPOSTA", "FINTO_E03_COMMIT"):
         os.environ.pop(chiave, None)
     documentazione()
     test(True)
@@ -308,24 +319,53 @@ def main(argv: List[str]) -> int:
     except ValueError as errore:
         sys.stderr.write("%s\n" % errore)
         return 1
-    if opzioni.get("--output-format") != "json":
-        sys.stderr.write("error: il finto risponde solo in json\n")
+    formato = opzioni.get("--output-format")
+    if formato not in ("json", "stream-json"):
+        sys.stderr.write("error: il finto risponde in json o stream-json\n")
+        return 1
+    if formato == "stream-json" and "--verbose" not in opzioni:
+        sys.stderr.write("error: il finto vuole --verbose con "
+                         "--output-format stream-json\n")
         return 1
     sessione = opzioni.get("--resume") or "sessione-finta-%d" % n
     trascrizione(sessione, [{"type": "user", "isSidechain": False,
                              "sessionId": sessione,
                              "message": {"role": "user", "content": prompt}}])
     testo = scena(prompt, sessione, n, opzioni.get("--permission-mode", ""))
-    print(json.dumps({"type": "result", "subtype": "success",
-                      "is_error": False, "duration_ms": 1000 + n,
-                      "num_turns": 3, "result": testo,
-                      "session_id": sessione, "total_cost_usd": 0,
-                      "usage": {"input_tokens": 10,
-                                "cache_creation_input_tokens": 100,
-                                "cache_read_input_tokens": 1000,
-                                "output_tokens": 50}},
-                     ensure_ascii=False))
+    stampa(formato, sessione, {
+        "type": "result", "subtype": "success", "is_error": False,
+        "duration_ms": 1000 + n, "num_turns": 3, "result": testo,
+        "session_id": sessione, "total_cost_usd": 0,
+        "usage": {"input_tokens": 10, "cache_creation_input_tokens": 100,
+                  "cache_read_input_tokens": 1000, "output_tokens": 50}})
     return 0
+
+
+def stampa(formato: str, sessione: str, primo: dict) -> None:
+    """La risposta: il JSON di --output-format json, oppure lo stream di
+    stream-json, un evento per riga; con i subagent in background due
+    risultati, il secondo dopo la loro notifica."""
+    if formato == "json":
+        print(json.dumps(primo, ensure_ascii=False))
+        return
+    eventi = [{"type": "system", "subtype": "init", "session_id": sessione},
+              {"type": "assistant", "session_id": sessione,
+               "message": {"role": "assistant", "content": [
+                   {"type": "text", "text": primo["result"]}]}},
+              dict(primo, result_index=0)]
+    if SUBAGENTI:
+        eventi += [{"type": "user", "session_id": sessione,
+                    "message": {"role": "user", "content":
+                                "<task-notification>(finta)"
+                                "</task-notification>"}},
+                   dict(primo, num_turns=2, duration_ms=500, result_index=1,
+                        origin={"kind": "task-notification"},
+                        usage={"input_tokens": 5,
+                               "cache_creation_input_tokens": 50,
+                               "cache_read_input_tokens": 500,
+                               "output_tokens": 25})]
+    for evento in eventi:
+        print(json.dumps(evento, ensure_ascii=False))
 
 
 if __name__ == "__main__":

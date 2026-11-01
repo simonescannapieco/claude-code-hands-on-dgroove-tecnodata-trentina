@@ -41,6 +41,11 @@
 #                            trainer-api
 #   HANDSON_PERMISSION_MODE  la modalità di permesso di handson::claude_p:
 #                            dontAsk (default), manual, acceptEdits, plan
+#   HANDSON_OUTPUT_FORMAT    il formato d'uscita di handson::claude_p:
+#                            json (default: un JSON, l'ultimo risultato)
+#                            o stream-json (con --verbose: ogni messaggio
+#                            e ogni risultato della chiamata, una riga
+#                            ciascuno)
 #
 # Il corso gira su Linux e su Windows con WSL 2; la libreria resta
 # compatibile anche con il bash 3.2: niente array associativi né
@@ -61,6 +66,7 @@ HANDSON_NO_PAUSE="${HANDSON_NO_PAUSE:-0}"
 HANDSON_SHOW_CMD="${HANDSON_SHOW_CMD:-1}"
 HANDSON_ENV="${HANDSON_ENV:-claude-code-pro}"
 HANDSON_PERMISSION_MODE="${HANDSON_PERMISSION_MODE:-dontAsk}"
+HANDSON_OUTPUT_FORMAT="${HANDSON_OUTPUT_FORMAT:-json}"
 
 readonly HANDSON_TAB=$'\t'
 readonly HANDSON_CR=$'\r'
@@ -85,6 +91,7 @@ readonly HANDSON_SAFE_TOKEN_RE='^[A-Za-z0-9._/:=@%+,-]+$'
 readonly HANDSON_KINDS=' demo esercizio '
 readonly HANDSON_ENVS=' claude-code-pro claude-ai-pro trainer-api '
 readonly HANDSON_PERMISSION_MODES=' dontAsk manual acceptEdits plan '
+readonly HANDSON_OUTPUT_FORMATS=' json stream-json '
 readonly HANDSON_SETTING_SOURCES='project,local'
 # Il prefisso delle chiavi API, composto qui perché nel file non compaia
 # nessuna forma di chiave che uno scanner di segreti segnalerebbe.
@@ -398,7 +405,11 @@ handson::_claude_arg_ok() {
 # imposta parte in Manual; la passiamo comunque, regola nostra),
 # --permission-prompts none (ciò che chiederebbe un permesso viene
 # negato e Claude non riprova) e --output-format json (un JSON con
-# `result`, l'ID di sessione e i metadati). Mai
+# `result`, l'ID di sessione e i metadati), oppure, con
+# HANDSON_OUTPUT_FORMAT=stream-json, --output-format stream-json
+# --verbose: una riga JSON per messaggio e per risultato. Quando un
+# subagent lavora in background la chiamata ha più risultati, uno per
+# segmento, e il JSON descrive solo l'ultimo. Mai
 # --dangerously-skip-permissions, mai bypassPermissions, mai auto (lì le
 # azioni le rivede un classificatore al posto dell'utente): gira solo ciò
 # che l'elenco consente.
@@ -417,7 +428,8 @@ handson::_claude_arg_ok() {
 # Fuori dagli elementi trainer-api toglie ANTHROPIC_API_KEY dall'ambiente
 # del comando: in -p la chiave, se c'è, viene sempre usata al posto
 # dell'abbonamento. Non stampa mai un segreto.
-# Globals: HANDSON_ENV, HANDSON_PERMISSION_MODE (lette).
+# Globals: HANDSON_ENV, HANDSON_PERMISSION_MODE, HANDSON_OUTPUT_FORMAT
+#   (lette).
 # Arguments: $1 il modello (alias o nome completo), $2 gli strumenti
 #   consentiti separati da virgole ("" = nessuno), $3 il prompt (non
 #   vuoto); gli argomenti seguenti passano a claude così come sono, prima
@@ -445,8 +457,11 @@ handson::claude_p() {
     argv+=(--allowedTools "${strumenti}")
   fi
   argv+=(--model "${modello}" --permission-mode "${HANDSON_PERMISSION_MODE}"
-    --permission-prompts none --output-format json
-    --setting-sources "${HANDSON_SETTING_SOURCES}")
+    --permission-prompts none --output-format "${HANDSON_OUTPUT_FORMAT}")
+  if [[ "${HANDSON_OUTPUT_FORMAT}" == stream-json ]]; then
+    argv+=(--verbose)
+  fi
+  argv+=(--setting-sources "${HANDSON_SETTING_SOURCES}")
   if (( $# > 0 )); then
     argv+=("$@")
   fi
@@ -465,6 +480,23 @@ handson::claude_p() {
   )
 }
 
+# Vero se il valore è, intero, una delle parole della lista: un confronto
+# esatto, parola per parola, così due parole ammesse insieme («json
+# stream-json») non sono un valore ammesso.
+# Arguments: $1 il valore, $2 la lista (parole separate da spazi).
+# Returns: 0 se il valore è una parola della lista, 1 altrimenti.
+handson::_ammesso() {
+  local -a parole=()
+  local parola
+  read -r -a parole <<< "$2"
+  for parola in "${parole[@]}"; do
+    case "$1" in
+      "${parola}") return 0 ;;
+    esac
+  done
+  return 1
+}
+
 # Le precondizioni di handson::claude_p: modello e prompt non vuoti (il
 # prompt può cominciare con «-»: arriva dopo «--»), modalità di permesso,
 # ambiente; niente Fable fuori dagli elementi trainer-api (sul piano Pro
@@ -476,10 +508,14 @@ handson::_claude_p_checks() {
     || handson::die "handson::claude_p: il modello va indicato esplicitamente"
   [[ -n "$2" ]] \
     || handson::die "handson::claude_p: il prompt non può essere vuoto"
-  [[ "${HANDSON_PERMISSION_MODES}" == *" ${HANDSON_PERMISSION_MODE} "* ]] \
+  handson::_ammesso "${HANDSON_PERMISSION_MODE}" \
+    "${HANDSON_PERMISSION_MODES}" \
     || handson::die "modalità di permesso non ammessa:" \
       "«${HANDSON_PERMISSION_MODE}» (ammesse:${HANDSON_PERMISSION_MODES})"
-  [[ "${HANDSON_ENVS}" == *" ${HANDSON_ENV} "* ]] \
+  handson::_ammesso "${HANDSON_OUTPUT_FORMAT}" "${HANDSON_OUTPUT_FORMATS}" \
+    || handson::die "formato d'uscita non ammesso:" \
+      "«${HANDSON_OUTPUT_FORMAT}» (ammessi:${HANDSON_OUTPUT_FORMATS})"
+  handson::_ammesso "${HANDSON_ENV}" "${HANDSON_ENVS}" \
     || handson::die "HANDSON_ENV non valido: «${HANDSON_ENV}»"
   if [[ "${HANDSON_ENV}" == "trainer-api" ]]; then
     handson::need_api_key

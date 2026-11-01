@@ -530,8 +530,8 @@ t_file() {
   r="$(cat "${D07}/demo/prompt-rinomina.txt")"
   if [[ "${e}" == *doctest* && "${e}" == *">>>"* \
       && "${e}" == *progetti/urgenze/urgenza.py* \
-      && "${e}" == *"Non cambiare altro"* \
-      && "${e}" != *giorni_di_apertura* ]]; then
+      && "${e}" == *"Lascia invariato tutto il resto."* \
+      && "${e}" != *giorni_di_apertura* && "${e}" != *"Non "* ]]; then
     pass "prompt: l'esempio in formato doctest, nient'altro"
   else
     fail "prompt-esempio.txt: «${e}»"
@@ -539,7 +539,8 @@ t_file() {
   if [[ "${r}" == *giorni_aperta* && "${r}" == *giorni_di_apertura* \
       && "${r}" == *progetti/urgenze/urgenza.py* \
       && "${r}" == *progetti/urgenze/test_urgenza.py* \
-      && "${r}" == *"Non cambiare altro"* && "${r}" != *">>>"* ]]; then
+      && "${r}" == *"Lascia invariato tutto il resto."* \
+      && "${r}" != *">>>"* && "${r}" != *"Non "* ]]; then
     pass "prompt: la rinomina nel modulo e nei test, nient'altro"
   else
     fail "prompt-rinomina.txt: «${r}»"
@@ -548,10 +549,12 @@ t_file() {
   r="$(tag_e_parole "${D07}/demo/prompt-rinomina.txt")"
   if [[ "${e}" == "${TAG_D07}"$'\n'"Aggiungi alla docstring del modulo \
 progetti/urgenze/urgenza.py un esempio d'uso della funzione urgente, nel \
-formato di doctest: righe che cominciano con >>>. Non cambiare altro." \
+formato di doctest: righe che cominciano con >>>. Lascia invariato tutto il \
+resto." \
       && "${r}" == "${TAG_D07}"$'\n'"Rinomina il parametro giorni_aperta \
 della funzione urgente in giorni_di_apertura, in progetti/urgenze/urgenza.py \
-e nei suoi test, progetti/urgenze/test_urgenza.py. Non cambiare altro." ]]
+e nei suoi test, progetti/urgenze/test_urgenza.py. Lascia invariato tutto il \
+resto." ]]
   then
     pass "prompt: ogni frase nel suo tag, instructions e constraints"
   else

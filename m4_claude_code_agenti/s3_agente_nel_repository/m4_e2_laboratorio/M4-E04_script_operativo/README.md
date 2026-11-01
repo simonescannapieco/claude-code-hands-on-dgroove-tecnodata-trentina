@@ -295,7 +295,7 @@ quella con la barra sì.
        3. Correggi ciò che il revisore segnala, poi esegui di nuovo il
           controllo, da solo:
           python3 controlla_notturno.py
-          e fai l'ultimo commit.
+          e, quando passa, fai l'ultimo commit.
        </instructions>
 
        <format>
@@ -493,12 +493,17 @@ specifica»; sui dati di esempio, con `--giorno=2026-09-13`,
 `linea-cliente-cessato` trovate 2 su 2, `linea-senza-apparato` 1 su 1,
 `attivazione-ferma` 3 su 3, `ticket-in-attesa` 3 su 3, e i due conteggi
 giusti; senza le incoerenze, uscita 0 e nessuna segnalazione. Il
-revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
-modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 2 commit, 3 file
-cambiati, 2 sessioni, «chiamate al tool Agent: 3 (revisore 3)», e «il
-controllo eseguito da Claude: 9 volte, l'ultima con uscita 0». La
-seconda parte ha trovato lo script già completo: il revisore ha dato
-«ESITO: OK», e nessun commit nuovo.
+revisore (tools: Glob, Grep, Read): 6 trascrizioni, nessuno strumento che
+modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 7 commit, 3 file
+cambiati, 2 sessioni, «chiamate al tool Agent: 6 (revisore 6)», e «il
+controllo eseguito da Claude: 14 volte, l'ultima con uscita 0». Nella
+prima parte il revisore ha dato tre volte «ESITO: DA CORREGGERE», e
+Claude ha corretto lo script; poi «ESITO: OK», alla quarta revisione e
+alla quinta, sul diff completo prima dell'ultimo commit. La seconda
+parte ha trovato lo script già completo: il revisore ha dato «ESITO:
+OK», il controllo uscita 0, e il solo commit nuovo aggiorna `NOTA.md`.
+In dontAsk sono state negate due prove a mano dello script, con
+`; echo …`, una per parte.
 
 ## Verifica (tools/verifica.sh M4-E04)
 
@@ -554,9 +559,9 @@ dipendenze del gestionale o se PHP non si avvia.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 60
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 77
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato sei volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). I subagent non sono gratis: «What
 they cost you is mostly tokens, since every subagent sends its own requests
@@ -575,17 +580,18 @@ it breaks your usage down by skill, subagent, plugin, and MCP server.»
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente): cinque chiamate,
-quattro nella prima parte e una nella seconda, con 18, 21, 7, 4 e 10
-turni del modello; 56,7, 173,0, 88,1, 16,9 e 113,2 secondi; token in
-entrata della conversazione principale, cache compresa, 291.998,
-1.113.223, 430.452, 307.864 e 216.645. I token del revisore si
-aggiungono a questi. Ogni chiamata è contata su tutti i suoi segmenti,
-dalla trascrizione della sessione, perché il JSON di `claude -p`
-descriveva solo l'ultimo: quando il revisore lavorava in background, la
-conversazione principale rispondeva prima, e la notifica del revisore
-apriva un altro segmento della stessa chiamata. Nella seconda chiamata,
-due segmenti, il JSON dice 7 turni (`num_turns`), 24,3 secondi e
-396.029 token.
+quattro nella prima parte e una nella seconda, con 7, 46, 7, 4 e 13
+turni del modello; 35,2, 188,1, 32,3, 16,7 e 40,7 secondi; token in
+entrata della conversazione principale, cache compresa, 180.573,
+2.558.791, 531.002, 322.049 e 234.167. I token del revisore si
+aggiungono a questi. Ogni chiamata è contata su tutti i suoi risultati,
+come la riga che `_docente/live.sh` stampa a ogni turno: quando il
+revisore lavora in background, la conversazione principale risponde
+prima, e la notifica del revisore apre un altro segmento della stessa
+chiamata, con il suo risultato; i secondi sono il tempo di lavoro dei
+segmenti, senza le attese fra uno e l'altro. Nella seconda chiamata,
+cinque segmenti, l'ultimo risultato da solo, quello che riporta il JSON
+di `--output-format json`, dice 5 turni, 19,2 secondi e 350.499 token.
 
 ## Per approfondire
 

@@ -81,7 +81,7 @@ readonly PHP_FINTO="${MOD}/_docente/php_finto_m4_e04.py"
 readonly CLAUDE_FINTO="${MOD}/_docente/claude_finto_m4_e04_e05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=114
+readonly CASES=117
 readonly SCRIPT_REL=progetti/gestionale-php/bin/controllo-notturno.php
 readonly RIFERIMENTO="${E04}/soluzione/${SCRIPT_REL}"
 readonly CONTROLLO="python3 controlla_notturno.py"
@@ -614,7 +614,7 @@ if len(s) != 3 or not all(comando in x and "da solo" in x
         not in s[0] or "Prima dell'ultimo commit" not in s[1] \
         or "@agent-revisore" not in s[1] or comando in s[1] \
         or not s[2].startswith("3. Correggi ciò che il revisore segnala") \
-        or not s[2].endswith("e fai l'ultimo commit."):
+        or not s[2].endswith("e, quando passa, fai l'ultimo commit."):
     male.append(5)
 print("ultimo passo ok" if not male else "ultimo passo: i prompt %s" % male)
 PY
@@ -998,6 +998,50 @@ live() {
     "$@" "${E04}/_docente/live.sh" "${ws}"
 }
 
+# Lo stream di ogni chiamata e il riepilogo che somma tutti i suoi
+# risultati (in OUT). Il claude finto dà un risultato solo (3 turni,
+# 1000+n ms, 1110 token in entrata e 50 in uscita), e due quando la
+# chiamata ha il revisore, che lavora in background, come il turno 3 (poi 2
+# turni, 500 ms, 555 e 25): il JSON del turno è l'ultimo risultato, lo
+# stream intero gli sta accanto. Arguments: $1 lo spazio di lavoro, $2 il
+# registro del claude finto.
+riepiloghi() {
+  local j="$1.prova_dal_vivo"
+  if grep -qxF "  turno 1: 3 turni del modello, 1 s, token in entrata 1110, \
+in uscita 50" <<< "${OUT}" \
+      && grep -qxF "  turno 3: 5 turni del modello in 2 segmenti, 1 s, token \
+in entrata 1665, in uscita 75" <<< "${OUT}"; then
+    pass "live: il riepilogo somma i risultati; un risultato, come prima"
+  else
+    fail "live: i riepiloghi: $(grep -E '^  turno [13]:' <<< "${OUT}")"
+  fi
+  if [[ "$(jq -r '[.type, .result_index, .origin.kind] | join(" ")' \
+      "${j}/turno-3.json" 2> /dev/null)" == "result 1 task-notification" \
+      && "$(jq -s 'map(select(.type == "result")) | length' \
+        "${j}/turno-3.jsonl" 2> /dev/null)" == 2 \
+      && "$(jq -s 'map(select(.type == "result")) | length' \
+        "${j}/turno-1.jsonl" 2> /dev/null)" == 1 ]]; then
+    pass "live: lo stream in turno-<n>.jsonl, l'ultimo risultato nel JSON"
+  else
+    fail "live: turno-3.json o gli stream non sono quelli attesi"
+  fi
+  if python3 -B -I - "$2" <<'PY'
+import json
+import sys
+
+righe = [json.loads(r)["argv"] for r in open(sys.argv[1], encoding="utf-8")]
+sys.exit(0 if righe and all(
+    a[a.index("--output-format") + 1] == "stream-json" and "--verbose" in a
+    for a in righe if "--output-format" in a) and all(
+    "--output-format" in a for a in righe) else 1)
+PY
+  then
+    pass "live: ogni chiamata con --output-format stream-json --verbose"
+  else
+    fail "live: le chiamate non chiedono lo stream-json con --verbose"
+  fi
+}
+
 # I titoli dei turni che live.sh stampa (in OUT): per un prompt nella forma
 # a tag la prima riga dopo il tag che lo apre, per uno semplice la prima
 # riga; mai un tag.
@@ -1048,6 +1092,7 @@ test_live() {
   live "${ws}" completo
   expect "live: il lavoro completo, la verifica passa" 0 "Fatto"
   titoli_dei_turni
+  riepiloghi "${ws}" "${TMP}/finto-completo.log"
   righe="$(chiamate "${TMP}/finto-completo.log")"
   readme="$(impronte_readme)"
   attese="$(printf '%s\t%s\tsonnet\tmedium\tmcp\t%s\tFalse\n' \
