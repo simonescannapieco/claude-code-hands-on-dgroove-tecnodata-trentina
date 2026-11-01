@@ -33,6 +33,8 @@
 #   - il README: i comandi di sola lettura «di regola» senza permesso, Glob
 #     e Grep su macOS, Linux e WSL, i token della registrazione, il tool
 #     Agent, gli ONT, cd - prima della verifica;
+#   - soluzione/LEGGIMI.md: la registrazione del 1 novembre, fatta con i
+#     prompt di adesso, un tag per ingrediente;
 #   - shellcheck -x su verifica.sh, live.sh e questo file.
 # Mai il claude vero: il finto e l'esca stanno davanti nel PATH, e la
 # suite lo controlla prima di usarli. Gli stream del finto non sono
@@ -62,7 +64,7 @@ readonly RETE_DOCENTE="${RADICE}/progetti/rete/_docente/README.md"
 # prepara_esercizio.sh rifiuta gli spazi di lavoro.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=142
+readonly CASES=143
 # I due prompt, riga per riga, un tag per ingrediente: la parte comune (i
 # tag <role> e <context>, l'apertura di <instructions>; poi «Poi rispondi:
 # …», i tag <format> e <constraints>) e, in mezzo, la prima frase del tag
@@ -589,13 +591,16 @@ frasi = [
 for frase, url in frasi:
     if frase not in piatto or url not in readme:
         problemi.append("manca la frase «%s…»" % frase[:40])
-for atteso in ("di regola", "su macOS, Linux e WSL", "294.326", "108.485",
+for atteso in ("di regola", "su macOS, Linux e WSL", "266.847", "125.551",
                "circa 130.000", "il tool Agent", "ONT coinvolti",
-               "31 ottobre 2026, Claude Code 2.1.316"):
+               "1 novembre 2026, Claude Code 2.1.316"):
     if atteso not in piatto:
         problemi.append("manca «%s»" % atteso)
+# Le registrazioni di prima: quella del 31 ottobre (294.326 e 108.485,
+# 10.154 contro 16.199), quella del 28 (188.296 e 117.147).
 for vecchio in ("solo se", "290.000", "strumento Agent", "ONT coinvolte",
-                "188.296", "117.147", "circa 100.000"):
+                "188.296", "117.147", "circa 100.000", "294.326", "108.485",
+                "10.154", "16.199", "31 ottobre 2026"):
     if vecchio in piatto:
         problemi.append("c'è ancora «%s»" % vecchio)
 # «le ONT» soltanto dentro la domanda, che si cita com'è nei prompt.
@@ -612,6 +617,23 @@ print("; ".join(problemi) or "README aggiornato")
 PY
   expect "README: di regola, macOS, i token, il tool Agent, gli ONT, cd -" 0 \
     "README aggiornato"
+  # La soluzione è la registrazione del 1 novembre, fatta con i prompt di
+  # adesso: LEGGIMI.md non dice più che la prova aveva le etichette.
+  run python3 -B -I - "${D06}/soluzione/LEGGIMI.md" <<'PY'
+import sys
+piatto = " ".join(open(sys.argv[1], encoding="utf-8").read().split())
+problemi = []
+for atteso in ("1 novembre 2026", "Claude Code 2.1.316", "un tag per",
+               "--tools Agent,Read,Grep,Glob"):
+    if atteso not in piatto:
+        problemi.append("manca «%s»" % atteso)
+for vecchio in ("31 ottobre", "etichette", "aspettano una prova nuova"):
+    if vecchio in piatto:
+        problemi.append("c'è ancora «%s»" % vecchio)
+print("; ".join(problemi) or "LEGGIMI aggiornato")
+PY
+  expect "soluzione/LEGGIMI.md: la registrazione del 1 novembre, con i tag" 0 \
+    "LEGGIMI aggiornato"
 }
 
 # prepara_esercizio.sh: i log senza il materiale del docente, nessuna

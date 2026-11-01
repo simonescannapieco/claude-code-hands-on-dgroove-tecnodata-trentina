@@ -93,7 +93,7 @@ readonly KIT=(misura.sh strumenti/kit.py schema-giudizio.json
 # Le righe intere che kit.py confronta stampa sul confronto di v0 e v1
 # della soluzione di M2-E01.
 readonly E01_TOTALI='  totali: controlli 0/3 → 3/3; giudice 2 → 3 su 5'
-readonly E01_TOKEN='  token: in entrata 926 → 1932, in uscita 849 → 294'
+readonly E01_TOKEN='  token: in entrata 927 → 1967, in uscita 961 → 302'
 readonly E01_CRITERI="    su 7 in v0, 6 su 7 in v1; non rispettati in v1: \
 impegni)"
 # ...e quelle che verifica.py stampa sulla stessa soluzione: i totali di v0

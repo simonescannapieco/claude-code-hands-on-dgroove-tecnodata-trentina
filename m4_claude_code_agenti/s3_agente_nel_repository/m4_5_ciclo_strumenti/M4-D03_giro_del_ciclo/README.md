@@ -169,11 +169,11 @@ richiesta non c'è niente da confrontare: «non distinguibile». Quante
 richieste servono e quali strumenti Claude sceglie non sono verdetti: sono
 dati. Il controllo non scrive niente: decide dagli stream e dalle copie.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
-Sonnet con effort low, tre esecuzioni): ognuna ha fatto 4 richieste al
-modello e 3 chiamate a strumenti, senza permessi negati, e i token in
-entrata sono saliti a ogni richiesta, da 17.330 a 17.809, da 17.331 a
-17.791 e da 17.332 a 17.922. «Ogni richiesta rimanda tutta la
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
+Sonnet con effort low, tre esecuzioni): 3, 4 e 4 richieste al modello e
+3 chiamate a strumenti in ognuna, senza permessi negati, e i token in
+entrata sono saliti a ogni richiesta, da 17.347 a 17.912, da 17.347 a
+17.922 e da 17.345 a 17.867. «Ogni richiesta rimanda tutta la
 conversazione»: confermata in ognuna delle tre. Come dato, i test
 rieseguiti nella copia: verdi in tutte e tre (3 test, OK). Le tre
 esecuzioni sono nella cartella `soluzione/esecuzioni/` di questo
@@ -226,11 +226,11 @@ quota, so consider switching to Sonnet for routine work»
 (https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code).
 claude.ai e Claude Code consumano gli stessi limiti: se il limite della
 sessione è vicino, guardate il risultato del docente invece di rifare
-l'esecuzione. Nella registrazione del corso (28 ottobre 2026, Claude Code
-2.1.312, Sonnet con effort low), dal JSON di ogni esecuzione: 4 turni
-ciascuna (`num_turns`), in 6,5, 16,5 e 6,6 secondi, con 70.314, 70.288 e
-70.638 token in entrata, cache compresa: la somma delle quattro
-richieste, ciascuna di poco più di 17.000.
+l'esecuzione. Nella registrazione del corso (1 novembre 2026, Claude Code
+2.1.316, Sonnet con effort low), dal JSON di ogni esecuzione: 4 turni
+ciascuna (`num_turns`), in 5,5, 6,9 e 6,7 secondi, con 52.804, 70.670 e
+70.520 token in entrata, cache compresa: la somma delle richieste, tre
+nella prima e quattro nelle altre, ciascuna di poco più di 17.000.
 
 ## Per approfondire
 

@@ -251,21 +251,21 @@ disponibilità. Poi guarda ciò che trova nello spazio di lavoro.
   non al modello, deve dire che il server è configurato nello spazio di
   lavoro, e `risposta.txt` deve nominare esattamente i comuni giusti.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
-Sonnet con effort low, tre coppie): in
-ognuna delle tre esecuzioni con il server, `copertura (connected)`, una
-chiamata a `mcp__copertura__cerca_copertura` e «13 comuni nominati, giusti
-13 su 13, mancano 0, in più nessuno»; in ognuna delle tre senza, nessun
-server, due chiamate a Read e nessun comune. «Con --strict-mcp-config,
-solo i server di --mcp-config»: confermata in tutte e sei le esecuzioni;
-«Gli strumenti MCP si chiamano mcp__<server>__<tool>»: confermata in
-tutte e tre quelle con il server. Come dati: lo strumento del server
-chiamato 3 su 3; risposte con esattamente i comuni giusti, con il server
-3 su 3, senza 0 su 3. La vostra prova, rifatta dal docente con
-`claude -p` invece che in una sessione: `claude mcp get copertura` ha
-detto «Status: ✔ Connected», la risposta ha nominato i 13 comuni e la
-verifica è passata. Le sei esecuzioni sono nella cartella
-`soluzione/risposte/` di questo elemento.
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
+Sonnet con effort low, tre coppie): in ognuna delle tre esecuzioni con il
+server, `copertura (connected)`, una chiamata a
+`mcp__copertura__cerca_copertura` e «13 comuni nominati, giusti 13 su 13,
+mancano 0, in più nessuno»; nelle tre senza, nessun server, due, tre e due
+chiamate a Read e nessun comune. «Con --strict-mcp-config, solo i server
+di --mcp-config»: confermata in tutte e sei le esecuzioni; «Gli strumenti
+MCP si chiamano mcp__<server>__<tool>»: confermata in tutte e tre quelle
+con il server. Come dati: lo strumento del server chiamato 3 su 3;
+risposte con esattamente i comuni giusti, con il server 3 su 3, senza 0
+su 3. Le sei esecuzioni sono nella cartella `soluzione/risposte/` di
+questo elemento. La vostra prova, rifatta dal docente con `claude -p`
+invece che in una sessione il 28 ottobre 2026, con Claude Code 2.1.312:
+`claude mcp get copertura` ha detto «Status: ✔ Connected», la risposta ha
+nominato i 13 comuni e la verifica è passata.
 
 ## Verifica (tools/verifica.sh M4-D02)
 
@@ -313,14 +313,15 @@ stessi limiti: «These limits are shared across Claude and Claude Code,
 meaning all activity in both tools counts against the same limits.»
 (https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan)
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low), dal JSON di ogni esecuzione: le tre con il server,
-2 turni ciascuna (`num_turns`), in 7,5, 4,7 e 14,6 secondi, 10.075 token
-in entrata ciascuna, cache compresa; le tre senza, 3 turni ciascuna, in
-19,9, 9,5 e 15,7 secondi, con 12.614, 12.621 e 12.639 token in entrata.
-La vostra prova, rifatta dal docente con `claude -p`: la domanda 3 turni,
-5,7 secondi e 81.080 token in entrata; il salvataggio di `risposta.txt`
-2 turni, 7,1 secondi e 56.315 token.
+2 turni ciascuna (`num_turns`), in 3,0, 3,3 e 3,0 secondi, 10.053 token
+in entrata ciascuna, cache compresa; le tre senza, 3, 4 e 3 turni, in
+7,4, 14,8 e 6,5 secondi, con 12.626, 12.728 e 12.627 token in entrata.
+La vostra prova, rifatta dal docente con `claude -p` il 28 ottobre 2026
+(Claude Code 2.1.312): la domanda 3 turni, 5,7 secondi e 81.080 token in
+entrata; il salvataggio di `risposta.txt` 2 turni, 7,1 secondi e 56.315
+token.
 
 ## Per approfondire
 

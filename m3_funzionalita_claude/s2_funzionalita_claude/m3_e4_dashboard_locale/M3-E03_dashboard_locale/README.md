@@ -259,7 +259,7 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
   esito: il registro lo scrive il controllo a ogni esecuzione, e che
   l'abbia eseguito Claude lo dicono le sue chiamate nella sessione, non il
   registro.
-- Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
+- Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
   Sonnet con effort medium, tre sessioni, il prompt in un solo messaggio)
   le sessioni sono `claude -p` in modalità `dontAsk`, che «denies every
   call that would otherwise prompt … though a mod you installed can still
@@ -366,13 +366,13 @@ e fra ciò che pesa ci sono il modello e l'effort: «Additional factors that
 affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
-Nella registrazione del corso (31 ottobre 2026, Claude Code 2.1.316,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
-approvazioni, il prompt in un solo messaggio), le tre sessioni: 7, 6 e 9
-turni (`num_turns`) in 39,7, 40,3 e 45,4 secondi; nel JSON delle
-risposte, token in entrata 10, 10 e 12, scritti in cache 23.634, 23.643 e
-25.027, letti dalla cache 127.446, 127.249 e 160.073, in uscita 5.289,
-5.645 e 6.412. Alla fine, `/exit`.
+approvazioni, il prompt in un solo messaggio), le tre sessioni: 7, 9 e 7
+turni (`num_turns`) in 31,1, 38,4 e 36,4 secondi; nel JSON delle
+risposte, token in entrata 10, 12 e 12, scritti in cache 13.597, 23.890 e
+23.497, letti dalla cache 94.966, 156.727 e 156.487, in uscita 4.241,
+5.384 e 5.148. Alla fine, `/exit`.
 
 ## Per approfondire
 

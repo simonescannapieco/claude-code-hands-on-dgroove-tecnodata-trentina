@@ -415,21 +415,19 @@ quella con la barra sì.
   trovato»: la regola del laboratorio lo chiede, ma la verifica non vi
   boccia per questo.
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README nella forma di allora, con le etichette al posto dei
-tag): sei file di test nuovi, quattro in `Integrazione/`
-(`TicketCriteriCombinatiTest.php`, `TicketPerApparatoCondizioniTest.php`,
-`TicketPerApparatoTest.php`, `TicketPerDateTest.php`) e due in
-`Unit/Ticket/` (`FiltroTicketIntervalloTest.php`,
-`FiltroTicketParametriTest.php`); la suite intera sul codice di Claude,
-«OK (83 tests, 811 assertions)»; i test nuovi, «OK (39 tests, 704
-assertions)» sul codice di Claude e, sul codice di partenza, «Tests: 39,
-Assertions: 24, Errors: 16, Failures: 4, Warnings: 8.»: falliscono, come
-devono, «il giudice è valido». Il revisore (tools: Glob, Grep, Read): 2
-trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
-dati: `NOTA.md` di 38 righe non vuote, 8 commit, 2 sessioni, «chiamate
-al tool Agent: 3 (autore-test 1, revisore 2)».
+di questo README): cinque file di test nuovi, quattro in `Integrazione/`
+(`TicketCriteriCombinatiTest.php`, `TicketGiornoLocaleTest.php`,
+`TicketPerApparatoTest.php`, `TicketPerDateTest.php`) e uno in
+`Unit/Ticket/` (`FiltroTicketTest.php`); la suite intera sul codice di
+Claude, «OK (97 tests, 437 assertions)»; i test nuovi, «OK (53 tests,
+330 assertions)» sul codice di Claude e, sul codice di partenza, «Tests:
+53, Assertions: 36, Errors: 21, Failures: 4, Warnings: 11.»: falliscono,
+come devono, «il giudice è valido». Il revisore (tools: Glob, Grep,
+Read): 3 trascrizioni, nessuno strumento che modifica, «la garanzia
+vale». Come dati: `NOTA.md` di 47 righe non vuote, 7 commit, 2 sessioni,
+«chiamate al tool Agent: 4 (autore-test 1, revisore 3)».
 
 ## Verifica (tools/verifica.sh M4-E02)
 
@@ -479,9 +477,9 @@ può partire, per esempio se mancano le dipendenze del gestionale.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 57
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 30
 turni del modello in tutto, nelle due parti (sotto); due subagent,
-`autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, due
+`autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, tre
 chiamate. I subagent non sono gratis: «What they
 cost you is mostly tokens, since every subagent sends its own requests and
 they count against the same usage as your main conversation.» Per
@@ -498,13 +496,13 @@ affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 9, 35, 4, 4 e 5 turni del modello (`num_turns`); 66,2,
-149,0, 85,8, 15,8 e 17,5 secondi; token in entrata della conversazione
-principale, cache compresa, 282.611, 2.002.519, 338.045, 375.991 e
-93.531. I token dei subagent si aggiungono a questi.
+seconda, con 7, 7, 6, 4 e 6 turni del modello (`num_turns`); 46,3,
+20,8, 16,2, 20,3 e 17,6 secondi; token in entrata della conversazione
+principale, cache compresa, 121.521, 372.628, 347.478, 288.460 e
+222.530. I token dei subagent si aggiungono a questi.
 
 ## Per approfondire
 

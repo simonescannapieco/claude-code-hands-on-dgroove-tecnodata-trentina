@@ -479,20 +479,18 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
   `M4-E03.prova_dal_vivo/`: la sessione della seconda parte non lo vede,
   come nel vostro spazio di lavoro.
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con il JSON
 di ogni chiamata fuori dallo spazio di lavoro e i prompt di questo
-README, nella forma di allora con le etichette al posto dei tag): dopo
-i prompt la verifica ha detto «Non ancora», perché i
-controlli dei passi 2, 4, 5 e 7 di `PROPOSTA.md` non eseguivano i test;
-il turno di correzione con quelle righe li ha sistemati. Poi «VERIFICA
-OK»: le sei sezioni, le 9 tabelle e sei responsabilità; 8 passi, ognuno
-con il suo controllo; `legacy/` com'era; i test verdi sul codice
-originale, «OK (14 tests, 38 assertions)», e rossi sulla copia rotta,
-«Tests: 14, Assertions: 21, Failures: 11.». Come dati: la regola `deny`
-c'era; un piano in `piani/`; 5 commit; 2 sessioni; «chiamate Agent: 2
-(Explore 2); nello stesso messaggio: 2», con 2 trascrizioni di subagent;
-nessun `ExitPlanMode`; nessuna chiamata di Edit o Write su `legacy/`.
+README): dopo i prompt la verifica ha detto «VERIFICA OK», senza il
+turno di correzione: le sei sezioni, le 9 tabelle e sei responsabilità;
+6 passi, ognuno con il suo controllo; `legacy/` com'era; i test verdi
+sul codice originale, «OK (15 tests, 47 assertions)», e rossi sulla
+copia rotta, «Tests: 15, Assertions: 27, Failures: 12.». Come dati: la
+regola `deny` c'era; un piano in `piani/`; 4 commit; 2 sessioni;
+«chiamate Agent: 2 (Explore 2); nello stesso messaggio: 2», con 2
+trascrizioni di subagent; nessun `ExitPlanMode`; nessuna chiamata di
+Edit o Write su `legacy/`.
 
 ## Verifica (tools/verifica.sh M4-E03)
 
@@ -551,9 +549,8 @@ scrive niente nello spazio di lavoro.
       </verification_result>
 
   `_docente/live.sh` manda questo messaggio, una volta sola, quando la
-  verifica dice «Non ancora». Nella prova del corso il turno di correzione
-  è servito per i controlli dei passi di `PROPOSTA.md` che non eseguivano
-  i test.
+  verifica dice «Non ancora». Nella prova del corso la verifica è passata
+  già dopo i prompt, e il turno di correzione non è servito.
 - La verifica dice che `legacy/` è cambiato: guardate che cosa con
   `git diff $(git rev-list --max-parents=0 HEAD) --
   progetti/gestionale-php/legacy`, e riportatelo com'era con
@@ -579,7 +576,7 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 68 turni del modello in tutto, 26 soltanto per i test (sotto). Due
+corso 49 turni del modello in tutto, 18 soltanto per i test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -596,15 +593,14 @@ Enterprise it breaks your usage down by skill, subagent, plugin, and MCP
 server.» (https://code.claude.com/docs/en/best-practices). Alla fine di
 ogni parte, `/exit`.
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata: sette chiamate, i cinque prompt, l'approvazione del piano e il
-turno di correzione per sistemare la proposta, con 1, 10, 26, 4, 14, 5 e
-8 turni del modello (`num_turns`); 6,7, 77,7, 175,9, 19,2, 76,2, 29,2 e
-17,5 secondi; token in entrata della conversazione principale, cache
-compresa, 21.700, 264.671, 879.085, 368.493, 255.215, 278.856 e 366.152.
-Nella prima chiamata i due subagent Explore portano il totale di tutti i
-modelli a 172.794 token in entrata.
+chiamata: sei chiamate, i cinque prompt e l'approvazione del piano, con
+1, 14, 18, 4, 7 e 5 turni del modello (`num_turns`); 5,5, 69,2, 161,6,
+18,6, 58,3 e 22,4 secondi; token in entrata della conversazione
+principale, cache compresa, 22.016, 347.480, 843.260, 384.419, 201.027 e
+272.675. Nella prima chiamata i due subagent Explore portano il totale di
+tutti i modelli a 196.698 token in entrata.
 
 ## Per approfondire
 

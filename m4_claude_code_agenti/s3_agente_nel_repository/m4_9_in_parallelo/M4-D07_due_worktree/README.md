@@ -202,7 +202,7 @@ due sessioni senza worktree partite dallo stesso checkout, i due bracci
 dallo stesso checkout, le quattro sessioni con lo stesso modello e la
 stessa modalità. Non scrive niente.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low): senza worktree, le due sessioni sono partite nel
 checkout principale, e alla fine `urgenza.py` del checkout aveva
 l'esempio e la rinomina, «le due modifiche nello stesso file, nello
@@ -273,12 +273,12 @@ claude.ai e Claude Code consumano gli stessi limiti: se il limite della
 sessione è vicino, guardate il risultato del docente invece di rifare i
 due bracci.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low), dal JSON di ogni sessione: senza worktree,
-l'esempio 3 turni (`num_turns`), 7,7 secondi e 52.738 token in entrata,
-cache compresa, la rinomina 6 turni, 23,8 secondi e 90.275 token; con i
-worktree, l'esempio 3 turni, 21,5 secondi e 53.569 token, la rinomina 5
-turni, 9,1 secondi e 91.352 token.
+l'esempio 3 turni (`num_turns`), 6,6 secondi e 52.778 token in entrata,
+cache compresa, la rinomina 6 turni, 10,4 secondi e 90.645 token; con i
+worktree, l'esempio 3 turni, 6,9 secondi e 53.599 token, la rinomina 6
+turni, 10,2 secondi e 91.941 token.
 
 ## Per approfondire
 

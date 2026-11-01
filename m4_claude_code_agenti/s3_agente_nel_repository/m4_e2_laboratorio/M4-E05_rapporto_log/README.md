@@ -503,36 +503,37 @@ nella settimana dei log di esempio: quelli li trova lo script.
   chiamate stampa «nessun subagent trovato»: la regola del laboratorio lo
   chiede, ma la verifica non vi boccia per questo.
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, la variante in Python, `_docente/live.sh` sull'account del
-docente, con i prompt di questo README nella forma di allora, con le
-etichette al posto dei tag): il controllo dell'esercizio, «8
+docente, con i prompt di questo README): il controllo dell'esercizio, «8
 casi su 8 come la specifica»; martedì 8 settembre, uscita 1 e una riga,
 con il disservizio che la verifica conosce, «apparato sì · porta sì ·
 inizio sì · fine sì · linee sì»; lunedì 7, uscita 0 e nessuna riga. Il
-revisore (tools: Glob, Grep, Read): 2 trascrizioni, nessuno strumento che
+revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
 modifica, «la garanzia vale». Come dati: gli altri giorni, uscita 1, con
 18 righe mercoledì 9 e una sola negli altri, e il disservizio conosciuto
-trovato in ognuno; `NOTA.md` c'è, 3 commit, 3 file cambiati, 2 sessioni,
-«chiamate al tool Agent: 2 (revisore 2)», e «il controllo eseguito da
-Claude: 7 volte, l'ultima con uscita 0».
+trovato in ognuno; `NOTA.md` c'è, 9 commit, 3 file cambiati, 2 sessioni,
+«chiamate al tool Agent: 3 (revisore 3)», e «il controllo eseguito da
+Claude: 10 volte, l'ultima con uscita 0».
 
 La variante in Bash si prova con lo stesso `_docente/live.sh` e
 `PN_VARIANTE=bash`: nei prompt 1 e 2 fa le due sostituzioni del passo 1,
-come chi sceglie Bash. Nella prova del corso in Bash (31 ottobre 2026,
+come chi sceglie Bash. Nella prova del corso in Bash (1 novembre 2026,
 Claude Code 2.1.316, Sonnet con effort medium, sull'account del docente):
 `rapporto_giornaliero.sh`, con `#!/bin/bash` e `set -euo pipefail`; il
 controllo dell'esercizio, «8 casi su 8 come la specifica»; martedì 8
 settembre, uscita 1 e una riga, con il disservizio che la verifica
 conosce, «apparato sì · porta sì · inizio sì · fine sì · linee sì»;
 lunedì 7, uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read):
-3 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
+2 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
 dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
 negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
-c'è, 7 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 3
-(revisore 3)», e «il controllo eseguito da Claude: 10 volte, l'ultima
-con uscita 0». La seconda parte ha trovato il lavoro già fatto e nel
-commit: il revisore ha dato esito OK, e nessun commit nuovo.
+c'è, 2 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 2
+(revisore 2)», e «il controllo eseguito da Claude: 6 volte, l'ultima
+con uscita 0». La seconda parte non ha fatto commit né chiamato il
+revisore: le cinque prove a mano dello script, ognuna con `; echo …`
+nella stessa riga, sono state negate in dontAsk, e la risposta chiede
+come proseguire.
 
 ## Verifica (tools/verifica.sh M4-E05)
 
@@ -586,10 +587,10 @@ se mancano i log della rete nel repository.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 26
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 22
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato due volte. In Bash, 25 turni e il revisore
-chiamato tre volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato tre volte. In Bash, 28 turni e il revisore
+chiamato due volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). Leggere i log a pezzi tiene
 piccola la conversazione; i subagent non sono gratis: «What they cost you
@@ -607,15 +608,15 @@ Code, meaning all activity in both tools counts against the same limits.»
 it breaks your usage down by skill, subagent, plugin, and MCP server.»
 (https://code.claude.com/docs/en/best-practices).
 
-Nella prova del corso (31 ottobre 2026, Claude Code 2.1.316, Sonnet con
+Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 7, 5, 3, 4 e 7 turni del modello (`num_turns`); 37,8, 15,5,
-8,4, 23,1 e 15,2 secondi; token in entrata della conversazione
-principale, cache compresa, 115.762, 261.050, 119.127, 245.993 e 88.135.
+seconda, con 8, 6, 3, 4 e 1 turni del modello (`num_turns`); 37,7, 15,5,
+7,9, 17,6 e 3,2 secondi; token in entrata della conversazione
+principale, cache compresa, 145.987, 254.766, 188.960, 259.792 e 41.537.
 I token del revisore si aggiungono a questi. In Bash, con
-`PN_VARIANTE=bash`: 7, 10, 3, 4 e 1 turni del modello; 33,7, 24,1, 6,4,
-23,6 e 6,6 secondi; 114.903, 276.728, 189.717, 260.823 e 32.944 token in
+`PN_VARIANTE=bash`: 7, 3, 2, 4 e 12 turni del modello; 35,2, 9,3, 5,7,
+18,8 e 19,9 secondi; 116.943, 147.122, 112.188, 232.425 e 99.205 token in
 entrata.
 
 ## Per approfondire

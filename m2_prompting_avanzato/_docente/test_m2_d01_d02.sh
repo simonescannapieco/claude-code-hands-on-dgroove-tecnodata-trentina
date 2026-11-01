@@ -488,10 +488,10 @@ t_d01_contratto() {
   ws w "${D01}/demo" "${D01}/soluzione"
   run "${D01}/verifica.sh" "${w}"
   expect_fatto "D01 verifica.sh: la soluzione registrata esce 0"
-  expect "D01 verifica.sh: registrazione, 131 parole" 0 \
-    "1211 token in entrata, 452 in uscita; 131 parole"
-  expect "D01 verifica.sh: registrazione, 120 parole non rispettata" 0 \
-    "${V_PAROLE}${NO}"
+  expect "D01 verifica.sh: registrazione, 111 parole" 0 \
+    "1213 token in entrata, 381 in uscita; 111 parole"
+  expect "D01 verifica.sh: registrazione, 120 parole rispettata" 0 \
+    "${V_PAROLE}${SI}"
   expect_tutte "D01 verifica.sh: registrazione, le altre quattro" \
     "${V_COLONNE}${SI}" "${V_NONIND}${SI}" "${V_NOME}${SI}" "${V_TEL}${SI}"
   expect "D01 verifica.sh: registrazione, garanzia confermata" 0 \

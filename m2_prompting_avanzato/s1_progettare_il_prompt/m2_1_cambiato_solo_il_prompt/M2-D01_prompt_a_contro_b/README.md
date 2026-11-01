@@ -127,13 +127,12 @@ B ha lo stesso messaggio e lo stesso system prompt di A, con i cinque tag
 al posto di «Riassumi.»: il suo input è più lungo, a ogni esecuzione. Se
 non torna, la verifica esce con 1.
 
-Nella registrazione del corso (16 ottobre 2026, Claude Code 2.1.301,
-Sonnet, una chiamata per prompt): quattro istruzioni su cinque rispettate;
-«al massimo 120 parole» non rispettata, con 131 parole. La garanzia
-confermata: 937 token in entrata per A, 1.211 per B; in uscita 475 e 452.
-Il riassunto di A, 157 parole, riporta il nome e il telefono del cliente.
-Una chiamata dice che cosa è successo quella volta, non che cosa succede
-sempre.
+Nella registrazione del corso (1° novembre 2026, Claude Code 2.1.316,
+Sonnet, una chiamata per prompt): cinque istruzioni su cinque rispettate,
+con 111 parole. La garanzia confermata: 915 token in entrata per A, 1.213
+per B; in uscita 486 e 381. Il riassunto di A, 162 parole, riporta il
+nome e il telefono del cliente. Una chiamata dice che cosa è successo
+quella volta, non che cosa succede sempre.
 
 ## Verifica (tools/verifica.sh M2-D01)
 

@@ -5,9 +5,9 @@ oppure quando è aperta da almeno 7 giorni.
 
 Esempio d'uso:
 
->>> urgente(clienti=12, giorni_aperta=1)
+>>> urgente(12, 1)
 True
->>> urgente(clienti=3, giorni_aperta=2)
+>>> urgente(3, 2)
 False
 """
 

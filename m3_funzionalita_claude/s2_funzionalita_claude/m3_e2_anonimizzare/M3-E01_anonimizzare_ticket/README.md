@@ -319,7 +319,7 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   rimasti. Confermata se il file con il controllo è migliore, non
   distinguibile se sono uguali, non confermata in questa esecuzione se è
   peggiore; se un file manca, la coppia non decide. Nella registrazione
-  del corso (21 ottobre 2026, Claude Code 2.1.306, Sonnet con effort
+  del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con effort
   medium, tre coppie) le sessioni sono `claude -p` in modalità `dontAsk`,
   che «denies every call that would otherwise prompt … though a mod you
   installed can still approve some of those calls»
@@ -327,11 +327,16 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
   installata può ancora approvare. Con il
   controllo, 0 dati personali rimasti in tutte e tre le sessioni; senza,
-  2, 9 e 6, nomi e informazioni sulla salute. Confermata 3 su 3. Il ciclo
-  della guida, dalle chiamate di ogni sessione con il controllo: il
-  controllo eseguito 4, 5 e 4 volte, l'ultima con uscita 0; confermata 3
-  su 3. In nessuna delle sei sessioni una chiamata di strumento ha
-  nominato il file grezzo, se non per eseguire gli script dell'esercizio.
+  1, 16 e 7, nomi e informazioni sulla salute. Nella prima coppia tutti
+  e due i file avevano testi riscritti invece che sostituiti, cinque con
+  il controllo e tre senza: la forma non li distingue, e decidono i dati
+  rimasti. Confermata 3 su 3. Il ciclo della guida, dalle chiamate di
+  ogni sessione con il controllo: il controllo eseguito 6, 6 e 3 volte,
+  l'ultima con uscita 0; confermata 3 su 3. In quattro sessioni su sei,
+  una con il controllo e tre senza, una chiamata Bash ha nominato il
+  file grezzo fuori dagli script dell'esercizio, con un `python3` scritto
+  per l'occasione: `dontAsk` l'ha negata ogni volta. Nella vostra
+  sessione è la richiesta a cui rispondete No (passo 3).
 
 ## Verifica (tools/verifica.sh M3-E01)
 
@@ -414,13 +419,13 @@ e fra ciò che pesa ci sono il modello e l'effort: «Additional factors that
 affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
-Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
 approvazioni, il prompt in un solo messaggio), le tre sessioni con il
-controllo: 20, 34 e 24 turni (`num_turns`) in 150,1, 131,4 e 119,4
-secondi; nel JSON delle risposte, token in entrata 32, 42 e 34, scritti
-in cache 24.254, 42.831 e 28.742, letti dalla cache 436.082, 853.480 e
-507.090, in uscita 11.816, 15.808 e 14.867. Alla fine, `/exit`.
+controllo: 35, 31 e 20 turni (`num_turns`) in 128,2, 95,4 e 90,7
+secondi; nel JSON delle risposte, token in entrata 56, 36 e 30, scritti
+in cache 27.645, 25.593 e 22.993, letti dalla cache 892.050, 518.654 e
+421.214, in uscita 13.970, 11.226 e 10.796. Alla fine, `/exit`.
 
 ## Per approfondire
 

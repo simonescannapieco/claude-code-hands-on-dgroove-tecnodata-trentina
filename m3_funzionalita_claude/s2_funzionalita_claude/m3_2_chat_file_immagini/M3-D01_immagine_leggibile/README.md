@@ -186,7 +186,7 @@ fallire la verifica. In claude.ai la stessa prova la guardate a occhio.
 cartella dell'elemento, sulle risposte dello spazio di lavoro: decide
 dalle risposte, non legge `esiti.tsv` e non scrive niente.
 
-Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
+Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Haiku e Sonnet, tre coppie per modello): l'immagine grande è stata letta
 giusta in tutte e sei le chiamate, «critici: 3» e i tre apparati;
 quella piccola ha avuto sei volte su sei la risposta «non leggibile».

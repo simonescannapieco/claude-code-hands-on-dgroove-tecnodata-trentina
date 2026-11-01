@@ -215,18 +215,20 @@ dati del corso.
   `structured_output` lo porta conforme a `schema-giudizio.json`; se uno
   no, scrive «la documentazione garantisce …: in questa esecuzione no» ed
   esce con 1.
-- Nella prova del docente del 20 ottobre 2026, con Claude Code 2.1.305,
+- Nella prova del docente del 1° novembre 2026, con Claude Code 2.1.316,
   una esecuzione per versione: v0 0 controlli su 3 e 2 affermazioni
   rispettate su 5, con i due giudizi d'accordo su 5 affermazioni su 5; la
   v1 di riferimento 3 su 3 e 3 su 5. `chiarezza` confermata: i criteri
   segnati `chiarezza` rispettati sono 2 su 7 in v0 e 6 su 7 in v1; in v1
-  resta non rispettato «impegni» (il giudice cita il ricontatto del
-  commerciale, che le procedure prevedono solo per offerte o preventivi; la
-  v1 di riferimento lo chiede). La rimisura confermata: le due risposte
-  sono diverse (96 parole contro 106); la misura passa da 6 a 7 su 8
-  perché il giudice, nella seconda, segna rispettato «fatti». Come dato, senza esito: «Il telefono del
-  cliente nella risposta di v2: assente». I token in entrata 926 contro
-  1932; giudizi conformi allo schema 4 su 4.
+  resta non rispettato «impegni» (il giudice cita «apriremo subito la
+  richiesta», tempi che le procedure non prevedono, e il ricontatto del
+  commerciale, che le procedure prevedono solo per offerte o preventivi;
+  la v1 di riferimento lo chiede). La rimisura confermata: le due
+  risposte sono diverse (101 parole contro 98); la misura passa da 6 a 8
+  su 8 perché il giudice, nella seconda, segna rispettati «impegni» e
+  «fatti». Come dato, senza esito: «Il telefono del cliente nella
+  risposta di v2: assente». I token in entrata 927 contro 1967; giudizi
+  conformi allo schema 4 su 4.
 
 ## Verifica (tools/verifica.sh M2-E01)
 
@@ -289,9 +291,9 @@ rispetta lo schema.
 Chiamate brevi `claude -p`, senza strumenti: tre su v0 (la risposta e due
 giudizi), due su v1 (la risposta e un giudizio), cinque in tutto; sette
 con la rimisura. La risposta gira su Sonnet con effort low
-(926 e 1932 token in entrata, v0 e v1, nella prova del docente), i
+(927 e 1967 token in entrata, v0 e v1, nella prova del docente), i
 giudizi su Haiku con effort low
-(da 2951 a 3506 token in entrata e da 622 a 1648 in uscita per giudizio,
+(da 2950 a 3619 token in entrata e da 1407 a 1730 in uscita per giudizio,
 nella stessa prova). Più la
 sessione interattiva su Sonnet, di quattro o cinque turni. Il giudice gira
 in una sua chiamata `claude -p`, non come subagent dentro la sessione.

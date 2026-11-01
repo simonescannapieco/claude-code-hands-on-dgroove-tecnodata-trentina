@@ -152,11 +152,13 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
    Claude scrive ed esegue il codice sul file, nel suo ambiente di
    calcolo, e risponde con l'oggetto JSON. Copiatelo con il pulsante
    «Copy», il primo sotto la risposta, non selezionando il testo: nella
-   registrazione del corso la risposta non stava in un blocco di codice, e
-   il testo della pagina aveva le virgolette tipografiche “ ”, che in JSON
-   non valgono, mentre il pulsante ha copiato quelle dritte; e il
-   pulsante ha preso anche le due frasi che Claude aveva scritto prima
-   dell'oggetto. In `kpi.json` va soltanto l'oggetto, dalla `{` alla `}`.
+   registrazione del corso del 21 ottobre l'oggetto non stava in un
+   blocco di codice, e il testo della pagina aveva le virgolette
+   tipografiche “ ”, che in JSON non valgono, mentre il pulsante ha
+   copiato quelle dritte. In quella del 1 novembre l'oggetto stava in un
+   blocco di codice `json`, con le virgolette dritte, e il pulsante ha
+   preso tutta la risposta: le frasi prima, il blocco di codice e le note
+   dopo. In `kpi.json` va soltanto l'oggetto, dalla `{` alla `}`.
    Incollatelo nello spazio di lavoro: con un editor di testo semplice,
    oppure dal terminale, sempre dalla cartella `esercitazioni`, con
 
@@ -228,9 +230,10 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
    condividere.
 
 8. **La pulizia, se volete.** Cancellate la chat dal menu accanto al suo
-   titolo, «Delete». Nella registrazione del corso l'artifact è rimasto nella
-   pagina «Artifacts» (claude.ai/artifacts) anche dopo la cancellazione
-   della chat: si cancella dal suo menu, «Delete».
+   titolo, «Delete». Nella registrazione del corso del 21 ottobre
+   l'artifact è rimasto nella pagina «Artifacts» (claude.ai/artifacts)
+   anche dopo la cancellazione della chat: si cancella dal suo menu,
+   «Delete».
 
 - **Percorso A, un vostro CSV:** un'esportazione come quelle del vostro
   lavoro, con dati inventati al posto di quelli veri, come nel percorso A
@@ -347,32 +350,30 @@ lo dice il passo. Le schermate delle slide sono della nuova esperienza.
   Haiku 5.5, or the Fable models.»
   (https://code.claude.com/docs/en/model-config). I numeri della coppia
   sono del corso, non quelli di Anthropic. Nella registrazione del corso
-  (31 ottobre 2026, Claude Code 2.1.316, Sonnet con effort low, i prompt
-  di allora, con le etichette al posto dei tag, e la tabella nel messaggio
-  fra i tag `<ticket_anonimi>`): incollando 10, 9 e 7
-  indicatori giusti su dieci, con il file e il codice 10, 10 e 9, cioè non
-  distinguibile nella prima coppia e confermata nelle altre due:
-  confermata 2 su 3. Incollando erano sbagliati `voti` nella seconda
-  coppia, e `voti`, `soddisfazione_media` e `mediana_minuti_prima_risposta`
-  nella terza; con il file, `clienti_ricorrenti` nella terza. Come dato, i
-  token in entrata: da 57.228 a 57.230 per esecuzione incollando, da
-  21.161 a 31.081 con il file.
-- Nella registrazione del corso in claude.ai (31 ottobre 2026, nuova
-  esperienza, Sonnet 5.5, la chat con la memoria spenta, i prompt di
-  allora, con le etichette al posto dei tag): la prima
-  risposta, dopo i passi «Updated tasks, ran a command» e «Ran 2
-  commands», dava 10 indicatori su 10 che corrispondevano. Copiata con
-  «Copy», portava anche le due frasi che Claude aveva scritto fra un
-  comando e l'altro, prima dell'oggetto: la verifica ha detto che
-  `kpi.json` non era un JSON valido, e con il solo oggetto, dalla { alla },
-  10 su 10. Nella registrazione del 21 ottobre la prima risposta dava 9 su
-  10, con `clienti_ricorrenti` 28 invece di 27, e dopo la frase del passo
-  5 10 su 10: contando come cliente il campo vuoto di `cliente`, che ha 25
-  righe, si ottiene proprio 28, mentre la regola del prompt dice che un
-  campo vuoto non entra nei conti. La dashboard, un artifact con quei
-  numeri, si è aperta accanto alla conversazione (la sua scheda, nella
-  chat, portava l'etichetta «Dashboard»), e ogni numero era quello di
-  `kpi.json`.
+  (1 novembre 2026, Claude Code 2.1.316, Sonnet con effort low):
+  incollando 7, 10 e 9 indicatori giusti su dieci, con il file e il
+  codice 10, 9 e 9, cioè confermata nella prima coppia, non confermata in
+  questa esecuzione nella seconda e non distinguibile nella terza:
+  confermata 1 su 3. Incollando erano sbagliati
+  `mediana_minuti_prima_risposta`, `soddisfazione_media` e `voti` nella
+  prima coppia, e `soddisfazione_media` nella terza; con il file,
+  `clienti_ricorrenti` nella seconda e nella terza. Come dato, i token in
+  entrata: da 57.234 a 57.242 per esecuzione incollando, da 22.426 a
+  31.554 con il file.
+- Nella registrazione del corso in claude.ai (1 novembre 2026, nuova
+  esperienza, Sonnet 5.5, la chat con la memoria spenta): la prima
+  risposta, dopo il passo «Read a file, updated tasks, ran 2 commands»,
+  portava l'oggetto in un blocco di codice `json`, fra tre frasi prima e
+  alcune note dopo, e dava 10 indicatori su 10 che corrispondevano.
+  «Copy» ha copiato tutta la risposta; in `kpi.json` è andato il solo
+  oggetto, dalla { alla }: 10 su 10. Nella registrazione del 21 ottobre
+  la prima risposta dava 9 su 10, con `clienti_ricorrenti` 28 invece di
+  27, e dopo la frase del passo 5 10 su 10: contando come cliente il
+  campo vuoto di `cliente`, che ha 25 righe, si ottiene proprio 28,
+  mentre la regola del prompt dice che un campo vuoto non entra nei
+  conti. La dashboard, un artifact con quei numeri, si è aperta accanto
+  alla conversazione (la sua scheda, nella chat, portava l'etichetta
+  «Dashboard»), e ogni numero era quello di `kpi.json`.
 
 ## Verifica (tools/verifica.sh M3-E02)
 
@@ -439,7 +440,7 @@ Claude and Claude Code, meaning all activity in both tools counts against
 the same limits.»
 (https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan).
 Nessuna sessione di Claude Code, nessun subagent: la verifica è uno
-script. Nella registrazione del corso del 31 ottobre, sull'account del
+script. Nella registrazione del corso del 1 novembre, sull'account del
 docente: due messaggi, i numeri e la dashboard, senza modifiche; in
 quella del 21 ottobre quattro (i numeri, la correzione del passo 5, la
 dashboard, una modifica). La sua durata non dice quella di un
