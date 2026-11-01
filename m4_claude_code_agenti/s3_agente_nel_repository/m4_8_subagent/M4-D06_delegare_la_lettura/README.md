@@ -213,16 +213,16 @@ elemento; il controllo legge dalla risposta i tre campi della riga
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low, tre coppie, `--tools Agent,Read,Grep,Glob`): in
 ogni esecuzione con la delega Claude ha lanciato un subagent Explore, che
-ha usato Glob e Grep, e in due su tre anche Read; i risultati dei suoi
-strumenti, 20.047, 22.483 e 38.964 caratteri, sono rimasti nel subagent,
-e alla conversazione principale ne sono arrivati 975. Senza la delega la
-conversazione principale ha usato Glob e Grep, e nella terza anche Read,
-con 11.735, 11.735 e 38.682 caratteri di risultati. «La conversazione
-principale vede solo il risultato del subagent»: confermata 3 su 3. «Un
-subagent tiene i log fuori dalla conversazione principale»: confermata 3
-su 3, con un contesto principale all'ultima richiesta di 10.515 token
-contro 16.288, 10.368 contro 16.288 e 10.201 contro 32.651. Come dati:
-tutti i modelli, 266.847 token in entrata con la delega e 125.551 senza;
+ha usato Glob, Grep e Read; i risultati dei suoi strumenti, 15.745,
+39.475 e 39.292 caratteri, sono rimasti nel subagent, e alla
+conversazione principale ne sono arrivati 973. Senza la delega la
+conversazione principale ha usato Glob e Grep, con 11.735, 11.735 e
+11.809 caratteri di risultati. «La conversazione principale vede solo il
+risultato del subagent»: confermata 3 su 3. «Un subagent tiene i log
+fuori dalla conversazione principale»: confermata 3 su 3, con un
+contesto principale all'ultima richiesta di 10.220 token contro 16.258,
+10.251 contro 16.294 e 10.365 contro 16.390. Come dati: tutti i modelli,
+213.450 token in entrata con la delega e 109.266 senza;
 le risposte giuste, 3 su 3 da tutte e due le parti. Le sei esecuzioni
 sono nella cartella `soluzione/risposte/` di questo elemento.
 
@@ -263,15 +263,15 @@ in quella con la delega, se Claude delega, lavora anche un subagent
 Explore, che usa il modello della conversazione principale: «Model: the
 main conversation's model» (https://code.claude.com/docs/en/sub-agents). La lettura è
 pesante: nella registrazione del corso le tre coppie hanno usato in tutto
-266.847 token in entrata con la delega e 125.551 senza, contando tutti i
-modelli, cioè circa 130.000 per coppia. Per rifarla da soli basta una
+213.450 token in entrata con la delega e 109.266 senza, contando tutti i
+modelli, cioè circa 110.000 per coppia. Per rifarla da soli basta una
 coppia; il docente ne fa tre.
 
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low, senza Bash), come le stampa il controllo: con la
-delega 28, 21 e 14 secondi dal primo all'ultimo orario dello stream e
-107.985, 92.039 e 66.823 token in entrata contando tutti i modelli; senza,
-4, 4 e 12 secondi e 33.347, 33.347 e 58.857 token. Dal JSON: con la delega
+delega 22, 17 e 14 secondi dal primo all'ultimo orario dello stream e
+73.164, 72.842 e 67.444 token in entrata contando tutti i modelli; senza,
+6, 4 e 6 secondi e 33.327, 33.363 e 42.576 token. Dal JSON: con la delega
 ogni stream ha due risultati, 2 turni del modello (`num_turns`) mentre il
 subagent lavora in background e 1 per la risposta; senza, 3, 3 e 4 turni.
 

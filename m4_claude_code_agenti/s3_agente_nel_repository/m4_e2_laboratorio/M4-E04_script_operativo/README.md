@@ -490,12 +490,12 @@ specifica»; sui dati di esempio, con `--giorno=2026-09-13`,
 `linea-cliente-cessato` trovate 2 su 2, `linea-senza-apparato` 1 su 1,
 `attivazione-ferma` 3 su 3, `ticket-in-attesa` 3 su 3, e i due conteggi
 giusti; senza le incoerenze, uscita 0 e nessuna segnalazione. Il
-revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
-modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 9 commit, 3 file
-cambiati, 2 sessioni, «chiamate al tool Agent: 3 (revisore 3)», e «il
-controllo eseguito da Claude: 10 volte, l'ultima con uscita 0». La
+revisore (tools: Glob, Grep, Read): 4 trascrizioni, nessuno strumento che
+modifica, «la garanzia vale». Come dati: `NOTA.md` c'è, 5 commit, 3 file
+cambiati, 2 sessioni, «chiamate al tool Agent: 4 (revisore 4)», e «il
+controllo eseguito da Claude: 8 volte, l'ultima con uscita 0». La
 seconda parte ha trovato lo script già completo: il revisore ha dato
-«ESITO: OK», e il solo commit nuovo aggiorna `NOTA.md`.
+«ESITO: OK», e nessun commit nuovo.
 
 ## Verifica (tools/verifica.sh M4-E04)
 
@@ -551,9 +551,9 @@ dipendenze del gestionale o se PHP non si avvia.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 29
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. «Sonnet handles most coding tasks
+revisore, su Haiku, chiamato quattro volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). I subagent non sono gratis: «What
 they cost you is mostly tokens, since every subagent sends its own requests
@@ -573,10 +573,10 @@ it breaks your usage down by skill, subagent, plugin, and MCP server.»
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 7, 8, 6, 4 e 4 turni del modello (`num_turns`); 41,6,
-39,8, 22,3, 16,4 e 12,8 secondi; token in entrata della conversazione
-principale, cache compresa, 220.103, 450.044, 376.768, 232.979 e
-96.789. I token del revisore si aggiungono a questi.
+seconda, con 17, 3, 3, 4 e 1 turni del modello (`num_turns`); 59,8,
+14,0, 13,1, 25,9 e 3,7 secondi; token in entrata della conversazione
+principale, cache compresa, 311.370, 236.468, 263.255, 359.292 e
+33.353. I token del revisore si aggiungono a questi.
 
 ## Per approfondire
 

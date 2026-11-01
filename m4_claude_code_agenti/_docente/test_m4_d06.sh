@@ -591,16 +591,18 @@ frasi = [
 for frase, url in frasi:
     if frase not in piatto or url not in readme:
         problemi.append("manca la frase «%s…»" % frase[:40])
-for atteso in ("di regola", "su macOS, Linux e WSL", "266.847", "125.551",
-               "circa 130.000", "il tool Agent", "ONT coinvolti",
+for atteso in ("di regola", "su macOS, Linux e WSL", "213.450", "109.266",
+               "circa 110.000", "il tool Agent", "ONT coinvolti",
                "1 novembre 2026, Claude Code 2.1.316"):
     if atteso not in piatto:
         problemi.append("manca «%s»" % atteso)
-# Le registrazioni di prima: quella del 31 ottobre (294.326 e 108.485,
-# 10.154 contro 16.199), quella del 28 (188.296 e 117.147).
+# Le registrazioni di prima: la prima del 1 novembre (266.847 e 125.551,
+# 10.515 contro 16.288), quella del 31 ottobre (294.326 e 108.485, 10.154
+# contro 16.199), quella del 28 (188.296 e 117.147).
 for vecchio in ("solo se", "290.000", "strumento Agent", "ONT coinvolte",
                 "188.296", "117.147", "circa 100.000", "294.326", "108.485",
-                "10.154", "16.199", "31 ottobre 2026"):
+                "10.154", "16.199", "31 ottobre 2026", "266.847", "125.551",
+                "circa 130.000", "10.515", "16.288"):
     if vecchio in piatto:
         problemi.append("c'è ancora «%s»" % vecchio)
 # «le ONT» soltanto dentro la domanda, che si cita com'è nei prompt.

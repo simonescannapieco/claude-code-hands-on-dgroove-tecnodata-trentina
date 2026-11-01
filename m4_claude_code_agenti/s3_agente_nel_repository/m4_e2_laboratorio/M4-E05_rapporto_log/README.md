@@ -514,9 +514,9 @@ inizio sì · fine sì · linee sì»; lunedì 7, uscita 0 e nessuna riga. Il
 revisore (tools: Glob, Grep, Read): 3 trascrizioni, nessuno strumento che
 modifica, «la garanzia vale». Come dati: gli altri giorni, uscita 1, con
 18 righe mercoledì 9 e una sola negli altri, e il disservizio conosciuto
-trovato in ognuno; `NOTA.md` c'è, 9 commit, 3 file cambiati, 2 sessioni,
+trovato in ognuno; `NOTA.md` c'è, 3 commit, 3 file cambiati, 2 sessioni,
 «chiamate al tool Agent: 3 (revisore 3)», e «il controllo eseguito da
-Claude: 10 volte, l'ultima con uscita 0».
+Claude: 9 volte, l'ultima con uscita 0».
 
 La variante in Bash si prova con lo stesso `_docente/live.sh` e
 `PN_VARIANTE=bash`: nei prompt 1 e 2 fa le due sostituzioni del passo 1,
@@ -530,12 +530,13 @@ lunedì 7, uscita 0 e nessuna riga. Il revisore (tools: Glob, Grep, Read):
 2 trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
 dati: gli altri giorni, uscita 1, con 18 righe mercoledì 9 e una sola
 negli altri, e il disservizio conosciuto trovato in ognuno; `NOTA.md`
-c'è, 2 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 2
-(revisore 2)», e «il controllo eseguito da Claude: 6 volte, l'ultima
+c'è, 9 commit, 3 file cambiati, 2 sessioni, «chiamate al tool Agent: 2
+(revisore 2)», e «il controllo eseguito da Claude: 9 volte, l'ultima
 con uscita 0». La seconda parte non ha fatto commit né chiamato il
-revisore: le cinque prove a mano dello script, ognuna con `; echo …`
-nella stessa riga, sono state negate in dontAsk, e la risposta chiede
-come proseguire.
+revisore: in dontAsk sono stati negati quattro comandi, una prova a mano
+dello script in un ciclo `for` e tre comandi di git (`git -C … log`,
+`git -C … diff` e `cd … && git log`), e la risposta dice che senza
+`git log` e `git diff` non può passare il diff al revisore.
 
 ## Verifica (tools/verifica.sh M4-E05)
 
@@ -591,7 +592,7 @@ se mancano i log della rete nel repository.
 
 Sessioni interattive su Sonnet, effort medium; nella prova del corso 22
 turni del modello in tutto, nelle due parti (sotto); un subagent, il
-revisore, su Haiku, chiamato tre volte. In Bash, 28 turni e il revisore
+revisore, su Haiku, chiamato tre volte. In Bash, 40 turni e il revisore
 chiamato due volte. «Sonnet handles most coding tasks
 well and costs less than Opus.»
 (https://code.claude.com/docs/en/costs). Leggere i log a pezzi tiene
@@ -613,13 +614,13 @@ it breaks your usage down by skill, subagent, plugin, and MCP server.»
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 8, 6, 3, 4 e 1 turni del modello (`num_turns`); 37,7, 15,5,
-7,9, 17,6 e 3,2 secondi; token in entrata della conversazione
-principale, cache compresa, 145.987, 254.766, 188.960, 259.792 e 41.537.
+seconda, con 10, 3, 3, 4 e 2 turni del modello (`num_turns`); 44,4,
+10,6, 11,0, 25,8 e 9,1 secondi; token in entrata della conversazione
+principale, cache compresa, 185.137, 175.623, 213.725, 293.547 e 87.530.
 I token del revisore si aggiungono a questi. In Bash, con
-`PN_VARIANTE=bash`: 7, 3, 2, 4 e 12 turni del modello; 35,2, 9,3, 5,7,
-18,8 e 19,9 secondi; 116.943, 147.122, 112.188, 232.425 e 99.205 token in
-entrata.
+`PN_VARIANTE=bash`: 8, 8, 6, 4 e 14 turni del modello; 39,2, 15,5, 16,1,
+14,8 e 31,2 secondi; 148.542, 263.475, 370.097, 256.866 e 246.582 token
+in entrata.
 
 ## Per approfondire
 

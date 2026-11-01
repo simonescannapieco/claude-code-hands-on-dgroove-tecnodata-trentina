@@ -266,11 +266,17 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E03/` con:
   approve some of those calls»
   (https://code.claude.com/docs/en/headless): nessuna approvazione a
   mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
-  installata può ancora approvare. In tutte e tre la verifica è uscita
-  con 0: i dieci indicatori del blocco `kpi` quelli veri, i sette numeri
-  singoli nel testo della pagina, niente da fuori. Il ciclo della guida,
-  dalle chiamate di ogni sessione: il controllo eseguito una volta in
-  ognuna, con uscita 0; confermata 3 su 3.
+  installata può ancora approvare. Nella prima e nella terza sessione la
+  verifica è uscita con 0: i dieci indicatori del blocco `kpi` quelli
+  veri, i sette numeri singoli nel testo della pagina, niente da fuori.
+  Nella seconda è stata negata una chiamata Bash, nessuno dei due comandi
+  consentiti, e la sessione è finita senza la pagina e senza il
+  controllo: `genera_dashboard.py` scritto, `dashboard.html` assente, la
+  verifica uscita con 1. Nella vostra sessione una richiesta così la
+  vedete voi, e la decidete come dice il passo 3. Il ciclo della guida,
+  dalle chiamate di ogni sessione: il controllo eseguito una volta nella
+  prima e nella terza, con uscita 0, mai nella seconda; confermata
+  2 su 3.
 
 ### Il confronto con M3-E02
 
@@ -368,11 +374,11 @@ search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
 Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
-approvazioni, il prompt in un solo messaggio), le tre sessioni: 7, 9 e 7
-turni (`num_turns`) in 31,1, 38,4 e 36,4 secondi; nel JSON delle
-risposte, token in entrata 10, 12 e 12, scritti in cache 13.597, 23.890 e
-23.497, letti dalla cache 94.966, 156.727 e 156.487, in uscita 4.241,
-5.384 e 5.148. Alla fine, `/exit`.
+approvazioni, il prompt in un solo messaggio), le tre sessioni: 6, 5 e 7
+turni (`num_turns`) in 30,9, 35,4 e 43,3 secondi, la seconda senza la
+pagina; nel JSON delle risposte, token in entrata 10, 8 e 10, scritti in
+cache 22.651, 22.214 e 22.938, letti dalla cache 125.287, 88.881 e
+121.962, in uscita 4.359, 4.780 e 4.705. Alla fine, `/exit`.
 
 ## Per approfondire
 

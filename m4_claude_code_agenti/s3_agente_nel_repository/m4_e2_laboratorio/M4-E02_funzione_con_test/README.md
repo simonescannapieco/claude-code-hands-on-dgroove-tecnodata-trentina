@@ -425,17 +425,16 @@ quella con la barra sì.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con i prompt
-di questo README): cinque file di test nuovi, quattro in `Integrazione/`
-(`TicketCriteriCombinatiTest.php`, `TicketGiornoLocaleTest.php`,
-`TicketPerApparatoTest.php`, `TicketPerDateTest.php`) e uno in
-`Unit/Ticket/` (`FiltroTicketTest.php`); la suite intera sul codice di
-Claude, «OK (97 tests, 437 assertions)»; i test nuovi, «OK (53 tests,
-330 assertions)» sul codice di Claude e, sul codice di partenza, «Tests:
-53, Assertions: 36, Errors: 21, Failures: 4, Warnings: 11.»: falliscono,
-come devono, «il giudice è valido». Il revisore (tools: Glob, Grep,
-Read): 3 trascrizioni, nessuno strumento che modifica, «la garanzia
-vale». Come dati: `NOTA.md` di 47 righe non vuote, 7 commit, 2 sessioni,
-«chiamate al tool Agent: 4 (autore-test 1, revisore 3)».
+di questo README): due file di test nuovi, uno in `Integrazione/`
+(`TicketRepositoryFiltriTest.php`) e uno in `Unit/Ticket/`
+(`FiltroTicketTest.php`); la suite intera sul codice di Claude, «OK (89
+tests, 393 assertions)»; i test nuovi, «OK (45 tests, 286 assertions)»
+sul codice di Claude e, sul codice di partenza, «Tests: 45, Assertions:
+34, Errors: 15, Failures: 4, Warnings: 11.»: falliscono, come devono,
+«il giudice è valido». Il revisore (tools: Glob, Grep, Read): 3
+trascrizioni, nessuno strumento che modifica, «la garanzia vale». Come
+dati: `NOTA.md` di 30 righe non vuote, 6 commit, 2 sessioni, «chiamate
+al tool Agent: 4 (autore-test 1, revisore 3)».
 
 ## Verifica (tools/verifica.sh M4-E02)
 
@@ -485,7 +484,7 @@ può partire, per esempio se mancano le dipendenze del gestionale.
 
 ## Impronta d'uso sul piano Pro
 
-Sessioni interattive su Sonnet, effort medium; nella prova del corso 30
+Sessioni interattive su Sonnet, effort medium; nella prova del corso 28
 turni del modello in tutto, nelle due parti (sotto); due subagent,
 `autore-test` su Sonnet, una chiamata, e `revisore` su Haiku, tre
 chiamate. I subagent non sono gratis: «What they
@@ -507,10 +506,10 @@ search) | Model choice | Effort level»
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
 chiamata: cinque chiamate, quattro nella prima parte e una nella
-seconda, con 7, 7, 6, 4 e 6 turni del modello (`num_turns`); 46,3,
-20,8, 16,2, 20,3 e 17,6 secondi; token in entrata della conversazione
-principale, cache compresa, 121.521, 372.628, 347.478, 288.460 e
-222.530. I token dei subagent si aggiungono a questi.
+seconda, con 6, 9, 5, 4 e 4 turni del modello (`num_turns`); 43,8,
+97,6, 84,3, 18,3 e 13,2 secondi; token in entrata della conversazione
+principale, cache compresa, 151.772, 479.591, 312.542, 281.866 e
+200.528. I token dei subagent si aggiungono a questi.
 
 ## Per approfondire
 

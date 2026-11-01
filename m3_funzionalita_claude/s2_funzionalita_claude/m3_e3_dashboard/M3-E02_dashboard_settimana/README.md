@@ -356,15 +356,13 @@ editor, o su GitHub nella vista «Raw», e copiate tutto.
   (https://code.claude.com/docs/en/model-config). I numeri della coppia
   sono del corso, non quelli di Anthropic. Nella registrazione del corso
   (1 novembre 2026, Claude Code 2.1.316, Sonnet con effort low):
-  incollando 7, 10 e 9 indicatori giusti su dieci, con il file e il
-  codice 10, 9 e 9, cioè confermata nella prima coppia, non confermata in
-  questa esecuzione nella seconda e non distinguibile nella terza:
-  confermata 1 su 3. Incollando erano sbagliati
-  `mediana_minuti_prima_risposta`, `soddisfazione_media` e `voti` nella
-  prima coppia, e `soddisfazione_media` nella terza; con il file,
-  `clienti_ricorrenti` nella seconda e nella terza. Come dato, i token in
-  entrata: da 57.234 a 57.242 per esecuzione incollando, da 22.426 a
-  31.554 con il file.
+  incollando 8, 9 e 9 indicatori giusti su dieci, con il file e il
+  codice 10, 10 e 10, cioè confermata in tutte e tre le coppie:
+  confermata 3 su 3. Incollando erano sbagliati `soddisfazione_media` e
+  `voti` nella prima coppia, `mediana_minuti_prima_risposta` nella
+  seconda e `soddisfazione_media` nella terza; con il file, nessuno. Come
+  dato, i token in entrata: da 57.230 a 57.236 per esecuzione
+  incollando, da 30.954 a 31.647 con il file.
 - Nella registrazione del corso in claude.ai (1 novembre 2026, nuova
   esperienza, Sonnet 5.5, la chat con la memoria spenta): la prima
   risposta, dopo il passo «Read a file, updated tasks, ran 2 commands»,

@@ -483,12 +483,15 @@ controlla anche, con git, che `legacy/` sia rimasto com'era.
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `_docente/live.sh` sull'account del docente, con il JSON
 di ogni chiamata fuori dallo spazio di lavoro e i prompt di questo
-README): dopo i prompt la verifica ha detto «VERIFICA OK», senza il
-turno di correzione: le sei sezioni, le 9 tabelle e sei responsabilità;
-6 passi, ognuno con il suo controllo; `legacy/` com'era; i test verdi
-sul codice originale, «OK (15 tests, 47 assertions)», e rossi sulla
-copia rotta, «Tests: 15, Assertions: 27, Failures: 12.». Come dati: la
-regola `deny` c'era; un piano in `piani/`; 4 commit; 2 sessioni;
+README): dopo i prompt la verifica ha detto «Non ancora» sei volte, una
+per passo della proposta, «il controllo del passo N non esegue i test
+(phpunit)»; `_docente/live.sh` ha mandato il turno di correzione, e la
+verifica ha detto «VERIFICA OK»: le sei sezioni, le 9 tabelle e sei
+responsabilità; 6 passi, ognuno con il suo controllo; `legacy/` com'era;
+i test verdi sul codice originale, «OK (13 tests, 69 assertions)», e
+rossi sulla copia rotta, «Tests: 13, Assertions: 44, Failures: 10.».
+Come dati: la regola `deny` c'era; un piano in `piani/`; 2 commit; 2
+sessioni;
 «chiamate Agent: 2 (Explore 2); nello stesso messaggio: 2», con 2
 trascrizioni di subagent; nessun `ExitPlanMode`; nessuna chiamata di
 Edit o Write su `legacy/`.
@@ -554,8 +557,9 @@ scrive niente nello spazio di lavoro.
   <!-- /prompt: correzione -->
 
   `_docente/live.sh` manda questo messaggio, una volta sola, quando la
-  verifica dice «Non ancora». Nella prova del corso la verifica è passata
-  già dopo i prompt, e il turno di correzione non è servito.
+  verifica dice «Non ancora». Nella prova del corso è servito: dopo i
+  prompt la verifica ha detto che i controlli dei sei passi della
+  proposta non eseguivano i test, e dopo la correzione «VERIFICA OK».
 - La verifica dice che `legacy/` è cambiato: guardate che cosa con
   `git diff $(git rev-list --max-parents=0 HEAD) --
   progetti/gestionale-php/legacy`, e riportatelo com'era con
@@ -581,7 +585,7 @@ scrive niente nello spazio di lavoro.
 ## Impronta d'uso sul piano Pro
 
 Una sessione per parte, su Sonnet con effort medium: nella prova del
-corso 49 turni del modello in tutto, 18 soltanto per i test (sotto). Due
+corso 44 turni del modello in tutto, 12 soltanto per i test (sotto). Due
 subagent Explore nella prima parte, che usano il modello della
 conversazione principale, «Model: the main conversation's model»
 (https://code.claude.com/docs/en/sub-agents), e costano soprattutto
@@ -600,12 +604,13 @@ ogni parte, `/exit`.
 
 Nella prova del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con
 effort medium, `claude -p` sull'account del docente), dal JSON di ogni
-chiamata: sei chiamate, i cinque prompt e l'approvazione del piano, con
-1, 14, 18, 4, 7 e 5 turni del modello (`num_turns`); 5,5, 69,2, 161,6,
-18,6, 58,3 e 22,4 secondi; token in entrata della conversazione
-principale, cache compresa, 22.016, 347.480, 843.260, 384.419, 201.027 e
-272.675. Nella prima chiamata i due subagent Explore portano il totale di
-tutti i modelli a 196.698 token in entrata.
+chiamata: sette chiamate, i cinque prompt, l'approvazione del piano e il
+turno di correzione, con 1, 6, 12, 4, 8, 5 e 8 turni del modello
+(`num_turns`); 5,4, 53,6, 132,3, 17,2, 49,4, 20,1 e 17,9 secondi; token
+in entrata della conversazione principale, cache compresa, 21.636,
+175.429, 270.581, 227.583, 173.459, 155.497 e 124.174. Nella prima
+chiamata i due subagent Explore portano il totale di tutti i modelli a
+151.997 token in entrata.
 
 ## Per approfondire
 
