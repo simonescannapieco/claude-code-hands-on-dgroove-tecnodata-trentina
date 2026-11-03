@@ -73,6 +73,11 @@ verificano ogni elemento.
     di Anthropic.
   - Le due esecuzioni di una coppia differiscono solo nella parte che
     cambia, e le slide mostrano il prompt così com'è.
+- Un `SKILL.md` non è un prompt del template: segue gli standard di
+  Anthropic e la specifica Agent Skills, con il frontmatter e il corpo in
+  Markdown semplice, senza i tag del corso. `tools/controlla_skill.py`
+  applica le regole che si leggono dai file. Il prompt con cui si chiede a
+  Claude di scrivere o cambiare una skill segue invece il template.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata
   in testata, shellcheck pulito; le librerie `lib_*.sh` non sono eseguibili.
 

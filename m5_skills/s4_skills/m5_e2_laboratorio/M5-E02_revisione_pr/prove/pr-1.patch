@@ -1,0 +1,255 @@
+diff --git a/progetti/gestionale-php/bin/export_ticket.php b/progetti/gestionale-php/bin/export_ticket.php
+new file mode 100644
+index 0000000..b3f8e71
+--- /dev/null
++++ b/progetti/gestionale-php/bin/export_ticket.php
+@@ -0,0 +1,43 @@
++<?php
++
++declare(strict_types=1);
++
++/*
++ * Esporta in CSV i ticket aperti, per il NOC: tutti, o quelli di un apparato.
++ *
++ * Uso: php bin/export_ticket.php [--apparato=id] [--uscita=file.csv] [--db=percorso]
++ */
++
++use CiaspoLink\Gestionale\Applicazione;
++
++require __DIR__ . '/../vendor/autoload.php';
++
++$opzioni = getopt('', ['apparato:', 'uscita:', 'db:']);
++$applicazione = Applicazione::avvia(isset($opzioni['db']) ? ['db_path' => (string) $opzioni['db']] : []);
++
++$apparato = isset($opzioni['apparato']) ? (string) $opzioni['apparato'] : null;
++if ($apparato !== null) {
++    $stmt = $applicazione->pdo()->prepare('SELECT COUNT(*) FROM apparati WHERE id = :id');
++    $stmt->execute(['id' => $apparato]);
++    if ((int) $stmt->fetchColumn() === 0) {
++        echo "Apparato sconosciuto: {$apparato}\n";
++        exit(1);
++    }
++}
++
++$adesso = new DateTimeImmutable();
++$uscita = (string) ($opzioni['uscita'] ?? $applicazione->cartellaEsportazioni() . '/ticket-aperti.csv');
++$cartella = dirname($uscita);
++if (!is_dir($cartella) && !mkdir($cartella, 0775, true)) {
++    echo "Impossibile creare la cartella {$cartella}\n";
++    exit(1);
++}
++
++try {
++    $quanti = $applicazione->reportTicketAperti()->esporta($uscita, $adesso, $apparato);
++} catch (RuntimeException $errore) {
++    echo 'Esportazione non eseguita: ' . $errore->getMessage() . "\n";
++    exit(1);
++}
++echo "{$quanti} ticket aperti esportati in {$uscita}\n";
++exit(0);
+diff --git a/progetti/gestionale-php/src/Applicazione.php b/progetti/gestionale-php/src/Applicazione.php
+index 977b825..8e48094 100644
+--- a/progetti/gestionale-php/src/Applicazione.php
++++ b/progetti/gestionale-php/src/Applicazione.php
+@@ -19,6 +19,7 @@ use CiaspoLink\Gestionale\Legacy\PonteListino;
+ use CiaspoLink\Gestionale\Linee\LineaRepository;
+ use CiaspoLink\Gestionale\Offerte\CatalogoRepository;
+ use CiaspoLink\Gestionale\Report\ReportFatturato;
++use CiaspoLink\Gestionale\Report\ReportTicketAperti;
+ use CiaspoLink\Gestionale\Rivenditori\CalcoloProvvigioni;
+ use CiaspoLink\Gestionale\Ticket\TicketRepository;
+ use PDO;
+@@ -150,6 +151,11 @@ final class Applicazione
+         return new ReportFatturato($this->clienti(), $this->fatture());
+     }
+
++    public function reportTicketAperti(): ReportTicketAperti
++    {
++        return new ReportTicketAperti($this->pdo());
++    }
++
+     public function esportatoreAttivazioni(): EsportatoreAttivazioni
+     {
+         return new EsportatoreAttivazioni($this->attivazioni());
+diff --git a/progetti/gestionale-php/src/Report/ReportTicketAperti.php b/progetti/gestionale-php/src/Report/ReportTicketAperti.php
+new file mode 100644
+index 0000000..30f586e
+--- /dev/null
++++ b/progetti/gestionale-php/src/Report/ReportTicketAperti.php
+@@ -0,0 +1,124 @@
++<?php
++
++declare(strict_types=1);
++
++namespace CiaspoLink\Gestionale\Report;
++
++use DateTimeImmutable;
++use Exception;
++use PDO;
++use RuntimeException;
++
++/**
++ * I ticket aperti, dal più vecchio, con le ore passate dall'apertura: il file
++ * CSV che il NOC apre all'inizio di ogni turno.
++ */
++final class ReportTicketAperti
++{
++    private const INTESTAZIONE = [
++        'ticket', 'apparato', 'priorita', 'stato', 'oggetto', 'aperto_il', 'ore_da_apertura', 'urgente', 'esportato_il',
++    ];
++
++    public function __construct(private readonly PDO $pdo)
++    {
++    }
++
++    /**
++     * @return list<RigaTicketAperto>
++     */
++    public function righe(?string $apparato = null): array
++    {
++        $stmt = $this->pdo->prepare(<<<'SQL'
++            SELECT id, apparato_id, priorita, stato, oggetto, aperto_il
++              FROM ticket
++             WHERE stato NOT IN ('risolto', 'chiuso')
++               AND (:apparato IS NULL OR apparato_id = :apparato)
++             ORDER BY aperto_il, id
++            SQL);
++        $stmt->execute(['apparato' => $apparato]);
++
++        return array_map(RigaTicketAperto::daRiga(...), $stmt->fetchAll());
++    }
++
++    /**
++     * @return int quanti ticket ha esportato
++     *
++     * @throws RuntimeException se il file non si può scrivere
++     */
++    public function esporta(string $fileCsv, DateTimeImmutable $adesso, ?string $apparato = null): int
++    {
++        if (!is_writable(dirname($fileCsv))) {
++            throw new RuntimeException('Impossibile scrivere ' . $fileCsv);
++        }
++        $tktAperti = $this->righe($apparato);
++        $file = fopen($fileCsv, 'wb');
++        if ($file === false) {
++            throw new RuntimeException('Impossibile scrivere ' . $fileCsv);
++        }
++        try {
++            fputcsv($file, self::INTESTAZIONE, ';', '"', '');
++            foreach ($tktAperti as $tkt) {
++                fputcsv($file, [
++                    $tkt->id,
++                    $tkt->apparatoId,
++                    $tkt->priorita,
++                    $tkt->stato,
++                    $tkt->oggetto,
++                    $tkt->apertoIl,
++                    $tkt->oreDaApertura($adesso),
++                    $tkt->isUrgente() ? 'si' : 'no',
++                    $adesso->format('Y-m-d H:i:s'),
++                ], ';', '"', '');
++            }
++        } finally {
++            fclose($file);
++        }
++
++        return count($tktAperti);
++    }
++}
++
++final class RigaTicketAperto
++{
++    public function __construct(
++        public readonly string $id,
++        public readonly ?string $apparatoId,
++        public readonly string $priorita,
++        public readonly string $stato,
++        public readonly string $oggetto,
++        public readonly string $apertoIl,
++    ) {
++    }
++
++    /**
++     * @param array<string, mixed> $riga riga di ticket
++     */
++    public static function daRiga(array $riga): self
++    {
++        return new self(
++            (string) $riga['id'],
++            $riga['apparato_id'] === null ? null : (string) $riga['apparato_id'],
++            (string) $riga['priorita'],
++            (string) $riga['stato'],
++            (string) $riga['oggetto'],
++            (string) $riga['aperto_il'],
++        );
++    }
++
++    public function isUrgente(): bool
++    {
++        return $this->priorita === 'critica' || $this->priorita === 'alta';
++    }
++
++    public function oreDaApertura(DateTimeImmutable $adesso): int
++    {
++        $ore = 0;
++        try {
++            $aperto = new DateTimeImmutable($this->apertoIl);
++            $ore = (int) floor(($adesso->getTimestamp() - $aperto->getTimestamp()) / 3600);
++        } catch (Exception $errore) {
++        }
++
++        return $ore;
++    }
++}
+diff --git a/progetti/gestionale-php/tests/Integrazione/ReportTicketApertiTest.php b/progetti/gestionale-php/tests/Integrazione/ReportTicketApertiTest.php
+new file mode 100644
+index 0000000..248a3ef
+--- /dev/null
++++ b/progetti/gestionale-php/tests/Integrazione/ReportTicketApertiTest.php
+@@ -0,0 +1,46 @@
++<?php
++
++declare(strict_types=1);
++
++namespace CiaspoLink\Gestionale\Tests\Integrazione;
++
++use CiaspoLink\Gestionale\Report\ReportTicketAperti;
++use CiaspoLink\Gestionale\Tests\Support\DatabaseDiProva;
++use DateTimeImmutable;
++use PHPUnit\Framework\TestCase;
++
++final class ReportTicketApertiTest extends TestCase
++{
++    private ReportTicketAperti $report;
++
++    protected function setUp(): void
++    {
++        $this->report = new ReportTicketAperti(DatabaseDiProva::conDati());
++    }
++
++    public function testReport(): void
++    {
++        $righe = $this->report->righe();
++
++        self::assertNotEmpty($righe);
++        foreach ($righe as $riga) {
++            self::assertNotContains($riga->stato, ['risolto', 'chiuso']);
++        }
++    }
++
++    public function testApparato(): void
++    {
++        self::assertSame([], $this->report->righe('olt-inesistente-99'));
++    }
++
++    public function testCsv(): void
++    {
++        $file = tempnam(sys_get_temp_dir(), 'ticket-');
++        self::assertIsString($file);
++
++        $quanti = $this->report->esporta($file, new DateTimeImmutable('2026-09-14T08:00:00+02:00'));
++
++        self::assertCount($quanti + 1, (array) file($file));
++        unlink($file);
++    }
++}

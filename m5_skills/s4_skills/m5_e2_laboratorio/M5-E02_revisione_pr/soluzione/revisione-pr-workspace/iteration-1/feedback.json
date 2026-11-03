@@ -1,0 +1,6 @@
+{
+  "_nota": "Questo file non l'ha scritto una persona: l'ha scritto uno script, feedback_docente.py, per una prova senza nessuno davanti, una riga per caso, dalle asserzioni non passate di quel caso.",
+  "eval-1": "Non passate: «Cita con il numero tutte le regole violate inserite apposta nel pull request»: 9 su 10; mancano: 5.4; altre citate: 10.2, 11.3, 9.6",
+  "eval-2": "Non passate: «Indica il file e la riga di ogni rilievo»: 0 su 1 con file e riga; senza, sulla stessa riga: 9.6",
+  "eval-3": ""
+}

@@ -1,0 +1,36 @@
+# chiave_pr.tsv di M5-E02 -- la chiave dei tre pull request, per il docente: le
+# regole di progetti/gestionale-php/docs/convenzioni.md inserite apposta, una
+# riga per regola. _docente/verita.py ne ricava verita.json, per impronta, e
+# controlla ogni riga contro le patch di prove/ e contro il progetto.
+#   pr      il pull request: 1, 2 o 3
+#   regola  il numero nelle convenzioni
+#   file    il file, relativo a progetti/gestionale-php/; «-» se la regola
+#           riguarda il pull request nel suo insieme o ciò che manca
+#   riga    la riga nel file; «-» se non ce n'è una
+#   segno   un testo che quella riga contiene; «-» se non c'è una riga
+#   nota    perché è una violazione
+# Fuori dalla chiave ma vere, se una revisione le cita sono un dato:
+#   pr-1  2.1 (phpcs segnala le due classi nello stesso file), 7.2 anche per la
+#         SELECT di ReportTicketAperti, che non è una query aggregata;
+#   pr-2  5.2 (nessun test con un risultato che non è un numero intero di
+#         centesimi: è la stessa mancanza di 10.2);
+#   pr-3  9.3 (nessun test di caratterizzazione), 10.2 (CruscottoController
+#         cambia senza un test).
+pr	regola	file	riga	segno	nota
+1	2.4	src/Report/ReportTicketAperti.php	81	final class RigaTicketAperto	due classi nello stesso file
+1	3.5	src/Report/ReportTicketAperti.php	53	$tktAperti = $this->righe($apparato);	abbreviazione: tkt, che non è fra quelle d'uso
+1	3.6	bin/export_ticket.php	1	<?php	il nome dello script: inglese, con il trattino basso, non verbo-oggetto con i trattini
+1	4.4	src/Report/ReportTicketAperti.php	110	$this->priorita === 'critica'	stringhe sparse dove c'è l'enum PrioritaTicket
+1	5.4	src/Report/ReportTicketAperti.php	70	$adesso->format('Y-m-d H:i:s')	una data salvata senza l'offset, e non con DateTimeInterface::ATOM
+1	6.3	src/Report/ReportTicketAperti.php	119	} catch (Exception $errore) {	un catch vuoto
+1	6.4	bin/export_ticket.php	23	echo "Apparato sconosciuto: {$apparato}\n";	un errore d'uso su STDOUT, con uscita 1 invece di 2
+1	7.2	bin/export_ticket.php	20	SELECT COUNT(*) FROM apparati WHERE id = :id	una query in uno script di bin/, fuori da un repository
+1	10.3	tests/Integrazione/ReportTicketApertiTest.php	21	public function testReport(): void	testReport, testApparato e testCsv non si leggono come frasi
+1	11.1	-	-	-	il messaggio non è tipo(ambito): descrizione, e non è all'indicativo presente
+2	9.6	legacy/inc/funzioni.inc.php	68	return round($imponibile * $IVA / 100, 2);	la stampa della fattura calcola ancora l'IVA riga per riga, in virgola mobile: la copia legacy della regola resta sbagliata
+2	10.2	-	-	-	nessun test che fallisce senza la modifica
+2	11.1	-	-	-	«fix iva» non è tipo(ambito): descrizione
+3	9.1	legacy/clienti_lista.php	18	if (($_GET['esporta'] ?? '') === 'morosi') {	una funzionalità nuova in legacy/
+3	9.2	-	-	-	il titolo non dice che corregge un difetto o sposta logica in src/, e non dice che cosa fa
+3	9.4	legacy/clienti_lista.php	12	$q = trim($_GET['q'] ?? '');	la riformattazione nella stessa pull request del cambio di comportamento
+3	9.5	src/Web/CruscottoController.php	39	require_once __DIR__ . '/../../legacy/inc/funzioni.inc.php';	un require dal codice nuovo al legacy, fuori da una classe ponte

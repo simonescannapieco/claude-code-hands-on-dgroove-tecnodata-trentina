@@ -1,0 +1,13 @@
+diff --git a/progetti/gestionale-php/src/Fatturazione/CalcoloTotali.php b/progetti/gestionale-php/src/Fatturazione/CalcoloTotali.php
+index 0fc6490..cfe9b51 100644
+--- a/progetti/gestionale-php/src/Fatturazione/CalcoloTotali.php
++++ b/progetti/gestionale-php/src/Fatturazione/CalcoloTotali.php
+@@ -20,7 +20,7 @@ final class CalcoloTotali
+         foreach ($righe as $riga) {
+             $imponibile += $riga->importoCent;
+         }
+-        $iva = (int) ($imponibile * self::ALIQUOTA_IVA / 100);
++        $iva = (int) round($imponibile * self::ALIQUOTA_IVA / 100);
+
+         return new Totali($imponibile, $iva, $imponibile + $iva);
+     }

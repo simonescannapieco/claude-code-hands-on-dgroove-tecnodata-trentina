@@ -39,9 +39,8 @@ EOF
 # verificare e come ricominciare.  Un esercizio parte con claude; una
 # demo con i comandi del README (spesso `claude -p' in un ciclo, non una
 # sessione interattiva); un elemento su claude.ai si svolge nel browser,
-# e la verifica legge i file dello spazio di lavoro che il README chiede
-# di scrivere: le risposte copiate da claude.ai, o il rifacimento in
-# Claude Code che il README propone.
+# e la verifica legge i file dello spazio di lavoro che il README fa
+# scrivere o costruire.
 # Globals: HANDSON_WORKSPACE, HANDSON_ITEM_*, HANDSON_ROOT, HANDSON_ARG_RADICE.
 print_next_steps() {
   local cartella radice='' readme verifica='Alla fine:        '
@@ -57,9 +56,8 @@ print_next_steps() {
     claude-ai-pro:*)
       printf 'Questo elemento si svolge su claude.ai; i file di partenza\n'
       printf 'sono nella cartella qui sopra.\n'
-      verifica=$'La verifica legge i file che il README vi chiede di scrivere\n'
-      verifica+='(le risposte copiate da claude.ai, o il rifacimento in'
-      verifica+=$' Claude Code):\n  ' ;;
+      verifica='La verifica legge i file che il README vi fa scrivere o'
+      verifica+=$' costruire:\n  ' ;;
     trainer-api:*)
       printf "Elemento del docente con l'API: lo esegue il docente.\n" ;;
     *:demo)

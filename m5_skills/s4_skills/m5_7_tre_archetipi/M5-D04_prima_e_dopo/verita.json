@@ -1,0 +1,25 @@
+{
+  "elemento": "M5-D04",
+  "nota": "Impronte SHA-256 di «m5-d04:regola:<numero>» e «m5-d04:categoria:<codice>»: le regole che il pull request della demo viola e le categorie inserite nell'apparato. Il controllo le confronta con ciò che le risposte citano, senza scriverle in chiaro.",
+  "revisione": {
+    "regole": [
+      "23b6ceac6c7cbea199a03fda65dba1bfa0525bbfc845e98a81315eae3213cc33",
+      "72688294b4df100ac0643102284d7966491b0e03730f9577a9e5abb2bc2559b5",
+      "86143ba8b5627549404484e02cf37a2f238dcac4dec00011a1f6901cd7e3c412",
+      "87fdef8b6da37af9d36bf97c5282564d7c3d96f823fd53f59d7f3aa666d2ce1d",
+      "8885fc9554a73eb3688714b3c5e6e950542d7651870a7284e0418b4b6ec2b067",
+      "8dd3cee0c1ecb82e712163f90160ef2c3967c8763bd7ef854b845a0217b76ceb",
+      "941c1605525d40cae02ee815b74706df17fc959f6661e273e43b3c175792bbfa",
+      "d9080a64b5b40f866e7918c7ca5c9679c4b67ad7cf34cd18a234b91a709764f0"
+    ]
+  },
+  "audit": {
+    "apparato": "core-trento-01",
+    "categorie": [
+      "06064641c178bfb8fb64945fc4f8f3621c4ce4e68ee7aa77c4e5ac7d6800c80d",
+      "5b88b2ee446394e6253cc2e77baeacf96ed3ea00f1cf8a84cbb62ce7deaecc1e",
+      "74f9d8ebef0c4247a191a30c495ffb59e247bd092fe841917ce59c33d19cfb4f",
+      "c3cfc8de45736c37ccaf462f04d544a7b17cb2dbb8e0e02f3dd18b5247856d14"
+    ]
+  }
+}

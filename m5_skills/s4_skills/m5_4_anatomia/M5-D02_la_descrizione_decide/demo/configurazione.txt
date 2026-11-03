@@ -1,0 +1,2 @@
+hostname sw-prova-01
+snmp-server community public RO

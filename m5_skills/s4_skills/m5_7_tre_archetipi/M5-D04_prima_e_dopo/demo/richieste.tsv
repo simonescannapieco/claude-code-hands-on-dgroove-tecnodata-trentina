@@ -1,0 +1,4 @@
+archetipo	richiesta
+revisione	Rivedi il pull request di questo branch rispetto a main.
+risposta	Rispondi a questo cliente, nella chat del sito: «Sono il gestore del Rifugio Campione: da stamattina la connessione va e viene, il POS non riesce a collegarsi e le prenotazioni online si bloccano. Ho la sala piena.»
+audit	Controlla la configurazione di core-trento-01: che problemi ha?

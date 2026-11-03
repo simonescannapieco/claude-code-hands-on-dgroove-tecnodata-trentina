@@ -1,0 +1,1 @@
+ho corretto l'arrotondamento dell'IVA nel calcolo dei totali, mi dai un'occhiata prima del merge?

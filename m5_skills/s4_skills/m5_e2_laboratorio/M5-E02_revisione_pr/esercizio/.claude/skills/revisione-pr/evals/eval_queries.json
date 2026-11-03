@@ -1,0 +1,6 @@
+[
+  {
+    "query": "Scrivi il messaggio di commit per le modifiche di questo branch.",
+    "should_trigger": false
+  }
+]

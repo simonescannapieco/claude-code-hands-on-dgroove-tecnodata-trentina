@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(/controlla_skill.py)",
+      "Edit(/lib_leggi_frontmatter.py)",
+      "Edit(/.claude/skills/audit-configurazione/evals/**)"
+    ]
+  }
+}

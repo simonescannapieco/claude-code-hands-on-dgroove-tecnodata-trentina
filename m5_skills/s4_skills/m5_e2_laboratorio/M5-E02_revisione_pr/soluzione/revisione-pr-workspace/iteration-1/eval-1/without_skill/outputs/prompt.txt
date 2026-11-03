@@ -1,0 +1,1 @@
+Rivedi il pull request di questo branch rispetto a main.

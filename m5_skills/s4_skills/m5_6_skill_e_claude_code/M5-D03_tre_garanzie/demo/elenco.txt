@@ -1,0 +1,7 @@
+bdr-trento-01
+bng-trento-01
+bts-cles-01
+core-trento-01
+dhcp-trento-01
+olt-pergine-01
+sw-rovereto-01

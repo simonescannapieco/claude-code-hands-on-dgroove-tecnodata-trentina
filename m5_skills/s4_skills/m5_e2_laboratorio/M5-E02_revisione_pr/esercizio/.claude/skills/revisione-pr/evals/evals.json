@@ -1,0 +1,41 @@
+{
+  "skill_name": "revisione-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Rivedi il pull request di questo branch rispetto a main.",
+      "expected_output": "Una revisione del nuovo report di esportazione che elenca le regole delle convenzioni non rispettate, ciascuna con il suo numero, il file e la riga, e chiude con un esito.",
+      "files": [],
+      "assertions": [
+        "Cita con il numero tutte le regole violate inserite apposta nel pull request",
+        "Indica il file e la riga di ogni rilievo",
+        "Chiude con un esito: approvabile o da modificare",
+        "Non modifica alcun file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "ho corretto l'arrotondamento dell'IVA nel calcolo dei totali, mi dai un'occhiata prima del merge?",
+      "expected_output": "Una revisione che dice che cosa manca a una correzione giusta: un test che fallisce senza la modifica, e la stessa regola rimasta sbagliata nella copia legacy.",
+      "files": [],
+      "assertions": [
+        "Cita con il numero tutte le regole violate inserite apposta nel pull request",
+        "Indica il file e la riga di ogni rilievo",
+        "Chiude con un esito: approvabile o da modificare",
+        "Non modifica alcun file"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Un collega ha aggiunto al legacy l'esportazione dei clienti morosi, e già che c'era ha ripulito il file. Il branch si può unire? Dimmi che cosa non va.",
+      "expected_output": "Una revisione che riconosce le regole del codice legacy: niente funzionalità nuove in legacy/, niente riformattazioni insieme a un cambio di comportamento.",
+      "files": [],
+      "assertions": [
+        "Cita con il numero tutte le regole violate inserite apposta nel pull request",
+        "Indica il file e la riga di ogni rilievo",
+        "Chiude con un esito: approvabile o da modificare",
+        "Non modifica alcun file"
+      ]
+    }
+  ]
+}

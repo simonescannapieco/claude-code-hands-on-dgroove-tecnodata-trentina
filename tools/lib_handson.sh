@@ -428,6 +428,9 @@ handson::_claude_arg_ok() {
 # Fuori dagli elementi trainer-api toglie ANTHROPIC_API_KEY dall'ambiente
 # del comando: in -p la chiave, se c'è, viene sempre usata al posto
 # dell'abbonamento. Non stampa mai un segreto.
+# Sempre toglie dall'ambiente del comando CLAUDE_CODE_EFFORT_LEVEL, che ha
+# la precedenza su --effort: l'effort lo dice il comando di ogni elemento,
+# e una variabile esportata lo scavalcherebbe. Chi chiama la conserva.
 # Globals: HANDSON_ENV, HANDSON_PERMISSION_MODE, HANDSON_OUTPUT_FORMAT
 #   (lette).
 # Arguments: $1 il modello (alias o nome completo), $2 gli strumenti
@@ -467,7 +470,10 @@ handson::claude_p() {
   fi
   argv+=(-- "${prompt}")
   if [[ "${HANDSON_ENV}" == "trainer-api" ]]; then
-    handson::run "${argv[@]}"
+    (
+      unset CLAUDE_CODE_EFFORT_LEVEL
+      handson::run "${argv[@]}"
+    )
     return
   fi
   (
@@ -475,7 +481,7 @@ handson::claude_p() {
       handson::note "ANTHROPIC_API_KEY è impostata: la tolgo per questo" \
         "comando, così Claude Code usa l'abbonamento"
     fi
-    unset ANTHROPIC_API_KEY
+    unset ANTHROPIC_API_KEY CLAUDE_CODE_EFFORT_LEVEL
     handson::run "${argv[@]}"
   )
 }

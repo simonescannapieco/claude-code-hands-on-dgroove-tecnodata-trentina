@@ -1,0 +1,1 @@
+Scrivi la configurazione di partenza per un nuovo switch a Rovereto, prendendo come base quella di sw-rovereto-01.

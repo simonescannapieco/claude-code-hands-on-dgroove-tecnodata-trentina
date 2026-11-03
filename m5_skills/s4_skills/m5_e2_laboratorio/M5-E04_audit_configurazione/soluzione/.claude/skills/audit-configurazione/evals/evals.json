@@ -1,0 +1,38 @@
+{
+  "skill_name": "audit-configurazione",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Controlla la configurazione di sw-rovereto-01: che problemi ha?",
+      "expected_output": "Un report in tabella con i problemi dell'apparato rispetto alla checklist del team, ciascuno con apparato, file, riga, categoria, gravità e descrizione.",
+      "files": [],
+      "assertions": [
+        "Trova le categorie dei problemi inseriti apposta nell'apparato",
+        "Riporta i problemi in una tabella con apparato, file, riga, categoria, gravità e descrizione",
+        "Non modifica alcun file"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "olt-pergine-01 è passato di mano da poco: puoi dirmi se la sua configurazione rispetta i nostri standard?",
+      "expected_output": "Un report in tabella che confronta l'apparato con la checklist e con l'inventario.",
+      "files": [],
+      "assertions": [
+        "Trova le categorie dei problemi inseriti apposta nell'apparato",
+        "Riporta i problemi in una tabella con apparato, file, riga, categoria, gravità e descrizione",
+        "Non modifica alcun file"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "audit di bts-cles-01, per favore: mi serve l'elenco dei problemi con la gravità",
+      "expected_output": "Un report in tabella su una stazione radio in un altro dialetto di configurazione, con i parametri radio confrontati con il piano.",
+      "files": [],
+      "assertions": [
+        "Trova le categorie dei problemi inseriti apposta nell'apparato",
+        "Riporta i problemi in una tabella con apparato, file, riga, categoria, gravità e descrizione",
+        "Non modifica alcun file"
+      ]
+    }
+  ]
+}

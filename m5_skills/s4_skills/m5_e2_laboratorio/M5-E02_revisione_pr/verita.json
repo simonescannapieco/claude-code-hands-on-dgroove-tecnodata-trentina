@@ -1,0 +1,29 @@
+{
+  "elemento": "M5-E02",
+  "nota": "Impronte SHA-256 di «m5-e02:pr-<n>:<regola>»: le regole delle convenzioni inserite apposta in ogni pull request. La verifica le confronta con i numeri che la risposta cita.",
+  "pr": {
+    "1": [
+      "0232d03a60b2d805eb287d11940c0a791a58c1e1f21f696bec08eb48769bccf9",
+      "0f0bc66dd1acaea6c8a7d75f8b091ee3438a20e9440ade5baec3b1b0bfd52f39",
+      "3078681131416c93121b422bf3aa9375d4b8b94c019171f825108a7ac2d9f9f2",
+      "46f42b15ac145b19d2b40cc612f496f76416fc2c84fe4ce1e5966ba4cede7b26",
+      "6a8fd9b1b9bb1c3e2edb5c76576e05dd71f66bc4be044bf501d03e9025073487",
+      "948aa4d86371d7753fd62a1b27f097a22620e9448696d5a56644abbc8d145af4",
+      "acf487ff4e7e3e7ea0bb12ce482e541ebaee577524801cb6940573a3c0842d87",
+      "ea06d41679ccf011cbbb7df194fbeb27b69b26815e7abd280eab2a1cab02dae1",
+      "f802a9ada01b961fe9457452f92778fec6e5740007ef156b671050634c1dc49b",
+      "fce2c0890a944cb454223fffd5ee4f65e72a2f63be9fbe4a21b61ee6d83c7322"
+    ],
+    "2": [
+      "92156e28930aaf390759af47f04c787b9fa5bfc4aa2a07bfca4c84d268c1cd22",
+      "ac4e5f2275ca0424bc935f51003e7a6e2f3e4169edc16c1eb40905e60e450c83",
+      "ea4a4e5f1893cbdd909d7040cf7afe8a7d0b63c7b050ce2dfce4f6103f24be6d"
+    ],
+    "3": [
+      "54c5ee42751559de168f1b7eec40122bad382be42ddd2ab01ca294e6a8f0ac8d",
+      "c08f65f744ed3ef2e1156b182c8ec5a864cb08ca388f6bd2ae9c96b7a49dc034",
+      "d30b497b70c9c12e82dab0e313c52a5fe06289bdf24751aef70fb2076ee1006a",
+      "f4a43a15190b988d52e9e517aabf42b9b5f6e24152dd679127b6ea1c29df34d3"
+    ]
+  }
+}

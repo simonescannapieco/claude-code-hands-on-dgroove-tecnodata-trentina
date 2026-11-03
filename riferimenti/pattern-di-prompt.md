@@ -132,6 +132,9 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 - Anche la risposta può avere le sue sezioni tra tag: chiedetelo.
 - Sui modelli recenti la forma esatta conta probabilmente meno di una
   volta, scrive Anthropic: l'importante è separare istruzioni e dati.
+- Un `SKILL.md` non è un prompt di questo template: ha il suo standard, un
+  frontmatter e il corpo in Markdown. Il Modulo 5 e `template-SKILL.md` lo
+  spiegano.
 
 ## Gli esempi
 

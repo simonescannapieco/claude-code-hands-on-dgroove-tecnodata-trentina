@@ -1,0 +1,6 @@
+# La configurazione di tools/prove_skill.sh per M5-E04. Tutti e due i bracci
+# hanno gli stessi strumenti: differiscono soltanto nella skill.
+skill=audit-configurazione
+modello=sonnet
+effort=low
+strumenti=Read,Skill(audit-configurazione)

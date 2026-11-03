@@ -148,8 +148,7 @@ lacks_line() { ! has_line "$1"; }
 # dell'elemento: un esercizio parte con claude; una demo rimanda ai
 # comandi del README, nel terminale (spesso `claude -p' in un ciclo);
 # un elemento su claude.ai si svolge nel browser, e la verifica legge i
-# file dello spazio di lavoro che il README chiede di scrivere (le
-# risposte copiate da claude.ai, o il rifacimento in Claude Code); un
+# file dello spazio di lavoro che il README fa scrivere o costruire; un
 # elemento con l'API lo esegue il docente.
 t_suggerimenti() {
   local r="${TMP}/suggerimenti" man
@@ -169,10 +168,9 @@ t_suggerimenti() {
   fi
   prepara "${r}/repo" "${r}/ws2" M1-D01
   expect "claude.ai: si svolge su claude.ai" 0 "si svolge su claude.ai"
-  expect "claude.ai: la verifica legge i file che il README chiede" 0 \
-    "La verifica legge i file che il README vi chiede di scrivere"
-  expect "claude.ai: le risposte copiate o il rifacimento" 0 \
-    "le risposte copiate da claude.ai, o il rifacimento in Claude Code"
+  expect "claude.ai: la verifica legge i file che il README fa scrivere" 0 \
+    "La verifica legge i file che il README vi fa scrivere o costruire:"
+  expect_absent "claude.ai: niente rifacimento" "rifacimento"
   expect_absent "claude.ai: niente «Alla fine» senza condizioni" \
     "Alla fine:"
   sed -i 's/^\(M1-D01\tdemo\t\)claude-ai-pro/\1trainer-api/' "${man}"

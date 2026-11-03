@@ -1,0 +1,1 @@
+Quante righe ha il file configurazione.txt?

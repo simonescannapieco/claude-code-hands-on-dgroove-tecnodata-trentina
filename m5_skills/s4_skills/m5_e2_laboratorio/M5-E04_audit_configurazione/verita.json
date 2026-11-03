@@ -1,0 +1,18 @@
+{
+  "elemento": "M5-E04",
+  "nota": "Impronte SHA-256 di «m5-e04:<apparato>:<categoria>»: le categorie dei problemi inseriti apposta in ogni apparato dei casi di prova. La verifica le confronta con i codici che la risposta riporta.",
+  "apparati": {
+    "bts-cles-01": [
+      "8201fd28a78251359fd932dfed6331111467503e525db23221d4e5e1ec78f7ba",
+      "9dc8549cad961590bad2c49742503623f608bd54cffbfa9772bf0366d01c65c2"
+    ],
+    "olt-pergine-01": [
+      "2409d79345924d1e9a3111f7cc2833c1b01b302b94c4799b6dc9bae6a97be21d",
+      "69285c061291a1f57b7eaea2b1d271e399016377e50b9298f61e9d102413e2ea"
+    ],
+    "sw-rovereto-01": [
+      "12e9a368fdd1912ac54d5cbfe6b74eee0bf690c8bbd7093b7d6afe5972973eec",
+      "b07f8d8a3ade672a861f1ce62867d1a62eb5244edb3ab10ce3ad2fcfe2c61c79"
+    ]
+  }
+}

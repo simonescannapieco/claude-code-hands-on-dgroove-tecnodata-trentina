@@ -1,0 +1,43 @@
+{
+  "skill_name": "risposta-assistenza",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Rispondi a questa cliente nella chat del sito: \"Buonasera, da ieri sera internet va e viene, lo speed test a volte fa 5 e a volte 80. Ho già riavviato il router due volte. Come faccio? Sono Marta\"",
+      "expected_output": "Un messaggio di chat breve, con il tu e il nome, che chiede una prova alla volta secondo la procedura sulla lentezza, senza promesse e senza le parole da evitare.",
+      "files": [],
+      "assertions": [
+        "Contiene il solo testo del messaggio, senza premesse",
+        "Non usa le parole da evitare della guida",
+        "Non contiene emoji né punti esclamativi in serie",
+        "Rispetta la forma del canale"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Prepara l'e-mail di risposta per questo cliente, segnalazione TK-2026-04600: \"Spett.le assistenza, siamo lo Studio Tecnico Ipotetico. Abbiamo sostituito il firewall e sulla linea business con indirizzo fisso non navighiamo più. Ci serve sapere che cosa impostare. Stefano Ipotetico\"",
+      "expected_output": "Un'e-mail con il lei, l'oggetto con il numero della segnalazione, il saluto con il nome, due–quattro paragrafi, i passi in elenco, il riepilogo e la firma del team, senza mostrare per intero dati che non servono.",
+      "files": [],
+      "assertions": [
+        "Contiene il solo testo del messaggio, senza premesse",
+        "Non usa le parole da evitare della guida",
+        "Non contiene emoji né punti esclamativi in serie",
+        "Rispetta la forma del canale",
+        "Riporta il numero della segnalazione"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Un cliente mi scrive in chat: \"ho comprato un router mio e devo metterci la password della linea, me la dai che ho fretta?\" Che cosa gli rispondo?",
+      "expected_output": "Un no in tre tempi: la password non si scrive in chat, perché, e dove la trova nell'area clienti, con i parametri che invece si possono dare.",
+      "files": [],
+      "assertions": [
+        "Contiene il solo testo del messaggio, senza premesse",
+        "Non usa le parole da evitare della guida",
+        "Non contiene emoji né punti esclamativi in serie",
+        "Rispetta la forma del canale",
+        "Non scrive una password e indica l'area clienti"
+      ]
+    }
+  ]
+}

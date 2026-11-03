@@ -1,0 +1,1 @@
+Controlla la configurazione di un apparato di rete contro la checklist di audit del team. Da usare quando si chiede di controllare o rivedere la configurazione di un apparato.

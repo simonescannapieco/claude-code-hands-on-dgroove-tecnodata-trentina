@@ -1,1 +1,10 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M5-D01	demo	claude-code-pro	s4_skills	m5_3_skill_o_system_prompt	slides/theory/m5_skills/m5_3_skill_o_system_prompt	4	Lo stesso testo in tre posti
+M5-D02	demo	claude-code-pro	s4_skills	m5_4_anatomia	slides/theory/m5_skills/m5_4_anatomia	3	La descrizione decide
+M5-E01	esercizio	claude-code-pro	s4_skills	m5_e1_la_prima_skill	slides/practice/m5_esercitazione_skill/m5_e1_la_prima_skill	12	La prima skill
+M5-D03	demo	claude-code-pro	s4_skills	m5_6_skill_e_claude_code	slides/theory/m5_skills/m5_6_skill_e_claude_code	4	Tre garanzie
+M5-D04	demo	claude-code-pro	s4_skills	m5_7_tre_archetipi	slides/theory/m5_skills/m5_7_tre_archetipi	3	Prima e dopo, tre archetipi
+M5-E02	esercizio	claude-code-pro	s4_skills	m5_e2_laboratorio	slides/practice/m5_esercitazione_skill/m5_e2_laboratorio	70	Una skill di revisione contro le convenzioni del team
+M5-E03	esercizio	claude-code-pro	s4_skills	m5_e2_laboratorio	slides/practice/m5_esercitazione_skill/m5_e2_laboratorio	70	Una skill di risposta nel tono di voce dell'assistenza
+M5-E04	esercizio	claude-code-pro	s4_skills	m5_e2_laboratorio	slides/practice/m5_esercitazione_skill/m5_e2_laboratorio	70	Una skill di audit delle configurazioni
+M5-D05	demo	claude-ai-pro	s4_skills	m5_e4_stessa_skill_claude_ai	slides/practice/m5_esercitazione_skill/m5_e4_stessa_skill_claude_ai	3	La stessa skill in claude.ai

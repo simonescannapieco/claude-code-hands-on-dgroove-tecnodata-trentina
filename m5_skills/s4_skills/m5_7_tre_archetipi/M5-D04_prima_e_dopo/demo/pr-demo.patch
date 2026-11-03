@@ -1,0 +1,27 @@
+diff --git a/progetti/gestionale-php/src/Report/ReportMorosita.php b/progetti/gestionale-php/src/Report/ReportMorosita.php
+new file mode 100644
+--- /dev/null
++++ b/progetti/gestionale-php/src/Report/ReportMorosita.php
+@@ -0,0 +1,22 @@
++<?php
++namespace CiaspoLink\Gestionale\Report;
++
++use PDO;
++
++class ReportMorosita
++{
++    public function __construct(private PDO $db) {}
++
++    public function perComune($comune)
++    {
++        $sql = "SELECT c.id, c.nome FROM clienti c WHERE c.comune = '" . $comune . "'";
++        $clienti = $this->db->query($sql)->fetchAll();
++        $totale = 0.0;
++        foreach ($clienti as $c) {
++            $r = $this->db->query("SELECT SUM(totale) t FROM fatture WHERE cliente_id = " . $c['id'])->fetch();
++            $totale += $r['t'] / 100;
++        }
++        echo "Totale: " . $totale;
++        return $totale;
++    }
++}

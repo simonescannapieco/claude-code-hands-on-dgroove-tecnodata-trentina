@@ -20,7 +20,8 @@
 # HANDSON_OUTPUT_FORMAT=stream-json lo stream e --verbose, un altro formato
 # rifiutato, come un valore di due parole per formato, modalità e ambiente),
 # ANTHROPIC_API_KEY tolta fuori dagli elementi trainer-api e passata a
-# quelli, mai stampata; i rifiuti (bypassPermissions, auto,
+# quelli, mai stampata; CLAUDE_CODE_EFFORT_LEVEL tolta dal comando sempre,
+# e lasciata a chi chiama; i rifiuti (bypassPermissions, auto,
 # --dangerously-skip-permissions, anche dentro il valore di un argomento in
 # più, argomenti che il helper imposta da sé, «--» compreso, Fable, --bare,
 # una chiave nel prompt, prompt vuoto, claude assente). Infine json_field e
@@ -170,6 +171,8 @@ pilota() {
   case "$1" in
     run) shift; scenario_run "$@" ;;
     claude) shift; handson::claude_p "$@" ;;
+    claude_dopo) shift; handson::claude_p "$@"
+                 printf 'DOPO:%s\n' "${CLAUDE_CODE_EFFORT_LEVEL:-assente}" ;;
     *) scenario_varie "$@" ;;
   esac
 }
@@ -348,6 +351,18 @@ t_claude_argv() {
   expect_absent "con strumenti vuoti niente --allowedTools" "ARG:--allowedTools"
   scenario HANDSON_PERMISSION_MODE=acceptEdits -- claude haiku Edit 'Correggi'
   expect "acceptEdits ammessa" 0 "ARG:acceptEdits"
+  scenario CLAUDE_CODE_EFFORT_LEVEL=max -- \
+    claude_dopo sonnet Read 'Leggi' --effort low
+  expect "CLAUDE_CODE_EFFORT_LEVEL non arriva a claude" 0 "EFFORT:assente"
+  expect_absent "e l'effort del comando resta il solo" "EFFORT:max"
+  expect "e resta a chi ha chiamato" 0 "DOPO:max"
+  scenario HANDSON_ENV=trainer-api ANTHROPIC_API_KEY="${CHIAVE_FINTA}" \
+    CLAUDE_CODE_EFFORT_LEVEL=max -- claude_dopo sonnet '' 'Conta i token'
+  expect "trainer-api: non arriva nemmeno lì" 0 "EFFORT:assente"
+  expect "trainer-api: e resta a chi ha chiamato" 0 "DOPO:max"
+  expect "trainer-api: la chiave sì" 0 "CHIAVE:presente"
+  scenario -- claude sonnet Read 'Leggi'
+  expect "senza la variabile, niente da togliere" 0 "EFFORT:assente"
   scenario HANDSON_OUTPUT_FORMAT=stream-json -- claude sonnet Read 'Leggi'
   local flusso='ARG:--output-format ARG:stream-json ARG:--verbose '
   flusso+='ARG:--setting-sources '
@@ -483,13 +498,14 @@ main() {
   TMP="$(mktemp -d)" || { echo "mktemp non riesce" >&2; exit 2; }
   readonly TMP
   trap 'rm -rf -- "${TMP}"' EXIT
-  unset ANTHROPIC_API_KEY HANDSON_ENV HANDSON_PERMISSION_MODE \
-    HANDSON_SHOW_CMD HANDSON_NO_PAUSE
+  unset ANTHROPIC_API_KEY CLAUDE_CODE_EFFORT_LEVEL HANDSON_ENV \
+    HANDSON_PERMISSION_MODE HANDSON_SHOW_CMD HANDSON_NO_PAUSE
   mkdir -p "${TMP}/bin"
   # shellcheck disable=SC2016  # il corpo è del claude finto
   printf '%s\n' '#!/bin/bash' 'printf "ARG:%s\n" "$@"' \
     'if [[ -n "${ANTHROPIC_API_KEY:-}" ]]; then echo "CHIAVE:presente"' \
-    'else echo "CHIAVE:assente"; fi' > "${TMP}/bin/claude"
+    'else echo "CHIAVE:assente"; fi' \
+    'echo "EFFORT:${CLAUDE_CODE_EFFORT_LEVEL:-assente}"' > "${TMP}/bin/claude"
   chmod 755 "${TMP}/bin/claude"
   echo "test_lib_handson.sh"
   t_stesso_array

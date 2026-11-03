@@ -1,0 +1,1 @@
+Un collega ha aggiunto al legacy l'esportazione dei clienti morosi, e già che c'era ha ripulito il file. Il branch si può unire? Dimmi che cosa non va.
