@@ -1,12 +1,12 @@
 #!/bin/bash
 #
 # verifica.sh di M5-D05 -- la stessa skill in claude.ai. I controlli stanno in
-# verifica.py, accanto a questo file: i due ZIP di pacchetti/ e, se avete fatto
+# verifica.py, accanto a questo file: i tre ZIP di pacchetti/ e, se avete fatto
 # la prova, risposta_claude_ai.md, i cui criteri si stampano come dati. Nessuna
-# chiamata al modello: il rifiuto e la skill si guardano sullo schermo.
+# chiamata al modello: il caricamento e la skill si guardano sullo schermo.
 #
 # Uso:    verifica.sh <spazio di lavoro>
-# Uscita: 0 = i due ZIP ci sono, con la forma giusta; l'ultima riga è «Fatto: …»
+# Uscita: 0 = i tre ZIP ci sono, con la forma giusta; l'ultima riga è «Fatto: …»
 #         · 1 = uno ZIP che manca o non va, la risposta copiata vuota · 2 =
 #         precondizione (spazio di lavoro assente, python3 o i controlli che
 #         mancano, una risposta che non si legge, i controlli usciti con un
@@ -16,7 +16,7 @@ set -euo pipefail
 SELF="$(readlink -f "${BASH_SOURCE[0]}")"
 readonly SELF
 readonly CONTROLLI="${SELF%/*}/verifica.py"
-FATTO='Fatto: i due ZIP sono pronti; il rifiuto e la risposta si guardano'
+FATTO='Fatto: i tre ZIP sono pronti; il caricamento e la risposta si guardano'
 FATTO+=' su claude.ai.'
 readonly FATTO
 

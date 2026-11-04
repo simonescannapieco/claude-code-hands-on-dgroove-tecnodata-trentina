@@ -437,8 +437,8 @@ R 701.163
 R bozza/risposta-assistenza/
 R Use modelUsage, or model_usage in Python, for whole-tree token accounting; the usage field undercounts as soon as nesting occurs.
 R Rispetta il tono di voce dell'assistenza?
-R Avete caricato la skill su claude.ai?
-R (M5-D05, passo 7)
+R Non dovrebbe essere quella caricata su claude.ai
+R una sessione così non le elencava
 ! da 10 a 20 turni attesi
 ! da 4 a 8 turni attesi
 ! Parla come la guida?

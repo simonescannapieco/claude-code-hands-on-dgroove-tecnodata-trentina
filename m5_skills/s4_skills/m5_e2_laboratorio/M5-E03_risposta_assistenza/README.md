@@ -502,8 +502,10 @@ risposte.
 - Un `REPERTO` dice che la chiamata è «respinta dallo strumento»: il corpo della skill
   non è arrivato, e il motivo è nel `tool_result`, in `outputs/stream.jsonl`.
 - Un `REPERTO` dice, senza la skill, che `risposta-assistenza` è «fra le skill
-  disponibili». Avete caricato la skill su claude.ai? Toglietela (M5-D05, passo 7):
-  le skill dell'account possono arrivare anche nelle sessioni del terminale.
+  disponibili». Non dovrebbe essere quella caricata su claude.ai: queste prove hanno
+  `--setting-sources project,local`, con cui, per la pagina di Anthropic, le skill
+  dell'account non arrivano, e nella prova del corso di M5-D05 una sessione così non le
+  elencava. È un esito da segnalare al docente, con lo stream.
 - `Skill chiamata: no` su una richiesta: guardate la `description`. Può capitare a
   una sola esecuzione, e può non capitare alla prossima; una richiesta semplice può
   non attivarla: «A simple, one-step request like "read this PDF" may not trigger a

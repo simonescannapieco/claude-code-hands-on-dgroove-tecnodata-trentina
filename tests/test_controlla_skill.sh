@@ -913,12 +913,15 @@ test_caricamento() {
   nuova
   md_ok 'argument-hint: x'
   controlla "${D}" --caricamento
-  expect 'caricamento: un campo in più, nella forma del rifiuto' 1 \
-    'ERRORE caricamento' \
+  expect 'caricamento: un campo in più, con il messaggio della pagina' 1 \
+    'ERRORE caricamento' 'la pagina di Anthropic riporta' \
     'Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed' \
     'Allowed properties are: allowed-tools, compatibility, description,' \
     'license, metadata, name'
   expect_no 'caricamento: nessun doppio avviso sul campo' 1 'AVVISO campo'
+  # Il controllo dice che cosa scrive la pagina, non che cosa fa il sito: nella
+  # prova del corso il caricamento non si è fermato.
+  expect_no 'caricamento: non dice che il sito rifiuta' 1 'rifiuta'
   nuova
   md_ok 'model: sonnet'$'\n''agent: x'
   controlla "${D}" --caricamento

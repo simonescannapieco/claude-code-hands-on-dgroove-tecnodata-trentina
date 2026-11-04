@@ -274,7 +274,8 @@ def _controlla_elenco_campi(campi: Dict[str, Campo], caricamento: bool,
         di_troppo = sorted(set(campi) - set(CAMPI_STANDARD))
         if di_troppo:
             errori.append(
-                "caricamento: il caricamento rifiuta questo frontmatter: «"
+                "caricamento: la specifica non ammette questi campi, e la "
+                "pagina di Anthropic riporta per loro questo errore: «"
                 f"Unexpected key(s) in SKILL.md frontmatter: "
                 f"{', '.join(di_troppo)}. Allowed properties are: "
                 f"{', '.join(sorted(CAMPI_STANDARD))}». Togli quei campi.")

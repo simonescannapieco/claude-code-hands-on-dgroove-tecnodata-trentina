@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# live.sh di M5-D05 -- la parte locale della demo: i due ZIP nello spazio di
+# live.sh di M5-D05 -- la parte locale della demo: i tre ZIP nello spazio di
 # lavoro, il controllo locale, una dimostrazione, e la verifica. Il caricamento
 # e la chat stanno su claude.ai, e non passano di qui: nessuna chiamata a
 # claude.
@@ -8,7 +8,7 @@
 # Uso:    _docente/live.sh <spazio di lavoro>
 #         lo spazio di lavoro preparato con tools/prepara_esercizio.sh M5-D05
 # Env:    le variabili di tools/lib_handson.sh
-# Uscita: 0 = i due ZIP e i due esiti attesi · 1 = un esito diverso · 2 =
+# Uscita: 0 = i tre ZIP e i tre esiti attesi · 1 = un esito diverso · 2 =
 #         precondizione
 set -euo pipefail
 
@@ -45,14 +45,14 @@ main() {
   export PN_HANDSON_ROOT="${HANDSON_ROOT}"
   handson::banner M5-D05 "La stessa skill in claude.ai" \
     "Modulo 5: la parte locale; il caricamento e la chat stanno su claude.ai"
-  handson::step "I due ZIP"
+  handson::step "I tre ZIP"
   handson::run ./impacchetta.sh pacchetti
   exec 3>&1
   handson::step "Il controllo locale"
-  handson::check "i due esiti attesi, una dimostrazione" \
+  handson::check "i tre esiti attesi, una dimostrazione" \
     a_schermo ./controlla.sh pacchetti
   handson::step "La verifica"
-  handson::check "i due ZIP" a_schermo "${ELEMENTO}/verifica.sh" "$(pwd -P)"
+  handson::check "i tre ZIP" a_schermo "${ELEMENTO}/verifica.sh" "$(pwd -P)"
   handson::finish
 }
 

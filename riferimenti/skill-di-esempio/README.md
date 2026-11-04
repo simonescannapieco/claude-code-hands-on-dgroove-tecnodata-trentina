@@ -31,8 +31,9 @@ chi preferisce parte da [`template-SKILL.md`](../template-SKILL.md), con
   asserzioni; `eval_queries.json`, una richiesta che non deve attivare la
   skill.
 
-`risposta-assistenza` usa solo campi fra i sei che si possono caricare su
-claude.ai e nessuna riga `!`: è quella del Modulo 5 che si carica anche lì.
+`risposta-assistenza` usa solo campi fra i sei che la pagina di Anthropic ammette
+per il caricamento su claude.ai e nessuna riga `!`: è quella del Modulo 5 che si
+carica anche lì.
 `audit-configurazione` usa `disallowed-tools`, proprio di Claude Code, e
 `allowed-tools`, sperimentale nello standard.
 

@@ -5,12 +5,12 @@
 #   - l'elemento: i file, la richiesta della chat, nessuna skill in demo/; il
 #     README: le dieci sezioni, le frasi di Anthropic con il loro indirizzo, la
 #     pulizia per ultima, nessun nome interno;
-#   - impacchetta.sh: i due ZIP, la cartella al primo livello, niente evals/, il
-#     settimo campo in uno solo, lo stesso risultato a ogni esecuzione, nessuno
-#     zip di sistema; le precondizioni (2);
-#   - controlla.sh: gli esiti attesi, una dimostrazione; ZIP scambiati (1); le
-#     precondizioni (2);
-#   - verifica.sh: il punto di partenza (1); i due ZIP (0); ogni ZIP sbagliato
+#   - impacchetta.sh: i tre ZIP, la cartella al primo livello, niente evals/, il
+#     settimo campo in uno solo, i tag XML in uno solo, lo stesso risultato a ogni
+#     esecuzione, nessuno zip di sistema; le precondizioni (2);
+#   - controlla.sh: gli esiti attesi, una dimostrazione, senza dire che cosa farà
+#     il sito; ZIP scambiati (1); le precondizioni (2);
+#   - verifica.sh: il punto di partenza (1); i tre ZIP (0); ogni ZIP sbagliato
 #     (1); la risposta copiata, come dati (0), vuota (1), non UTF-8 (2);
 #   - _docente/live.sh senza mai chiamare claude; soluzione/applica.sh con
 #     tools/run_all.sh;
@@ -36,13 +36,15 @@ readonly ITEM
 readonly SKILL_DIR="${RADICE}/riferimenti/skill-di-esempio/risposta-assistenza"
 readonly ZIP1=risposta-assistenza.zip
 readonly ZIP2=risposta-assistenza-settimo-campo.zip
+readonly ZIP3=risposta-assistenza-tag-xml.zip
+readonly ERRORE_XML='ERRORE description: niente tag XML'
 MESSAGGIO='Unexpected key(s) in SKILL.md frontmatter: argument-hint. Allowed'
 MESSAGGIO+=' properties are: allowed-tools, compatibility, description,'
 MESSAGGIO+=' license, metadata, name'
 readonly MESSAGGIO
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=80
+readonly CASES=87
 TMP=''
 PASS=0
 FAIL=0
@@ -97,7 +99,7 @@ nuovo_ws() {
   printf -v "$1" '%s' "${__r}/M5-D05"
 }
 
-# I due ZIP in uno spazio di lavoro, con lo script dell'elemento.
+# I tre ZIP in uno spazio di lavoro, con lo script dell'elemento.
 # Arguments: $1 lo spazio di lavoro.
 impacchetta() {
   ( cd "$1" && PN_HANDSON_ROOT="${RADICE}" ./impacchetta.sh pacchetti ) \
@@ -192,6 +194,17 @@ FRASI = (
     "«Must be non-empty»",
     "«Maximum 1,024 characters»",
     "«Cannot contain XML tags»",
+    "«SKILL.md description cannot contain XML tags»",
+    "«Zip must contain a SKILL.md file»",
+    "«+ Add»",
+    "«Upload skill»",
+    "«Upload and replace»",
+    "«Create and edit files»",
+    "Loaded skill",
+    "Check the frontmatter against the Agent Skills specification with the "
+    "skills-ref reference tool",
+    "A skill that passes prints Valid skill: ./my-skill. Otherwise the command "
+    "lists each problem",
     "«VERIFICA OK M5-D05: fatto.»",
     "On all other plans, each person uploads skills to their own account.",
     "To see which skills synced, run /skills. The menu lists them under "
@@ -247,7 +260,7 @@ t_impacchetta() {
   : > "${TMP}/zip.log"
   run env PATH="${TMP}/esca_zip:${PATH}" ZIP_LOG="${TMP}/zip.log" \
     PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/impacchetta.sh" "${d}/nuova"
-  expect "impacchetta: i due ZIP (0)" 0 "${ZIP2}"
+  expect "impacchetta: i tre ZIP (0)" 0 "${ZIP3}"
   vero "impacchetta: nessuno zip di sistema" test ! -s "${TMP}/zip.log"
   run python3 -B -I - "${d}/nuova" "${SKILL_DIR}" <<'PY'
 import os, sys, zipfile
@@ -287,14 +300,31 @@ if righe_due.index(in_piu[0]) >= righe_due.index("---", 1):
     problemi.append("il settimo campo non sta nel frontmatter")
 if "name: risposta-assistenza" not in righe_due:
     problemi.append("il nome della skill è cambiato")
+tre = voci("risposta-assistenza-tag-xml.zip")
+if set(tre) != attesi:
+    problemi.append("i file del terzo: %r" % (set(tre) ^ attesi))
+for nome in uno:
+    if nome != TOP + "SKILL.md" and uno[nome] != tre[nome]:
+        problemi.append("%s cambia nel terzo" % nome)
+righe_tre = tre[TOP + "SKILL.md"].decode().split("\n")
+diverse = [(a, b) for a, b in zip(righe_uno, righe_tre) if a != b]
+if len(righe_tre) != len(righe_uno) or len(diverse) != 1:
+    problemi.append("il terzo non cambia in una riga sola: %r" % diverse)
+else:
+    prima, dopo = diverse[0]
+    testo = prima[len("description: "):]
+    if not prima.startswith("description: ") \
+            or dopo != "description: <scopo>%s</scopo>" % testo:
+        problemi.append("i tag XML del terzo: %r" % dopo)
 print("; ".join(problemi) or "pacchetti giusti")
 PY
-  expect "impacchetta: la forma dei due ZIP" 0 "pacchetti giusti"
-  primo="$(sha256sum "${d}/nuova/${ZIP1}" "${d}/nuova/${ZIP2}")" || exit 2
+  expect "impacchetta: la forma dei tre ZIP" 0 "pacchetti giusti"
+  primo="$(sha256sum "${d}/nuova/${ZIP1}" "${d}/nuova/${ZIP2}" \
+    "${d}/nuova/${ZIP3}")" || exit 2
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/impacchetta.sh" "${d}/nuova"
   expect "impacchetta: una seconda volta (0)" 0 "${ZIP1}"
   if [[ "${primo}" == "$(sha256sum "${d}/nuova/${ZIP1}" \
-      "${d}/nuova/${ZIP2}")" ]]; then
+      "${d}/nuova/${ZIP2}" "${d}/nuova/${ZIP3}")" ]]; then
     pass "impacchetta: lo stesso risultato a ogni esecuzione"
   else
     fail "impacchetta: gli ZIP cambiano da un'esecuzione all'altra"
@@ -306,7 +336,7 @@ t_controlla() {
   d="$(mktemp -d "${TMP}/d.XXXXXX")" || exit 2
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/impacchetta.sh" "${d}"
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh" "${d}"
-  expect "controlla: i due esiti attesi (0)" 0 "${MESSAGGIO}"
+  expect "controlla: i tre esiti attesi (0)" 0 "${MESSAGGIO}"
   if grep -qF -- 'risposta-assistenza: 0 errori' <<< "${OUT}"; then
     pass "controlla: zero errori sul primo"
   else
@@ -317,6 +347,12 @@ t_controlla() {
   else
     fail "controlla: si dice che è una dimostrazione"
   fi
+  if grep -qF -- "${ERRORE_XML}" <<< "${OUT}"; then
+    pass "controlla: l'errore sui tag XML nel terzo"
+  else
+    fail "controlla: l'errore sui tag XML nel terzo: ${OUT:0:500}"
+  fi
+  assente "controlla: non dice che cosa farà il sito" "rifiut"
   run env -u PN_HANDSON_ROOT "${ITEM}/demo/controlla.sh" "${d}"
   expect "controlla: senza PN_HANDSON_ROOT (2)" 2 "PN_HANDSON_ROOT"
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh"
@@ -332,6 +368,10 @@ t_controlla() {
   cp -- "${d}/salvato.zip" "${d}/${ZIP2}" || exit 2
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh" "${d}"
   expect "controlla: nessun settimo campo nel secondo (1)" 1 "NON TORNA"
+  run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/impacchetta.sh" "${d}"
+  cp -- "${d}/salvato.zip" "${d}/${ZIP3}" || exit 2
+  run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh" "${d}"
+  expect "controlla: nessun tag XML nel terzo (1)" 1 "NON TORNA"
   printf 'non è uno zip' > "${d}/${ZIP1}"
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh" "${d}"
   expect "controlla: uno ZIP rotto (2)" 2 "${ZIP1}"
@@ -352,7 +392,8 @@ t_verifica() {
   expect "verifica: senza python3 (2)" 2 "python3"
   impacchetta "${w}"
   verifica "${w}"
-  expect "verifica: i due ZIP (0)" 0 "Fatto"
+  expect "verifica: i tre ZIP (0)" 0 "Fatto: i tre ZIP"
+  assente "verifica: non dice che cosa farà il sito" "rifiut"
   if grep -qF -- 'risposta_claude_ai.md: non c' <<< "${OUT}"; then
     pass "verifica: la prova facoltativa, senza la risposta"
   else
@@ -419,6 +460,18 @@ PY
   cp -- "${w}/pacchetti/${ZIP1}" "${w}/pacchetti/${ZIP2}" || exit 2
   verifica "${w}"
   expect "verifica: nessun settimo campo nel secondo (1)" 1 "argument-hint"
+  impacchetta "${w}"
+  cp -- "${w}/pacchetti/${ZIP3}" "${w}/pacchetti/${ZIP1}" || exit 2
+  verifica "${w}"
+  expect "verifica: i tag XML nel primo (1)" 1 "non deve avere tag XML"
+  impacchetta "${w}"
+  cp -- "${w}/pacchetti/${ZIP1}" "${w}/pacchetti/${ZIP3}" || exit 2
+  verifica "${w}"
+  expect "verifica: nessun tag XML nel terzo (1)" 1 "deve avere dei tag XML"
+  rm -- "${w}/pacchetti/${ZIP3}"
+  verifica "${w}"
+  expect "verifica: il terzo ZIP che manca (1)" 1 "${ZIP3}"
+  impacchetta "${w}"
   rm -- "${w}/pacchetti/${ZIP2}"
   verifica "${w}"
   expect "verifica: uno ZIP che manca (1)" 1 "${ZIP2}"
@@ -440,7 +493,7 @@ t_live() {
   fi
   vero "live: claude non si chiama mai" test ! -s "${TMP}/esca.log"
   vero "live: gli ZIP nello spazio di lavoro" \
-    test -f "${w}/pacchetti/${ZIP1}"
+    test -f "${w}/pacchetti/${ZIP3}"
   run env PATH="${TMP}/esca:${PATH}" ESCA_LOG="${TMP}/esca.log" \
     HANDSON_NO_PAUSE=1 "${ITEM}/_docente/live.sh" "${TMP}/non-c-e"
   expect "live: spazio di lavoro assente (2)" 2 "spazio di lavoro"
@@ -448,23 +501,26 @@ t_live() {
   expect "run_all: partenza e soluzione (0)" 0 "1 ok"
 }
 
-# Il README e la prova del corso: di claude.ai nessuna esecuzione da citare, la
+# Il README e la prova del corso: la corsa su claude.ai del 4 novembre 2026, e la
 # parte locale con le righe che controlla.sh stampa.
 t_registrazione() {
   local d uscita="${TMP}/uscita.txt"
   d="$(mktemp -d "${TMP}/d.XXXXXX")" || exit 2
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/impacchetta.sh" "${d}"
   run env PN_HANDSON_ROOT="${RADICE}" "${ITEM}/demo/controlla.sh" "${d}"
-  expect "registrazione: controlla.sh, i due esiti (0)" 0 "${MESSAGGIO}"
+  expect "registrazione: controlla.sh, i tre esiti (0)" 0 "${MESSAGGIO}"
   printf '%s\n' "${OUT}" > "${uscita}"
   run python3 -B -I "${MOD}/_docente/controlla_registrazione.py" \
     "${ITEM}/README.md" "${uscita}" <<'FRASI'
 = controlla_skill: risposta-assistenza: 0 errori, 1 avviso
 = controlla_skill: risposta-assistenza: 1 errore, 1 avviso
-R Nella prova del corso (3 novembre 2026
-! Nella registrazione del corso
-! schermata
+R Nella prova del corso (4 novembre 2026
+R argument-hint: "[canale]"
+R anthropic-skills:risposta-assistenza
+! (3 novembre 2026
+! Il rifiuto vero
 ! Il docente carica due ZIP
+! un campo in più non si ignora
 FRASI
   expect "registrazione: il README cita le righe del controllo" 0 "in ordine"
 }

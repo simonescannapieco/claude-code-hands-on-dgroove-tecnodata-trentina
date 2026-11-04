@@ -1,16 +1,16 @@
 #!/bin/bash
 #
 # controlla.sh di M5-D05 -- una dimostrazione: tools/controlla_skill.py
-# --caricamento sui due ZIP, aperti in una cartella temporanea. Sul primo
-# risponde 0 errori; sul secondo dà l'errore nella forma del messaggio del
-# caricamento. Lo ZIP con il settimo campo lo costruisce la demo, e il controllo
-# applica la regola scritta nella pagina di Anthropic: non è il caricamento
-# vero. Il rifiuto di claude.ai si legge sullo schermo.
+# --caricamento sui tre ZIP, aperti in una cartella temporanea. Sul primo
+# risponde 0 errori; sul secondo dà l'errore con il messaggio che la pagina di
+# Anthropic riporta; sul terzo l'errore sui tag XML. Gli ZIP che sbagliano li
+# costruisce la demo, e il controllo applica le regole scritte nelle pagine di
+# Anthropic: non è il caricamento. Che cosa fa claude.ai si guarda sullo schermo.
 #
 # Uso:    ./controlla.sh <cartella degli ZIP>
 # Env:    PN_HANDSON_ROOT  il repository (la cartella delle esercitazioni):
 #                          obbligatoria, qui lo script è fuori dal repository
-# Uscita: 0 = i due esiti attesi · 1 = uno ZIP che dà un esito diverso · 2 =
+# Uscita: 0 = i tre esiti attesi · 1 = uno ZIP che dà un esito diverso · 2 =
 #         precondizione (argomenti, PN_HANDSON_ROOT, python3, uno ZIP che manca
 #         o non si apre, il controllo che non può leggere)
 set -euo pipefail
@@ -18,8 +18,10 @@ set -euo pipefail
 readonly SKILL=risposta-assistenza
 readonly ZIP_BUONO="${SKILL}.zip"
 readonly ZIP_SETTIMO="${SKILL}-settimo-campo.zip"
+readonly ZIP_XML="${SKILL}-tag-xml.zip"
 MESSAGGIO='Unexpected key(s) in SKILL.md frontmatter: argument-hint.'
 readonly MESSAGGIO
+readonly ERRORE_XML='ERRORE description: niente tag XML'
 TEMPORANEA=''
 
 err() { echo "controlla.sh: $*" >&2; }
@@ -81,9 +83,11 @@ main() {
     || problemi=$((problemi + 1))
   uno_zip "${cartella}/${ZIP_SETTIMO}" secondo 1 "${MESSAGGIO}" \
     || problemi=$((problemi + 1))
-  printf '\nUna dimostrazione: lo ZIP con il settimo campo lo costruisce la'
-  printf ' demo, e il\ncontrollo applica la regola della pagina di Anthropic,'
-  printf ' non è il caricamento.\nIl rifiuto vero si legge su claude.ai.'
+  uno_zip "${cartella}/${ZIP_XML}" terzo 1 "${ERRORE_XML}" \
+    || problemi=$((problemi + 1))
+  printf '\nUna dimostrazione: gli ZIP che sbagliano li costruisce la demo, e'
+  printf ' il controllo\napplica le regole delle pagine di Anthropic, non è il'
+  printf ' caricamento. Che cosa fa\nil caricamento si guarda su claude.ai.'
   printf ' L'\''avviso su evals/ è atteso: le prove\nrestano fuori dallo ZIP.\n'
   (( problemi == 0 )) || exit 1
 }

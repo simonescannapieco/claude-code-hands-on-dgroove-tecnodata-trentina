@@ -1,15 +1,16 @@
 #!/bin/bash
 #
-# impacchetta.sh di M5-D05 -- i due ZIP da caricare su claude.ai, dalla skill di
-# esempio del repository: risposta-assistenza.zip, senza evals/, e
+# impacchetta.sh di M5-D05 -- i tre ZIP da caricare su claude.ai, dalla skill di
+# esempio del repository: risposta-assistenza.zip, senza evals/;
 # risposta-assistenza-settimo-campo.zip, la stessa skill con argument-hint nel
-# frontmatter. Li costruisce impacchetta.py, qui accanto, con Python: lo zip di
-# sistema non serve.
+# frontmatter; risposta-assistenza-tag-xml.zip, la stessa skill con la
+# description fra due tag XML. Li costruisce impacchetta.py, qui accanto, con
+# Python: lo zip di sistema non serve.
 #
 # Uso:    ./impacchetta.sh <cartella>   la crea se non c'è
 # Env:    PN_HANDSON_ROOT  il repository (la cartella delle esercitazioni):
 #                          obbligatoria, qui lo script è fuori dal repository
-# Uscita: 0 = i due ZIP · 2 = precondizione (argomenti, PN_HANDSON_ROOT,
+# Uscita: 0 = i tre ZIP · 2 = precondizione (argomenti, PN_HANDSON_ROOT,
 #         python3, la cartella, la skill di esempio)
 set -euo pipefail
 

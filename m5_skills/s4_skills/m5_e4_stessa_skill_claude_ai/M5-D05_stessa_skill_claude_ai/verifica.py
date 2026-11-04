@@ -1,11 +1,12 @@
 """verifica.py di M5-D05 «La stessa skill in claude.ai»: i controlli di
-verifica.sh. Nessuna chiamata al modello: le garanzie di questa demo sono
-messaggi del caricamento, e si leggono sullo schermo.
+verifica.sh. Nessuna chiamata al modello: ciò che fa il caricamento si legge
+sullo schermo.
 
-Decidono l'uscita i due ZIP di pacchetti/: ci sono e si aprono; ogni file sta
+Decidono l'uscita i tre ZIP di pacchetti/: ci sono e si aprono; ogni file sta
 sotto risposta-assistenza/, con risposta-assistenza/SKILL.md; niente evals/;
-il frontmatter ha il name giusto, nel primo i campi ammessi e nel secondo anche
-argument-hint. E, se avete fatto la prova, risposta_claude_ai.md non è vuoto.
+il frontmatter ha il name giusto, nel primo i campi ammessi, nel secondo anche
+argument-hint e nel terzo dei tag XML nella description. E, se avete fatto la
+prova, risposta_claude_ai.md non è vuoto.
 
 Di risposta_claude_ai.md stampa i criteri della risposta, come dati, mai come
 uscita: le parole da evitare, le stesse di M5-E03, con le forme della stessa
@@ -28,6 +29,7 @@ NOME = "risposta-assistenza"
 CARTELLA = "pacchetti"
 ZIP_BUONO = f"{NOME}.zip"
 ZIP_SETTIMO = f"{NOME}-settimo-campo.zip"
+ZIP_XML = f"{NOME}-tag-xml.zip"
 RISPOSTA = "risposta_claude_ai.md"
 TOP = f"{NOME}/"
 SKILL_MD = f"{TOP}SKILL.md"
@@ -43,6 +45,7 @@ RE_TITOLO = re.compile(r"(?m)^#{1,6}\s")
 RE_VOCE = re.compile(r"(?m)^\s*(?:[-*•]|\d+[.)])\s")
 RE_EMOJI = re.compile("[\U0001F300-\U0001FAFF☀-➿]")
 RE_CAMPO = re.compile(r"^([A-Za-z_-]+):")
+RE_TAG_XML = re.compile(r"<[^<>]+>")
 # Le parole delle tabelle «invece di» della guida del tono e dello SKILL.md di
 # esempio, ciascuna con le forme della stessa parola, che valgono uguale: la
 # guida vieta la parola, non il suo singolare. La suite le confronta con quelle
@@ -116,8 +119,8 @@ def problemi_dei_nomi(nomi: List[str]) -> List[str]:
     return problemi
 
 
-def problemi_dei_campi(campi: Optional[Dict[str, str]],
-                       con_settimo: bool) -> List[str]:
+def problemi_dei_campi(campi: Optional[Dict[str, str]], con_settimo: bool,
+                       con_xml: bool) -> List[str]:
     """Che cosa non va nel frontmatter dello ZIP."""
     if campi is None:
         return ["il frontmatter di SKILL.md non si legge"]
@@ -132,10 +135,16 @@ def problemi_dei_campi(campi: Optional[Dict[str, str]],
                         "campo")
     if not con_settimo and SETTIMO in campi:
         problemi.append(f"questo ZIP non deve avere {SETTIMO}")
+    ha_tag = RE_TAG_XML.search(campi.get("description", "")) is not None
+    if con_xml and not ha_tag:
+        problemi.append("questo ZIP deve avere dei tag XML nella description")
+    if not con_xml and ha_tag:
+        problemi.append("questo ZIP non deve avere tag XML nella description")
     return problemi
 
 
-def controlla_zip(cartella: str, nome: str, con_settimo: bool) -> List[str]:
+def controlla_zip(cartella: str, nome: str, con_settimo: bool = False,
+                  con_xml: bool = False) -> List[str]:
     """Le mancanze di uno ZIP; stampa com'è fatto se va bene."""
     relativo = f"{CARTELLA}/{nome}"
     percorso = os.path.join(cartella, nome)
@@ -150,7 +159,8 @@ def controlla_zip(cartella: str, nome: str, con_settimo: bool) -> List[str]:
             problemi = problemi_dei_nomi(nomi)
             if rotto is None and SKILL_MD in nomi:
                 testo = archivio.read(SKILL_MD).decode("utf-8")
-                problemi += problemi_dei_campi(campi_di(testo), con_settimo)
+                problemi += problemi_dei_campi(campi_di(testo), con_settimo,
+                                               con_xml)
     except (zipfile.BadZipFile, OSError, UnicodeDecodeError) as exc:
         return [f"{relativo} non è uno ZIP integro: {exc}"]
     if rotto is not None:
@@ -217,8 +227,9 @@ def controlla_risposta(ws: str) -> List[str]:
 
 def controlla(ws: str) -> int:
     cartella = os.path.join(ws, CARTELLA)
-    mancanze = controlla_zip(cartella, ZIP_BUONO, False)
-    mancanze += controlla_zip(cartella, ZIP_SETTIMO, True)
+    mancanze = controlla_zip(cartella, ZIP_BUONO)
+    mancanze += controlla_zip(cartella, ZIP_SETTIMO, con_settimo=True)
+    mancanze += controlla_zip(cartella, ZIP_XML, con_xml=True)
     if not mancanze:
         mancanze = controlla_risposta(ws)
     for voce in mancanze:

@@ -467,7 +467,7 @@ FRASI = (
     "`progetti/gestionale-php`, sul ramo `pr-demo`",
     "«Rivedi il pull request di questo branch rispetto a main.»",
     "La differenza fra i due bracci è tutta nella forma del report",
-    "M5-D05, passo 7",
+    "una sessione così non le elencava",
     "3 turni, 82.290 token e 18,4 s nella revisione",
     "86.964, 65.542 e 163.693 token",
     "119.000, 91.508 e 162.704 token",

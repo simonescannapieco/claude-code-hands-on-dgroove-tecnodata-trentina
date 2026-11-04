@@ -309,9 +309,10 @@ affermazione è stata messa alla prova; gli esiti sono qui sopra.» e
   coppia, per esempio `rm risposte/revisione-*-2.jsonl`, e rilanciate
   `./in_classe.sh revisione`.
 - `REPERTO`, senza la skill o con la skill spenta: una garanzia non ha retto, ed è
-  un esito da segnalare al docente, con lo stream. Se dice che la skill è fra quelle
-  disponibili e l'avete caricata su claude.ai, toglietela prima (M5-D05, passo 7): le
-  skill dell'account arrivano anche nelle sessioni del terminale.
+  un esito da segnalare al docente, con lo stream. Non dovrebbe dipendere da una skill
+  caricata su claude.ai: questi comandi hanno `--setting-sources project,local`, con
+  cui, per la pagina di Anthropic, le skill dell'account non arrivano, e nella prova del
+  corso di M5-D05 una sessione così non le elencava.
 - `REPERTO`, «negata dal permesso»: la chiamata a `Skill` non ha trovato la sua
   regola; controllate che il comando abbia `Skill(<skill>)` fra gli strumenti.
 - Con la skill spenta, il controllo stampa «tentata e respinta» o dei file sotto
