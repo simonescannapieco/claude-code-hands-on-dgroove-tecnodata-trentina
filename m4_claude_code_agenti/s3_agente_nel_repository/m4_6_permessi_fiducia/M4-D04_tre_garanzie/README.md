@@ -164,7 +164,7 @@ principale, come dice la tabella della pagina sui permessi citata qui
 sopra. Una regola che deve valere sempre si àncora al progetto, con la
 barra.
 
-Un limite da sapere: le regole su Read ed Edit non coprono tutto ciò che
+Un limite da sapere: le regole deny su Read ed Edit non coprono tutto ciò che
 un programma può fare per conto suo: «They don't apply … to arbitrary
 subprocesses that read or write files indirectly, like a Python or Node
 script that opens files itself.» Per un blocco imposto dal sistema
@@ -378,6 +378,6 @@ secondi, 34.912 token.
   https://code.claude.com/docs/en/hooks
 - Claude Code senza terminale, `claude -p` e lo stream-json:
   https://code.claude.com/docs/en/headless
-- Anthropic Academy, corso «Claude Code in action», la lezione sulle
+- Claude Academy, corso «Claude Code in action», la lezione sulle
   modalità di permesso:
   https://academy.claude.com/courses/claude-code-in-action/permission-modes

@@ -98,9 +98,9 @@ del passo 3 e poi la verifica.
 
 - Nel riferimento delle variabili d'ambiente di Claude Code, su
   `ANTHROPIC_API_KEY`: «When set, this key is used instead of your Claude
-  Pro, Max, Team, or Enterprise subscription even if you are logged in.»
-  Quando è impostata, la chiave si usa al posto dell'abbonamento, anche
-  se avete fatto l'accesso.
+  Pro, Max, Ultra, Team, or Enterprise subscription even if you are
+  logged in.» Quando è impostata, la chiave si usa al posto
+  dell'abbonamento, anche se avete fatto l'accesso.
   https://code.claude.com/docs/en/env-vars
 - Nella pagina sull'autenticazione, per `claude -p`: «In non-interactive
   mode (-p), the key is always used when present.» In modalità non
@@ -114,9 +114,9 @@ del passo 3 e poi la verifica.
   7. Subscription OAuth credentials from /login.»
   https://code.claude.com/docs/en/authentication
 - Che cosa costa, nel centro assistenza: «Claude Code will use this API
-  key for authentication instead of your Claude subscription (Pro, Max,
-  Team, or Enterprise plans), resulting in API usage charges». L'uso si
-  paga come uso dell'API, fuori dal piano.
+  key for authentication instead of your Claude subscription … resulting
+  in API usage charges». L'uso si paga come uso dell'API, fuori dal
+  piano.
   https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan
 - E come se ne esce, ancora nella pagina sull'autenticazione: «Run unset
   ANTHROPIC_API_KEY to fall back to your subscription, and check /status

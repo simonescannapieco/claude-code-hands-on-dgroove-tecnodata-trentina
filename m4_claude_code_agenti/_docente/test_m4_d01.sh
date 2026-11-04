@@ -671,8 +671,8 @@ import re, sys
 testo = open(sys.argv[1], encoding="utf-8").read()
 piatto = " ".join(testo.split())
 attese = [
-    ("When set, this key is used instead of your Claude Pro, Max, Team, or "
-     "Enterprise subscription even if you are logged in.",
+    ("When set, this key is used instead of your Claude Pro, Max, Ultra, "
+     "Team, or Enterprise subscription even if you are logged in.",
      "https://code.claude.com/docs/en/env-vars"),
     ("In non-interactive mode (-p), the key is always used when present.",
      "https://code.claude.com/docs/en/authentication"),

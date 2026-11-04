@@ -109,8 +109,8 @@ stessa copia, più `--setting-sources project,local` e
   tasks re-reads all three on every turn of the fourth.»
   https://code.claude.com/docs/en/best-practices
 - Il ciclo, con un esempio, nella pagina su come funziona Claude Code:
-  «Run the test suite to see what's failing … Edit the files to fix the
-  issue … Run the tests again to verify»
+  «Run the test suite to see what’s failing … Read those files to
+  understand the code … Edit the files … Run the tests again to verify»
   https://code.claude.com/docs/en/how-claude-code-works
 - Come si contano le richieste, nella pagina dell'Agent SDK sul consumo
   di token: «When Claude uses tools in parallel, multiple messages share
@@ -141,8 +141,14 @@ stessa copia, più `--setting-sources project,local` e
   (https://code.claude.com/docs/en/headless). Con la modalità della prova
   del docente, «If you set dontAsk mode, Claude Code auto-denies every
   tool call that would otherwise prompt you»
-  (https://code.claude.com/docs/en/permission-modes): un comando composto
-  non passa.
+  (https://code.claude.com/docs/en/permission-modes). Un comando composto
+  passa soltanto se ogni sua parte è consentita: «Every subcommand must be
+  allowed for a compound command to run without a prompt, for example
+  because the subcommand matches an allow rule or is a read-only command.»
+  (https://code.claude.com/docs/en/permissions). Nella registrazione del
+  corso `cat urgenza.py; ls` e i test con `| tail` sono passati, con 0
+  permessi negati, in accordo con la regola: ogni loro parte è di sola
+  lettura o consentita.
 
 ### Che cosa misura il controllo
 

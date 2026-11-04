@@ -678,5 +678,5 @@ con i due Explore.
   https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-modernization
 - Il video di Anthropic «Claude Code modernizes a legacy COBOL codebase»:
   https://www.youtube.com/watch?v=OwMu0pyYZBc
-- Anthropic Academy, «Introduction to subagents»:
+- Claude Academy, «Introduction to subagents»:
   https://academy.claude.com/courses/introduction-to-subagents

@@ -214,8 +214,9 @@ Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
 Sonnet con effort low, tre coppie, `--tools Agent,Read,Grep,Glob`): in
 ogni esecuzione con la delega Claude ha lanciato un subagent Explore, che
 ha usato Glob, Grep e Read; i risultati dei suoi strumenti, 15.745,
-39.475 e 39.292 caratteri, sono rimasti nel subagent, e alla
-conversazione principale ne sono arrivati 973. Senza la delega la
+39.475 e 39.292 caratteri, sono rimasti nel subagent; alla
+conversazione principale è arrivato soltanto il risultato immediato della
+chiamata Agent in background, 973 caratteri. Senza la delega la
 conversazione principale ha usato Glob e Grep, con 11.735, 11.735 e
 11.809 caratteri di risultati. «La conversazione principale vede solo il
 risultato del subagent»: confermata 3 su 3. «Un subagent tiene i log
@@ -287,5 +288,5 @@ subagent lavora in background e 1 per la risposta; senza, 3, 3 e 4 turni.
   https://code.claude.com/docs/en/headless
 - Contare i token di tutto l'albero, nell'Agent SDK:
   https://code.claude.com/docs/en/agent-sdk/cost-tracking
-- Anthropic Academy, «Introduction to subagents»:
+- Claude Academy, «Introduction to subagents»:
   https://academy.claude.com/courses/introduction-to-subagents

@@ -11,7 +11,8 @@ corso.».
 ## Che cosa serve
 
 - **Un abbonamento Claude Pro.** Claude Code richiede un account Pro, Max,
-  Team, Enterprise o Console: il piano gratuito di claude.ai non lo include.
+  Ultra, Team, Enterprise o Console: il piano gratuito di claude.ai non lo
+  include.
 - **Un computer** con almeno 4 GB di RAM, un processore x64 o ARM64 e una
   connessione a internet.
 - **Linux, oppure Windows con WSL 2**: il paragrafo qui sotto.

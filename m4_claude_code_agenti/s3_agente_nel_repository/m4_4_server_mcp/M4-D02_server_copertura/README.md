@@ -103,11 +103,12 @@ preparate lo spazio di lavoro, poi lanciate il passo 1:
 
    Se Claude Code vi chiede il permesso di usare lo strumento del
    server, rispondete Yes: è in sola lettura. Poi chiedete di salvare la
-   risposta, e approvate la scrittura del file:
+   risposta:
 
        Scrivi quell'elenco, un comune per riga, nel file risposta.txt.
 
-   Uscite con `/exit`.
+   Se Claude Code vi chiede di approvare la scrittura del file,
+   approvatela. Uscite con `/exit`.
 
 5. Verificate, dalla cartella `esercitazioni`:
 
@@ -202,8 +203,8 @@ Per questo, durante le sei esecuzioni, lo spazio di lavoro ha soltanto
 `domanda.txt` e `.claude/`: le configurazioni e gli stream stanno in una
 cartella temporanea sotto `/tmp`, e `live.sh` li copia in `mcp/` e
 `risposte/` dopo l'ultima esecuzione. E tutti e due i bracci hanno un solo
-strumento integrato, `--tools Read`, che basta a guardare nello spazio di
-lavoro e non oltre:
+strumento integrato, `--tools Read`, che basta a leggere i file dello
+spazio di lavoro:
 
 - il flag lascia gli strumenti MCP, così il braccio con il server ha
   ancora il suo: «The flag doesn’t affect MCP tools; to deny those too, use
@@ -288,8 +289,11 @@ messa alla prova; gli esiti sono qui sopra.» Non scrive niente.
 - `uv: command not found`: il paragrafo «Python e uv» di
   `PRIMA_DEL_CORSO.md`.
 - La verifica dice che il server non è configurato: `claude mcp add` è
-  stato dato da un'altra cartella, e lo scope local vale per la cartella
-  in cui lo si dà. Rifate il passo 3 dallo spazio di lavoro.
+  stato dato da un altro progetto, e lo scope local vale per il progetto
+  in cui lo si dà: «the repository root, or the exact directory if you
+  weren’t in a git repository»
+  (https://code.claude.com/docs/en/mcp-quickstart). Rifate il passo 3
+  dallo spazio di lavoro.
 - La verifica dice che in `risposta.txt` mancano comuni, o ce ne sono in
   più: guardate se nella sessione Claude ha usato lo strumento
   `mcp__copertura__cerca_copertura`; rifate la domanda in una sessione

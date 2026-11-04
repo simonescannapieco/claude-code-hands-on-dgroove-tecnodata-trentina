@@ -187,7 +187,13 @@ esce 1.
   l'elenco non nomina non si distingue da un altro errore (un file non
   ancora letto, per esempio), e il verdetto è non distinguibile, come
   quando nessuna sessione ci ha provato: le sessioni hanno lavorato nel
-  loro worktree, e il blocco non è stato messo alla prova.
+  loro worktree, e il blocco non è stato messo alla prova. Come si
+  presenta un rifiuto lo dice la pagina: «Claude sees each refusal as a
+  tool error that names the worktree and says how to proceed.»
+  (https://code.claude.com/docs/en/worktrees). Che un rifiuto vero
+  compaia anche in `permission_denials` non è stato visto in nessuna
+  registrazione del corso: se non compare, il verdetto resta non
+  distinguibile, mai confermata.
 - «Ogni worktree tiene soltanto la modifica della sua sessione», per
   ogni sessione: i file tracciati cambiati nel worktree sono fra quelli
   che la sua sessione ha modificato, e il suo `urgenza.py` non ha l'altra

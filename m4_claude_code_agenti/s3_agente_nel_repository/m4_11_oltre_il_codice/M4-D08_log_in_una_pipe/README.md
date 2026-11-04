@@ -112,7 +112,8 @@ https://code.claude.com/docs/en/headless
 
 Le opzioni della prova, in `claude --help`: `--tools` «Specify the list of
 available tools from the built-in set. Use "" to disable all tools»,
-quindi Claude non ha strumenti e legge soltanto ciò che arriva in pipe;
+quindi Claude Code non ha strumenti integrati: non può aprire altri file né
+lanciare comandi, e del log ha soltanto le righe che arrivano in pipe;
 `--strict-mcp-config` «Only use MCP servers from --mcp-config, ignoring
 all other MCP configurations», e senza `--mcp-config` nessun server MCP
 entra nella prova. `--output-format`, nel riferimento della CLI:
