@@ -311,8 +311,9 @@ vostro piano occupa. La sessione interattiva non è stata misurata.
   https://code.claude.com/docs/en/skills
 - La specifica di Agent Skills, i campi e il corpo:
   https://agentskills.io/specification. Per validare una skill indica la sua
-  libreria: «Use the skills-ref reference library to validate your skills»; in questo
-  corso non la eseguiamo, e il controllo è `tools/controlla_skill.py`.
+  libreria: «Use the skills-ref reference library to validate your skills». Negli
+  esercizi il controllo è `tools/controlla_skill.py`; i due a confronto stanno in
+  M5-D05.
 - «Skill authoring best practices», di Anthropic:
   https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 - Il corso dell'Academy «Introduction to agent skills»:

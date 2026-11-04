@@ -517,6 +517,9 @@ t_registrazione() {
 R Nella prova del corso (4 novembre 2026
 R argument-hint: "[canale]"
 R anthropic-skills:risposta-assistenza
+R `skills-ref validate` 0.1.0
+R | tag XML nella `description` | si ferma | valida | errore |
+R | settimo campo; campo inventato | passa | errore | errore |
 ! (3 novembre 2026
 ! Il rifiuto vero
 ! Il docente carica due ZIP

@@ -183,6 +183,21 @@ altro nome è passata; il `name` `Risposta_Assistenza` è passato, e nel file è
 `risposta-assistenza`. Uno ZIP senza `SKILL.md` si è fermato: «Zip must contain a
 SKILL.md file».
 
+Gli stessi ZIP, aperti, a due controlli che si fanno prima di caricare, senza modello:
+`skills-ref validate` 0.1.0, lo strumento che la pagina indica, installato dal docente
+come dice il suo README, e `tools/controlla_skill.py --caricamento`:
+
+| lo ZIP | il caricamento | `skills-ref` | `controlla_skill.py` |
+|---|---|---|---|
+| quello buono | passa | valida | nessun errore |
+| settimo campo; campo inventato | passa | errore | errore |
+| senza `description`; un'altra cartella; `name` non valido | passa | errore | errore |
+| senza `SKILL.md` | si ferma | errore | errore |
+| tag XML nella `description` | si ferma | valida | errore |
+
+`controlla_skill.py` è scritto su queste stesse regole: non è una prova che basti a
+se stessa, e non dice se la skill funziona.
+
 ### Sullo schermo
 
 Il caricamento e la chat si giudicano a occhio:
