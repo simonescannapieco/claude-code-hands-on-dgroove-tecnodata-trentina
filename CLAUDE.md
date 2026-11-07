@@ -78,6 +78,11 @@ verificano ogni elemento.
   Markdown semplice, senza i tag del corso. `tools/controlla_skill.py`
   applica le regole che si leggono dai file. Il prompt con cui si chiede a
   Claude di scrivere o cambiare una skill segue invece il template.
+- Neanche un `CLAUDE.md`, un `CLAUDE.local.md`, un `AGENTS.md` o una regola
+  in `.claude/rules/` è un prompt del template: seguono le indicazioni di
+  Anthropic per quei file, titoli Markdown ed elenchi puntati, righe
+  concrete, meno di 200 righe. Il prompt con cui si chiede a Claude di
+  scriverne o cambiarne uno segue invece il template.
 - Script bash: `#!/bin/bash`, `set -euo pipefail`, uscita 0/1/2 dichiarata
   in testata, shellcheck pulito; le librerie `lib_*.sh` non sono eseguibili.
 

@@ -135,6 +135,11 @@ stesso riepilogo, accanto a un riepilogo senza indicazioni sul formato.
 - Un `SKILL.md` non è un prompt di questo template: ha il suo standard, un
   frontmatter e il corpo in Markdown. Il Modulo 5 e `template-SKILL.md` lo
   spiegano.
+- Nemmeno un `CLAUDE.md`, un `CLAUDE.local.md`, un `AGENTS.md` o una regola
+  in `.claude/rules/`: sono i file di istruzioni che Claude Code carica nel
+  contesto, e per loro Anthropic consiglia titoli Markdown ed elenchi
+  puntati, righe concrete e meno di 200 righe. Il Modulo 6 e
+  `template-CLAUDE.md` lo spiegano.
 
 ## Gli esempi
 
