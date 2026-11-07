@@ -6,8 +6,8 @@
 # lavoro: le sessioni non la vedono. Legge gli stream di risposte/, stampa i
 # dati di ogni esecuzione e dice se la prova conferma ciò che Anthropic afferma.
 # Decidono l'uscita soltanto le garanzie: senza la skill, e con la skill spenta
-# se c'è il suo set, nessuna chiamata Skill riesce e la skill non è fra le
-# disponibili. Il confronto si stampa e non decide.
+# se c'è il suo set, nessuna chiamata Skill a quella skill riesce e la skill
+# non è fra le disponibili. Il confronto si stampa e non decide.
 #
 # Uso:    verifica.sh <spazio di lavoro>
 # Env:    PN_HANDSON_ROOT  il repository (default: la radice sopra l'elemento)

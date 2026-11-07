@@ -215,7 +215,8 @@ https://platform.claude.com/docs/en/build-with-claude/prompt-caching
 Poi i verdetti, per archetipo:
 
 - le garanzie: senza la skill e con la skill spenta, la skill non è nell'elenco
-  `skills` di `system/init` e nessuna chiamata `Skill` riesce. Se non regge, il
+  `skills` di `system/init` e nessuna chiamata `Skill` a quella skill riesce; se
+  Claude ne chiama un'altra, come `code-review`, è un dato. Se non regge, il
   controllo stampa `REPERTO` e la verifica esce con 1. Un tentativo respinto dallo
   strumento non è un reperto: il corpo non è arrivato, e si stampa come dato. Con
   la skill nella cartella deve esserci davvero: nell'elenco, e, se Claude la

@@ -104,7 +104,7 @@ Lo spazio di lavoro `~/corso-claude-code/M5-D02/` con:
 
    Sulla specifica passa senza avvisi sulla description. Sulla vaga passa anche, con
    la riga `AVVISO description: non dice quando usarla`: è il punto della demo, e
-   un controllo dei file lo vede prima di ogni prova. Tutte e due le volte
+   un controllo dei file lo vede senza far girare nessuna prova. Tutte e due le volte
    `AVVISO evals` ricorda che qui, per una demo, i casi di prova non ci sono.
 
 La prova del docente è di tre esecuzioni e quindici chiamate: il `_docente/live.sh`

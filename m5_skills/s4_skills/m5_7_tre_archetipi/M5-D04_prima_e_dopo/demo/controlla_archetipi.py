@@ -36,11 +36,11 @@ l'uscita. La chiamata a Skill sta fuori dai criteri: Anthropic chiede di
 misurarla a parte.
 
 Le garanzie decidono l'uscita: in senza e in off la skill non è fra quelle
-disponibili e nessuna chiamata Skill riesce; un tentativo che lo strumento
-respinge è un dato. In on deve esserci davvero: fra le disponibili e, se
-chiamata, né negata dal permesso né respinta; altrimenti il braccio non mette
-alla prova niente. Se senza la skill Claude ne sceglie un'altra, si nomina,
-come dato.
+disponibili e nessuna chiamata Skill a quella skill riesce; un tentativo che
+lo strumento respinge è un dato. In on deve esserci davvero: fra le
+disponibili e, se chiamata, né negata dal permesso né respinta; altrimenti il
+braccio non mette alla prova niente. Se senza la skill Claude ne sceglie
+un'altra, si nomina, come dato.
 
 Con --modelli stampa gli stessi criteri per modello, come dati, senza verdetti.
 
@@ -153,12 +153,13 @@ CONFERMATA = "confermata"
 NON_DISTINGUIBILE = "non distinguibile"
 NON_CONFERMATA = "non confermata in questa esecuzione"
 LETTURA = ("La garanzia di senza: la skill non è fra le disponibili e nessuna "
-           "chiamata Skill riesce.\nCome si legge: conta il confronto con "
+           "chiamata Skill a quella skill riesce; un'altra skill scelta da "
+           "Claude è un dato.\nCome si legge: conta il confronto con "
            "senza, non il punteggio da solo; dove i due bracci fanno lo "
            "stesso, non è la skill.")
 LETTURA_OFF = ("La garanzia di off: la skill non è fra le disponibili e "
-               "nessuna chiamata Skill riesce. I suoi file restano nella "
-               "cartella: ciò che Claude ne fa è un dato.")
+               "nessuna chiamata Skill a quella skill riesce. I suoi file "
+               "restano nella cartella: ciò che Claude ne fa è un dato.")
 INTESTA_MODELLI = (
     "Come dati, con la skill accesa. La checklist di Anthropic chiede «Tested "
     "with Haiku, Sonnet, and Opus»: Sonnet sono le altre esecuzioni della "
