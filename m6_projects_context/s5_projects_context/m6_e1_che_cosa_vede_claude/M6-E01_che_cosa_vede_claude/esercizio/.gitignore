@@ -1,0 +1,3 @@
+# Il registro dell'hook InstructionsLoaded: lo scrive Claude Code a ogni
+# caricamento di un CLAUDE.md, e git non deve vederlo.
+.claude/caricamenti.jsonl

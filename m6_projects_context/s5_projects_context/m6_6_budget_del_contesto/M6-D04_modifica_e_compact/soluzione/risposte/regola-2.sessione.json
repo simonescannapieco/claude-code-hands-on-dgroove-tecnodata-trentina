@@ -1,0 +1,50 @@
+{
+ "tipo": "regola",
+ "parole": {
+  "radice": "RADICE-BFEXQC",
+  "regolaphp": "REGOLAPHP-AXQOMG"
+ },
+ "strumenti": "Read",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Leggi src/a.php, senza leggere altri file, e rispondi solo: letto",
+   "inizio": "2026-11-07T18:15:05Z",
+   "fine": "2026-11-07T18:15:10Z",
+   "caricamenti": 2
+  },
+  {
+   "passo": 2,
+   "tipo": "comando",
+   "testo": "/compact",
+   "inizio": "2026-11-07T18:15:10Z",
+   "fine": "2026-11-07T18:15:18Z",
+   "caricamenti": 2
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, elenca tutte le parole in codice che compaiono nelle tue istruzioni di progetto, una per riga. Se non ne vedi nessuna, rispondi NON LA SO.",
+   "inizio": "2026-11-07T18:15:18Z",
+   "fine": "2026-11-07T18:15:20Z",
+   "caricamenti": 3
+  },
+  {
+   "passo": 4,
+   "tipo": "messaggio",
+   "testo": "Leggi src/a.php, senza leggere altri file, e rispondi solo: letto",
+   "inizio": "2026-11-07T18:15:20Z",
+   "fine": "2026-11-07T18:15:24Z",
+   "caricamenti": 3
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, elenca tutte le parole in codice che compaiono nelle tue istruzioni di progetto, una per riga. Se non ne vedi nessuna, rispondi NON LA SO.",
+   "inizio": "2026-11-07T18:15:24Z",
+   "fine": "2026-11-07T18:15:26Z",
+   "caricamenti": 3
+  }
+ ]
+}

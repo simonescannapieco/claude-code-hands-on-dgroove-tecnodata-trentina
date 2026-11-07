@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(/progetti/rete/configurazioni/**)",
+      "Edit(/progetti/rete/log/**)",
+      "Edit(/progetti/rete/inventario.csv)",
+      "Edit(/progetti/rete/allarmi.csv)"
+    ]
+  },
+  "hooks": {
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/registra_caricamenti.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

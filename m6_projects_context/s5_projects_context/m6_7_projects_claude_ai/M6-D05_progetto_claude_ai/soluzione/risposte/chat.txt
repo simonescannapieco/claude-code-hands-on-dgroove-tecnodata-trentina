@@ -1,0 +1,11 @@
+Non esiste un termine unico di legge per questo tipo di intervento. Il numero di giorni lavorativi dipende dal contratto, dal capitolato o dallo SLA che si applica al caso. Quello che ho trovato indica una tendenza, ma sono tutti documenti di singoli operatori o enti.
+
+Capitolato di manutenzione di una rete in fibra e ponte radio (gara pubblica): il ripristino almeno provvisorio dell’infrastruttura va eseguito entro 4 ore dalla segnalazione, e il ripristino definitivo va concordato ed eseguito entro e non oltre 5 giorni lavorativi. È il caso più vicino a un intervento strutturale come quello in quota.
+acquistitelematici
+
+SLA di un operatore (guasti sul servizio radio): i tempi vanno da 1 giorno lavorativo per i collegamenti punto-punto a 2-3 giorni lavorativi per quelli punto-multipunto (risoluzione entro 2 giorni lavorativi nel 90% dei casi e 3 nel 100%). Qui l’intervento non è specificamente in quota.
+mynet
+
+I 5 giorni lavorativi per il ripristino definitivo sono quindi un riferimento plausibile per un intervento in quota, ma non ho trovato nessuna norma che li renda obbligatori in generale. Nei documenti che ho trovato non compare nessun tempo specifico per gli interventi in quota. Questi interventi dipendono spesso anche da meteo, accesso al sito e squadre abilitate ai lavori in quota. Per questo alcuni contratti prevedono tempi più lunghi o deroghe per le “aree disagiate”.
+
+Se mi dici da quale documento nasce la domanda (contratto, capitolato di gara, SLA di un operatore, procedura interna), posso cercare il termine esatto. Se hai il PDF, mandamelo e lo leggo.

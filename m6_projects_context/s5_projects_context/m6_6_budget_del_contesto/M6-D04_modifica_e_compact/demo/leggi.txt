@@ -1,0 +1,1 @@
+Leggi src/a.php, senza leggere altri file, e rispondi solo: letto

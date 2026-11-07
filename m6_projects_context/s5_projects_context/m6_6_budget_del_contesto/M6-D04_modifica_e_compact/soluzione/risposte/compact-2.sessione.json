@@ -1,0 +1,51 @@
+{
+ "tipo": "compact",
+ "parole": {
+  "radice": "PRIMA-YUSEPB",
+  "nuova": "DOPO-WOOKIW",
+  "regolaphp": "REGOLAPHP-BQXTQI"
+ },
+ "strumenti": "",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:37Z",
+   "fine": "2026-11-07T18:14:41Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 2,
+   "tipo": "modifica",
+   "testo": "CLAUDE.md",
+   "inizio": "2026-11-07T18:14:41Z",
+   "fine": "2026-11-07T18:14:42Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:42Z",
+   "fine": "2026-11-07T18:14:47Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 4,
+   "tipo": "comando",
+   "testo": "/compact",
+   "inizio": "2026-11-07T18:14:47Z",
+   "fine": "2026-11-07T18:14:55Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:55Z",
+   "fine": "2026-11-07T18:14:57Z",
+   "caricamenti": 2
+  }
+ ]
+}

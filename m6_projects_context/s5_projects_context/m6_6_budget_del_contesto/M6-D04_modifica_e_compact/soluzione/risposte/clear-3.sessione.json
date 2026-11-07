@@ -1,0 +1,51 @@
+{
+ "tipo": "clear",
+ "parole": {
+  "radice": "PRIMA-VCILPV",
+  "nuova": "DOPO-QAUMJX",
+  "regolaphp": "REGOLAPHP-ELWKMG"
+ },
+ "strumenti": "",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:15:41Z",
+   "fine": "2026-11-07T18:15:44Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 2,
+   "tipo": "modifica",
+   "testo": "CLAUDE.md",
+   "inizio": "2026-11-07T18:15:44Z",
+   "fine": "2026-11-07T18:15:45Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:15:45Z",
+   "fine": "2026-11-07T18:15:46Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 4,
+   "tipo": "comando",
+   "testo": "/clear",
+   "inizio": "2026-11-07T18:15:46Z",
+   "fine": "2026-11-07T18:15:47Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:15:47Z",
+   "fine": "2026-11-07T18:15:49Z",
+   "caricamenti": 2
+  }
+ ]
+}

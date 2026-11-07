@@ -1,0 +1,7 @@
+rete(audit): corregge il refuso nello standard di AUD-02
+
+Rif: NOC-0
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+----

@@ -1,0 +1,1 @@
+Controlla che i file del progetto rete siano a posto e dimmi l'esito.

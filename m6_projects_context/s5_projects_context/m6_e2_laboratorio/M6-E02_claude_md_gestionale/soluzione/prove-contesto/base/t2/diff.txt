@@ -1,0 +1,13 @@
+diff --git a/progetti/gestionale-php/bin/fatturazione-mensile.php b/progetti/gestionale-php/bin/fatturazione-mensile.php
+index 4e4cc92..c98f177 100644
+--- a/progetti/gestionale-php/bin/fatturazione-mensile.php
++++ b/progetti/gestionale-php/bin/fatturazione-mensile.php
+@@ -25,7 +25,7 @@ try {
+         : Periodo::di(new DateTimeImmutable('first day of last month'));
+     $fatture = $applicazione->generatoreFatture()->emetti($periodo, $simulazione);
+ } catch (InvalidArgumentException | RuntimeException $errore) {
+-    fwrite(STDERR, 'Fatturazione non eseguta: ' . $errore->getMessage() . "\n");
++    fwrite(STDERR, 'Fatturazione non eseguita: ' . $errore->getMessage() . "\n");
+     exit(2);
+ }
+ 

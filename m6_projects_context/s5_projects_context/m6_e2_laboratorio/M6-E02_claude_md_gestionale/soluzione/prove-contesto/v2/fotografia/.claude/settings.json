@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(progetti/gestionale-php/database/dati/**)",
+      "Write(progetti/gestionale-php/database/dati/**)",
+      "Edit(progetti/gestionale-php/composer.lock)",
+      "Write(progetti/gestionale-php/composer.lock)"
+    ]
+  },
+  "hooks": {
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/registra_caricamenti.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

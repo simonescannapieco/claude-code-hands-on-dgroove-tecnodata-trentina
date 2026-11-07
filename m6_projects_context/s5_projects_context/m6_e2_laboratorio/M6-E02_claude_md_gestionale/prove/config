@@ -1,0 +1,9 @@
+# La configurazione di tools/prova_contesto.sh per M6-E02. Le tre versioni
+# hanno lo stesso modello, gli stessi strumenti per richiesta e gli stessi
+# divieti: differiscono soltanto nei file di istruzioni. Le copie non hanno
+# gli appunti del team, né vendor/ e var/ del gestionale, che una sessione
+# interattiva può aver creato: ogni copia parte com'era il gestionale.
+modello=sonnet
+effort=low
+escludi=appunti-del-team.md progetti/gestionale-php/vendor progetti/gestionale-php/var
+vietati=Bash(sudo *),Bash(git push *),Bash(curl *),Bash(wget *)

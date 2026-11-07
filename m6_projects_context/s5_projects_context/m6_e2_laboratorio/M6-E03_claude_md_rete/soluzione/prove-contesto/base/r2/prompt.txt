@@ -1,0 +1,1 @@
+Nella checklist di audit c'è un refuso nello standard di AUD-02: correggilo e fai il commit.

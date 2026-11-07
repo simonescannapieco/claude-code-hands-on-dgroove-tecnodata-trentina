@@ -1,1 +1,9 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M6-D01	demo	claude-code-pro	s5_projects_context	m6_2_il_contesto_e_tutto	slides/theory/m6_projects_context/m6_2_il_contesto_e_tutto	4	Il documento che nessun modello ha letto
+M6-D02	demo	claude-code-pro	s5_projects_context	m6_3_claude_md	slides/theory/m6_projects_context/m6_3_claude_md	3	Che cosa entra all'avvio, e che cosa quando serve
+M6-E01	esercizio	claude-code-pro	s5_projects_context	m6_e1_che_cosa_vede_claude	slides/practice/m6_esercitazione_contesto/m6_e1_che_cosa_vede_claude	8	Che cosa vede Claude
+M6-D03	demo	claude-code-pro	s5_projects_context	m6_4_che_cosa_scriverci	slides/theory/m6_projects_context/m6_4_che_cosa_scriverci	3	Il comando dei test: Claude andrebbe a cercarlo?
+M6-D04	demo	claude-code-pro	s5_projects_context	m6_6_budget_del_contesto	slides/theory/m6_projects_context/m6_6_budget_del_contesto	3	Una modifica a sessione avviata, e dopo /compact
+M6-E02	esercizio	claude-code-pro	s5_projects_context	m6_e2_laboratorio	slides/practice/m6_esercitazione_contesto/m6_e2_laboratorio	59	Un CLAUDE.md per il gestionale
+M6-E03	esercizio	claude-code-pro	s5_projects_context	m6_e2_laboratorio	slides/practice/m6_esercitazione_contesto/m6_e2_laboratorio	59	Un CLAUDE.md per la rete
+M6-D05	demo	claude-ai-pro	s5_projects_context	m6_7_projects_claude_ai	slides/theory/m6_projects_context/m6_7_projects_claude_ai	3	La stessa domanda, in un progetto di claude.ai

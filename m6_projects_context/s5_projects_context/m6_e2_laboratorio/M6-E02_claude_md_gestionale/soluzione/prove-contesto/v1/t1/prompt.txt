@@ -1,0 +1,1 @@
+Esegui la suite di test del gestionale e dimmi quanti test passano e quanti falliscono.

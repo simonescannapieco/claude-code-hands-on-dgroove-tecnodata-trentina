@@ -1,0 +1,51 @@
+{
+ "tipo": "compact",
+ "parole": {
+  "radice": "PRIMA-EJOTFM",
+  "nuova": "DOPO-GOPGUE",
+  "regolaphp": "REGOLAPHP-GZKWXM"
+ },
+ "strumenti": "",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:13:54Z",
+   "fine": "2026-11-07T18:13:56Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 2,
+   "tipo": "modifica",
+   "testo": "CLAUDE.md",
+   "inizio": "2026-11-07T18:13:56Z",
+   "fine": "2026-11-07T18:13:57Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:13:57Z",
+   "fine": "2026-11-07T18:13:59Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 4,
+   "tipo": "comando",
+   "testo": "/compact",
+   "inizio": "2026-11-07T18:13:59Z",
+   "fine": "2026-11-07T18:14:07Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:07Z",
+   "fine": "2026-11-07T18:14:09Z",
+   "caricamenti": 2
+  }
+ ]
+}

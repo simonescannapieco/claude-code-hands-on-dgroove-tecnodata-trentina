@@ -1,0 +1,13 @@
+diff --git a/progetti/rete/checklist-audit.md b/progetti/rete/checklist-audit.md
+index 283b57c..1d4c080 100644
+--- a/progetti/rete/checklist-audit.md
++++ b/progetti/rete/checklist-audit.md
+@@ -25,7 +25,7 @@ Un problema che riguarda due apparati (per esempio un valore che deve coincidere
+ **Standard:** solo SNMPv3, utente `monitor` con autenticazione e cifratura (SHA e AES), interrogazioni ammesse solo dalla rete di gestione, trap verso 192.0.2.43. Nessuna community v1/v2c, né predefinita (`public`, `private`) né d'altro nome.
+ 
+ ### AUD-02 — Gestione con protocolli in chiaro
+-**Standard:** gli apparati si gestiscono solo via SSH, HTTPS o NETCONF su SSH. Telnet, HTTP senza TLS e FTP sono disativati, su ogni tipo di apparato e su ogni interfaccia di gestione.
++**Standard:** gli apparati si gestiscono solo via SSH, HTTPS o NETCONF su SSH. Telnet, HTTP senza TLS e FTP sono disattivati, su ogni tipo di apparato e su ogni interfaccia di gestione.
+ 
+ ### AUD-03 — Segreti in chiaro, deboli, predefiniti o riutilizzati
+ **Standard:** le password degli utenti di gestione sono conservate come hash, mai in chiaro. Nessun valore di fabbrica o di esempio (le credenziali predefinite di un software, i segreti di prova), nessun segreto banale o derivato dal nome del cliente. Mai lo stesso segreto su più apparati o su più utenze, salvo i segreti che per natura coincidono ai due capi di uno stesso collegamento (la chiave di un ponte radio, il segreto fra un apparato e il server RADIUS).

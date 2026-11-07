@@ -1,0 +1,7 @@
+fix(fatturazione): corregge il refuso nel messaggio d'errore
+
+Rif: GES-0
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+
+----

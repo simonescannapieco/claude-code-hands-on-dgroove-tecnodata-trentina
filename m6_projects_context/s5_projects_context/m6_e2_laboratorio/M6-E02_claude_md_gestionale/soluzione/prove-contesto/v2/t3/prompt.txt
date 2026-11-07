@@ -1,0 +1,1 @@
+Che cosa fa src/Copertura/VerificaCopertura.php? Rispondi in cinque righe.

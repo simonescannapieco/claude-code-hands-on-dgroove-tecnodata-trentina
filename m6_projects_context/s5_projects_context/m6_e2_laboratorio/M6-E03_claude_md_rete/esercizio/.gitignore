@@ -1,0 +1,7 @@
+# le prove di tools/prova_contesto.sh
+/prove-contesto/
+# il registro dell'hook InstructionsLoaded
+/.claude/caricamenti.jsonl
+# le preferenze personali e le regole salvate dalle sessioni
+/CLAUDE.local.md
+/.claude/settings.local.json

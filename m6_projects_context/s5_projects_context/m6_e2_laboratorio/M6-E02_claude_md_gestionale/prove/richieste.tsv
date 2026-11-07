@@ -1,0 +1,4 @@
+id	strumenti	prompt
+t1	Read,Glob,Grep,Bash	Esegui la suite di test del gestionale e dimmi quanti test passano e quanti falliscono.
+t2	Read,Glob,Grep,Edit,Bash	Nel messaggio d'errore di bin/fatturazione-mensile.php c'è un refuso: correggilo e fai il commit.
+t3	Read,Glob,Grep	Che cosa fa src/Copertura/VerificaCopertura.php? Rispondi in cinque righe.

@@ -1,0 +1,2 @@
+{"load_reason": "session_start", "file_path": "CLAUDE.md", "memory_type": "Project", "trigger_file_path": null, "parent_file_path": null, "globs": null}
+{"load_reason": "include", "file_path": "docs/procedura.md", "memory_type": "Project", "trigger_file_path": null, "parent_file_path": "CLAUDE.md", "globs": null}

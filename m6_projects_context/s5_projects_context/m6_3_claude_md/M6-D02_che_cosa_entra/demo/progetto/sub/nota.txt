@@ -1,0 +1,2 @@
+Nota di servizio: un file di testo qualunque, non un file di istruzioni.
+Parola in codice di questo file: __LETTO__

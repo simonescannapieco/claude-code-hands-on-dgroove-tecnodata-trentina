@@ -1,0 +1,1 @@
+Nel messaggio d'errore di bin/fatturazione-mensile.php c'è un refuso: correggilo e fai il commit.

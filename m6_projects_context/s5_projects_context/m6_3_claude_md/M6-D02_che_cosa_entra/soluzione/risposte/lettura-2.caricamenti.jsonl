@@ -1,0 +1,6 @@
+{"load_reason": "session_start", "file_path": "CLAUDE.md", "memory_type": "Project", "trigger_file_path": null, "parent_file_path": null, "globs": null}
+{"load_reason": "include", "file_path": "docs/glossario.md", "memory_type": "Project", "trigger_file_path": null, "parent_file_path": "CLAUDE.md", "globs": null}
+{"load_reason": "session_start", "file_path": "CLAUDE.local.md", "memory_type": "Local", "trigger_file_path": null, "parent_file_path": null, "globs": null}
+{"load_reason": "session_start", "file_path": ".claude/rules/generale.md", "memory_type": "Project", "trigger_file_path": null, "parent_file_path": null, "globs": null}
+{"load_reason": "path_glob_match", "file_path": ".claude/rules/php.md", "memory_type": "Project", "trigger_file_path": "src/a.php", "parent_file_path": null, "globs": ["**/*.php"]}
+{"load_reason": "nested_traversal", "file_path": "sub/CLAUDE.md", "memory_type": "Project", "trigger_file_path": "sub/nota.txt", "parent_file_path": null, "globs": null}

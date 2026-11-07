@@ -1,0 +1,15 @@
+  $ claude -p \
+      --allowedTools Read,Glob,Grep,Bash \
+      --model sonnet \
+      --permission-mode dontAsk \
+      --permission-prompts none \
+      --output-format stream-json \
+      --verbose \
+      --setting-sources project,local \
+      --tools Read,Glob,Grep,Bash \
+      --disallowedTools 'Bash(sudo *),Bash(git push *),Bash(curl *),Bash(wget *)' \
+      --effort low \
+      --strict-mcp-config \
+      --no-session-persistence \
+      -- 'Controlla che i file del progetto rete siano a posto e dimmi l'\''esito.'
+

@@ -1,0 +1,7 @@
+<instructions>
+Rispondi in base alla carta dei servizi caricata nel progetto, carta-servizi.md.
+</instructions>
+
+<format>
+Cita l'articolo da cui prendi la risposta.
+</format>

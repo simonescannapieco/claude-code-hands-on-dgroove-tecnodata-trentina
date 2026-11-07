@@ -1,0 +1,4 @@
+id	strumenti	prompt
+r1	Read,Glob,Grep,Bash	Controlla che i file del progetto rete siano a posto e dimmi l'esito.
+r2	Read,Glob,Grep,Edit,Bash	Nella checklist di audit c'è un refuso nello standard di AUD-02: correggilo e fai il commit.
+r3	Read,Glob,Grep	Che cosa controlla la categoria AUD-07 della checklist di audit? Rispondi in cinque righe.

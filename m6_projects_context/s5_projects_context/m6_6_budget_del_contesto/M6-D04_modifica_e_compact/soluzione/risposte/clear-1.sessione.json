@@ -1,0 +1,51 @@
+{
+ "tipo": "clear",
+ "parole": {
+  "radice": "PRIMA-NXCNNR",
+  "nuova": "DOPO-TOXOSB",
+  "regolaphp": "REGOLAPHP-EQKZDI"
+ },
+ "strumenti": "",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:10Z",
+   "fine": "2026-11-07T18:14:12Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 2,
+   "tipo": "modifica",
+   "testo": "CLAUDE.md",
+   "inizio": "2026-11-07T18:14:12Z",
+   "fine": "2026-11-07T18:14:13Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:13Z",
+   "fine": "2026-11-07T18:14:15Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 4,
+   "tipo": "comando",
+   "testo": "/clear",
+   "inizio": "2026-11-07T18:14:15Z",
+   "fine": "2026-11-07T18:14:16Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:16Z",
+   "fine": "2026-11-07T18:14:17Z",
+   "caricamenti": 2
+  }
+ ]
+}

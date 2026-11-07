@@ -1,0 +1,51 @@
+{
+ "tipo": "clear",
+ "parole": {
+  "radice": "PRIMA-XHBYIH",
+  "nuova": "DOPO-NAAIOO",
+  "regolaphp": "REGOLAPHP-IHTBLC"
+ },
+ "strumenti": "",
+ "passi": [
+  {
+   "passo": 1,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:14:57Z",
+   "fine": "2026-11-07T18:14:59Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 2,
+   "tipo": "modifica",
+   "testo": "CLAUDE.md",
+   "inizio": "2026-11-07T18:14:59Z",
+   "fine": "2026-11-07T18:15:00Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 3,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:15:00Z",
+   "fine": "2026-11-07T18:15:02Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 4,
+   "tipo": "comando",
+   "testo": "/clear",
+   "inizio": "2026-11-07T18:15:02Z",
+   "fine": "2026-11-07T18:15:03Z",
+   "caricamenti": 1
+  },
+  {
+   "passo": 5,
+   "tipo": "messaggio",
+   "testo": "Senza leggere file, qual è la parola in codice delle tue istruzioni di progetto? Rispondi solo con la parola.",
+   "inizio": "2026-11-07T18:15:03Z",
+   "fine": "2026-11-07T18:15:05Z",
+   "caricamenti": 2
+  }
+ ]
+}

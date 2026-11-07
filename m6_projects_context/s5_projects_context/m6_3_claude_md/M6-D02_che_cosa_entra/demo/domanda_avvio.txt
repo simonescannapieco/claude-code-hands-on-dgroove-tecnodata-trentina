@@ -1,0 +1,1 @@
+Elenca tutte le parole in codice che compaiono nelle tue istruzioni di progetto (non nei file che leggi), una per riga, senza commenti. Se non ne vedi nessuna, rispondi NON LA SO.
