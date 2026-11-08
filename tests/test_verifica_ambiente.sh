@@ -1,10 +1,11 @@
 #!/bin/bash
 #
 # test_verifica_ambiente.sh -- verifica tools/verifica_ambiente.sh con un
-# PATH fatto solo di comandi finti (uname, claude, git, php, composer,
-# docker, python3, python, uv), così ogni caso è deterministico e nessun
-# claude vero viene lanciato: tutto presente (uscita 0); ogni pezzo che
-# manca o non basta (uscita 1, con il paragrafo di PRIMA_DEL_CORSO.md);
+# PATH fatto solo di comandi finti (uname, claude, git, pgrep, php,
+# composer, docker, python3, python, uv), così ogni caso è deterministico
+# e nessun claude vero viene lanciato: tutto presente (uscita 0); ogni
+# pezzo che manca o non basta (uscita 1, con il paragrafo di
+# PRIMA_DEL_CORSO.md);
 # ANTHROPIC_API_KEY impostata (uscita 1, valore mai stampato); l'accesso
 # letto da claude auth status --json (in ordine solo con l'account
 # claude.ai; senza accesso, con il comando che fallisce o con un altro
@@ -94,6 +95,7 @@ finto() {
         *) exit 64 ;;
       esac' ;;
     git) corpo='echo "git version 2.43.0"' ;;
+    pgrep) corpo='echo "pgrep from procps-ng 4.0.2"' ;;
     composer) corpo='echo "Composer version 2.7.0"' ;;
     php) corpo='case "$2" in *PHP_VERSION_ID*) echo "${FINTO_PHP_ID:-80301}" ;;
       *) echo "${FINTO_PHP_VER:-8.3.1}" ;; esac' ;;
@@ -142,6 +144,7 @@ t_tutto() {
   expect_absent "e la riga della chiave non parla dell'abbonamento" \
     "usa l'abbonamento"
   expect "riconosce Docker" 0 "Docker: servizio attivo"
+  expect "riconosce pgrep" 0 "[ok]        pgrep: pgrep from procps-ng"
   expect_absent "niente da sistemare" "[da fare]"
   expect_absent "mai l'e-mail dell'account" "${EMAIL_FINTA}"
   expect_absent "mai il nome dell'organizzazione" "${ORG_FINTA}"
@@ -209,6 +212,9 @@ t_mancanze() {
   expect "manca Claude Code" 1 "«Installare Claude Code»"
   ambiente senza_git
   expect "manca git" 1 "git: non c'è"
+  ambiente senza_pgrep
+  expect "manca pgrep" 1 \
+    "pgrep: non c'è o non risponde (PRIMA_DEL_CORSO.md, «pgrep»)"
   OUT="$(env PATH="${TMP}/tutto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
     ANTHROPIC_API_KEY="${CHIAVE_FINTA}" "${TOOL}" 2>&1)"
   RC=$?
@@ -293,7 +299,7 @@ t_paragrafi() {
   OUT="$(env PATH="${TMP}/vuoto" FINTO_LOG="${LOG}" PN_PROC_VERSION="${PROC}" \
     ANTHROPIC_API_KEY="${CHIAVE_FINTA}" "${TOOL}" 2>&1)"
   RC=$?
-  expect "tutto da sistemare" 1 "Da sistemare: 7"
+  expect "tutto da sistemare" 1 "Da sistemare: 8"
   uscite="${OUT}"
   OUT="$(env PATH="${TMP}/senza_accesso" FINTO_LOG="${LOG}" \
     PN_PROC_VERSION="${PROC}" FINTO_AUTH_JSON="${JSON_FUORI}" FINTO_AUTH_RC=1 \
@@ -305,7 +311,7 @@ t_paragrafi() {
     trovati=$((trovati + 1))
     grep -qxF "## ${nome}" "${GUIDA}" || mancanti+=" «${nome}»"
   done < <(grep -o '«[^»]*»' <<< "${uscite}" | sed 's/[«»]//g' | sort -u)
-  if (( trovati >= 7 )) && [[ -z "${mancanti}" ]]; then
+  if (( trovati >= 8 )) && [[ -z "${mancanti}" ]]; then
     pass "ogni paragrafo citato è un titolo di PRIMA_DEL_CORSO.md"
   else
     fail "paragrafi senza titolo:${mancanti} (citati ${trovati})"
@@ -322,14 +328,15 @@ main() {
   export FINTO_PY3_VERO
   export FINTO_AUTH_JSON="${JSON_ABBONAMENTO}"
   echo "test_verifica_ambiente.sh"
-  bin tutto uname claude git docker python3 uv
-  bin senza_uv uname claude git docker python3
-  bin senza_claude uname git docker python3 uv
-  bin senza_git uname claude docker python3 uv
-  bin php_senza_docker uname claude git php composer python3 uv
-  bin solo_python3 uname claude git docker python3 uv
-  bin solo_python uname claude git docker python uv
-  bin python3_vecchio_e_python uname claude git docker python3 python uv
+  bin tutto uname claude git pgrep docker python3 uv
+  bin senza_uv uname claude git pgrep docker python3
+  bin senza_claude uname git pgrep docker python3 uv
+  bin senza_git uname claude pgrep docker python3 uv
+  bin senza_pgrep uname claude git docker python3 uv
+  bin php_senza_docker uname claude git pgrep php composer python3 uv
+  bin solo_python3 uname claude git pgrep docker python3 uv
+  bin solo_python uname claude git pgrep docker python uv
+  bin python3_vecchio_e_python uname claude git pgrep docker python3 python uv
   t_tutto
   t_accesso
   t_mancanze

@@ -106,14 +106,15 @@ distribuzione (su Linux, nel vostro):
 
     sudo apt-get update && sudo apt-get upgrade -y
     sudo apt-get autoremove -y && sudo apt-get autoclean
-    sudo apt-get install -y curl git
+    sudo apt-get install -y curl git procps
 
 `update` aggiorna l'elenco dei pacchetti, `upgrade` porta i pacchetti
 installati all'ultima versione, `autoremove` e `autoclean` tolgono ciò che
 non serve più. `curl` serve agli installer di Claude Code e di uv, e una
 distribuzione appena installata può non averlo; git serve al repository
-delle esercitazioni. I comandi `apt-get` di questa pagina valgono per
-Ubuntu e Debian, in WSL come su Linux.
+delle esercitazioni; `procps` porta il comando `pgrep`, che usano gli
+strumenti delle prove dei laboratori. I comandi `apt-get` di questa pagina
+valgono per Ubuntu e Debian, in WSL come su Linux.
 
 ### Entrare, uscire, ricominciare da capo
 
@@ -143,6 +144,13 @@ consigliano due estensioni:
 `git --version` deve rispondere. Se manca, si installa con il gestore di
 pacchetti della distribuzione: su Ubuntu e Debian
 `sudo apt-get install -y git`.
+
+## pgrep
+
+`pgrep --version` deve rispondere: il comando serve a `tools/prove_skill.sh`
+e a `tools/prova_contesto.sh`, gli strumenti delle prove dei laboratori. Se
+manca, si installa con il gestore di pacchetti della distribuzione: su
+Ubuntu e Debian `sudo apt-get install -y procps`.
 
 ## Installare Claude Code
 
@@ -282,8 +290,8 @@ Dalla cartella `esercitazioni`:
     tools/verifica_ambiente.sh
 
 Controlla il sistema operativo, Claude Code e il vostro accesso, la
-variabile `ANTHROPIC_API_KEY`, git, PHP o Docker, Python e uv. Di Claude
-Code esegue soltanto `claude --version` e `claude auth status`, che mostra
+variabile `ANTHROPIC_API_KEY`, git, `pgrep`, PHP o Docker, Python e uv. Di
+Claude Code esegue soltanto `claude --version` e `claude auth status`, che mostra
 lo stato dell'autenticazione, senza nessun prompt; dell'accesso considera
 soltanto se c'è e con quale metodo, e non stampa né l'e-mail né
 l'organizzazione dell'account. La riga dell'accesso è in ordine quando

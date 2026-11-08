@@ -16,6 +16,8 @@
 #     userebbe la chiave invece dell'abbonamento Pro (il valore non viene
 #     mai stampato);
 #   - git;
+#   - pgrep, del pacchetto procps: lo usano gli strumenti delle prove dei
+#     laboratori;
 #   - PHP 8.3 o successivo con Composer, oppure Docker con il servizio
 #     attivo (tools/php.sh usa l'uno o l'altro);
 #   - python3, il comando con cui le esercitazioni lanciano Python, con
@@ -193,6 +195,7 @@ main() {
   check_accesso
   check_api_key
   presente "git" "git" git --version
+  presente "pgrep" "pgrep" pgrep --version
   check_php_docker
   check_python
   presente "uv" "Python e uv" uv --version
