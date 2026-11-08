@@ -5,17 +5,20 @@
 #   1. il registro: la pratica di ogni versione prima di misurarla (v0
 #      «partenza», v1 «chiarezza», v2 «rimisura») e che cosa cambia;
 #   2. ./misura.sh v0: il prompt pessimo, la risposta, i controlli e il
-#      giudizio due volte (la prova del giudice);
-#   3. la versione riscritta di soluzione/prompt/v1.md, poi ./misura.sh v1
-#      e ./misura.sh --confronta v0 v1;
+#      giudizio due volte (la prova del giudice); poi l'elenco delle
+#      pratiche;
+#   3. la versione riscritta di soluzione/prompt/v1.md, poi ./misura.sh v1,
+#      ./misura.sh --confronta v0 v1 e il diff delle due versioni;
 #   4. la rimisura: cp prompt/v1.md prompt/v2.md, ./misura.sh v2 e
 #      ./misura.sh --confronta v1 v2;
 #   5. il registro: i totali misurati, con un testo che dice che è una prova
 #      automatica.
-# Poi verifica.sh dell'elemento. La sessione interattiva del README qui non
-# c'è: misura.sh è lo stesso comando che il partecipante lancia con «!».
-# Sette chiamate a claude -p: tre per v0 (la risposta e due giudizi), due
-# per v1 e due per v2.
+# Poi verifica.sh dell'elemento. Stampa anche la data, la versione di Claude
+# Code, l'elenco delle pratiche e il diff: tutto ciò che la soluzione del
+# README mostra viene dall'uscita di questa prova. La sessione interattiva
+# del README qui non c'è: misura.sh è lo stesso comando che il partecipante
+# lancia con «!». Sette chiamate a claude -p: tre per v0 (la risposta e due
+# giudizi), due per v1 e due per v2.
 #
 # Uso:    _docente/live.sh <spazio di lavoro>
 # Env:    le variabili di tools/lib_handson.sh (HANDSON_NO_PAUSE, ...)
@@ -104,28 +107,47 @@ passo() {
   fi
 }
 
+# Il diff fra due versioni, come il comando del README: git diff --no-index
+# esce 1 quando i file sono diversi, l'unico esito atteso qui. Senza pager e
+# senza la configurazione di chi lo lancia, perché l'uscita sia quella che
+# la soluzione del README mostra. Arguments: $1 e $2 i due file.
+mostra_diff() {
+  local rc=0
+  handson::need_file "$1"
+  handson::need_file "$2"
+  GIT_PAGER=cat GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
+    handson::run git diff --no-index "$1" "$2" || rc=$?
+  (( rc == 1 )) \
+    || handson::die "git diff: uscita ${rc}, attesa 1 (versioni diverse)"
+}
+
 main() {
   local ws="${1:-}" out rc=0
   [[ -n "${ws}" && -d "${ws}" ]] \
     || handson::die "spazio di lavoro assente: ${ws}"
   handson::need_file "${RIFERIMENTO}"
   cd "${ws}"
-  handson::need_tools python3
+  handson::need_tools python3 git
   handson::need_file misura.sh
   handson::need_file prompt/v0.md
   handson::need_file registro.md
   handson::need_claude
   handson::banner M2-E01 "Il prompt pessimo: misura, riscrivi, rimisura" \
-    "Modulo 2, pratica: v0, v1 (chiarezza) e la rimisura di v1"
+    "Modulo 2, esercitazione: v0, v1 (chiarezza) e la rimisura di v1"
+  printf 'data della prova: %s\n' "$(date -u +%F)"
   handson::step "1. Il registro: la pratica di ogni versione, prima di" \
     "misurarla"
   registro pratiche || handson::die "il registro non si compila"
   handson::step "2. La misura del prompt pessimo, con la prova del giudice"
   passo "la misura di v0" ./misura.sh v0
+  handson::step "L'elenco delle pratiche"
+  passo "l'elenco delle pratiche" ./misura.sh --pratiche
   handson::step "3. La versione riscritta, la sua misura e il confronto"
   cp -- "${RIFERIMENTO}" prompt/v1.md
   passo "la misura di v1" ./misura.sh v1
   passo "il confronto di v0 e v1" ./misura.sh --confronta v0 v1
+  handson::step "Il diff delle due versioni"
+  mostra_diff prompt/v0.md prompt/v1.md
   handson::step "4. La rimisura: v1 misurata di nuovo, come v2"
   cp -- prompt/v1.md prompt/v2.md
   passo "la misura di v2" ./misura.sh v2

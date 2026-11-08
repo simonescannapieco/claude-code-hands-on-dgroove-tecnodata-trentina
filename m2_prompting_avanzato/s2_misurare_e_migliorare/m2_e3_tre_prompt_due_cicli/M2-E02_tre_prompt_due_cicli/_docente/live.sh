@@ -7,14 +7,17 @@
 #      cosa cambia;
 #   2. per ognuna delle tre famiglie (sviluppo, supporto, sistemi):
 #      ./misura.sh <famiglia> v0, con il giudizio due volte (la prova del
-#      giudice); la versione di soluzione/<famiglia>/prompt/v1.md, la sua
-#      misura e ./misura.sh --confronta <famiglia> v0 v1; la versione di
-#      soluzione/<famiglia>/prompt/v2.md, la sua misura e il confronto di
-#      v1 e v2;
+#      giudice; dopo la prima famiglia, l'elenco delle pratiche); la
+#      versione di soluzione/<famiglia>/prompt/v1.md, la sua misura,
+#      ./misura.sh --confronta <famiglia> v0 v1 e il diff; la versione di
+#      soluzione/<famiglia>/prompt/v2.md, la sua misura, il confronto di
+#      v1 e v2 e il diff;
 #   3. il registro: i totali misurati, con un testo che dice che è una prova
 #      automatica.
-# Poi verifica.sh dell'elemento. La sessione interattiva del README qui non
-# c'è: misura.sh è lo stesso comando che il partecipante lancia con «!».
+# Poi verifica.sh dell'elemento. Stampa anche la data e la versione di
+# Claude Code: tutto ciò che la soluzione del README mostra viene dall'uscita
+# di questa prova. La sessione interattiva del README qui non c'è: misura.sh
+# è lo stesso comando che il partecipante lancia con «!».
 # Ventuno chiamate a claude -p: sette per famiglia, tre per v0 (la risposta
 # e due giudizi), due per v1 e due per v2. Prima della prima chiamata
 # controlla ogni famiglia (prompt/v0.md, rubrica.md, controlli.tsv, dati/ e
@@ -57,13 +60,15 @@ import sys
 
 path, fase, nota = sys.argv[1:4]
 pratiche = {"v0": "partenza", "v1": "chiarezza", "v2": "contesto"}
-cambi = {"v0": "il prompt di partenza", "v1": "l'istruzione e il formato",
-         ("sviluppo", "v2"): "il contesto: la convenzione del team tra tag, "
-         "e a che cosa serve il calcolo",
-         ("supporto", "v2"): "il contesto: la guida al tono tra tag, e che "
-         "cosa sappiamo della linea",
-         ("sistemi", "v2"): "il contesto: che cosa sono le righe del log, e "
-         "a chi serve la nota"}
+cambi = {"v0": "il prompt di partenza",
+         "v1": "il template intero: un tag per ingrediente, il dato nel suo "
+         "tag",
+         ("sviluppo", "v2"): "solo il contesto: il perché e chi usa il "
+         "risultato, e la convenzione del team nel suo tag",
+         ("supporto", "v2"): "solo il contesto: il perché e chi usa il "
+         "risultato, e la guida al tono nel suo tag",
+         ("sistemi", "v2"): "solo il contesto: il perché e chi usa il "
+         "risultato"}
 
 
 def esiti(nome):
@@ -118,19 +123,38 @@ passo() {
   fi
 }
 
+# Il diff fra due versioni, come il comando del README: git diff --no-index
+# esce 1 quando i file sono diversi, l'unico esito atteso qui. Senza pager e
+# senza la configurazione di chi lo lancia, perché l'uscita sia quella che
+# la soluzione del README mostra. Arguments: $1 e $2 i due file.
+mostra_diff() {
+  local rc=0
+  handson::need_file "$1"
+  handson::need_file "$2"
+  GIT_PAGER=cat GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
+    handson::run git diff --no-index "$1" "$2" || rc=$?
+  (( rc == 1 )) \
+    || handson::die "git diff: uscita ${rc}, attesa 1 (versioni diverse)"
+}
+
 # Le misure di una famiglia: v0 con la prova del giudice, poi le due
-# versioni di riferimento, ognuna confrontata con quella da cui parte.
-# Arguments: $1 la famiglia.
+# versioni di riferimento, ognuna confrontata con la precedente, da cui
+# parte, con il loro diff. Arguments: $1 la famiglia.
 famiglia() {
   local v prima=v0
   handson::step "$1: la misura di v0, con la prova del giudice"
   passo "$1: la misura di v0" ./misura.sh "$1" v0
+  if [[ "$1" == "${FAMIGLIE[0]}" ]]; then
+    handson::step "L'elenco delle pratiche"
+    passo "l'elenco delle pratiche" ./misura.sh --pratiche
+  fi
   for v in v1 v2; do
     handson::step "$1: la versione ${v}, la sua misura e il confronto"
     cp -- "${SOLUZIONE}/$1/prompt/${v}.md" "$1/prompt/${v}.md"
     passo "$1: la misura di ${v}" ./misura.sh "$1" "${v}"
     passo "$1: il confronto di ${prima} e ${v}" \
       ./misura.sh --confronta "$1" "${prima}" "${v}"
+    mostra_diff "$1/prompt/${prima}.md" "$1/prompt/${v}.md"
     prima="${v}"
   done
 }
@@ -163,14 +187,15 @@ main() {
     handson::need_file "${SOLUZIONE}/${f}/prompt/v2.md"
   done
   cd "${ws}"
-  handson::need_tools python3
+  handson::need_tools python3 git
   handson::need_file misura.sh
   handson::need_file registro.md
   handson::need_file strumenti/kit.py
   famiglie_pronte
   handson::need_claude
   handson::banner M2-E02 "Tre prompt, due cicli" \
-    "Modulo 2, pratica: tre famiglie, v1 chiarezza e v2 contesto"
+    "Modulo 2, esercitazione: tre famiglie, v1 chiarezza e v2 contesto"
+  printf 'data della prova: %s\n' "$(date -u +%F)"
   handson::step "Il registro: la pratica di ogni versione, prima di" \
     "misurarla"
   registro pratiche || handson::die "il registro non si compila"
