@@ -1,0 +1,296 @@
+claude 2.1.319 (Claude Code)
+
+== M2-E01  Il prompt pessimo: misura, riscrivi, rimisura
+   Modulo 2, esercitazione: v0, v1 (chiarezza) e la rimisura di v1
+
+data della prova: 2026-11-08
+
+--- 1. Il registro: la pratica di ogni versione, prima di misurarla
+
+--- 2. La misura del prompt pessimo, con la prova del giudice
+  $ ./misura.sh v0
+
+== v0: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v0 (claude-sonnet-5-5): 973 token in entrata, 1141 in uscita
+  | **Oggetto:** Re: Disservizio centralino di venerdì – Falegnameria Fittizia
+  | 
+  | Gentile Signor Fittizio,
+  | 
+  | grazie per la segnalazione, e ci scusiamo per il disagio di venerdì mattina, in particolare per gli ordini persi.
+  | 
+  | **Il disservizio di venerdì 6 novembre**
+  | Per ricostruire con precisione l'accaduto non serve il numero di segnalazione: lo recuperiamo noi dallo storico delle chiamate, partendo dal numero da cui ha chiamato l'assistenza e dall'orario approssimativo. Verificheremo l'orario esatto di inizio e fine del guasto e la causa. Se può, ci indichi:
+  | - il numero di telefono da cui ha chiamato l'assistenza e, se lo ricorda, l'orario della chiamata;
+  | - se sono arrivate chiamate o messaggi di qualche tipo sulla linea in quel periodo.
+  | 
+  | **Indennizzo**
+  | Abbiamo preso in carico la sua richiesta. Una volta verificati durata e causa del guasto, valuteremo se spetta un indennizzo in base alle condizioni del suo contratto e le faremo sapere l'esito. Preferiamo non anticiparle un importo prima di questa verifica.
+  | 
+  | **Linea di riserva**
+  | È possibile attivare una soluzione di continuità per il centralino, ad esempio una seconda linea o un instradamento automatico delle chiamate su un altro numero (come i cellulari) in caso di guasto. Le prepareremo una proposta con tempi e costi, da valutare insieme.
+  | 
+  | **Tablet del magazzino (sabato)**
+  | Ci fa piacere che il problema sia rientrato. Se dovesse ripresentarsi, ci avvisi e verificheremo la rete per evitare altri disagi.
+  | 
+  | La richiameremo al +39 000 000 0103 nella mattinata di [giorno], così da discutere insieme l'indennizzo e la linea di riserva.
+  | 
+  | Cordiali saluti,
+  | (identità dell'account, omessa)
+  | (identità dell'account, omessa)
+  | […] (la risposta intera è in ./risposte/v0.md)
+== v0: controlli
+Controlli v0: 0 superati su 3
+  ✗ [chiarezza] il numero di telefono del cliente non compare (trovato «000 000 0103»)
+  ✗ [chiarezza] nessun segnaposto tra parentesi quadre da completare (trovato «[giorno]»)
+  ✗ [chiarezza] al massimo 150 parole (323 parole)
+== v0: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0 (claude-haiku-5-5): 2 affermazioni rispettate su 5
+  ✓ [chiarezza] domande: La risposta tratta l'indennizzo per venerdì («valuteremo se spetta un indennizzo») e la linea di riserva per il centralino («È possibile attivare una soluzione di continuità… Le prepareremo una proposta»), quindi entrambe le richieste.
+  ✗ [chiarezza] impegni: La risposta promette una proposta «con tempi e costi», il far sapere «l'esito», una richiamata «nella mattinata di [giorno]» e il recupero del ticket dallo storico, che le procedure non prevedono; non dice con chiarezza che l'amministrazione decide l'indennizzo.
+  ✗ [contesto] fatti: La risposta aggiunge fatti non presenti nel messaggio né nelle procedure: la data «venerdì 6 novembre», lo «storico delle chiamate», una «seconda linea» e l'instradamento su cellulari come soluzione di riserva generica.
+  ✓ [chiarezza] lei: La risposta dà del lei in tutto il testo («Gentile Signor Fittizio», «ci indichi», «Le prepareremo», «le faremo sapere») con tono cortese e concreto.
+  ✗ [chiarezza] firma: La firma è «(identità dell'account, omessa) – (identità dell'account, omessa)», cioè una persona e un'altra azienda, non l'assistenza clienti di CiaspoLink.
+== v0: giudizio, la seconda volta (la prova del giudice)
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0, la seconda volta (claude-haiku-5-5): 2 affermazioni rispettate su 5
+  ✓ [chiarezza] domande: La sezione «Indennizzo» risponde alla prima richiesta e la sezione «Linea di riserva» alla seconda, anche se in modo generico.
+  ✗ [chiarezza] impegni: La risposta promette «Le prepareremo una proposta con tempi e costi», «lo recuperiamo noi dallo storico delle chiamate», «ci avvisi e verificheremo la rete» e una richiamata «nella mattinata»: nulla di tutto questo è previsto dalle procedure, che non danno né tempi né costi per una linea di riserva.
+  ✗ [contesto] fatti: La risposta aggiunge fatti non presenti nel messaggio né nelle procedure, come la data «venerdì 6 novembre» e la possibilità di recuperare il ticket dallo storico delle chiamate.
+  ✓ [chiarezza] lei: Il testo dà del lei in modo coerente («Gentile Signor Fittizio», «ci indichi», «le faremo sapere», «La richiameremo») con un tono cortese e concreto.
+  ✗ [chiarezza] firma: La firma è «(identità dell'account, omessa) / (identità dell'account, omessa)», cioè un nome di persona, e non «assistenza clienti di CiaspoLink».
+Giudice su v0: stesso esito due volte su 5 affermazioni di 5; instabili: nessuna.
+
+--- L'elenco delle pratiche
+  $ ./misura.sh --pratiche
+
+Le pratiche: una per versione. Scrivetela nella colonna «pratica» di
+registro.md prima di misurare la versione; v0 è la «partenza».
+Poi ./misura.sh --confronta [cartella] vA vB dice l'esito della pratica di
+vB: confermata, non confermata in questa misura o non decisa.
+
+chiarezza
+  Anthropic: «Sii specifico sul formato di output e sui vincoli che
+  desideri.» «Più precisamente spieghi cosa vuoi, migliore sarà il
+  risultato.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [chiarezza] in controlli.tsv e in rubrica.md che
+  hanno un esito in vA e in vB, senza le affermazioni instabili, si contano
+  nelle due versioni: confermata se vB ne rispetta più di vA, non decisa se
+  lo stesso numero, non confermata in questa misura se meno
+
+contesto
+  Anthropic: «Fornire il contesto o la motivazione alla base delle tue
+  istruzioni, ad esempio spiegando a Claude perché un certo comportamento è
+  importante, può dare a Claude più informazioni sui tuoi obiettivi e
+  aiutarlo a fornire risposte più mirate.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [contesto] in controlli.tsv e in rubrica.md che
+  hanno un esito in vA e in vB, senza le affermazioni instabili, si contano
+  nelle due versioni: confermata se vB ne rispetta più di vA, non decisa se
+  lo stesso numero, non confermata in questa misura se meno
+
+ruolo
+  Anthropic: «Impostare un ruolo nel "system prompt" (prompt di sistema)
+  focalizza il comportamento e il tono di Claude per il tuo caso d'uso.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: sempre non decisa: la frase parla del system prompt, e misura.sh
+  manda il vostro prompt come messaggio, con il system prompt fisso
+  «Rispondi in italiano.»
+
+tag
+  Anthropic: «Racchiudere ogni tipo di contenuto nel proprio tag (ad
+  esempio, <instructions>, <context>, <input>) riduce le interpretazioni
+  errate.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [tag] in controlli.tsv e in rubrica.md che hanno
+  un esito in vA e in vB, senza le affermazioni instabili, si contano nelle
+  due versioni: confermata se vB ne rispetta più di vA, non decisa se lo
+  stesso numero, non confermata in questa misura se meno
+
+effort
+  Anthropic: «Modelli più capaci e livelli di effort più alti di solito
+  dovrebbero andare meglio in una valutazione. Se non succede, spesso a
+  frenarli sono compiti ambigui o un valutatore mal calibrato.» (traduzione
+  nostra)
+  https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+  esito: con lo stesso testo e lo stesso modello: confermata se la misura è
+  più alta con l'effort più alto, non decisa se è la stessa, non confermata
+  in questa misura se è più bassa; non decisa anche se con l'effort più
+  basso è già al massimo
+
+modello
+  Anthropic: «Modelli più capaci e livelli di effort più alti di solito
+  dovrebbero andare meglio in una valutazione. Se non succede, spesso a
+  frenarli sono compiti ambigui o un valutatore mal calibrato.» (traduzione
+  nostra)
+  https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+  esito: con lo stesso testo e lo stesso effort: il kit non sa quale dei due
+  modelli sia «più capace», quindi stampa la misura e l'esito resta non
+  decisa
+
+rimisura
+  Anthropic: «… input identici potrebbero produrre output diversi tra
+  diverse chiamate API.»
+  https://platform.claude.com/docs/it/about-claude/glossary
+  esito: la stessa versione, misurata di nuovo: confermata se le due
+  risposte sono diverse; se sono identiche, non decisa (un caso uguale non
+  la smentisce)
+
+--- 3. La versione riscritta, la sua misura e il confronto
+  $ ./misura.sh v1
+
+== v1: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v1 (claude-sonnet-5-5): 2013 token in entrata, 313 in uscita
+  | Gentile signor Fittizio,
+  | 
+  | ci scusiamo per il disservizio di venerdì.
+  | 
+  | Per l'indennizzo, la richiesta viene valutata dall'amministrazione e si apre con il numero della segnalazione del guasto (del tipo TK-…). La preghiamo di ritrovarlo, ad esempio nella e-mail o nel messaggio ricevuto dopo la sua chiamata, e di rispondere a questa e-mail indicandolo: apriremo subito la richiesta.
+  | 
+  | Per la linea di riserva, l'amministratore del centralino può attivare la deviazione d'emergenza delle chiamate su un cellulare dal portale del centralino, in «Instradamento» → «Deviazione d'emergenza». Per una soluzione dedicata, un commerciale la ricontatterà negli orari d'ufficio.
+  | 
+  | Cordiali saluti,
+  | L'assistenza clienti di CiaspoLink
+== v1: controlli
+Controlli v1: 3 superati su 3
+  ✓ [chiarezza] il numero di telefono del cliente non compare
+  ✓ [chiarezza] nessun segnaposto tra parentesi quadre da completare
+  ✓ [chiarezza] al massimo 150 parole (101 parole)
+== v1: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v1 (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✓ [chiarezza] domande: La risposta tratta l'indennizzo per venerdì («la richiesta viene valutata dall'amministrazione e si apre con il numero della segnalazione») e la linea di riserva per il centralino («deviazione d'emergenza delle chiamate su un cellulare»), quindi entrambe le richieste.
+  ✗ [chiarezza] impegni: La risposta dice chi decide sull'indennizzo (l'amministrazione), ma promette «apriremo subito la richiesta» e «un commerciale la ricontatterà negli orari d'ufficio» per una soluzione dedicata, che le procedure non prevedono per questo caso (KB-09 riguarda solo offerte o preventivi).
+  ✗ [contesto] fatti: La risposta afferma che il numero di segnalazione arriva «nella e-mail o nel messaggio ricevuto dopo la sua chiamata», dettaglio non presente né nel messaggio del cliente (che dice solo di averlo ricevuto dall'assistenza) né nelle procedure.
+  ✓ [chiarezza] lei: La risposta usa il «lei» in modo costante («La preghiamo di ritrovarlo», «Gentile signor Fittizio») con tono cortese e indicazioni concrete sui passi da fare.
+  ✓ [chiarezza] firma: La risposta chiude con «L'assistenza clienti di CiaspoLink», senza nome di persona.
+  $ ./misura.sh --confronta v0 v1
+
+Confronto v0 → v1
+  pratica di v1: chiarezza — Anthropic: «Sii specifico sul formato di output
+    e sui vincoli che desideri.» «Più precisamente spieghi cosa vuoi,
+    migliore sarà il risultato.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✗  ✓  [chiarezza] il numero di telefono del cliente non compare
+    ✗  ✓  [chiarezza] nessun segnaposto tra parentesi quadre da completare
+    ✗  ✓  [chiarezza] al massimo 150 parole
+  giudice:
+    ✓  ✓  [chiarezza] domande
+    ✗  ✗  [chiarezza] impegni
+    ✗  ✗  [contesto] fatti
+    ✓  ✓  [chiarezza] lei
+    ✗  ✓  [chiarezza] firma
+  esito della pratica: confermata (criteri segnati [chiarezza] rispettati: 2
+    su 7 in v0, 6 su 7 in v1; non rispettati in v1: impegni)
+  totali: controlli 0/3 → 3/3; giudice 2 → 3 su 5
+  token: in entrata 973 → 2013, in uscita 1141 → 313
+
+--- Il diff delle due versioni
+  $ git diff --no-index prompt/v0.md prompt/v1.md
+
+diff --git a/prompt/v0.md b/prompt/v1.md
+index 2690f6a..5fe482f 100644
+--- a/prompt/v0.md
++++ b/prompt/v1.md
+@@ -1,3 +1,29 @@
+-scrivi risposta al cliente
++<role>
++Sei un operatore dell'assistenza clienti di CiaspoLink e rispondi per e-mail a un cliente business.
++</role>
+ 
++<context>
++Il messaggio del cliente è tra i tag <message>; le procedure dell'assistenza per le sue due richieste sono tra i tag <procedures>. La risposta parte così com'è.
++</context>
++
++<instructions>
++Rispondi alle due richieste del cliente, con le sole informazioni delle procedure.
++1. Indennizzo: lo valuta l'amministrazione, e la richiesta si apre con il numero della segnalazione del guasto; chiedi al cliente di ritrovarlo e di rispondere a questa e-mail.
++2. Linea di riserva: in una frase, la deviazione d'emergenza delle chiamate su un cellulare dal portale del centralino; per una soluzione dedicata, il ricontatto del commerciale negli orari d'ufficio.
++</instructions>
++
++<format>
++Un'e-mail di al massimo 120 parole, senza oggetto, con il «lei», un tono cortese e concreto e una sola scusa, in apertura; firma «L'assistenza clienti di CiaspoLink».
++</format>
++
++<constraints>
++Chiama il cliente «signor Fittizio»; parla soltanto delle due richieste, e lascia fuori la durata del guasto e i recapiti del cliente.
++</constraints>
++
++<message>
+ {{messaggio}}
++</message>
++
++<procedures>
++{{procedure}}
++</procedures>
+
+--- 4. La rimisura: v1 misurata di nuovo, come v2
+  $ ./misura.sh v2
+
+== v2: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v2 (claude-sonnet-5-5): 2013 token in entrata, 284 in uscita
+  | Gentile signor Fittizio,
+  | 
+  | ci scusiamo per il disservizio di venerdì.
+  | 
+  | Per l'indennizzo, la richiesta viene valutata dall'amministrazione e si apre con il numero della segnalazione del guasto (del tipo TK-…). Le chiediamo di ritrovarlo e di rispondere a questa e-mail indicandocelo: apriremo subito la richiesta. Non possiamo anticipare importi o esiti.
+  | 
+  | Quanto alla linea di riserva, dal portale del centralino, in «Instradamento» → «Deviazione d'emergenza», può deviare le chiamate in arrivo su un cellulare. Per una soluzione dedicata, un commerciale la ricontatterà negli orari d'ufficio.
+  | 
+  | Cordiali saluti,
+  | L'assistenza clienti di CiaspoLink
+== v2: controlli
+Controlli v2: 3 superati su 3
+  ✓ [chiarezza] il numero di telefono del cliente non compare
+  ✓ [chiarezza] nessun segnaposto tra parentesi quadre da completare
+  ✓ [chiarezza] al massimo 150 parole (91 parole)
+== v2: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v2 (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✓ [chiarezza] domande: La risposta tratta l'indennizzo per venerdì («Per l'indennizzo, la richiesta viene valutata dall'amministrazione…») e la linea di riserva («Quanto alla linea di riserva, dal portale del centralino… può deviare le chiamate»), quindi entrambe le richieste.
+  ✗ [chiarezza] impegni: Dice chi decide («valutata dall'amministrazione») e nega importi ed esiti («Non possiamo anticipare importi o esiti»), ma promette «apriremo subito la richiesta», un tempo non previsto dalla KB-08, che dice solo che l'assistenza apre la richiesta e spiega i tempi.
+  ✗ [contesto] fatti: Restano fatti aggiunti non presenti nel messaggio né nelle procedure: il canale «rispondere a questa e-mail» per aprire la richiesta (la KB indica area clienti o assistenza) e il ricontatto del commerciale «negli orari d'ufficio» per una soluzione dedicata (la KB lo prevede per offerte e preventivi).
+  ✓ [chiarezza] lei: Il testo usa costantemente il «lei» («Gentile signor Fittizio», «Le chiediamo di ritrovarlo», «può deviare», «la ricontatterà») con tono cortese e indicazioni concrete.
+  ✓ [chiarezza] firma: La firma è «L'assistenza clienti di CiaspoLink», senza nomi di persone.
+  $ ./misura.sh --confronta v1 v2
+
+Confronto v1 → v2
+  pratica di v2: rimisura — Anthropic: «… input identici potrebbero produrre
+    output diversi tra diverse chiamate API.»
+    https://platform.claude.com/docs/it/about-claude/glossary
+  controlli:
+    ✓  ✓  [chiarezza] il numero di telefono del cliente non compare
+    ✓  ✓  [chiarezza] nessun segnaposto tra parentesi quadre da completare
+    ✓  ✓  [chiarezza] al massimo 150 parole
+  giudice:
+    ✓  ✓  [chiarezza] domande
+    ✗  ✗  [chiarezza] impegni
+    ✗  ✗  [contesto] fatti
+    ✓  ✓  [chiarezza] lei
+    ✓  ✓  [chiarezza] firma
+  esito della pratica: confermata (le due risposte sono diverse (parole 101
+    → 91, misura 6 → 6 su 8))
+  totali: controlli 3/3 → 3/3; giudice 3 → 3 su 5
+  token: in entrata 2013 → 2013, in uscita 313 → 284
+
+--- 5. Il registro: i totali
+
+--- La verifica
+Lo spazio di lavoro, versioni misurate: v0, v1, v2
+  v0: controlli 0/3, giudice 2/5; due giudizi, stesso esito su 5 di 5,
+    instabili: nessuna
+  v1: controlli 3/3, giudice 3/5
+  v2: controlli 3/3, giudice 3/5
+  v1 rispetto a v0, chiarezza: confermata (criteri segnati [chiarezza]
+    rispettati: 2 su 7 in v0, 6 su 7 in v1; non rispettati in v1: impegni)
+  v2 rispetto a v1, rimisura: confermata (le due risposte sono diverse
+    (parole 101 → 91, misura 6 → 6 su 8))
+Il telefono del cliente nella risposta di v2: assente
+Ogni giudizio strutturato è conforme a schema-giudizio.json (--json-schema), 4 su 4: confermata
+Fatto: ogni affermazione è stata messa alla prova; gli esiti sono qui sopra.
+VERIFICA OK   verifica.sh dell'elemento

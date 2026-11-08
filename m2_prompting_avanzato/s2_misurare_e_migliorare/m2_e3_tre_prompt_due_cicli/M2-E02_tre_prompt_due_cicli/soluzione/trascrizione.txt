@@ -1,0 +1,762 @@
+claude 2.1.319 (Claude Code)
+
+== M2-E02  Tre prompt, due cicli
+   Modulo 2, esercitazione: tre famiglie, v1 chiarezza e v2 contesto
+
+data della prova: 2026-11-08
+
+--- Il registro: la pratica di ogni versione, prima di misurarla
+
+--- sviluppo: la misura di v0, con la prova del giudice
+  $ ./misura.sh sviluppo v0
+
+== v0: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v0 (claude-sonnet-5-5): 1097 token in entrata, 1068 in uscita
+  | # Cosa fa il codice
+  | 
+  | Calcola l'**importo di una riga di fattura mensile** per una linea/offerta in abbonamento, applicando il **rateo** (pro-rata) quando la linea è stata attivata o cessata nel mese di fatturazione.
+  | 
+  | ## Passo per passo
+  | 
+  | **1. Valori iniziali**
+  | - `$canone`: canone mensile in **centesimi** (intero, evita errori di virgola mobile).
+  | - `$gg_mese = 30`: si usa il **mese commerciale** (ogni mese vale 30 giorni, indipendentemente dal calendario reale).
+  | - `$gg = $gg_mese`: di default si fattura il mese intero.
+  | - `$tipo = 'canone'` e `$descr`: descrizione standard, es. *"Offerta X - canone Marzo 2026"* (`$MESI` è un array con i nomi dei mesi).
+  | 
+  | **2. Attivazione nel mese**
+  | Se `attiva_dal` è valorizzata e i primi 7 caratteri (`AAAA-MM`) coincidono con `$periodo`:
+  | - estrae il giorno (`substr(..., 8, 2)`),
+  | - `gg = 30 - giorno + 1`: giorni dal giorno di attivazione **incluso** a fine mese,
+  | - `tipo` diventa `'rateo'` e la descrizione indica la data di inizio e i giorni.
+  | 
+  | Esempio: attivata il 11 → 30 − 11 + 1 = **20 giorni**.
+  | 
+  | **3. Cessazione nel mese**
+  | Se `cessata_il` cade nel periodo:
+  | - `gg = giorno di cessazione` (giorni dall'inizio del mese fino a quel giorno incluso),
+  | - `tipo = 'rateo'`, descrizione "canone fino al ...".
+  | 
+  | […] (la risposta intera è in sviluppo/risposte/v0.md)
+== v0: controlli
+Controlli v0: 1 superato su 2
+  ✓ [chiarezza] contiene un blocco di codice
+  ✗ [chiarezza] al massimo 300 parole (361 parole)
+== v0: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0 (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✗ [contesto] mese_fisso: La risposta descrive il 'mese commerciale' di 30 giorni e, nel punto su febbraio, lo giudica 'coerente con la convenzione', senza segnalare che la convenzione 5.3 chiede i giorni effettivi del mese: il contrasto non viene riconosciuto.
+  ✓ casi: La risposta mostra un caso concreto che sbaglia: 'una cessazione il 31 darebbe gg = 31 → importo superiore al canone pieno (31/30)' in un mese di 31 giorni.
+  ✓ [contesto] stesso_mese: La risposta dice che 'il secondo if sovrascrive il primo, quindi gg = giorno di cessazione e si perde il giorno di attivazione', cioè conta solo i giorni fino alla cessazione.
+  ✗ [contesto] correzione: Le correzioni proposte sono min($gg, $gg_mese), arrotondamento con intdiv/round e cessazione − attivazione + 1, ma nessuna usa i giorni effettivi del mese: resta il divisore 30 fisso.
+  ✓ niente_invenzioni: Tutti i riferimenti (`$MESI`, `data_it`, `intdiv`, `substr`, `min`, `round`) compaiono nel codice o sono funzioni PHP reali; non vengono citati file o campi inesistenti.
+== v0: giudizio, la seconda volta (la prova del giudice)
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0, la seconda volta (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✗ [contesto] mese_fisso: La risposta dice che il codice usa il mese commerciale di 30 giorni e segnala il problema solo per febbraio, ma afferma che il risultato è "coerente con la convenzione", mentre la convenzione 5.3 richiede i giorni effettivi del mese: il disallineamento non è riconosciuto.
+  ✓ casi: Il punto "Giorno 31" descrive un caso concreto di errore: una cessazione il 31 darebbe gg = 31 e un importo superiore al canone pieno (31/30).
+  ✓ [contesto] stesso_mese: Il punto "Attivata e cessata nello stesso mese" dice che il secondo if sovrascrive il primo e che si perde il giorno di attivazione, quindi gg è il giorno di cessazione.
+  ✗ [contesto] correzione: Le correzioni proposte sono min($gg, $gg_mese), arrotondamento e cessazione − attivazione + 1, ma nessuna usa i giorni effettivi del mese come richiesto dalla convenzione.
+  ✓ niente_invenzioni: Le funzioni e variabili citate (substr, intdiv, data_it, $MESI, $gg_mese) compaiono nel codice fornito e la risposta non cita file o campi inesistenti.
+Giudice su v0: stesso esito due volte su 5 affermazioni di 5; instabili: nessuna.
+
+--- L'elenco delle pratiche
+  $ ./misura.sh --pratiche
+
+Le pratiche: una per versione. Scrivetela nella colonna «pratica» di
+registro.md prima di misurare la versione; v0 è la «partenza».
+Poi ./misura.sh --confronta [cartella] vA vB dice l'esito della pratica di
+vB: confermata, non confermata in questa misura o non decisa.
+
+chiarezza
+  Anthropic: «Sii specifico sul formato di output e sui vincoli che
+  desideri.» «Più precisamente spieghi cosa vuoi, migliore sarà il
+  risultato.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [chiarezza] in controlli.tsv e in rubrica.md che
+  hanno un esito in vA e in vB, senza le affermazioni instabili, si contano
+  nelle due versioni: confermata se vB ne rispetta più di vA, non decisa se
+  lo stesso numero, non confermata in questa misura se meno
+
+contesto
+  Anthropic: «Fornire il contesto o la motivazione alla base delle tue
+  istruzioni, ad esempio spiegando a Claude perché un certo comportamento è
+  importante, può dare a Claude più informazioni sui tuoi obiettivi e
+  aiutarlo a fornire risposte più mirate.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [contesto] in controlli.tsv e in rubrica.md che
+  hanno un esito in vA e in vB, senza le affermazioni instabili, si contano
+  nelle due versioni: confermata se vB ne rispetta più di vA, non decisa se
+  lo stesso numero, non confermata in questa misura se meno
+
+ruolo
+  Anthropic: «Impostare un ruolo nel "system prompt" (prompt di sistema)
+  focalizza il comportamento e il tono di Claude per il tuo caso d'uso.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: sempre non decisa: la frase parla del system prompt, e misura.sh
+  manda il vostro prompt come messaggio, con il system prompt fisso
+  «Rispondi in italiano.»
+
+tag
+  Anthropic: «Racchiudere ogni tipo di contenuto nel proprio tag (ad
+  esempio, <instructions>, <context>, <input>) riduce le interpretazioni
+  errate.»
+  https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  esito: i criteri segnati [tag] in controlli.tsv e in rubrica.md che hanno
+  un esito in vA e in vB, senza le affermazioni instabili, si contano nelle
+  due versioni: confermata se vB ne rispetta più di vA, non decisa se lo
+  stesso numero, non confermata in questa misura se meno
+
+effort
+  Anthropic: «Modelli più capaci e livelli di effort più alti di solito
+  dovrebbero andare meglio in una valutazione. Se non succede, spesso a
+  frenarli sono compiti ambigui o un valutatore mal calibrato.» (traduzione
+  nostra)
+  https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+  esito: con lo stesso testo e lo stesso modello: confermata se la misura è
+  più alta con l'effort più alto, non decisa se è la stessa, non confermata
+  in questa misura se è più bassa; non decisa anche se con l'effort più
+  basso è già al massimo
+
+modello
+  Anthropic: «Modelli più capaci e livelli di effort più alti di solito
+  dovrebbero andare meglio in una valutazione. Se non succede, spesso a
+  frenarli sono compiti ambigui o un valutatore mal calibrato.» (traduzione
+  nostra)
+  https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+  esito: con lo stesso testo e lo stesso effort: il kit non sa quale dei due
+  modelli sia «più capace», quindi stampa la misura e l'esito resta non
+  decisa
+
+--- sviluppo: la versione v1, la sua misura e il confronto
+  $ ./misura.sh sviluppo v1
+
+== v1: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v1 (claude-sonnet-5-5): 1322 token in entrata, 951 in uscita
+  | **Cosa fa**: calcola l'importo (in centesimi) del canone mensile di una linea su base commerciale a 30 giorni. Se la linea è attivata nel mese, fa il rateo dal giorno di attivazione; se è cessata nel mese, il rateo fino al giorno di cessazione. `intdiv` tronca il risultato.
+  | 
+  | **Difetti**
+  | 
+  | - **Attivata e cessata nello stesso mese**: il secondo `if` sovrascrive il primo, quindi si ignora la data di attivazione. Esempio: canone 3000, attiva il 10, cessata il 20 → dovrebbe essere 11 gg = 1100, il codice dà 20 gg = 2000.
+  | - **Giorno 31**: con mese commerciale a 30, `gg_mese - g + 1` diventa 0 o negativo. Esempio: attiva il 31, canone 3000 → gg = 0, importo 0 (dovrebbe essere almeno 1 gg = 100). Con cessazione il 31, gg = 31 → 3100, più del canone pieno.
+  | - **Febbraio**: cessata il 28 febbraio è fatturata 28/30 anziché il mese intero. Esempio: canone 3000 → 2800 invece di 3000.
+  | - **Troncamento**: `intdiv` perde il resto. Esempio: canone 1000, 7 gg → 7000/30 = 233,33 → 233 (arrotondato, 233 è corretto qui), ma con canone 1010 e 20 gg → 673,33 → 673; con 1015 e 20 gg → 676,67 → 676 invece di 677.
+  | 
+  | **Correzione**
+  | 
+  | ```php
+  | $gg_mese = 30;
+  | $ini = 1;
+  | $fin = $gg_mese;
+  | 
+  | if ($l['attiva_dal'] != '' && substr($l['attiva_dal'], 0, 7) == $periodo) {
+  |     $ini = min((int)substr($l['attiva_dal'], 8, 2), $gg_mese);
+  | }
+  | if ($l['cessata_il'] != '' && substr($l['cessata_il'], 0, 7) == $periodo) {
+  |     $fin = min((int)substr($l['cessata_il'], 8, 2), $gg_mese);
+  | }
+  | 
+  | $gg = max(0, $fin - $ini + 1);
+  | $importo = intdiv($canone * $gg * 2 + $gg_mese, $gg_mese * 2); // arrotondamento al centesimo
+  | […] (la risposta intera è in sviluppo/risposte/v1.md)
+== v1: controlli
+Controlli v1: 1 superato su 2
+  ✓ [chiarezza] contiene un blocco di codice
+  ✗ [chiarezza] al massimo 300 parole (321 parole)
+== v1: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v1 (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✗ [contesto] mese_fisso: La risposta parla di base commerciale a 30 giorni e segnala come difetto il febbraio (28/30 anziché il mese intero), ma non dice che la convenzione 5.3 chiede i giorni effettivi del mese, e la correzione mantiene $gg_mese = 30.
+  ✓ casi: La risposta mostra casi concreti errati: attiva il 31, canone 3000, gg = 0, importo 0; e cessazione il 31, gg = 31, 3100, più del canone pieno.
+  ✓ [contesto] stesso_mese: La risposta segnala che il secondo if sovrascrive il primo, quindi si ignora la data di attivazione, con l'esempio attivazione il 10 e cessazione il 20 che dà 20 gg invece di 11.
+  ✗ [contesto] correzione: La correzione proposta usa $gg_mese = 30 fisso e non i giorni effettivi del mese, quindi non soddisfa l'affermazione.
+  ✓ niente_invenzioni: La risposta cita solo elementi presenti nel codice (intdiv, $gg_mese, $periodo, $l) o funzioni PHP standard (min, max) e non cita file o campi inesistenti.
+  $ ./misura.sh --confronta sviluppo v0 v1
+
+Confronto v0 → v1 (sviluppo)
+  pratica di v1: chiarezza — Anthropic: «Sii specifico sul formato di output
+    e sui vincoli che desideri.» «Più precisamente spieghi cosa vuoi,
+    migliore sarà il risultato.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✓  ✓  [chiarezza] contiene un blocco di codice
+    ✗  ✗  [chiarezza] al massimo 300 parole
+  giudice:
+    ✗  ✗  [contesto] mese_fisso
+    ✓  ✓  casi
+    ✓  ✓  [contesto] stesso_mese
+    ✗  ✗  [contesto] correzione
+    ✓  ✓  niente_invenzioni
+  esito della pratica: non decisa (criteri segnati [chiarezza] rispettati: 1
+    su 2 in v0, 1 su 2 in v1; lo stesso numero: questa coppia non lo dice;
+    non rispettati in v1: al massimo 300 parole)
+  totali: controlli 1/2 → 1/2; giudice 3 → 3 su 5
+  token: in entrata 1097 → 1322, in uscita 1068 → 951
+  $ git diff --no-index sviluppo/prompt/v0.md sviluppo/prompt/v1.md
+
+diff --git a/sviluppo/prompt/v0.md b/sviluppo/prompt/v1.md
+index b96493e..bb70236 100644
+--- a/sviluppo/prompt/v0.md
++++ b/sviluppo/prompt/v1.md
+@@ -1,3 +1,25 @@
+-spiega questa funzione
++<role>
++Sei un programmatore PHP e scrivi a un collega.
++</role>
+ 
++<context>
++Il frammento di codice è tra i tag <code>.
++</context>
++
++<instructions>
++Spiega questa funzione.
++1. Trova i casi in cui il frammento sbaglia l'importo, ciascuno con un esempio numerico.
++2. Proponi la correzione.
++</instructions>
++
++<format>
++Un elenco puntato dei difetti, poi la correzione in un blocco di codice PHP; al massimo 300 parole in tutto.
++</format>
++
++<constraints>
++Cita soltanto le funzioni, i campi e i file che hai davanti.
++</constraints>
++
++<code>
+ {{codice}}
++</code>
+
+--- sviluppo: la versione v2, la sua misura e il confronto
+  $ ./misura.sh sviluppo v2
+
+== v2: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v2 (claude-sonnet-5-5): 1570 token in entrata, 1206 in uscita
+  | **Cosa fa:** parte dal canone mensile in centesimi, con mese commerciale di 30 giorni. Se la linea è attivata nel mese calcola un rateo dal giorno di attivazione, se è cessata nel mese un rateo fino al giorno di cessazione. Poi calcola `canone × gg ÷ 30` con divisione intera.
+  | 
+  | **Difetti:**
+  | 
+  | - **Attivazione e cessazione nello stesso mese:** il secondo `if` sovrascrive `$gg` del primo. Attivata il 10 e cessata il 20, i giorni di servizio sono 11, ma il codice usa 20. Con `canone_cent` = 3000 fattura 2000 invece di 1100.
+  | - **Giorno 31:** nei mesi da 31 giorni, attivazione il 31 dà `30 - 31 + 1 = 0` giorni (canone a 0 invece di 1 giorno). Cessazione il 31 dà `gg = 31`, quindi 3100 invece di 3000 (più del canone intero).
+  | - **Febbraio:** con cessazione il 28 si fattura 28/30 del canone, mentre la linea ha servito tutto il mese. Con 3000 si ha 2800 invece di 3000. Lo stesso vale per un'attivazione il 1° febbraio: `30 - 1 + 1` = 30, ok, ma per attivazione il 15 si hanno 16 giorni invece di 14 (3000 → 1600 invece di 1400 se si contano i giorni reali).
+  | - **Troncamento:** `intdiv` tronca invece di arrotondare. Con 1000 cent e 7 giorni: 233,33 → 233 va bene, ma con 1099 cent e 20 giorni: 732,67 → 732 invece di 733. La convenzione 5.3 non specifica l'arrotondamento, quindi va concordato (qui uso `round`).
+  | 
+  | Nota: la convenzione 5.3 parla di «giorni del mese», non di 30 fissi. Il frammento usa il mese commerciale, quindi non la rispetta.
+  | 
+  | **Correzione:**
+  | 
+  | ```php
+  | $canone = (int)$l['canone_cent'];
+  | $gg_mese = (int)date('t', mktime(0, 0, 0, (int)$mese, 1, (int)$anno));
+  | $primo = 1;
+  | $ultimo = $gg_mese;
+  | $tipo = 'canone';
+  | $descr = $l['nome_offerta'] . ' - canone ' . $MESI[(int)$mese] . ' ' . $anno;
+  | 
+  | if ($l['attiva_dal'] != '' && substr($l['attiva_dal'], 0, 7) == $periodo) {
+  |     $primo = (int)substr($l['attiva_dal'], 8, 2);
+  |     $tipo = 'rateo';
+  | }
+  | […] (la risposta intera è in sviluppo/risposte/v2.md)
+== v2: controlli
+Controlli v2: 1 superato su 2
+  ✓ [chiarezza] contiene un blocco di codice
+  ✗ [chiarezza] al massimo 300 parole (411 parole)
+== v2: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v2 (claude-haiku-5-5): 4 affermazioni rispettate su 5
+  ✓ [contesto] mese_fisso: La risposta scrive «Nota: la convenzione 5.3 parla di «giorni del mese», non di 30 fissi. Il frammento usa il mese commerciale, quindi non la rispetta», quindi segnala l'uso di 30 giorni fissi contro i giorni effettivi.
+  ✓ casi: La risposta mostra casi concreti con importi errati: attivazione il 31 dà 0 giorni, e cessazione il 31 fattura 3100 invece di 3000 con canone 3000 (verificato: 3000×31/30 = 3100).
+  ✓ [contesto] stesso_mese: La risposta scrive «il secondo if sovrascrive $gg del primo. Attivata il 10 e cessata il 20 … il codice usa 20», cioè nello stesso mese conta solo fino alla cessazione, come richiesto.
+  ✓ [contesto] correzione: La risposta propone un blocco PHP che ricava $gg_mese da date('t', mktime(...)), cioè i giorni effettivi del mese, e calcola il rateo tra primo e ultimo giorno di servizio.
+  ✗ niente_invenzioni: Il blocco di correzione usa funzioni PHP (date, mktime, max, round) che non compaiono nel codice né nella convenzione; sono funzioni reali ma citate fuori dal perimetro dei soli elementi presenti nei dati, quindi l'affermazione non è rispettata nel senso letterale.
+  $ ./misura.sh --confronta sviluppo v1 v2
+
+Confronto v1 → v2 (sviluppo)
+  pratica di v2: contesto — Anthropic: «Fornire il contesto o la motivazione
+    alla base delle tue istruzioni, ad esempio spiegando a Claude perché un
+    certo comportamento è importante, può dare a Claude più informazioni sui
+    tuoi obiettivi e aiutarlo a fornire risposte più mirate.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✓  ✓  [chiarezza] contiene un blocco di codice
+    ✗  ✗  [chiarezza] al massimo 300 parole
+  giudice:
+    ✗  ✓  [contesto] mese_fisso
+    ✓  ✓  casi
+    ✓  ✓  [contesto] stesso_mese
+    ✗  ✓  [contesto] correzione
+    ✓  ✗  niente_invenzioni
+  esito della pratica: confermata (criteri segnati [contesto] rispettati: 1
+    su 3 in v1, 3 su 3 in v2)
+  totali: controlli 1/2 → 1/2; giudice 3 → 4 su 5
+  token: in entrata 1322 → 1570, in uscita 951 → 1206
+  $ git diff --no-index sviluppo/prompt/v1.md sviluppo/prompt/v2.md
+
+diff --git a/sviluppo/prompt/v1.md b/sviluppo/prompt/v2.md
+index bb70236..8c48ed7 100644
+--- a/sviluppo/prompt/v1.md
++++ b/sviluppo/prompt/v2.md
+@@ -3,7 +3,7 @@ Sei un programmatore PHP e scrivi a un collega.
+ </role>
+ 
+ <context>
+-Il frammento di codice è tra i tag <code>.
++Il frammento di codice è tra i tag <code> e viene da legacy/listino.inc.php, il gestionale di CiaspoLink: calcola in centesimi il canone mensile di una linea, anche quando la linea è attivata o cessata nel mese. L'importo giusto è quello della convenzione del team, tra i tag <convention>: dal calcolo nascono le righe delle fatture dei clienti. La revisione serve a chi mantiene il gestionale.
+ </context>
+ 
+ <instructions>
+@@ -23,3 +23,7 @@ Cita soltanto le funzioni, i campi e i file che hai davanti.
+ <code>
+ {{codice}}
+ </code>
++
++<convention>
++{{convenzione}}
++</convention>
+
+--- supporto: la misura di v0, con la prova del giudice
+  $ ./misura.sh supporto v0
+
+== v0: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v0 (claude-sonnet-5-5): 673 token in entrata, 644 in uscita
+  | **Oggetto: R: La linea cade spesso**
+  | 
+  | Buongiorno Sig. Fabio,
+  | 
+  | grazie per la segnalazione e ci scusiamo per il disagio. Il comportamento che descrive (la luce Internet che passa da verde a rossa più volte all'ora) indica che il router perde l'aggancio alla linea. Per individuare la causa, le chiediamo di eseguire alcune verifiche:
+  | 
+  | 1. **Cavi e collegamenti**: controlli che il cavo di linea (telefonico o fibra) sia ben inserito nel router e nella presa a muro, senza piegature o danni visibili. Se possibile, provi a sostituirlo con un altro cavo.
+  | 2. **Presa e filtri**: se la connessione è ADSL, verifichi che sia presente il filtro e che non ci siano prolunghe, sdoppiatori o altri apparecchi collegati in serie. Provi a collegare il router direttamente alla presa principale.
+  | 3. **Riavvio del router**: lo spenga per circa 30 secondi e lo riaccenda, attendendo qualche minuto che si riagganci.
+  | 4. **Registro degli eventi**: se ne ha la possibilità, annoti gli orari delle cadute nel corso di una giornata, indicando se coincidono con l'uso di particolari dispositivi o con condizioni meteo avverse.
+  | 
+  | Se il problema persiste dopo questi controlli, ci risponda indicando:
+  | - il tipo di connessione (fibra, FTTC, ADSL),
+  | - il modello del router,
+  | - gli orari approssimativi delle disconnessioni.
+  | 
+  | Con questi dati apriremo una segnalazione tecnica per verificare lo stato della linea ed eventualmente programmare un intervento.
+  | 
+  | Restiamo a disposizione e ci scusiamo ancora per l'inconveniente.
+  | 
+  | Cordiali saluti,
+  | Il Servizio Assistenza Clienti
+== v0: controlli
+Controlli v0: 2 superati su 4
+  ✗ [chiarezza] al massimo 130 parole (240 parole)
+  ✓ [chiarezza] nessun segnaposto tra parentesi quadre da completare
+  ✓ nessun punto esclamativo
+  ✗ [chiarezza] firmata dall'assistenza clienti di CiaspoLink (non trovato)
+== v0: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0 (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✓ lei: La risposta usa il «Lei» in modo coerente: «le chiediamo di eseguire», «ci risponda», «Restiamo a disposizione»; i passi sono all'imperativo di cortesia («controlli», «provi», «verifichi», «lo spenga», «annoti»).
+  ✓ passi: Dice cosa fa l'azienda («apriremo una segnalazione tecnica per verificare lo stato della linea») e cosa deve fare il cliente, con quattro passi concreti numerati (cavi, presa e filtri, riavvio, registro degli orari).
+  ✓ [contesto] orari: Nessun orario o esito promesso: «apriremo una segnalazione» ed «eventualmente programmare un intervento» sono formulati come possibilità, senza tempi di risposta né date.
+  ✗ una_scusa: La risposta contiene due scuse, «ci scusiamo per il disagio» all'inizio e «ci scusiamo ancora per l'inconveniente» alla fine, quindi supera il massimo di una; non attribuisce colpa esplicita al cliente.
+  ✗ [contesto] tono: Il termine tecnico «FTTC» e «ADSL» compaiono senza spiegazione, e «aggancio alla linea» e «sdoppiatori» sono poco comuni; alcune frasi sono lunghe e con più idee, quindi non rispetta la regola di un termine tecnico solo se spiegato.
+== v0: giudizio, la seconda volta (la prova del giudice)
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0, la seconda volta (claude-haiku-5-5): 3 affermazioni rispettate su 5
+  ✓ lei: La risposta usa il «lei» in tutto il testo, per esempio «le chiediamo di eseguire», «controlli che il cavo», «lo spenga», «ci risponda».
+  ✓ passi: La risposta elenca quattro verifiche concrete per il cliente (cavi, presa e filtri, riavvio, registro degli orari) e dice che cosa faremo noi: «apriremo una segnalazione tecnica per verificare lo stato della linea».
+  ✓ [contesto] orari: La risposta non promette tempi o esiti: dice solo «apriremo una segnalazione» ed «eventualmente programmare un intervento», senza date o scadenze.
+  ✗ una_scusa: La risposta contiene due scuse, «ci scusiamo per il disagio» all'inizio e «ci scusiamo ancora per l'inconveniente» alla fine, quindi supera il massimo di una.
+  ✗ [contesto] tono: Il testo è in gran parte chiaro e concreto, ma usa termini tecnici non spiegati come «ADSL», «FTTC», «aggancio alla linea» e «sdoppiatori», e alcune frasi sono lunghe, contro la regola di un termine tecnico solo se spiegato.
+Giudice su v0: stesso esito due volte su 5 affermazioni di 5; instabili: nessuna.
+
+--- supporto: la versione v1, la sua misura e il confronto
+  $ ./misura.sh supporto v1
+
+== v1: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v1 (claude-sonnet-5-5): 933 token in entrata, 317 in uscita
+  | Gentile Fabio Esempio,
+  | 
+  | mi scuso per il disagio causato dalle continue cadute della linea. Per aiutarci a risolvere il problema, le chiedo di provare quanto segue:
+  | 
+  | 1. Spenga il router, attenda circa 30 secondi e lo riaccenda.
+  | 2. Controlli che il cavo di linea sia ben inserito, sia nel router sia nella presa a muro, e che non sia piegato o danneggiato.
+  | 3. Se possibile, colleghi il router direttamente alla presa principale, evitando prolunghe o filtri aggiuntivi.
+  | 
+  | Se il problema continua, ci risponda a questa e-mail indicando da quanto tempo si verifica e a che ora la luce diventa rossa. Noi verificheremo la linea e le scriveremo via e-mail con l'esito entro due giorni lavorativi.
+  | 
+  | Cordiali saluti,
+  | L'assistenza clienti di CiaspoLink
+== v1: controlli
+Controlli v1: 4 superati su 4
+  ✓ [chiarezza] al massimo 130 parole (121 parole)
+  ✓ [chiarezza] nessun segnaposto tra parentesi quadre da completare
+  ✓ nessun punto esclamativo
+  ✓ [chiarezza] firmata dall'assistenza clienti di CiaspoLink
+== v1: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v1 (claude-haiku-5-5): 4 affermazioni rispettate su 5
+  ✓ lei: La risposta usa il «lei» in modo costante: «le chiedo di provare», «Spenga il router», «Controlli», «colleghi», «ci risponda».
+  ✓ passi: Elenca tre passi concreti per il cliente (riavviare il router, controllare il cavo, collegare il router alla presa principale) e dice cosa fa CiaspoLink: «Noi verificheremo la linea e le scriveremo via e-mail con l'esito».
+  ✗ [contesto] orari: La risposta promette «entro due giorni lavorativi» per l'esito, ma né il messaggio né la guida danno questo tempo; la guida chiede di non inventare orari.
+  ✓ una_scusa: C'è una sola scusa («mi scuso per il disagio causato dalle continue cadute della linea») e nessuna frase attribuisce colpe al cliente.
+  ✓ [contesto] tono: Il testo è generalmente chiaro e concreto, con frasi per lo più brevi e parole comuni; il termine tecnico «cavo di linea» e «router» sono di uso corrente e non richiedono spiegazione, e le domande richieste (quando, da quanto tempo) servono davvero.
+  $ ./misura.sh --confronta supporto v0 v1
+
+Confronto v0 → v1 (supporto)
+  pratica di v1: chiarezza — Anthropic: «Sii specifico sul formato di output
+    e sui vincoli che desideri.» «Più precisamente spieghi cosa vuoi,
+    migliore sarà il risultato.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✗  ✓  [chiarezza] al massimo 130 parole
+    ✓  ✓  [chiarezza] nessun segnaposto tra parentesi quadre da completare
+    ✓  ✓  nessun punto esclamativo
+    ✗  ✓  [chiarezza] firmata dall'assistenza clienti di CiaspoLink
+  giudice:
+    ✓  ✓  lei
+    ✓  ✓  passi
+    ✓  ✗  [contesto] orari
+    ✗  ✓  una_scusa
+    ✗  ✓  [contesto] tono
+  esito della pratica: confermata (criteri segnati [chiarezza] rispettati: 1
+    su 3 in v0, 3 su 3 in v1)
+  totali: controlli 2/4 → 4/4; giudice 3 → 4 su 5
+  token: in entrata 673 → 933, in uscita 644 → 317
+  $ git diff --no-index supporto/prompt/v0.md supporto/prompt/v1.md
+
+diff --git a/supporto/prompt/v0.md b/supporto/prompt/v1.md
+index 5e24392..9c620e9 100644
+--- a/supporto/prompt/v0.md
++++ b/supporto/prompt/v1.md
+@@ -1,3 +1,26 @@
+-rispondi al cliente
++<role>
++Sei un operatore dell'assistenza clienti di CiaspoLink e rispondi per e-mail a un cliente privato.
++</role>
+ 
++<context>
++Il messaggio del cliente è tra i tag <message>.
++</context>
++
++<instructions>
++Rispondi al cliente.
++1. Scusati una volta sola.
++2. Indica due o tre passi semplici che può fare lui.
++3. Digli come ci aggiorna.
++</instructions>
++
++<format>
++Un'e-mail di al massimo 120 parole, senza oggetto, con il «lei»; firma «L'assistenza clienti di CiaspoLink».
++</format>
++
++<constraints>
++Consegna una risposta completa, pronta da inviare; chiudi le frasi con il punto.
++</constraints>
++
++<message>
+ {{messaggio}}
++</message>
+
+--- supporto: la versione v2, la sua misura e il confronto
+  $ ./misura.sh supporto v2
+
+== v2: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v2 (claude-sonnet-5-5): 1523 token in entrata, 306 in uscita
+  | Buongiorno signor Esempio,
+  | 
+  | ci scusiamo per il disagio: una linea che cade più volte all'ora è davvero fastidiosa.
+  | 
+  | Per capire da dove viene il problema, può provare così:
+  | 
+  | 1. Controlli che il cavo che arriva al router sia ben inserito, da entrambe le parti, e non sia piegato o rovinato.
+  | 2. Spenga il router, attenda trenta secondi e lo riaccenda. Poi lo lasci acceso, senza toccarlo, per un'ora.
+  | 3. Se può, annoti gli orari in cui la luce Internet diventa rossa.
+  | 
+  | Ci faccia sapere per e-mail come va dopo l'ora di prova, allegando gli orari annotati. Con quelli verifichiamo la sua linea. Se il guasto fosse da parte nostra, glielo diremo chiaramente.
+  | 
+  | L'assistenza clienti di CiaspoLink
+== v2: controlli
+Controlli v2: 4 superati su 4
+  ✓ [chiarezza] al massimo 130 parole (116 parole)
+  ✓ [chiarezza] nessun segnaposto tra parentesi quadre da completare
+  ✓ nessun punto esclamativo
+  ✓ [chiarezza] firmata dall'assistenza clienti di CiaspoLink
+== v2: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v2 (claude-haiku-5-5): 5 affermazioni rispettate su 5
+  ✓ lei: La risposta usa il «lei» in tutto il testo: «può provare così», «Controlli», «Spenga il router», «lo lasci acceso», «Ci faccia sapere».
+  ✓ passi: La risposta indica tre passi concreti per il cliente (controllare il cavo, riavviare il router e lasciarlo acceso per un'ora, annotare gli orari) e dice che cosa facciamo noi («Con quelli verifichiamo la sua linea. Se il guasto fosse da parte nostra, glielo diremo chiaramente»).
+  ✓ [contesto] orari: La risposta non promette tempi o esiti: l'ora di prova è una richiesta al cliente, non una promessa di CiaspoLink, e «verifichiamo la sua linea» non fissa scadenze né risultati.
+  ✓ una_scusa: La risposta contiene una sola scusa («ci scusiamo per il disagio») e non attribuisce colpe al cliente; le istruzioni sul cavo sono una verifica, non un rimprovero.
+  ✓ [contesto] tono: Il testo è chiaro e concreto con parole comuni e nessun termine tecnico non spiegato («router», «cavo», «e-mail»); alcune frasi sono un po' lunghe, come «Ci faccia sapere per e-mail come va dopo l'ora di prova, allegando gli orari annotati», ma nel complesso resta calmo e comprensibile.
+  $ ./misura.sh --confronta supporto v1 v2
+
+Confronto v1 → v2 (supporto)
+  pratica di v2: contesto — Anthropic: «Fornire il contesto o la motivazione
+    alla base delle tue istruzioni, ad esempio spiegando a Claude perché un
+    certo comportamento è importante, può dare a Claude più informazioni sui
+    tuoi obiettivi e aiutarlo a fornire risposte più mirate.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✓  ✓  [chiarezza] al massimo 130 parole
+    ✓  ✓  [chiarezza] nessun segnaposto tra parentesi quadre da completare
+    ✓  ✓  nessun punto esclamativo
+    ✓  ✓  [chiarezza] firmata dall'assistenza clienti di CiaspoLink
+  giudice:
+    ✓  ✓  lei
+    ✓  ✓  passi
+    ✗  ✓  [contesto] orari
+    ✓  ✓  una_scusa
+    ✓  ✓  [contesto] tono
+  esito della pratica: confermata (criteri segnati [contesto] rispettati: 1
+    su 2 in v1, 2 su 2 in v2)
+  totali: controlli 4/4 → 4/4; giudice 4 → 5 su 5
+  token: in entrata 933 → 1523, in uscita 317 → 306
+  $ git diff --no-index supporto/prompt/v1.md supporto/prompt/v2.md
+
+diff --git a/supporto/prompt/v1.md b/supporto/prompt/v2.md
+index 9c620e9..c1c0895 100644
+--- a/supporto/prompt/v1.md
++++ b/supporto/prompt/v2.md
+@@ -3,7 +3,7 @@ Sei un operatore dell'assistenza clienti di CiaspoLink e rispondi per e-mail a u
+ </role>
+ 
+ <context>
+-Il messaggio del cliente è tra i tag <message>.
++Il messaggio del cliente è tra i tag <message>: scrive un cliente privato di CiaspoLink, e della sua linea sappiamo solo quello che scrive. La risposta segue la guida al tono di voce dell'assistenza, tra i tag <tone_guide>, perché il cliente ritrovi lo stesso modo di parlare in ogni risposta; la legge il cliente da solo, senza un operatore accanto.
+ </context>
+ 
+ <instructions>
+@@ -24,3 +24,7 @@ Consegna una risposta completa, pronta da inviare; chiudi le frasi con il punto.
+ <message>
+ {{messaggio}}
+ </message>
++
++<tone_guide>
++{{tono}}
++</tone_guide>
+
+--- sistemi: la misura di v0, con la prova del giudice
+  $ ./misura.sh sistemi v0
+
+== v0: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v0 (claude-sonnet-5-5): 1451 token in entrata, 935 in uscita
+  | **Sintesi:** alle 10:12:31 del 2026-09-08 l'OLT `olt-pergine-01` ha perso completamente il segnale ottico (LOS, *Loss of Signal*) sulla porta PON 0/1/3. Tutte le 40 ONT collegate a quella porta sono andate offline contemporaneamente, con causa LOS.
+  | 
+  | **Cosa indicano i log**
+  | 
+  | - `PON_LOS` sulla porta, con 40 ONT coinvolte: l'evento è a livello di porta/fibra, non di singoli clienti.
+  | - Gli `ONT_OFFLINE` sono tutti con causa LOS e hanno timestamp identici (10:12:31–10:12:32). Le ONT che compaiono nell'estratto sono 9 (ID 0, 1, 3, 4, 5, 12, 14, 20, 26), il resto è presumibilmente tagliato.
+  | - Non ci sono messaggi di `dying gasp` (spegnimento per mancanza di alimentazione dell'ONT) nell'estratto. Questo fa pensare a un problema lato fibra e non a un blackout elettrico dei clienti, anche se non lo esclude del tutto.
+  | 
+  | **Cause probabili (dalla più alla meno probabile)**
+  | 
+  | 1. **Taglio o danneggiamento della fibra di dorsale** (tra OLT e splitter): è la causa più comune quando cadono tutte le ONT insieme, ad esempio per lavori stradali.
+  | 2. **Problema al connettore/patch** lato OLT o allo splitter di primo livello (connettore sporco, scollegato o piegato).
+  | 3. **Guasto del modulo ottico SFP/PON** della porta 0/1/3 (laser spento o degradato).
+  | 4. **Blackout in una zona** con ONT senza dying gasp registrato: meno probabile.
+  | 
+  | **Cosa verificare**
+  | 
+  | - Se la porta è tornata su e quando (cerca `PON_LOS_RECOVER` o ONT online successivi).
+  | - Lo stato del modulo ottico: potenza di trasmissione e temperatura. Su Huawei, ad esempio, `display ont optical-info` / `display board 0/1`.
+  | - Se altre porte della stessa scheda sono rimaste su: se sì, il problema è circoscritto alla porta o alla fibra; se sono cadute anche loro, sospetta la scheda.
+  | - Ticket di lavori in corso o segnalazioni di scavi nell'area servita da quella porta.
+  | - Con un OTDR sulla fibra puoi individuare la distanza del guasto.
+  | 
+  | Se mi incolli i log successivi (ripristino o altri eventi sulla stessa porta), posso dirti con più precisione cosa è successo e quanto è durato il disservizio.
+== v0: controlli
+Controlli v0: 2 superati su 3
+  ✗ [chiarezza] al massimo 8 righe (17 righe)
+  ✓ nomina la porta della OLT
+  ✓ dice il numero di ONT coinvolte
+== v0: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0 (claude-haiku-5-5): 3 affermazioni rispettate su 4
+  ✓ [contesto] un_guasto: La risposta descrive un unico evento a livello di porta/fibra ("l'evento è a livello di porta/fibra, non di singoli clienti") sulla PON 0/1/3 di olt-pergine-01, con cause a monte come taglio di fibra o splitter.
+  ✓ quanti: La risposta dice esplicitamente "Tutte le 40 ONT collegate a quella porta sono andate offline contemporaneamente".
+  ✗ [contesto] primo_controllo: Il primo elemento della sezione "Cosa verificare" è controllare se la porta è tornata su (cercare PON_LOS_RECOVER); il controllo del modulo ottico della porta compare solo al secondo posto e nessun punto comune a monte è indicato come primo controllo.
+  ✓ cauto: Le cause sono presentate come "Cause probabili" e "da verificare", con formule come "presumibilmente", "fa pensare" e "non lo esclude del tutto".
+== v0: giudizio, la seconda volta (la prova del giudice)
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v0, la seconda volta (claude-haiku-5-5): 3 affermazioni rispettate su 4
+  ✓ [contesto] un_guasto: La risposta dice che «l'evento è a livello di porta/fibra, non di singoli clienti» e che tutte le ONT cadono «contemporaneamente», quindi indica un unico evento a monte sulla porta 0/1/3, non guasti dei singoli clienti. Non lo afferma in modo esplicito come «un guasto solo», ma il senso è chiaro.
+  ✓ quanti: La risposta scrive «Tutte le 40 ONT collegate a quella porta sono andate offline contemporaneamente», quindi indica le 40 ONT della porta come clienti coinvolti.
+  ✗ [contesto] primo_controllo: La sezione «Cosa verificare» apre con la ricerca di PON_LOS_RECOVER nei log, che non è un punto fisico comune alla porta; il controllo del modulo ottico OLT compare solo come secondo punto, e la risposta non indica esplicitamente un primo controllo su fibra o splitter a monte.
+  ✓ cauto: Le cause sono presentate come «Cause probabili», con «presumibilmente», «fa pensare», «non lo esclude del tutto» e «meno probabile», quindi come ipotesi da verificare e non come certezze.
+Giudice su v0: stesso esito due volte su 4 affermazioni di 4; instabili: nessuna.
+
+--- sistemi: la versione v1, la sua misura e il confronto
+  $ ./misura.sh sistemi v1
+
+== v1: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v1 (claude-sonnet-5-5): 1643 token in entrata, 414 in uscita
+  | Alle 10:12:31 su olt-pergine-01 la porta PON 1/3 ha perso il segnale (LOS): è un guasto solo, a livello di porta/fibra, non 40 guasti separati, perché tutti gli ONT sono caduti nello stesso secondo con causa LOS.
+  | Clienti coinvolti: 40 ONT secondo l'allarme PON_LOS, ma nel log ne vedo solo 9 offline (ONT 0, 1, 3, 4, 5, 12, 14, 20, 26): gli altri 31 probabilmente sono fuori dall'estratto, da verificare.
+  | Ipotesi da verificare: taglio o danneggiamento della fibra/dorsale prima dello splitter, guasto del modulo ottico SFP/porta PON sull'OLT, oppure problema allo splitter.
+  | Per prima cosa controllo i livelli ottici (Tx) e lo stato della porta 1/3 sull'OLT, perché distinguono subito un guasto locale all'OLT da uno sulla fibra; poi verifico se altre porte della scheda sono interessate e, se la porta è sana, passo alla misura OTDR per localizzare l'eventuale taglio.
+== v1: controlli
+Controlli v1: 2 superati su 3
+  ✓ [chiarezza] al massimo 8 righe (4 righe)
+  ✗ nomina la porta della OLT (non trovato)
+  ✓ dice il numero di ONT coinvolte
+== v1: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v1 (claude-haiku-5-5): 3 affermazioni rispettate su 4
+  ✗ [contesto] un_guasto: La risposta dice «è un guasto solo, a livello di porta/fibra, non 40 guasti separati», ma non dice esplicitamente «a monte» e indica la porta come «1/3», senza il frame 0 (PON 0/1/3).
+  ✓ quanti: La risposta dice «Clienti coinvolti: 40 ONT secondo l'allarme PON_LOS», cioè tutte le ONT della porta.
+  ✓ [contesto] primo_controllo: Il primo controllo indicato è «i livelli ottici (Tx) e lo stato della porta 1/3 sull'OLT», cioè il modulo ottico della porta sulla OLT, non i singoli apparati dei clienti.
+  ✓ cauto: Le cause sono presentate come «Ipotesi da verificare» (fibra/dorsale, SFP/porta PON, splitter), non come certezze.
+  $ ./misura.sh --confronta sistemi v0 v1
+
+Confronto v0 → v1 (sistemi)
+  pratica di v1: chiarezza — Anthropic: «Sii specifico sul formato di output
+    e sui vincoli che desideri.» «Più precisamente spieghi cosa vuoi,
+    migliore sarà il risultato.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✗  ✓  [chiarezza] al massimo 8 righe
+    ✓  ✗  nomina la porta della OLT
+    ✓  ✓  dice il numero di ONT coinvolte
+  giudice:
+    ✓  ✗  [contesto] un_guasto
+    ✓  ✓  quanti
+    ✗  ✓  [contesto] primo_controllo
+    ✓  ✓  cauto
+  esito della pratica: confermata (criteri segnati [chiarezza] rispettati: 0
+    su 1 in v0, 1 su 1 in v1)
+  totali: controlli 2/3 → 2/3; giudice 3 → 3 su 4
+  token: in entrata 1451 → 1643, in uscita 935 → 414
+  $ git diff --no-index sistemi/prompt/v0.md sistemi/prompt/v1.md
+
+diff --git a/sistemi/prompt/v0.md b/sistemi/prompt/v1.md
+index 56b58f7..a092cd0 100644
+--- a/sistemi/prompt/v0.md
++++ b/sistemi/prompt/v1.md
+@@ -1,3 +1,26 @@
+-cosa è successo?
++<role>
++Sei un tecnico di rete e scrivi una nota a un collega.
++</role>
+ 
++<context>
++Le righe del syslog sono tra i tag <log>.
++</context>
++
++<instructions>
++Di' che cosa è successo.
++1. Un guasto solo o tanti?
++2. Quanti clienti sono coinvolti?
++3. Che cosa controlli per primo, e perché?
++</instructions>
++
++<format>
++Una nota di al massimo cinque righe.
++</format>
++
++<constraints>
++Presenta le cause come ipotesi da verificare.
++</constraints>
++
++<log>
+ {{log}}
++</log>
+
+--- sistemi: la versione v2, la sua misura e il confronto
+  $ ./misura.sh sistemi v2
+
+== v2: risposta (sonnet, effort low)
+$ claude -p --model sonnet --effort low --tools "" --system-prompt "Rispondi in italiano." --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Risposta v2 (claude-sonnet-5-5): 1725 token in entrata, 366 in uscita
+  | Alle 10:12 su olt-pergine-01 è caduta la porta PON 0/1/3 per LOS (perdita di segnale): è un guasto unico a monte, non tanti guasti separati, perché tutte le ONT vanno offline nello stesso secondo con la stessa causa.
+  | Clienti coinvolti: 40 secondo l'allarme di porta, ma nell'estratto compaiono solo 9 ONT (0, 1, 3, 4, 5, 12, 14, 20, 26); le altre 31 non sono visibili, quindi il numero va confermato sull'OLT.
+  | Ipotesi da verificare: taglio o danneggiamento della fibra di distribuzione, splitter o connettore guasto, oppure modulo ottico (SFP) della porta degradato.
+  | Parti dalla porta: controlla potenza TX e stato del modulo ottico sull'OLT, e verifica se le altre porte della scheda sono regolari. Così capisci subito se il problema è locale all'OLT o sulla fibra, prima di inviare un tecnico sul campo.
+== v2: controlli
+Controlli v2: 3 superati su 3
+  ✓ [chiarezza] al massimo 8 righe (4 righe)
+  ✓ nomina la porta della OLT
+  ✓ dice il numero di ONT coinvolte
+== v2: giudizio
+$ claude -p --agent giudice --json-schema «…» --tools "" --effort low --strict-mcp-config --setting-sources project,local --permission-mode dontAsk --permission-prompts none --output-format json --no-session-persistence -- «…»
+Giudizio v2 (claude-haiku-5-5): 4 affermazioni rispettate su 4
+  ✓ [contesto] un_guasto: La risposta dice: «è un guasto unico a monte, non tanti guasti separati», riferito alla porta PON 0/1/3 di olt-pergine-01, quindi lo afferma esplicitamente.
+  ✓ quanti: La risposta dice «Clienti coinvolti: 40 secondo l'allarme di porta», quindi indica le 40 ONT della porta come numero coinvolto, pur notando che nell'estratto ne compaiono solo 9.
+  ✓ [contesto] primo_controllo: Il primo controllo indicato è «Parti dalla porta: controlla potenza TX e stato del modulo ottico sull'OLT», cioè il modulo ottico della porta sulla OLT, un punto comune a tutta la porta, e non i singoli apparati dei clienti.
+  ✓ cauto: Le cause sono presentate come «Ipotesi da verificare: taglio o danneggiamento della fibra..., splitter o connettore guasto, oppure modulo ottico (SFP)...», quindi come ipotesi e non come certezze.
+  $ ./misura.sh --confronta sistemi v1 v2
+
+Confronto v1 → v2 (sistemi)
+  pratica di v2: contesto — Anthropic: «Fornire il contesto o la motivazione
+    alla base delle tue istruzioni, ad esempio spiegando a Claude perché un
+    certo comportamento è importante, può dare a Claude più informazioni sui
+    tuoi obiettivi e aiutarlo a fornire risposte più mirate.»
+    https://platform.claude.com/docs/it/build-with-claude/prompt-engineering/claude-prompting-best-practices
+  controlli:
+    ✓  ✓  [chiarezza] al massimo 8 righe
+    ✗  ✓  nomina la porta della OLT
+    ✓  ✓  dice il numero di ONT coinvolte
+  giudice:
+    ✗  ✓  [contesto] un_guasto
+    ✓  ✓  quanti
+    ✓  ✓  [contesto] primo_controllo
+    ✓  ✓  cauto
+  esito della pratica: confermata (criteri segnati [contesto] rispettati: 1
+    su 2 in v1, 2 su 2 in v2)
+  totali: controlli 2/3 → 3/3; giudice 3 → 4 su 4
+  token: in entrata 1643 → 1725, in uscita 414 → 366
+  $ git diff --no-index sistemi/prompt/v1.md sistemi/prompt/v2.md
+
+diff --git a/sistemi/prompt/v1.md b/sistemi/prompt/v2.md
+index a092cd0..81552d9 100644
+--- a/sistemi/prompt/v1.md
++++ b/sistemi/prompt/v2.md
+@@ -3,7 +3,7 @@ Sei un tecnico di rete e scrivi una nota a un collega.
+ </role>
+ 
+ <context>
+-Le righe del syslog sono tra i tag <log>.
++Le righe del syslog sono tra i tag <log>: un estratto del syslog di una OLT di CiaspoLink, dove la prima riga è l'allarme della porta e le altre sono le ONT dei clienti che vanno offline. La nota serve al collega di turno, per decidere da dove partire.
+ </context>
+ 
+ <instructions>
+
+--- Il registro: i totali
+
+--- La verifica
+Sviluppo, versioni misurate: v0, v1, v2
+  v0: controlli 1/2, giudice 3/5; due giudizi, stesso esito su 5 di 5,
+    instabili: nessuna
+  v1: controlli 1/2, giudice 3/5
+  v2: controlli 1/2, giudice 4/5
+  v1 rispetto a v0, chiarezza: non decisa (criteri segnati [chiarezza]
+    rispettati: 1 su 2 in v0, 1 su 2 in v1; lo stesso numero: questa coppia
+    non lo dice; non rispettati in v1: al massimo 300 parole)
+  v2 rispetto a v1, contesto: confermata (criteri segnati [contesto]
+    rispettati: 1 su 3 in v1, 3 su 3 in v2)
+Supporto, versioni misurate: v0, v1, v2
+  v0: controlli 2/4, giudice 3/5; due giudizi, stesso esito su 5 di 5,
+    instabili: nessuna
+  v1: controlli 4/4, giudice 4/5
+  v2: controlli 4/4, giudice 5/5
+  v1 rispetto a v0, chiarezza: confermata (criteri segnati [chiarezza]
+    rispettati: 1 su 3 in v0, 3 su 3 in v1)
+  v2 rispetto a v1, contesto: confermata (criteri segnati [contesto]
+    rispettati: 1 su 2 in v1, 2 su 2 in v2)
+Sistemi, versioni misurate: v0, v1, v2
+  v0: controlli 2/3, giudice 3/4; due giudizi, stesso esito su 4 di 4,
+    instabili: nessuna
+  v1: controlli 2/3, giudice 3/4
+  v2: controlli 3/3, giudice 4/4
+  v1 rispetto a v0, chiarezza: confermata (criteri segnati [chiarezza]
+    rispettati: 0 su 1 in v0, 1 su 1 in v1)
+  v2 rispetto a v1, contesto: confermata (criteri segnati [contesto]
+    rispettati: 1 su 2 in v1, 2 su 2 in v2)
+Famiglie con due cicli (v2): 3 su tre.
+Ogni giudizio strutturato è conforme a schema-giudizio.json (--json-schema), 12 su 12: confermata
+Fatto: ogni affermazione è stata messa alla prova; gli esiti sono qui sopra.
+VERIFICA OK   verifica.sh dell'elemento

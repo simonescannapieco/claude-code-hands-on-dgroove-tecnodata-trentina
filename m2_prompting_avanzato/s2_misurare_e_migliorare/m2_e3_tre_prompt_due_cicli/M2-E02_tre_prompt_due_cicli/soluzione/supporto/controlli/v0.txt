@@ -1,4 +1,4 @@
-KO	al massimo 130 parole	224 parole
+KO	al massimo 130 parole	240 parole
 OK	nessun segnaposto tra parentesi quadre da completare	
 OK	nessun punto esclamativo	
 KO	firmata dall'assistenza clienti di CiaspoLink	non trovato

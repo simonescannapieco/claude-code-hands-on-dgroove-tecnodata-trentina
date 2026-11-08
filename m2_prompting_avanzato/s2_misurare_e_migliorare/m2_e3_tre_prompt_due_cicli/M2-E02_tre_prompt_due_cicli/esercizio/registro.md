@@ -2,8 +2,8 @@
 
 Una riga per ogni versione misurata di ogni famiglia: la pratica che la
 versione mette alla prova, una sola (l'elenco: `./misura.sh --pratiche`;
-v0 è la «partenza»), che cosa avete cambiato rispetto alla versione da cui
-siete partiti, e che cosa è successo (i totali della riga «totali» di
+v0 è la «partenza»), che cosa avete cambiato rispetto alla versione
+precedente, e che cosa è successo (i totali della riga «totali» di
 `./misura.sh --confronta`). Scrivete la pratica prima di misurare la
 versione: `--confronta` la legge qui. Al posto dei «…» scrivete voi.
 

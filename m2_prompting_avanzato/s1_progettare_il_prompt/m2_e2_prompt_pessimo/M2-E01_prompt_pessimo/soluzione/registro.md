@@ -11,4 +11,4 @@ qui. Al posto dei «…» scrivete voi.
 |---|---|---|---|---|---|
 | v0 | partenza | il prompt di partenza | 0/3 | 2/5 | (prova automatica del docente) |
 | v1 | chiarezza | il template intero: un tag per ingrediente, le procedure nel loro tag (la versione di riferimento) | 3/3 | 3/5 | (prova automatica del docente) |
-| v2 | rimisura | niente: v1 misurata di nuovo | 3/3 | 5/5 | (prova automatica del docente) |
+| v2 | rimisura | niente: v1 misurata di nuovo | 3/3 | 3/5 | (prova automatica del docente) |

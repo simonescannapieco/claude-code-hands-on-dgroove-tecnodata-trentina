@@ -1,4 +1,4 @@
-OK	al massimo 8 righe	6 righe
-OK	nomina la porta della OLT	
+OK	al massimo 8 righe	4 righe
+KO	nomina la porta della OLT	non trovato
 OK	dice il numero di ONT coinvolte	
-totale	3/3
+totale	2/3
