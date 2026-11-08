@@ -46,6 +46,14 @@
 #     precondizione, su STDERR), se esce 1 resta un KO, se esce 0 passa e
 #     ne stampa l'uscita;
 #   - il frontmatter del giudice, le parole che i partecipanti leggono;
+#   - le due esercitazioni come lezioni che si leggono da sole: la teoria
+#     prima di «Punto di partenza», la soluzione passo per passo per ultima,
+#     «pratica» definita al primo uso, le parti comuni uguali byte per byte,
+#     la regola delle versioni, le sei versioni di M2-E02 nel template e da
+#     v1 a v2 soltanto il contesto e il documento di riferimento, ogni
+#     prompt e ogni riga stampata della soluzione uguali ai loro file (lo
+#     dice _docente/controlla_readme.py, provato qui su lezioni finte); i
+#     live.sh che stampano la data, la versione, le pratiche e i diff;
 #   - shellcheck -x su ogni script del modulo e su questo.
 # Gli spazi di lavoro nascono in una cartella temporanea: l'albero del
 # repository non cambia. I casi si contano: da root i casi dei file e delle
@@ -76,6 +84,7 @@ readonly E01="${S1}/m2_e2_prompt_pessimo/M2-E01_prompt_pessimo"
 readonly E02="${S2}/m2_e3_tre_prompt_due_cicli/M2-E02_tre_prompt_due_cicli"
 readonly DEMO=("${D01}" "${D02}" "${D03}" "${D04}" "${D05}" "${D06}")
 readonly ELEMENTI=("${DEMO[@]}" "${E01}" "${E02}")
+readonly CONTROLLA="${MOD}/_docente/controlla_readme.py"
 # Per ogni elemento, nello stesso ordine: il file che la verifica legge
 # (per M2-D03 e M2-D04 una risposta: la verifica decide dalle risposte,
 # mai da esiti.tsv), la frase della verifica riuscita.
@@ -95,7 +104,7 @@ readonly KIT=(misura.sh strumenti/kit.py schema-giudizio.json
 # Le righe intere che kit.py confronta stampa sul confronto di v0 e v1
 # della soluzione di M2-E01.
 readonly E01_TOTALI='  totali: controlli 0/3 → 3/3; giudice 2 → 3 su 5'
-readonly E01_TOKEN='  token: in entrata 927 → 1967, in uscita 961 → 302'
+readonly E01_TOKEN='  token: in entrata 973 → 2013, in uscita 1141 → 313'
 readonly E01_CRITERI="    su 7 in v0, 6 su 7 in v1; non rispettati in v1: \
 impegni)"
 # ...e quelle che verifica.py stampa sulla stessa soluzione: i totali di v0
@@ -110,8 +119,8 @@ rispettati in v1: impegni)"
 # Nella soluzione di M2-E02, supporto: i totali di v1 che stampa
 # verifica.py, quelli del confronto di v0 e v1.
 readonly E02_SUP_V1='  v1: controlli 4/4, giudice 4/5'
-readonly E02_SUP_TOTALI='  totali: controlli 2/4 → 4/4; giudice 4 → 4 su 5'
-readonly CASES=323
+readonly E02_SUP_TOTALI='  totali: controlli 2/4 → 4/4; giudice 3 → 4 su 5'
+readonly CASES=397
 TMP=''
 PASS=0
 FAIL=0
@@ -908,7 +917,7 @@ t_rami_live() {
   expect "E02: una famiglia sola che migliora è un esito, non un errore" 0 \
     "${FATTO}"
   expect_riga "E02: v2 di supporto torna alle misure di v0" 0 \
-    "  v2: controlli 2/4, giudice 4/5"
+    "  v2: controlli 2/4, giudice 3/5"
 }
 
 # Le sei demo: alla prima chiamata fallita si fermano (una chiamata sola);
@@ -1166,6 +1175,346 @@ t_shellcheck() {
   done < <(find "${MOD}" -name '*.sh' -print0 | sort -z)
 }
 
+# controlla_readme.py su una cartella, con RC e OUT per expect.
+# Arguments: il comando e i suoi operandi.
+cr() { run python3 -B -I "${CONTROLLA}" "$@"; }
+
+# Le due esercitazioni, come sono nel repository: si leggono da sole.
+t_lezioni() {
+  local e nome
+  for e in "${E01}" "${E02}"; do
+    nome="${e##*/}"
+    cr sezioni "${e}/README.md"
+    expect "${nome}: la teoria prima di «Punto di partenza», la soluzione" \
+      0 "ok: sezioni"
+    cr pratica "${e}/README.md"
+    expect "${nome}: «pratica» definita al primo uso" 0 "ok: pratica"
+    cr soluzione "${e}"
+    expect "${nome}: ogni prompt e ogni riga della soluzione dai loro file" \
+      0 "ok: soluzione"
+  done
+  cr comune "${E01}/README.md" "${E02}/README.md"
+  expect "le due teorie: le parti comuni uguali byte per byte" 0 "ok: comune"
+  cr versioni "${E01}" "${E02}"
+  expect "una regola delle versioni, senza la versione migliore" 0 \
+    "ok: versioni"
+  cr template "${E02}"
+  expect "M2-E02: le sei versioni nel template" 0 "ok: template"
+  cr differenza "${E02}"
+  expect "M2-E02: da v1 a v2 soltanto il contesto e il riferimento" 0 \
+    "ok: differenza"
+}
+
+# Una copia fresca della lezione finta, in ${TMP}/l2.
+# Arguments: $1 la lezione.
+copia_lezione() {
+  rm -rf "${TMP}/l2"
+  cp -R "$1" "${TMP}/l2"
+}
+
+# controlla_readme.py: l'uso, le sezioni, la parola, le parti comuni.
+# Arguments: $1 la lezione.
+t_cr_sezioni() {
+  local d="$1" c="${TMP}/c1.md"
+  cr
+  expect "controlla_readme: senza comando esce 2" 2 "uso:"
+  cr ignoto x
+  expect "controlla_readme: un comando sconosciuto esce 2" 2 "uso:"
+  cr sezioni "${TMP}/assente/README.md"
+  expect "controlla_readme: un README che manca esce 2" 2 "non si legge"
+  cr sezioni "${d}/E01/README.md"
+  expect "controlla_readme: le sezioni in ordine" 0 "ok: sezioni"
+  grep -vxF '## La teoria che serve' "${d}/E01/README.md" > "${c}"
+  cr sezioni "${c}"
+  expect "controlla_readme: senza la teoria" 1 "manca la sezione"
+  cp "${d}/E01/README.md" "${c}"
+  printf '\n## Altro\n\nTesto.\n' >> "${c}"
+  cr sezioni "${c}"
+  expect "controlla_readme: una sezione dopo la soluzione" 1 "per ultima"
+  cr pratica "${d}/E02/README.md"
+  expect "controlla_readme: la pratica definita al primo uso" 0 "ok: pratica"
+  sed 's/^Testo\.$/La pratica qui./' "${d}/E01/README.md" > "${c}"
+  cr pratica "${c}"
+  expect "controlla_readme: la parola prima della definizione" 1 \
+    "prima della definizione"
+  cr comune "${d}/E01/README.md" "${d}/E02/README.md"
+  expect "controlla_readme: le parti comuni" 0 "ok: comune"
+  sed 's/^Testo di Il giudice\.$/Altro testo./' "${d}/E01/README.md" > "${c}"
+  cr comune "${c}" "${d}/E02/README.md"
+  expect "controlla_readme: una parte comune diversa" 1 "diversa"
+  sed 's/^### Il giudice$/### Il giudice dei prompt/' \
+    "${d}/E01/README.md" > "${c}"
+  cr comune "${c}" "${d}/E02/README.md"
+  expect "controlla_readme: una sottosezione inattesa" 1 "inattesa"
+}
+
+# controlla_readme.py: la regola delle versioni, il template, la differenza.
+# Arguments: $1 la lezione.
+t_cr_versioni() {
+  local d="$1"
+  cr versioni "${d}/E01" "${d}/E02"
+  expect "controlla_readme: la regola delle versioni" 0 "ok: versioni"
+  copia_lezione "${d}"
+  printf 'altro\n' > "${TMP}/l2/E01/soluzione/prompt/v0.md"
+  cr versioni "${TMP}/l2/E01" "${TMP}/l2/E02"
+  expect "controlla_readme: una v0 diversa dalla partenza" 1 "v0.md"
+  copia_lezione "${d}"
+  printf '\nTornate alla versione migliore.\n' >> "${TMP}/l2/E02/README.md"
+  cr versioni "${TMP}/l2/E01" "${TMP}/l2/E02"
+  expect "controlla_readme: la versione migliore nel README" 1 \
+    "versione migliore"
+  cr template "${d}/E02"
+  expect "controlla_readme: le sei versioni nel template" 0 "ok: template"
+  copia_lezione "${d}"
+  sed -i 's/^<format>$/Formato:/' "${TMP}/l2/E02/soluzione/sistemi/prompt/v1.md"
+  cr template "${TMP}/l2/E02"
+  expect "controlla_readme: un'etichetta al posto del tag" 1 "sistemi/v1"
+  cr differenza "${d}/E02"
+  expect "controlla_readme: da v1 a v2 il contesto e il riferimento" 0 \
+    "ok: differenza"
+  copia_lezione "${d}"
+  sed -i 's/^Breve\.$/Lunga./' "${TMP}/l2/E02/soluzione/sistemi/prompt/v2.md"
+  cr differenza "${TMP}/l2/E02"
+  expect "controlla_readme: v2 cambia anche il formato" 1 "sistemi"
+}
+
+# controlla_readme.py: la soluzione, ciò che deve uguagliare i suoi file.
+# Arguments: $1 la lezione.
+t_cr_soluzione() {
+  local d="$1"
+  cr soluzione "${d}/E01"
+  expect "controlla_readme: la soluzione di una" 0 "ok: soluzione"
+  cr soluzione "${d}/E02"
+  expect "controlla_readme: la soluzione dell'altra" 0 "ok: soluzione"
+  copia_lezione "${d}"
+  sed -i 's/^       Sei un collaudo\.$/       Sei altro./' \
+    "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un prompt diverso dal suo file" 1 "non è uguale"
+  copia_lezione "${d}"
+  sed -i 's/^       Controlli v0: 0 superati su 3$/       Controlli v9/' \
+    "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una riga che nel file non c'è" 1 "non si trova"
+  copia_lezione "${d}"
+  sed -i "s/dell'8 novembre 2026, //" "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: la data della prova che manca" 1 "data"
+  copia_lezione "${d}"
+  sed -i 's/Claude Code 2\.1\.319/Claude Code 2.1.300/' \
+    "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una versione diversa da quella della prova" 1 \
+    "versione"
+  t_cr_soluzione_guasti "${d}"
+  rm -rf "${TMP}/l2"
+}
+
+# controlla_readme.py: i marcatori rotti e ciò che la soluzione non può non
+# avere. Arguments: $1 la lezione.
+t_cr_soluzione_guasti() {
+  local d="$1"
+  copia_lezione "${d}"
+  sed -i '/<!-- \/prompt v1 -->/d' "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un blocco che non si chiude" 1 "non si chiude"
+  copia_lezione "${d}"
+  printf '\n   <!-- /estratto -->\n' >> "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una chiusura senza apertura" 1 "senza apertura"
+  copia_lezione "${d}"
+  sed -i 's#estratto trascrizione\.txt#estratto ../trascrizione.txt#' \
+    "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un estratto fuori da soluzione/" 1 \
+    "esce da soluzione"
+  copia_lezione "${d}"
+  rm -f -- "${TMP}/l2/E01/soluzione/trascrizione.txt"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: la trascrizione che manca" 1 \
+    "manca soluzione/trascrizione.txt"
+  copia_lezione "${d}"
+  sed -i 's/Provate prima da soli\. //' "${TMP}/l2/E01/README.md"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: senza l'invito a provare prima" 1 "provare prima"
+  copia_lezione "${d}"
+  sed -i '/<!-- prompt sistemi\/v2 -->/,/<!-- \/prompt sistemi\/v2 -->/d' \
+    "${TMP}/l2/E02/README.md"
+  cr soluzione "${TMP}/l2/E02"
+  expect "controlla_readme: un prompt che manca nella soluzione" 1 \
+    "manca il blocco"
+}
+
+# controlla_readme.py: i marcatori e gli estratti che nessun confronto
+# leggerebbe: un problema, mai un «ok». Arguments: $1 la lezione.
+t_cr_estratti() {
+  local d="$1" r="${TMP}/l2/E01/README.md"
+  copia_lezione "${d}"
+  sed -i -e 's#^   <!-- estratto trascrizione\.txt -->$#   <!--estratto x-->#' \
+    -e 's#^   <!-- /estratto -->$#   <!--/estratto-->#' \
+    -e 's#^       Controlli v0: 0 superati su 3$#       INVENTATO#' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: i marcatori scritti male" 1 "scritto male"
+  copia_lezione "${d}"
+  printf '\n   <!-- extract x -->\n       FALSO\n   <!-- /extract -->\n' \
+    >> "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un blocco con un'altra parola" 1 "scritto male"
+  copia_lezione "${d}"
+  sed -i '/<!-- estratto /,/<!-- \/estratto -->/d' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una soluzione senza estratti" 1 "nessun estratto"
+  copia_lezione "${d}"
+  sed -i '/<!-- estratto /,/<!-- \/estratto -->/{//!d}' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un estratto senza righe" 1 "vuoto"
+  copia_lezione "${d}"
+  sed -i -e 's/^       Controlli v0: 0 superati su 3$/       […]/' \
+    -e 's#^       totali: controlli 0/3 → 3/3$##' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un estratto di soli tagli" 1 "vuoto"
+  copia_lezione "${d}"
+  sed -i 's/^       Controlli v0: 0 superati su 3$/       […][…]/' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una riga di soli tagli" 1 "non si trova"
+  copia_lezione "${d}"
+  sed -i -e 's#<!-- prompt v1 -->#<!-- prompt ../../v1 -->#' \
+    -e 's#<!-- /prompt v1 -->#<!-- /prompt ../../v1 -->#' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: un prompt fuori da soluzione/" 1 \
+    "esce da soluzione"
+  t_cr_apertura "${d}"
+}
+
+# controlla_readme.py: l'apertura della soluzione e la forma dell'elemento.
+# Arguments: $1 la lezione.
+t_cr_apertura() {
+  local d="$1" r="${TMP}/l2/E01/README.md"
+  copia_lezione "${d}"
+  mkdir -p "${TMP}/l2/E02/soluzione/prompt"
+  cp "${TMP}/l2/E02/soluzione/sistemi/prompt/v1.md" \
+    "${TMP}/l2/E02/soluzione/prompt/v1.md"
+  sed -i -e '/<!-- prompt sistemi\/v2 -->/,/<!-- \/prompt sistemi\/v2 -->/d' \
+    -e 's#prompt sistemi/v1 -->#prompt v1 -->#' "${TMP}/l2/E02/README.md"
+  cr soluzione "${TMP}/l2/E02"
+  expect "controlla_readme: una cartella prompt/ in più non cambia modo" 1 \
+    "manca il blocco"
+  copia_lezione "${d}"
+  sed -i 's/2\.1\.319\./2.1.319, e rifatta il 9 novembre 2026./' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una seconda data nell'apertura" 1 "data"
+  copia_lezione "${d}"
+  sed -i 's/2\.1\.319\./2.1.319 e con Claude Code 2.1.300./' "${r}"
+  cr soluzione "${TMP}/l2/E01"
+  expect "controlla_readme: una seconda versione nell'apertura" 1 "versione"
+}
+
+# controlla_readme.py: le regole che un a capo o una maiuscola non aggirano,
+# i tag riempiti, l'ordine. Arguments: $1 la lezione.
+t_cr_regole() {
+  local d="$1" c="${TMP}/c1.md"
+  copia_lezione "${d}"
+  printf '\nTornate alla versione\nmigliore.\n' >> "${TMP}/l2/E02/README.md"
+  cr versioni "${TMP}/l2/E01" "${TMP}/l2/E02"
+  expect "controlla_readme: la versione migliore, a capo" 1 \
+    "versione migliore"
+  copia_lezione "${d}"
+  printf '\nLa Versione Migliore.\n' >> "${TMP}/l2/E01/README.md"
+  cr versioni "${TMP}/l2/E01" "${TMP}/l2/E02"
+  expect "controlla_readme: la versione migliore, con le maiuscole" 1 \
+    "versione migliore"
+  copia_lezione "${d}"
+  sed -i '/^Scrivi solo questo\.$/d' \
+    "${TMP}/l2/E02/soluzione/sistemi/prompt/v1.md"
+  cr template "${TMP}/l2/E02"
+  expect "controlla_readme: un ingrediente vuoto" 1 "vuoto"
+  copia_lezione "${d}"
+  sed -i -e 's/^{{log}}$/niente/' -e 's/^Prova\.$/Prova {{log}}./' \
+    "${TMP}/l2/E02/soluzione/sistemi/prompt/v1.md"
+  cr template "${TMP}/l2/E02"
+  expect "controlla_readme: il segnaposto fuori dal suo tag" 1 "{{log}}"
+  sed -e 's/^## Obiettivo$/## Provvisorio/' -e 's/^## Tempo$/## Obiettivo/' \
+    -e 's/^## Provvisorio$/## Tempo/' "${d}/E01/README.md" > "${c}"
+  cr sezioni "${c}"
+  expect "controlla_readme: due sezioni scambiate" 1 "ordine"
+  sed 's/^## Tempo$/## Tempo extra/' "${d}/E01/README.md" > "${c}"
+  cr sezioni "${c}"
+  expect "controlla_readme: un titolo che comincia come una sezione" 1 \
+    "manca la sezione «Tempo»"
+  sed '/^### Effort e modello, come pratiche$/p' "${d}/E02/README.md" > "${c}"
+  cr comune "${d}/E01/README.md" "${c}"
+  expect "controlla_readme: una sottosezione doppia" 1 "ordine"
+  sed 's/^Testo di Il giudice\.$/Questa esercitazione pratica dura./' \
+    "${d}/E01/README.md" > "${c}"
+  cr pratica "${c}"
+  expect "controlla_readme: la parola per dire l'esercitazione" 1 \
+    "l'esercitazione"
+}
+
+# controlla_readme.py, su una lezione finta: una in ordine passa ogni
+# controllo; ciò che la rovina esce 1 con il suo motivo; un file che manca
+# o un comando sconosciuto esce 2.
+t_controlla_readme() {
+  local d="${TMP}/lezione"
+  python3 -B -I "${MOD}/_docente/lezione_finta.py" "${d}" \
+    || { echo "lezione_finta" >&2; exit 2; }
+  t_cr_sezioni "${d}"
+  t_cr_versioni "${d}"
+  t_cr_soluzione "${d}"
+  t_cr_estratti "${d}"
+  t_cr_regole "${d}"
+  rm -rf "${TMP}/l2"
+}
+
+# I live.sh con il claude finto, fino in fondo: stampano ciò che il README
+# mostra nella soluzione (la data, la versione, l'elenco delle pratiche, una
+# volta sola, i diff); il finto risponde anche a un prompt che porta <code>.
+t_trascrizione() {
+  local e w nome coppia
+  local -a coppie
+  for e in "${E01}" "${E02}"; do
+    nome="${e##*/}"
+    coppie=('diff --git a/prompt/v0.md b/prompt/v1.md')
+    [[ "${e}" == "${E01}" ]] || coppie=(
+      'diff --git a/sistemi/prompt/v0.md b/sistemi/prompt/v1.md'
+      'diff --git a/sistemi/prompt/v1.md b/sistemi/prompt/v2.md')
+    ws w "$(partenza "${e}")"
+    finto "${e}/_docente/live.sh" "${w}"
+    expect "${nome}: live.sh con il claude finto finisce" 0 "${FATTO}"
+    expect "${nome}: live.sh stampa la data della prova" 0 \
+      "data della prova: "
+    expect "${nome}: live.sh stampa la versione di Claude Code" 0 \
+      "0.0.0 (Claude Code, finto)"
+    expect "${nome}: live.sh stampa l'elenco delle pratiche" 0 \
+      "Le pratiche: una per versione."
+    if [[ "$(grep -cF './misura.sh --pratiche' <<< "${OUT}")" == 1 ]]; then
+      pass "${nome}: l'elenco delle pratiche una volta sola"
+    else
+      fail "${nome}: l'elenco delle pratiche non una volta sola"
+    fi
+    for coppia in "${coppie[@]}"; do
+      expect "${nome}: live.sh stampa ${coppia##* }" 0 "${coppia}"
+    done
+  done
+  run env PATH="${TMP}/bin:${PATH}" claude -p -- "<code>a</code> <format>"
+  expect "il claude finto risponde a un prompt con <code>" 0 '```php'
+}
+
+# I live.sh si fermano se due versioni non risultano diverse: un git finto
+# che non trova differenze. Il diff di due file uguali non è un esito.
+t_diff_chiuso() {
+  local e w
+  mkdir -p "${TMP}/git_finto"
+  printf '#!/bin/bash\nexit 0\n' > "${TMP}/git_finto/git"
+  chmod +x "${TMP}/git_finto/git"
+  for e in "${E01}" "${E02}"; do
+    ws w "$(partenza "${e}")"
+    finto env PATH="${TMP}/git_finto:${TMP}/bin:${PATH}" \
+      "${e}/_docente/live.sh" "${w}"
+    expect "${e##*/}: un diff senza differenze ferma live.sh" 2 "git diff"
+  done
+}
+
 main() {
   local t
   for t in jq python3 shellcheck sha256sum; do
@@ -1203,6 +1552,10 @@ main() {
   t_giudice
   t_demo
   t_etichette
+  t_lezioni
+  t_controlla_readme
+  t_trascrizione
+  t_diff_chiuso
   t_shellcheck
   echo "PASS=${PASS} FAIL=${FAIL} SKIP=${SKIP}" \
     "CASES=$((PASS + FAIL + SKIP))/${CASES}"

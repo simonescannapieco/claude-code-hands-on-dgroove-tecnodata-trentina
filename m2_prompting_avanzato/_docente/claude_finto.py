@@ -141,12 +141,12 @@ def risposta(prompt: str) -> str:
         return "1. Verifica dei log: costo non indicato nel messaggio."
     if "stima dei costi" in prompt:
         return "1. Linea di riserva: 150 €"
-    # I prompt del template, un tag per ingrediente: il prompt B di M2-D01
-    # e la versione di riferimento di M2-E01.
+    # I prompt del template, un tag per ingrediente: il prompt B di M2-D01,
+    # le versioni di riferimento di M2-E01 e di M2-E02.
     if "<format>" in prompt and "<message>" in prompt:
         return ("| Problema | Quando |\n|---|---|\n| centralino | venerdì |\n\n"
                 "L'assistenza clienti di CiaspoLink")
-    if "<messaggio>" in prompt or "<codice>" in prompt or "<log>" in prompt:
+    if any(t in prompt for t in ("<messaggio>", "<codice>", "<code>", "<log>")):
         return ("Gentile signor Fittizio, la porta 0/1/3 e le 40 ONT.\n"
                 "```php\n$gg_mese = (int) date('t');\n```\n"
                 "L'assistenza clienti di CiaspoLink")
