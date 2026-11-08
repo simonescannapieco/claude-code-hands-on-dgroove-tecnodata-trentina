@@ -35,12 +35,39 @@ Uso: tools/prepara_esercizio.sh <ID> [--radice <cartella>]
 EOF
 }
 
+# Vero se nel README il comando che segue `tools/prepara_esercizio.sh <ID>`
+# non è un cd: quel comando si lancia da dove si è, cioè dalla cartella
+# delle esercitazioni. Il comando è la prima riga di codice dopo la
+# preparazione, rientrata di almeno quattro spazi, nello stesso blocco o in
+# quello del passo dopo. Falso in ogni altro caso, anche senza README.
+# Globals: HANDSON_ITEM_ID.
+# Arguments: $1 il README.
+comando_dal_repository() {
+  local riga testo attesa="tools/prepara_esercizio.sh ${HANDSON_ITEM_ID}"
+  local dopo=0
+  [[ -r "$1" ]] || return 1
+  while IFS= read -r riga || [[ -n "${riga}" ]]; do
+    testo="${riga#"${riga%%[![:space:]]*}"}"
+    if (( dopo == 0 )); then
+      if [[ "${testo}" == "${attesa}" ]]; then
+        dopo=1
+      fi
+    elif [[ "${riga}" == '    '* && -n "${testo}" ]]; then
+      [[ "${testo}" != "cd "* ]]
+      return
+    fi
+  done < "$1"
+  return 1
+}
+
 # Il riepilogo per chi parte: dove andare, che cosa leggere, come
 # verificare e come ricominciare.  Un esercizio parte con claude; una
 # demo con i comandi del README (spesso `claude -p' in un ciclo, non una
-# sessione interattiva); un elemento su claude.ai si svolge nel browser,
-# e la verifica legge i file dello spazio di lavoro che il README fa
-# scrivere o costruire.
+# sessione interattiva); se nel README il comando dopo la preparazione non
+# è un cd, si resta nella cartella delle esercitazioni
+# (comando_dal_repository); un elemento su claude.ai si svolge nel
+# browser, e la verifica legge i file dello spazio di lavoro che il README
+# fa scrivere o costruire.
 # Globals: HANDSON_WORKSPACE, HANDSON_ITEM_*, HANDSON_ROOT, HANDSON_ARG_RADICE.
 print_next_steps() {
   local cartella radice='' readme verifica='Alla fine:        '
@@ -60,11 +87,16 @@ print_next_steps() {
       verifica+=$' costruire:\n  ' ;;
     trainer-api:*)
       printf "Elemento del docente con l'API: lo esegue il docente.\n" ;;
-    *:demo)
-      printf '  cd %s\n  # poi i comandi del README, nel terminale\n' \
-        "${cartella}" ;;
     *)
-      printf '  cd %s\n  claude\n' "${cartella}" ;;
+      if comando_dal_repository "${HANDSON_ITEM_DIR}/README.md"; then
+        printf '  # dalla cartella esercitazioni: i comandi del README,'
+        printf ' nel terminale\n'
+      elif [[ "${HANDSON_ITEM_KIND}" == 'demo' ]]; then
+        printf '  cd %s\n  # poi i comandi del README, nel terminale\n' \
+          "${cartella}"
+      else
+        printf '  cd %s\n  claude\n' "${cartella}"
+      fi ;;
   esac
   printf "\nI passi da seguire sono nel README dell'elemento:\n  %s\n" \
     "${readme}"

@@ -25,6 +25,8 @@ readonly REL_E01="${SEZ}/m1_e1_prova/M1-E01_inventario"
 readonly REL_D01="${SEZ}/m1_1_prova/M1-D01_saluto"
 # Il rifiuto di una radice in ~/.claude (non comincia con ~: SC2088).
 readonly NO_CONFIG='non può essere ~/.claude'
+# Il riepilogo quando il passo dopo si lancia dal repository.
+readonly DAL_REPOSITORY='  # dalla cartella esercitazioni: i comandi del README'
 # Gli spazi di lavoro dei test nascono nella base dei temporanei della
 # libreria: mai dentro ~/.claude, anche se TMPDIR punta lì.
 # shellcheck source=../tools/lib_handson.sh
@@ -183,6 +185,79 @@ t_suggerimenti() {
   check "API: nessun claude interattivo" lacks_line "  claude"
   expect_absent "API: nessun rimando ai comandi del README" \
     "i comandi del README, nel terminale"
+}
+
+# Il README di un elemento: il blocco con la preparazione e la riga dopo.
+# Arguments: $1 la cartella dell'elemento, $2 l'ID, $3 la riga dopo (vuota:
+# il blocco finisce lì).
+readme_con() {
+  printf '# Prova\n\n1. Dalla cartella esercitazioni:\n\n' > "$1/README.md"
+  printf '       tools/prepara_esercizio.sh %s\n       %s\n\n' "$2" "$3" \
+    >> "$1/README.md"
+  printf '   Poi il resto.\n' >> "$1/README.md"
+}
+
+# Il README con il comando dopo in un passo a parte, come nei laboratori:
+# la preparazione, una riga vuota, la prosa del passo, il blocco del comando.
+# Arguments: $1 la cartella dell'elemento, $2 l'ID, $3 il comando.
+readme_passo_dopo() {
+  printf '1. Preparate:\n\n       tools/prepara_esercizio.sh %s\n\n' "$2" \
+    > "$1/README.md"
+  printf '2. Poi, sempre da qui:\n\n       %s\n' "$3" >> "$1/README.md"
+}
+
+# Se nel README il comando che segue la preparazione non è un cd, si lancia
+# dal repository: il riepilogo non manda nello spazio di lavoro, né per un
+# esercizio né per una demo, che il comando stia nello stesso blocco o nel
+# passo dopo. Con un cd, o senza un comando dopo, resta il riepilogo di
+# sempre; e un elemento su claude.ai resta quello che è.
+t_suggerimenti_dal_repository() {
+  local r="${TMP}/dal_repo" man
+  make_repo "${r}/repo" || { fail "albero di prova (dal repository)"; return; }
+  readme_con "${r}/repo/${REL_E01}" M1-E01 'tools/prova_contesto.sh M1-E01 base'
+  prepara "${r}/repo" "${r}/ws1" M1-E01
+  expect "esercizio con un comando dopo: dal repository" 0 "${DAL_REPOSITORY}"
+  check "esercizio con un comando dopo: nessun cd" \
+    lacks_line "  cd ${r}/ws1/M1-E01"
+  check "esercizio con un comando dopo: nessun claude" lacks_line "  claude"
+  expect "e il README resta il riferimento" 0 "${REL_E01}/README.md"
+  readme_con "${r}/repo/${REL_D01}" M1-D01 'demo/in_classe.sh ~/spazio'
+  prepara "${r}/repo" "${r}/ws1" M1-D01
+  expect "demo con un comando dopo: dal repository" 0 "${DAL_REPOSITORY}"
+  check "demo con un comando dopo: nessun cd" lacks_line "  cd ${r}/ws1/M1-D01"
+  expect_absent "demo con un comando dopo: niente «poi»" "# poi i comandi"
+  readme_passo_dopo "${r}/repo/${REL_E01}" M1-E01 \
+    'tools/prove_skill.sh M1-E01 1'
+  prepara "${r}/repo" "${r}/ws4" M1-E01
+  expect "comando nel passo dopo: dal repository" 0 "${DAL_REPOSITORY}"
+  check "comando nel passo dopo: nessun cd" lacks_line "  cd ${r}/ws4/M1-E01"
+  check "comando nel passo dopo: nessun claude" lacks_line "  claude"
+  readme_passo_dopo "${r}/repo/${REL_E01}" M1-E01 'cd ~/corso-claude-code/x'
+  prepara "${r}/repo" "${r}/ws5" M1-E01
+  expect_absent "un cd nel passo dopo: non dal repository" "${DAL_REPOSITORY}"
+  check "un cd nel passo dopo: il cd" has_line "  cd ${r}/ws5/M1-E01"
+  check "un cd nel passo dopo: claude" has_line "  claude"
+  readme_con "${r}/repo/${REL_E01}" M1-E01 'cd ~/corso-claude-code/M1-E01'
+  prepara "${r}/repo" "${r}/ws2" M1-E01
+  expect_absent "esercizio con un cd dopo: non dal repository" \
+    "${DAL_REPOSITORY}"
+  check "esercizio con un cd dopo: il cd" has_line "  cd ${r}/ws2/M1-E01"
+  check "esercizio con un cd dopo: claude" has_line "  claude"
+  readme_con "${r}/repo/${REL_D01}" M1-D01 ''
+  prepara "${r}/repo" "${r}/ws2" M1-D01
+  expect_absent "demo col blocco che finisce: non dal repository" \
+    "${DAL_REPOSITORY}"
+  check "demo col blocco che finisce: il cd" has_line "  cd ${r}/ws2/M1-D01"
+  expect "demo col blocco che finisce: i comandi del README" 0 \
+    "# poi i comandi del README, nel terminale"
+  man="${r}/repo/m1_fondamenti_llm/manifest.tsv"
+  sed -i 's/^\(M1-D01\tdemo\t\)claude-code-pro/\1claude-ai-pro/' "${man}"
+  readme_con "${r}/repo/${REL_D01}" M1-D01 'demo/in_classe.sh ~/spazio'
+  prepara "${r}/repo" "${r}/ws3" M1-D01
+  expect "claude.ai con un comando dopo: resta su claude.ai" 0 \
+    "si svolge su claude.ai"
+  expect_absent "claude.ai con un comando dopo: non dal repository" \
+    "${DAL_REPOSITORY}"
 }
 
 t_impostazioni_prudenti() {
@@ -350,6 +425,7 @@ main() {
   echo "test_prepara_esercizio.sh"
   t_contenuto
   t_suggerimenti
+  t_suggerimenti_dal_repository
   t_impostazioni_prudenti
   t_radici
   t_radice_config
