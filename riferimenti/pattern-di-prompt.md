@@ -55,7 +55,7 @@ tag»). I dati vengono dopo gli
 ingredienti, ciascuno in un tag che dice che cosa contiene; un documento
 lungo o una tabella incollata vanno invece in cima, e allora
 `<instructions>` va in fondo. Così sono scritti il prompt B del Modulo 2,
-la versione di riferimento della prima esercitazione e, dal Modulo 3 in
+le versioni di riferimento delle sue due esercitazioni e, dal Modulo 3 in
 poi, i prompt che le demo e le esercitazioni vi danno. Un seguito nella
 stessa sessione tiene i tag e non ripete il ruolo. Una richiesta di una
 frase resta semplice; quando le sue frasi portano ingredienti diversi,

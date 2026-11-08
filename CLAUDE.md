@@ -11,7 +11,9 @@ verificano ogni elemento.
   riga: id, kind, env, section_dir, subdeck_dir, deck_path, minutes,
   title_it, separati da tabulazioni) e le cartelle degli elementi in
   `<section_dir>/<subdeck_dir>/<ID>_<nome>/`.
-- Un elemento: `README.md` con dieci sezioni fisse; `esercizio/` o `demo/`
+- Un elemento: `README.md` con dieci sezioni fisse (M2-E01 e M2-E02 ne
+  hanno due in più: la teoria che serve e la soluzione passo per passo);
+  `esercizio/` o `demo/`
   (il punto di partenza); `soluzione/` (i file che, copiati sullo spazio di
   lavoro, risolvono l'elemento, oppure `soluzione/applica.sh <spazio>`);
   `_docente/` (solo per il docente, con `live.sh <spazio>` per la prova dal
@@ -25,9 +27,10 @@ verificano ogni elemento.
 - Gli esercizi si svolgono nello spazio di lavoro creato da
   `tools/prepara_esercizio.sh <ID>`, fuori da questo repository, non qui.
 - Mentre si aiuta un partecipante non si aprono e non si modificano
-  `soluzione/` e `_docente/`: sono il riferimento del docente; stanno
-  anche nel repository che i partecipanti clonano, ma un esercizio si fa
-  senza guardarle.
+  `soluzione/` e `_docente/` né, in M2-E01 e M2-E02, l'ultima sezione del
+  README, «La soluzione, passo per passo»: sono il riferimento del
+  docente; stanno anche nel repository che i partecipanti clonano, ma un
+  esercizio si fa senza guardarle.
 - Solo dati sintetici, con le regole di `progetti/README.md`: mai persone,
   aziende o sistemi reali.
 - Ogni demo o esercitazione in cui risponde Claude mette alla prova
@@ -52,9 +55,10 @@ verificano ogni elemento.
 - I prompt delle demo e degli esercizi seguono il template di
   `riferimenti/pattern-di-prompt.md` quando sono lunghi o portano dati, un
   documento o esempi: ogni ingrediente nel suo tag, su una riga sua, con i
-  nomi in inglese. Nel Modulo 2 lo seguono il prompt B e la versione di
-  riferimento della prima esercitazione; i prompt che il modulo mette alla
-  prova restano come sono.
+  nomi in inglese. Nel Modulo 2 lo seguono il prompt B e le versioni di
+  riferimento delle due esercitazioni, in M2-E02 le v1 e le v2 delle tre
+  famiglie; i prompt che il modulo mette alla prova, le v0 comprese,
+  restano come sono.
   - `<role>` in una frase, «Sei …»: chi è Claude e per chi lavora, o a
     chi scrive; poi `<context>` (lo scopo, e chi legge se il ruolo non
     lo dice; con i dati, in quali tag stanno),

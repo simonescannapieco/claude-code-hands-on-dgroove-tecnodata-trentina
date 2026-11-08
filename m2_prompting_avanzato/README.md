@@ -28,6 +28,10 @@ applica. M2-E01 li introduce su un prompt solo, M2-E02 li usa su tre.
 Prima di M2-E01,
 `tools/verifica_ambiente.sh` tutto verde.
 
+Il `README.md` di ciascuna delle due esercitazioni basta da solo: dentro
+ha la teoria che serve, prima del «Punto di partenza», e in fondo la
+soluzione passo per passo, da leggere dopo aver provato.
+
 Il riassunto del modulo, da tenere a portata di mano, è
 [`riferimenti/pattern-di-prompt.md`](../riferimenti/pattern-di-prompt.md).
 
