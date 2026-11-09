@@ -1,0 +1,17 @@
+[
+  {
+    "name": "stato_linea",
+    "capacita": "stato_linea",
+    "description": "Legge lo stato attuale di una linea di CiaspoLink dal sistema di rete: stato, tecnologia, offerta, dettaglio dell'eventuale guasto ed eventuale guasto collettivo in zona. Usalo ogni volta che il cliente chiede come sta una linea o perché non funziona; non usarlo per dati di fatturazione. Il parametro id_linea è il codice della linea nel formato LN-000000. Se il codice non esiste lo strumento restituisce un errore: in quel caso chiedi al cliente di ricontrollarlo.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id_linea": {
+          "type": "string",
+          "description": "Il codice della linea, nel formato LN-000000 (per esempio LN-000201)."
+        }
+      },
+      "required": ["id_linea"]
+    }
+  }
+]

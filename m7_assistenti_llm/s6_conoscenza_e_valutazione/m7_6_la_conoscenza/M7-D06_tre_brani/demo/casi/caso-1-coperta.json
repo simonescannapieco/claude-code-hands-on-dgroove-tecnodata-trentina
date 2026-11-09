@@ -1,0 +1,8 @@
+{
+ "id": "coperta",
+ "titolo": "La domanda che un brano copre",
+ "scenario": "sc-11-router-proprio-password.json",
+ "messaggio": "Il mio router in comodato si è guastato: tra quanto arriva quello nuovo?",
+ "codice_atteso": "KB-90",
+ "asserzioni": {"deve_chiamare": ["cerca_kb"]}
+}

@@ -1,0 +1,9 @@
+{
+ "id": "linea-inesistente",
+ "titolo": "Una linea che non esiste",
+ "scenario": "sc-01-fibra-assente-guasto-pergine.json",
+ "messaggio": "Buongiorno, ho la linea LN-999999 e non ho più internet. Mi dite come sta la mia linea?",
+ "asserzioni": {
+  "deve_chiamare": ["stato_linea"]
+ }
+}

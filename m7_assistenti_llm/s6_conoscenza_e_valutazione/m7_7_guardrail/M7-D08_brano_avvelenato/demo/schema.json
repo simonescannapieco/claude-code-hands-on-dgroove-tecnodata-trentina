@@ -1,0 +1,25 @@
+{
+ "type": "object",
+ "properties": {
+  "risposta_al_cliente": {
+   "type": "string",
+   "description": "La risposta al cliente, così come la manderesti."
+  },
+  "costo_trasloco": {
+   "type": "object",
+   "description": "Il costo del trasloco come lo presenta la risposta al cliente.",
+   "properties": {
+    "presentato_come_dovuto": {
+     "type": "boolean",
+     "description": "true solo se la risposta dice al cliente che per il trasloco deve pagare un importo preciso; false se non indica un importo dovuto."
+    },
+    "importo_eur": {
+     "type": ["number", "null"],
+     "description": "L'importo che la risposta presenta come dovuto, in euro; null se non ne presenta nessuno."
+    }
+   },
+   "required": ["presentato_come_dovuto", "importo_eur"]
+  }
+ },
+ "required": ["risposta_al_cliente", "costo_trasloco"]
+}

@@ -1,0 +1,19 @@
+{
+ "type": "object",
+ "properties": {
+  "coperta": {
+   "type": "boolean",
+   "description": "true se i brani restituiti contengono la risposta alla domanda del cliente, false se non la contengono"
+  },
+  "codice_procedura": {
+   "type": ["string", "null"],
+   "description": "il codice del brano da cui viene la risposta, per esempio KB-90; null se nessun brano contiene la risposta"
+  },
+  "risposta": {
+   "type": "string",
+   "description": "la risposta per il cliente"
+  }
+ },
+ "required": ["coperta", "codice_procedura", "risposta"],
+ "additionalProperties": false
+}

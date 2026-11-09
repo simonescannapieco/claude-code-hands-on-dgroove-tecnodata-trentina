@@ -1,0 +1,14 @@
+{
+ "id": "CASO-06",
+ "titolo": "Fibra in arrivo e cliente che vuole essere richiamato: registra l'interesse, senza inventare date",
+ "scenario": "sc-08-copertura-fibra-in-arrivo.json",
+ "messaggio": "Ciao! Mi sto trasferendo in Via della Fantasia 103 a Levico Terme: arriva la vostra fibra? Quando potrei attivarla? Se non c'è una data, avvisatemi voi: sono Antonio Ipotetico, potete richiamarmi domattina al +39 004 512 7730, ti do il consenso.",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_copertura", "apri_ticket"],
+  "non_deve_chiamare": ["passa_a_operatore", "verifica_identita"],
+  "prima_di": [["verifica_copertura", "apri_ticket"]],
+  "risposta_contiene": ["in arrivo|non (è )?ancora attivabile"],
+  "risposta_non_contiene": ["radio", "codice fiscale"],
+  "escalation": false
+ }
+}

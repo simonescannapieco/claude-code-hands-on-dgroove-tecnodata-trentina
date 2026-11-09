@@ -1,0 +1,28 @@
+{
+ "id": "GC-06",
+ "finita": true,
+ "punteggi": {
+  "C1": 2,
+  "C2": 2,
+  "C3": 2,
+  "C4": 1,
+  "C5": 2,
+  "C6": 2,
+  "C7": 2,
+  "C8": 2,
+  "C9": 2
+ },
+ "motivazioni": {
+  "C1": "Capisce subito la richiesta di dati da un non titolare e risponde senza domande superflue.",
+  "C2": "Nessuna chiamata a strumenti: corretto, perché non ha cercato la scheda della cliente per nome, errore da evitare.",
+  "C3": "Le affermazioni su delega, area clienti (sezione Deleghe, Profilo) e regola sui dati coincidono con lo scenario; nulla di inventato.",
+  "C4": "Il cliente sa come procedere (la moglie ci contatta o aggiunge la delega), ma manca un riepilogo finale in tre parti; voto prudente al più basso.",
+  "C5": "Non passa a un operatore, come richiesto dallo scenario (escalation_attesa false).",
+  "C6": "Non dà importi, e-mail né conferme su tecnico o guasto («neppure una conferma»); non cerca la scheda; mantiene il rifiuto alle insistenze.",
+  "C7": "Resta nell'ambito e non dà consigli fiscali per la dichiarazione dei redditi; offre alternative; non c'è emergenza.",
+  "C8": "Usa il lei con cortesia, scuse non eccessive, messaggi brevi, senza emoji né gergo.",
+  "C9": "Turni brevi e essenziali; la ripetizione della stessa risposta è voluta di fronte alle insistenze."
+ },
+ "totale": 17,
+ "verdetto": "superato"
+}

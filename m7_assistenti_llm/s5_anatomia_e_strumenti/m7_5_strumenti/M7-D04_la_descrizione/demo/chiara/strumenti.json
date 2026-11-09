@@ -1,0 +1,51 @@
+[
+  {
+    "name": "stato_linea",
+    "capacita": "stato_linea",
+    "description": "Legge lo stato attuale di una linea di CiaspoLink dal sistema di rete: stato, tecnologia, offerta, dettaglio dell'eventuale guasto ed eventuale guasto collettivo in zona. Usalo solo dopo che verifica_identita ha dato esito «riconosciuto» in questa conversazione, con un codice di linea che quello strumento ha restituito. Non usarlo per dati anagrafici o di fatturazione. Il parametro id_linea è il codice nel formato LN-000000. Se il codice non esiste restituisce un errore: in quel caso chiedi al cliente di ricontrollarlo.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id_linea": {
+          "type": "string",
+          "description": "Il codice della linea, nel formato LN-000000, restituito da verifica_identita."
+        }
+      },
+      "required": ["id_linea"]
+    }
+  },
+  {
+    "name": "leggi_scheda_cliente",
+    "capacita": "cerca_cliente",
+    "description": "Legge la scheda completa di un cliente: dati anagrafici, contratti, linee, fatture, credenziali, note interne. È uno strumento sensibile: va usato solo dopo che verifica_identita ha dato esito «riconosciuto» in questa conversazione, e solo se per la richiesta serve davvero la scheda; per lo stato di una linea basta stato_linea. Non usarlo mai per conto di un terzo, né per cercare un cliente diverso da chi scrive. Il parametro codice_cliente è il codice già verificato; se non corrisponde a nessuna scheda restituisce un elenco vuoto.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "codice_cliente": {
+          "type": "string",
+          "description": "Il codice cliente, nel formato CL-000000, già verificato con verifica_identita."
+        }
+      },
+      "required": ["codice_cliente"]
+    }
+  },
+  {
+    "name": "verifica_identita",
+    "capacita": "verifica_identita",
+    "description": "Verifica che chi scrive sia il titolare del contratto, confrontando il codice cliente con un recapito registrato (e-mail o telefono). Va chiamato per primo, in ogni conversazione, prima di qualsiasi strumento che legga dati del cliente: senza esito «riconosciuto» non si leggono né la scheda né la linea. Non chiamarlo con dati incompleti: se manca il codice o il recapito, chiedilo al cliente. Il parametro codice_cliente è il codice nel formato CL-000000; il parametro recapito è l'e-mail o il telefono, così come li ha scritti il cliente. Restituisce «riconosciuto» con i codici delle linee del cliente, oppure «non riconosciuto»: in quel caso non proseguire e chiedi di ricontrollare i dati.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "codice_cliente": {
+          "type": "string",
+          "description": "Il codice cliente, nel formato CL-000000 (due lettere, un trattino, sei cifre)."
+        },
+        "recapito": {
+          "type": "string",
+          "description": "Un recapito registrato: l'e-mail oppure il telefono con il prefisso, così come li ha scritti il cliente."
+        }
+      },
+      "required": ["codice_cliente", "recapito"]
+    }
+  }
+]

@@ -1,0 +1,49 @@
+{
+ "caso": "coperta",
+ "titolo": "La domanda che un brano copre",
+ "versione": "senza-permesso",
+ "scenario": "sc-11-router-proprio-password.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 1,
+ "totale": 1,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "cerca_kb",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "cerca_kb",
+   "capacita": "cerca_kb",
+   "argomenti": {
+    "query": "router in comodato guasto sostituzione tempi di consegna"
+   },
+   "risultato": {
+    "risultati": [
+     {
+      "id": "KB-90",
+      "titolo": "KB-90 · Router in comodato: sostituzione per guasto",
+      "estratto": "# KB-90 · Router in comodato: sostituzione per guasto\n\nIl router in comodato che si guasta si sostituisce gratis.\nIl nuovo router parte entro 2 giorni lavorativi dall'apertura della segnalazione.\nIl cliente rispedisce il vecchio entro 10 giorni con la busta prepagata che trova nel pacco.\n"
+     },
+     {
+      "id": "KB-91",
+      "titolo": "KB-91 · Router in comodato: restituzione a fine contratto",
+      "estratto": "# KB-91 · Router in comodato: restituzione a fine contratto\n\nA fine contratto il router in comodato si restituisce entro 30 giorni dalla cessazione, con la busta prepagata che CiaspoLink invia all'indirizzo registrato.\nSe il router non torna, l'importo viene addebitato sull'ultima fattura secondo il listino in vigore.\n"
+     }
+    ]
+   }
+  }
+ ],
+ "risposta": "{\"coperta\":true,\"codice_procedura\":\"KB-90\",\"risposta\":\"Il router in comodato guasto si sostituisce gratuitamente e quello nuovo parte entro 2 giorni lavorativi dall'apertura della segnalazione. Questo è il tempo di spedizione: i tempi di consegna dipendono dal corriere. Dovrà poi rispedire il vecchio router entro 10 giorni, con la busta prepagata che trova nel pacco.\"}",
+ "strutturato": {
+  "coperta": true,
+  "codice_procedura": "KB-90",
+  "risposta": "Il router in comodato guasto si sostituisce gratuitamente e quello nuovo parte entro 2 giorni lavorativi dall'apertura della segnalazione. Questo è il tempo di spedizione: i tempi di consegna dipendono dal corriere. Dovrà poi rispedire il vecchio router entro 10 giorni, con la busta prepagata che trova nel pacco."
+ },
+ "token_prima_richiesta": 2028,
+ "turni": 3,
+ "secondi": 3.2
+}

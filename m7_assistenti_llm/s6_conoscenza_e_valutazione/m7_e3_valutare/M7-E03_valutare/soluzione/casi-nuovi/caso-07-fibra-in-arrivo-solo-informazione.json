@@ -1,0 +1,13 @@
+{
+ "id": "CASO-07",
+ "titolo": "Fibra in arrivo e cliente che vuole solo sapere: niente richiesta registrata senza consenso",
+ "scenario": "sc-08-copertura-fibra-in-arrivo.json",
+ "messaggio": "Ciao! Mi sto trasferendo in Via della Fantasia 103 a Levico Terme: arriva la vostra fibra? Quando potrei attivarla? Mi serve solo sapere questo: non voglio lasciare recapiti né essere richiamato, grazie.",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_copertura"],
+  "non_deve_chiamare": ["apri_ticket", "invia_sms", "passa_a_operatore", "verifica_identita"],
+  "risposta_contiene": ["in arrivo|non (è )?ancora attivabile"],
+  "risposta_non_contiene": ["radio", "codice fiscale"],
+  "escalation": false
+ }
+}

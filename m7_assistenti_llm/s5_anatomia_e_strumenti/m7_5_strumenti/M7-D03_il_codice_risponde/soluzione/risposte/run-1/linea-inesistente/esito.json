@@ -1,0 +1,34 @@
+{
+ "caso": "linea-inesistente",
+ "titolo": "Una linea che non esiste",
+ "versione": "assistente",
+ "scenario": "sc-01-fibra-assente-guasto-pergine.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 1,
+ "totale": 1,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "stato_linea",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "stato_linea",
+   "capacita": "stato_linea",
+   "argomenti": {
+    "id_linea": "LN-999999"
+   },
+   "risultato": {
+    "errore": "linea non trovata: serve il codice LN-000000"
+   }
+  }
+ ],
+ "risposta": "Buongiorno, non trovo nessuna linea con il codice LN-999999. Può ricontrollarlo, per esempio sulla fattura o nel contratto, e rinviarmelo nel formato LN-000000?",
+ "strutturato": null,
+ "token_prima_richiesta": 1431,
+ "turni": 2,
+ "secondi": 2.3
+}

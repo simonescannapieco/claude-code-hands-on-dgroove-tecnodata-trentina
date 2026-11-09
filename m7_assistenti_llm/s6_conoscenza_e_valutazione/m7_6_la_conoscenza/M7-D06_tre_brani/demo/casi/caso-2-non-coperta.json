@@ -1,0 +1,8 @@
+{
+ "id": "non-coperta",
+ "titolo": "La domanda che nessun brano copre",
+ "scenario": "sc-11-router-proprio-password.json",
+ "messaggio": "Se mi cade il router e si rompe, quanto devo pagare per averne uno nuovo?",
+ "codice_atteso": null,
+ "asserzioni": {"deve_chiamare": ["cerca_kb"]}
+}

@@ -1,0 +1,166 @@
+[
+  {
+    "name": "verifica_identita",
+    "capacita": "verifica_identita",
+    "description": "Confronta il codice cliente e un recapito con quelli registrati e dice se il cliente è riconosciuto, senza mostrare i dati registrati. Va usato per primo, prima di leggere o cambiare qualunque dato di un cliente: stato_linea su una linea privata, leggi_fattura, leggi_ticket, apri_ticket, aggiorna_ticket, prenota_intervento. Non serve per le informazioni generali o per i guasti di una zona. Il parametro codice_cliente è il codice nella forma CL-000000 che il cliente ha dato; recapito è l'e-mail o il telefono che il cliente ha dato, così come l'ha scritto. Restituisce esito «riconosciuto» con il nome, il tipo e i codici delle linee del cliente, oppure esito «non riconosciuto», senza dire quale dato era sbagliato: in quel caso si può riprovare una volta, poi si indica l'area clienti.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "codice_cliente": {"type": "string", "description": "Il codice cliente dichiarato, nella forma CL-000000."},
+        "recapito": {"type": "string", "description": "L'e-mail o il telefono registrati, come li ha scritti il cliente."}
+      },
+      "required": ["codice_cliente", "recapito"]
+    }
+  },
+  {
+    "name": "stato_linea",
+    "capacita": "stato_linea",
+    "description": "Restituisce lo stato tecnico di una linea: tecnologia, offerta, se è attiva, la sessione di connessione e gli eventuali guasti collettivi o manutenzioni che la riguardano, con la loro stima se esiste. Va usato dopo verifica_identita, e prima di far fare prove al cliente su una linea privata; senza riconoscimento si usa guasti_in_corso. Il parametro codice_linea è il codice nella forma LN-000000, che verifica_identita restituisce fra le linee del cliente. Se la linea non si trova restituisce un errore con che cosa serve. Non inventare orari di ripristino: se la stima non c'è, si dice che non c'è.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "codice_linea": {"type": "string", "description": "Il codice della linea, nella forma LN-000000."}
+      },
+      "required": ["codice_linea"]
+    }
+  },
+  {
+    "name": "guasti_in_corso",
+    "capacita": "guasti_in_corso",
+    "description": "Dice se in un comune o in una zona ci sono guasti collettivi in corso: sono le informazioni pubbliche, che si possono dare anche a chi non è riconosciuto. Va usato quando chi scrive non è riconosciuto o non è il titolare, oppure prima di far fare prove quando si conosce la zona. Non restituisce dati di nessun cliente. Il parametro zona è il nome del comune o della zona. Restituisce l'elenco dei guasti, che può essere vuoto.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "zona": {"type": "string", "description": "Il comune o la zona, per esempio «Pergine Valsugana»."}
+      },
+      "required": ["zona"]
+    }
+  },
+  {
+    "name": "cerca_kb",
+    "capacita": "cerca_kb",
+    "description": "Cerca nella base di conoscenza di CiaspoLink le procedure che riguardano una domanda e ne restituisce un estratto, con il codice della procedura (KB-xx) e il titolo. Va usato ogni volta che serve sapere che cosa fare in una situazione o quali sono orari, canali e regole: la procedura ha la precedenza su ciò che si ricorda. Non contiene dati dei clienti. Il parametro domanda è la domanda in italiano, con le parole della situazione; max_risultati è facoltativo, da 1 a 3. Se non trova niente restituisce un elenco vuoto: allora non si inventa, e si dice che non si sa.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "domanda": {"type": "string", "description": "La situazione o la domanda, in italiano."},
+        "max_risultati": {"type": "integer", "minimum": 1, "maximum": 3, "description": "Quanti estratti restituire, di norma 2 o 3."}
+      },
+      "required": ["domanda"]
+    }
+  },
+  {
+    "name": "leggi_fattura",
+    "capacita": "leggi_fattura",
+    "description": "Restituisce la fattura di un cliente, con le voci e gli importi, a partire dal suo numero nella forma FT-2026-000000. Va usato solo dopo verifica_identita, per spiegare una voce o un importo che il cliente non riconosce; non serve per le domande generali sui metodi di pagamento. Il parametro numero_fattura è il numero che il cliente ha indicato. Restituisce la fattura oppure un errore se il numero non corrisponde a una fattura di quel cliente. Gli importi si leggono da qui: non si calcolano a memoria.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "numero_fattura": {"type": "string", "description": "Il numero della fattura, nella forma FT-2026-000000."}
+      },
+      "required": ["numero_fattura"]
+    }
+  },
+  {
+    "name": "leggi_ticket",
+    "capacita": "leggi_ticket",
+    "description": "Restituisce lo stato di una segnalazione di un cliente riconosciuto. Va usato dopo verifica_identita, quando il cliente chiede a che punto è una segnalazione; il cliente la chiama segnalazione, non ticket. Il parametro numero_segnalazione è il numero nella forma TK-2026-00000: se il cliente non lo ricorda si può omettere, e vengono restituite le segnalazioni aperte. Restituisce l'elenco delle segnalazioni, oppure un errore se il numero non esiste.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "numero_segnalazione": {"type": "string", "description": "Il numero, nella forma TK-2026-00000, se il cliente lo indica."}
+      }
+    }
+  },
+  {
+    "name": "apri_ticket",
+    "capacita": "apri_ticket",
+    "description": "Apre una segnalazione nuova per un cliente riconosciuto e ne restituisce il numero (TK-2026-00000), che va dato al cliente. Si usa dopo verifica_identita, quando serve un'azione dei colleghi: un guasto da collegare, un intervento, una richiesta per l'amministrazione o di indennizzo. Si usa anche per chi segnala un guasto per conto di un altro, indicandolo nella descrizione. Non si usa per una domanda semplice che si chiude in chat. Il parametro categoria dice che cosa riguarda (guasto, lentezza, amministrazione, indennizzo, altro); priorita è normale, alta o urgente (urgente per telesoccorso o persone fragili senza linea); codice_linea è la linea, se c'è; descrizione è un riassunto per chi riceve la segnalazione.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "categoria": {"type": "string", "enum": ["guasto", "lentezza", "amministrazione", "indennizzo", "altro"], "description": "Il tipo di segnalazione."},
+        "priorita": {"type": "string", "enum": ["normale", "alta", "urgente"], "description": "Urgente per telesoccorso o persone fragili senza linea, alta per aziende ferme."},
+        "codice_linea": {"type": "string", "description": "La linea, nella forma LN-000000, se esiste."},
+        "descrizione": {"type": "string", "description": "Un riassunto della richiesta per chi riceve la segnalazione."}
+      },
+      "required": ["categoria", "priorita", "descrizione"]
+    }
+  },
+  {
+    "name": "aggiorna_ticket",
+    "capacita": "aggiorna_ticket",
+    "description": "Aggiunge una nota a una segnalazione aperta di un cliente riconosciuto: un aggiornamento, il telesoccorso sulla linea, una richiesta di richiamata. Si usa dopo verifica_identita e dopo leggi_ticket o apri_ticket. Il parametro numero_segnalazione è il numero TK-2026-00000; nota è il testo da aggiungere, scritto per i colleghi. Restituisce la segnalazione aggiornata, oppure un errore se il numero manca o non esiste: l'errore dice che cosa serve.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "numero_segnalazione": {"type": "string", "description": "Il numero della segnalazione, TK-2026-00000."},
+        "nota": {"type": "string", "description": "L'aggiornamento, per i colleghi."}
+      },
+      "required": ["numero_segnalazione", "nota"]
+    }
+  },
+  {
+    "name": "chiudi_ticket",
+    "capacita": "chiudi_ticket",
+    "description": "Chiude una segnalazione quando il problema è risolto e il cliente lo ha confermato. Si usa dopo verifica_identita, mai per chiudere una segnalazione di cui si aspetta l'esito. Il parametro numero_segnalazione è il numero TK-2026-00000. Restituisce la segnalazione chiusa, oppure un errore se il numero manca o non esiste.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "numero_segnalazione": {"type": "string", "description": "Il numero della segnalazione da chiudere, TK-2026-00000."}
+      },
+      "required": ["numero_segnalazione"]
+    }
+  },
+  {
+    "name": "slot_disponibili",
+    "capacita": "slot_disponibili",
+    "description": "Restituisce le fasce di intervento libere per un tecnico, ciascuna con l'inizio e la fine. Va usato prima di prenotare, per un cliente riconosciuto per il quale la procedura prevede un intervento: un tecnico non si prenota su una data scelta a caso, né durante un guasto collettivo. Non prende parametri. Restituisce l'elenco delle fasce libere, che può essere vuoto: in quel caso si passa a un operatore.",
+    "input_schema": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "prenota_intervento",
+    "capacita": "prenota_intervento",
+    "description": "Prenota un tecnico in una fascia libera per un cliente riconosciuto e restituisce il numero dell'appuntamento. Va usato solo dopo slot_disponibili, con l'inizio esatto di una fascia, e dopo che il cliente ha scelto la fascia. Non si usa durante un guasto collettivo. Il parametro inizio_fascia è la data e l'ora di inizio esattamente come in slot_disponibili; codice_linea è la linea interessata. Restituisce l'appuntamento, oppure un errore se la fascia non è disponibile: l'errore dice di ricontrollare le fasce.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "inizio_fascia": {"type": "string", "description": "L'inizio esatto della fascia scelta, come in slot_disponibili."},
+        "codice_linea": {"type": "string", "description": "La linea, nella forma LN-000000."}
+      },
+      "required": ["inizio_fascia"]
+    }
+  },
+  {
+    "name": "verifica_copertura",
+    "capacita": "verifica_copertura",
+    "description": "Dice quali servizi arrivano a un indirizzo: è un'informazione che si può dare a chiunque, anche prima del riconoscimento. Va usato quando qualcuno chiede se può attivare la fibra o la radio a un indirizzo preciso; il risultato può dire che la fibra è in arrivo, e non si promette una data se non c'è. Il parametro via è il nome della via, civico il numero civico (senza civico la copertura non si verifica), comune il comune. Restituisce la copertura dell'indirizzo, oppure un errore che dice che cosa manca.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "via": {"type": "string", "description": "Il nome della via, per esempio «Via della Fantasia»."},
+        "civico": {"type": "string", "description": "Il numero civico."},
+        "comune": {"type": "string", "description": "Il comune."}
+      },
+      "required": ["via", "civico", "comune"]
+    }
+  },
+  {
+    "name": "passa_a_operatore",
+    "capacita": "passa_a_operatore",
+    "description": "Passa la conversazione a un operatore umano, secondo le regole di passaggio (motivo, riepilogo, priorità): quando il cliente chiede una persona o un responsabile, per una persona fragile o un telesoccorso senza linea, per un'azienda ferma che chiede di parlare con qualcuno, per sospetta frode, minacce o una situazione che le procedure non prevedono. Non si usa per un problema che si risolve con una procedura guidata. L'operatore non legge la conversazione: il parametro riepilogo deve dire chi è il cliente, se è riconosciuto, che cosa ha chiesto e che cosa è già stato verificato. Il parametro motivo è il perché, in una frase; priorita è normale, alta o urgente; recapito è il recapito registrato per ricontattare, se c'è. Restituisce se il passaggio è in diretta o una richiamata all'apertura: in quel caso si dice al cliente l'orario vero, non che un operatore arriva subito.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "motivo": {"type": "string", "description": "Perché si passa, in una frase."},
+        "riepilogo": {"type": "string", "description": "Chi è il cliente, se è riconosciuto, che cosa ha chiesto, che cosa è stato verificato."},
+        "priorita": {"type": "string", "enum": ["normale", "alta", "urgente"], "description": "La priorità del passaggio."},
+        "recapito": {"type": "string", "description": "Il recapito registrato per ricontattare, se c'è."}
+      },
+      "required": ["motivo", "riepilogo", "priorita"]
+    }
+  }
+]

@@ -1,0 +1,89 @@
+{
+ "caso": "CASO-02",
+ "titolo": "Una voce in fattura: prima il riconoscimento, poi i dati",
+ "versione": "v1",
+ "scenario": "sc-10-importo-in-fattura.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 6,
+ "totale": 6,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "verifica_identita",
+   "esito": true
+  },
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "leggi_fattura",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "registra_accredito",
+   "esito": true
+  },
+  {
+   "tipo": "prima_di",
+   "oggetto": "verifica_identita < leggi_fattura",
+   "esito": true
+  },
+  {
+   "tipo": "risposta_contiene",
+   "oggetto": "conguaglio|cambio di offerta|16 giorni",
+   "esito": true
+  },
+  {
+   "tipo": "escalation",
+   "oggetto": "no",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "verifica_identita",
+   "capacita": "verifica_identita",
+   "argomenti": {
+    "codice": "CL-005002",
+    "recapito": "paolo.simulato@example.org"
+   },
+   "risultato": {
+    "esito": "riconosciuto",
+    "id_cliente": "CL-005002",
+    "nome": "Paolo Simulato",
+    "tipo": "privato",
+    "linee": [
+     "LN-005002"
+    ]
+   }
+  },
+  {
+   "strumento": "leggi_fattura",
+   "capacita": "leggi_fattura",
+   "argomenti": {
+    "codice_cliente": "CL-005002",
+    "numero_fattura": "FT-2026-001873"
+   },
+   "risultato": {
+    "id_fattura": "FT-2026-001873",
+    "periodo": "agosto 2026",
+    "voci": [
+     {
+      "descrizione": "Canone Casa Fibra 1 Giga, agosto",
+      "importo_eur": "22,90"
+     },
+     {
+      "descrizione": "Conguaglio cambio offerta: 16 giorni di differenza tra Casa Fibra 1 Giga e Casa Fibra 2,5 Giga, su un mese di 30 giorni",
+      "importo_eur": "4,80"
+     }
+    ],
+    "stato": "pagata"
+   }
+  }
+ ],
+ "risposta": "Buongiorno Paolo, sono l'assistente virtuale di CiaspoLink. La riconosco.\n\nLa voce da 4,80 € è un conguaglio per il cambio di offerta. Riguarda 16 giorni di differenza tra Casa Fibra 1 Giga e Casa Fibra 2,5 Giga, su un mese di 30 giorni. Il canone si calcola a giorni, quindi la differenza compare in fattura.\n\nLa fattura risulta già pagata. Se qualcosa non le torna, mi dica quale riga e apro una richiesta per l'amministrazione.",
+ "strutturato": null,
+ "token_prima_richiesta": 16024,
+ "turni": 3,
+ "secondi": 4.3
+}

@@ -1,0 +1,17 @@
+[
+ {
+  "name": "cerca_kb",
+  "capacita": "cerca_kb",
+  "description": "Cerca nelle procedure dell'assistenza di CiaspoLink i brani che riguardano le parole della domanda e restituisce fino a tre brani, ciascuno con il suo codice (KB-NN), il titolo e il testo. Si usa una volta per ogni domanda del cliente, prima di rispondere. Se nessun brano contiene le parole cercate, restituisce una lista vuota.",
+  "input_schema": {
+   "type": "object",
+   "properties": {
+    "query": {
+     "type": "string",
+     "description": "le parole della domanda del cliente da cercare nelle procedure"
+    }
+   },
+   "required": ["query"]
+  }
+ }
+]

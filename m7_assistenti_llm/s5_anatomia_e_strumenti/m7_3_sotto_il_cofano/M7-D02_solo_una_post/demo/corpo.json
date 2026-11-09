@@ -1,0 +1,10 @@
+{
+  "model": "claude-haiku-5-5",
+  "max_tokens": 100,
+  "messages": [
+    {
+      "role": "user",
+      "content": "In una frase: che differenza c'è fra una linea FTTH e una linea FWA?"
+    }
+  ]
+}

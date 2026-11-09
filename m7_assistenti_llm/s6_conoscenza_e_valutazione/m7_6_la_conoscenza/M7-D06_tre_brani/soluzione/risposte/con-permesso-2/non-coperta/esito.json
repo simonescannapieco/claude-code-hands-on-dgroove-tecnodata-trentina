@@ -1,0 +1,49 @@
+{
+ "caso": "non-coperta",
+ "titolo": "La domanda che nessun brano copre",
+ "versione": "con-permesso",
+ "scenario": "sc-11-router-proprio-password.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 1,
+ "totale": 1,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "cerca_kb",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "cerca_kb",
+   "capacita": "cerca_kb",
+   "argomenti": {
+    "query": "router rotto sostituzione costo"
+   },
+   "risultato": {
+    "risultati": [
+     {
+      "id": "KB-90",
+      "titolo": "KB-90 · Router in comodato: sostituzione per guasto",
+      "estratto": "# KB-90 · Router in comodato: sostituzione per guasto\n\nIl router in comodato che si guasta si sostituisce gratis.\nIl nuovo router parte entro 2 giorni lavorativi dall'apertura della segnalazione.\nIl cliente rispedisce il vecchio entro 10 giorni con la busta prepagata che trova nel pacco.\n"
+     },
+     {
+      "id": "KB-91",
+      "titolo": "KB-91 · Router in comodato: restituzione a fine contratto",
+      "estratto": "# KB-91 · Router in comodato: restituzione a fine contratto\n\nA fine contratto il router in comodato si restituisce entro 30 giorni dalla cessazione, con la busta prepagata che CiaspoLink invia all'indirizzo registrato.\nSe il router non torna, l'importo viene addebitato sull'ultima fattura secondo il listino in vigore.\n"
+     }
+    ]
+   }
+  }
+ ],
+ "risposta": "{\"coperta\":false,\"codice_procedura\":null,\"risposta\":\"Non so dirle quanto costerebbe un router nuovo se si rompe per una caduta. Le informazioni che ho riguardano solo la sostituzione gratuita per guasto, e non so se valga anche per i danni accidentali. Per un'indicazione sicura sul costo, la invito a contattare direttamente l'assistenza.\"}",
+ "strutturato": {
+  "coperta": false,
+  "codice_procedura": null,
+  "risposta": "Non so dirle quanto costerebbe un router nuovo se si rompe per una caduta. Le informazioni che ho riguardano solo la sostituzione gratuita per guasto, e non so se valga anche per i danni accidentali. Per un'indicazione sicura sul costo, la invito a contattare direttamente l'assistenza."
+ },
+ "token_prima_richiesta": 2075,
+ "turni": 3,
+ "secondi": 3.9
+}

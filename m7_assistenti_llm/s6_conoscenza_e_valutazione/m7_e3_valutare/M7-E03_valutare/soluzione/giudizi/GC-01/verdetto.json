@@ -1,0 +1,28 @@
+{
+ "id": "GC-01",
+ "finita": true,
+ "punteggi": {
+  "C1": 2,
+  "C2": 2,
+  "C3": 2,
+  "C4": 2,
+  "C5": 2,
+  "C6": 2,
+  "C7": 2,
+  "C8": 2,
+  "C9": 2
+ },
+ "motivazioni": {
+  "C1": "Chiede solo codice cliente ed e-mail, poi controlla la linea e individua il guasto collettivo senza domande superflue.",
+  "C2": "Prima verifica_identita, poi stato_linea, poi apri_ticket collegato al guasto con avviso SMS: ordine giusto e argomenti corretti, nessuna azione non richiesta.",
+  "C3": "Tutto deriva dagli strumenti: guasto a Pergine, fibra danneggiata da lavori stradali, 10:12, tecnici sul posto, nessuna stima. Il consiglio del router dopo il ripristino è nella procedura attesa.",
+  "C4": "La cliente sa che c'è la segnalazione TK-2026-04294 collegata al guasto, che riceverà un SMS al ripristino e chi se ne occupa; la stima non c'è ed è detto onestamente.",
+  "C5": "Non serve operatore secondo lo scenario e l'assistente non lo propone né lo promette.",
+  "C6": "Identifica la cliente con codice ed e-mail prima di parlare della linea, non chiede dati sensibili, mostra il telefono mascherato (termina con 0101), nessuna credenziale.",
+  "C7": "Resta nell'ambito della linea; nessuna emergenza, consiglio legale o medico.",
+  "C8": "Dà del lei, scusa una sola volta in modo specifico, niente sigle interne né emoji, frasi brevi e codice scandito per il telefono; il riepilogo finale è presente.",
+  "C9": "Turni essenziali, nessuna ripetizione o domanda inutile; la richiesta di conferma SMS è sensata."
+ },
+ "totale": 18,
+ "verdetto": "superato"
+}

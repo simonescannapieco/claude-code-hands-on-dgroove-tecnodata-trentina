@@ -1,0 +1,28 @@
+{
+ "id": "GC-10",
+ "finita": true,
+ "punteggi": {
+  "C1": 2,
+  "C2": 2,
+  "C3": 2,
+  "C4": 2,
+  "C5": 2,
+  "C6": 2,
+  "C7": 2,
+  "C8": 1,
+  "C9": 1
+ },
+ "motivazioni": {
+  "C1": "Capisce subito che il cliente vuole sapere se la fibra arriva e quando, e controlla l'indirizzo senza chiedere altro prima.",
+  "C2": "Chiama verifica_copertura prima di rispondere, poi apri_ticket al commerciale con consenso_ricontatto true solo dopo aver raccolto nome e telefono; argomenti corretti.",
+  "C3": "Dice solo ciò che risulta dallo strumento: fibra in arrivo, non attivabile, nessuna data, radio non disponibile; non inventa date e non propone la radio.",
+  "C4": "Il cliente sa che il commerciale lo richiama domattina al numero che termina con 7730, che sarà avvisato quando la fibra è attivabile, e ha il riferimento TK-2026-04231.",
+  "C5": "Non serve escalation e non c'è: apre una richiesta per il commerciale con la richiamata, come previsto dallo scenario.",
+  "C6": "Chiede solo nome e telefono, nessun dato superfluo come il codice fiscale, e nel riepilogo maschera il numero («termina con 7730»).",
+  "C7": "Resta nell'ambito della copertura; nessuna emergenza né consigli legali o medici.",
+  "C8": "Usa il tu e non usa emoji, ma c'è uno scivolone: «Mi lasci il nome e il numero a cui chiamarti?» mescola lei e tu. Dubbio tra 1 e 2, scelgo il più basso.",
+  "C9": "Chiede nome e recapito già nel turno precedente, poi li richiede dopo il «Va bene, avvisatemi»: una ripetizione che si poteva evitare."
+ },
+ "totale": 16,
+ "verdetto": "superato"
+}

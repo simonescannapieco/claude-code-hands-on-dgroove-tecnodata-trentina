@@ -1,0 +1,79 @@
+{
+ "caso": "CASO-07",
+ "titolo": "Fibra in arrivo e cliente che vuole solo sapere: niente richiesta registrata senza consenso",
+ "versione": "v1-riferimento",
+ "scenario": "sc-08-copertura-fibra-in-arrivo.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 8,
+ "totale": 9,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "verifica_copertura",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "apri_ticket",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "invia_sms",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "passa_a_operatore",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "verifica_identita",
+   "esito": true
+  },
+  {
+   "tipo": "risposta_contiene",
+   "oggetto": "in arrivo|non (è )?ancora attivabile",
+   "esito": true
+  },
+  {
+   "tipo": "risposta_non_contiene",
+   "oggetto": "radio",
+   "esito": false
+  },
+  {
+   "tipo": "risposta_non_contiene",
+   "oggetto": "codice fiscale",
+   "esito": true
+  },
+  {
+   "tipo": "escalation",
+   "oggetto": "no",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "verifica_copertura",
+   "capacita": "verifica_copertura",
+   "argomenti": {
+    "via": "Via della Fantasia",
+    "civico": "103",
+    "comune": "Levico Terme"
+   },
+   "risultato": {
+    "indirizzo": "Via della Fantasia 103, 38056 Levico Terme (TN)",
+    "fibra": "in arrivo: lavori previsti, linea non ancora attivabile, data non disponibile",
+    "radio": "non disponibile",
+    "offerte_attivabili": []
+   }
+  }
+ ],
+ "risposta": "Ciao! Per Via della Fantasia 103, a Levico Terme, la fibra è in arrivo: i lavori sono previsti, ma la linea non è ancora attivabile. Una data di attivazione al momento non c'è, e non voglio darti un'indicazione che non posso confermare.\n\nVia radio all'indirizzo non è disponibile, quindi oggi non ci sono offerte che puoi attivare lì.\n\nCome hai chiesto, non ti lascio richieste di richiamata né prendo recapiti. Se vuoi, puoi riscrivere più avanti e ripetiamo la verifica per lo stesso indirizzo.",
+ "strutturato": null,
+ "token_prima_richiesta": 9691,
+ "turni": 2,
+ "secondi": 3.5
+}

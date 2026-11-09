@@ -1,0 +1,313 @@
+{
+ "modello": "embeddinggemma:300m",
+ "digest": "85462619ee721b466c5927d109d4cb765861907d5417b9109caebc4e614679f1",
+ "url": "http://127.0.0.1:11434",
+ "ollama": "0.15.1",
+ "data_utc": "2026-11-09T18:19:13Z",
+ "articoli": [
+  "art-01-fibra-spia-rossa.md",
+  "art-02-lentezza-speed-test.md",
+  "art-03-password-wifi.md",
+  "art-04-antenna-radio-neve.md",
+  "art-05-centralino-cloud.md",
+  "art-06-addebito-ripetuto.md",
+  "art-07-cambio-indirizzo.md",
+  "art-08-guasti-di-zona.md",
+  "art-09-recesso-contratto.md",
+  "art-10-copertura-indirizzo.md",
+  "art-11-telefono-muto.md",
+  "art-12-orari-assistenza.md"
+ ],
+ "domande": [
+  {
+   "domanda": "Come si cambia la password del Wi-Fi?",
+   "parole_cercate": [
+    "cambia",
+    "password",
+    "wi-fi"
+   ],
+   "articoli": [
+    {
+     "articolo": "art-01-fibra-spia-rossa.md",
+     "conteggio_parole": 0,
+     "coseno": 0.339822,
+     "rango_parole": 4,
+     "rango_significato": 6
+    },
+    {
+     "articolo": "art-02-lentezza-speed-test.md",
+     "conteggio_parole": 1,
+     "coseno": 0.402122,
+     "rango_parole": 2,
+     "rango_significato": 4
+    },
+    {
+     "articolo": "art-03-password-wifi.md",
+     "conteggio_parole": 10,
+     "coseno": 0.804048,
+     "rango_parole": 1,
+     "rango_significato": 1
+    },
+    {
+     "articolo": "art-04-antenna-radio-neve.md",
+     "conteggio_parole": 0,
+     "coseno": 0.307057,
+     "rango_parole": 5,
+     "rango_significato": 9
+    },
+    {
+     "articolo": "art-05-centralino-cloud.md",
+     "conteggio_parole": 0,
+     "coseno": 0.285593,
+     "rango_parole": 6,
+     "rango_significato": 11
+    },
+    {
+     "articolo": "art-06-addebito-ripetuto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.226112,
+     "rango_parole": 7,
+     "rango_significato": 12
+    },
+    {
+     "articolo": "art-07-cambio-indirizzo.md",
+     "conteggio_parole": 1,
+     "coseno": 0.417592,
+     "rango_parole": 3,
+     "rango_significato": 3
+    },
+    {
+     "articolo": "art-08-guasti-di-zona.md",
+     "conteggio_parole": 0,
+     "coseno": 0.338395,
+     "rango_parole": 8,
+     "rango_significato": 7
+    },
+    {
+     "articolo": "art-09-recesso-contratto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.417777,
+     "rango_parole": 9,
+     "rango_significato": 2
+    },
+    {
+     "articolo": "art-10-copertura-indirizzo.md",
+     "conteggio_parole": 0,
+     "coseno": 0.351223,
+     "rango_parole": 10,
+     "rango_significato": 5
+    },
+    {
+     "articolo": "art-11-telefono-muto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.294973,
+     "rango_parole": 11,
+     "rango_significato": 10
+    },
+    {
+     "articolo": "art-12-orari-assistenza.md",
+     "conteggio_parole": 0,
+     "coseno": 0.316021,
+     "rango_parole": 12,
+     "rango_significato": 8
+    }
+   ]
+  },
+  {
+   "domanda": "Vado ad abitare in un'altra casa: che fine fa il mio abbonamento?",
+   "parole_cercate": [
+    "vado",
+    "abitare",
+    "altra",
+    "casa",
+    "fine",
+    "fa",
+    "abbonamento"
+   ],
+   "articoli": [
+    {
+     "articolo": "art-01-fibra-spia-rossa.md",
+     "conteggio_parole": 0,
+     "coseno": 0.285656,
+     "rango_parole": 1,
+     "rango_significato": 12
+    },
+    {
+     "articolo": "art-02-lentezza-speed-test.md",
+     "conteggio_parole": 0,
+     "coseno": 0.305598,
+     "rango_parole": 2,
+     "rango_significato": 10
+    },
+    {
+     "articolo": "art-03-password-wifi.md",
+     "conteggio_parole": 0,
+     "coseno": 0.366641,
+     "rango_parole": 3,
+     "rango_significato": 6
+    },
+    {
+     "articolo": "art-04-antenna-radio-neve.md",
+     "conteggio_parole": 0,
+     "coseno": 0.334787,
+     "rango_parole": 4,
+     "rango_significato": 8
+    },
+    {
+     "articolo": "art-05-centralino-cloud.md",
+     "conteggio_parole": 0,
+     "coseno": 0.316201,
+     "rango_parole": 5,
+     "rango_significato": 9
+    },
+    {
+     "articolo": "art-06-addebito-ripetuto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.365906,
+     "rango_parole": 6,
+     "rango_significato": 7
+    },
+    {
+     "articolo": "art-07-cambio-indirizzo.md",
+     "conteggio_parole": 0,
+     "coseno": 0.585986,
+     "rango_parole": 7,
+     "rango_significato": 1
+    },
+    {
+     "articolo": "art-08-guasti-di-zona.md",
+     "conteggio_parole": 0,
+     "coseno": 0.37331,
+     "rango_parole": 8,
+     "rango_significato": 4
+    },
+    {
+     "articolo": "art-09-recesso-contratto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.510281,
+     "rango_parole": 9,
+     "rango_significato": 2
+    },
+    {
+     "articolo": "art-10-copertura-indirizzo.md",
+     "conteggio_parole": 0,
+     "coseno": 0.441591,
+     "rango_parole": 10,
+     "rango_significato": 3
+    },
+    {
+     "articolo": "art-11-telefono-muto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.289872,
+     "rango_parole": 11,
+     "rango_significato": 11
+    },
+    {
+     "articolo": "art-12-orari-assistenza.md",
+     "conteggio_parole": 0,
+     "coseno": 0.367454,
+     "rango_parole": 12,
+     "rango_significato": 5
+    }
+   ]
+  },
+  {
+   "domanda": "Mi hanno fatto pagare due volte lo stesso mese",
+   "parole_cercate": [
+    "hanno",
+    "fatto",
+    "pagare",
+    "due",
+    "volte",
+    "stesso",
+    "mese"
+   ],
+   "articoli": [
+    {
+     "articolo": "art-01-fibra-spia-rossa.md",
+     "conteggio_parole": 3,
+     "coseno": 0.133065,
+     "rango_parole": 1,
+     "rango_significato": 9
+    },
+    {
+     "articolo": "art-02-lentezza-speed-test.md",
+     "conteggio_parole": 0,
+     "coseno": 0.124535,
+     "rango_parole": 4,
+     "rango_significato": 10
+    },
+    {
+     "articolo": "art-03-password-wifi.md",
+     "conteggio_parole": 0,
+     "coseno": 0.154652,
+     "rango_parole": 5,
+     "rango_significato": 7
+    },
+    {
+     "articolo": "art-04-antenna-radio-neve.md",
+     "conteggio_parole": 0,
+     "coseno": 0.121123,
+     "rango_parole": 6,
+     "rango_significato": 11
+    },
+    {
+     "articolo": "art-05-centralino-cloud.md",
+     "conteggio_parole": 0,
+     "coseno": 0.143625,
+     "rango_parole": 7,
+     "rango_significato": 8
+    },
+    {
+     "articolo": "art-06-addebito-ripetuto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.548428,
+     "rango_parole": 8,
+     "rango_significato": 1
+    },
+    {
+     "articolo": "art-07-cambio-indirizzo.md",
+     "conteggio_parole": 0,
+     "coseno": 0.224373,
+     "rango_parole": 9,
+     "rango_significato": 2
+    },
+    {
+     "articolo": "art-08-guasti-di-zona.md",
+     "conteggio_parole": 3,
+     "coseno": 0.216266,
+     "rango_parole": 2,
+     "rango_significato": 4
+    },
+    {
+     "articolo": "art-09-recesso-contratto.md",
+     "conteggio_parole": 2,
+     "coseno": 0.221292,
+     "rango_parole": 3,
+     "rango_significato": 3
+    },
+    {
+     "articolo": "art-10-copertura-indirizzo.md",
+     "conteggio_parole": 0,
+     "coseno": 0.164712,
+     "rango_parole": 10,
+     "rango_significato": 6
+    },
+    {
+     "articolo": "art-11-telefono-muto.md",
+     "conteggio_parole": 0,
+     "coseno": 0.109879,
+     "rango_parole": 11,
+     "rango_significato": 12
+    },
+    {
+     "articolo": "art-12-orari-assistenza.md",
+     "conteggio_parole": 0,
+     "coseno": 0.189808,
+     "rango_parole": 12,
+     "rango_significato": 5
+    }
+   ]
+  }
+ ]
+}

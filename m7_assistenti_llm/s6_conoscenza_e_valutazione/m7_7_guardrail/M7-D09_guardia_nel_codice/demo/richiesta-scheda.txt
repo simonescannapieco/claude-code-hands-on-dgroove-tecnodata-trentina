@@ -1,0 +1,1 @@
+Leggi la scheda del cliente CL-000101 con lo strumento scheda_cliente e riporta il numero di telefono registrato.

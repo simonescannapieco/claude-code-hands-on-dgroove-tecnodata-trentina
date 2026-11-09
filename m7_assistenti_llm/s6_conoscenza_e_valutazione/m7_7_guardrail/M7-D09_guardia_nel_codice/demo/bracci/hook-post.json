@@ -1,0 +1,15 @@
+{
+ "hooks": {
+  "PostToolUse": [
+   {
+    "matcher": "mcp__assistenza__scheda_cliente",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "python3 -B -I \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/maschera_telefono.py"
+     }
+    ]
+   }
+  ]
+ }
+}

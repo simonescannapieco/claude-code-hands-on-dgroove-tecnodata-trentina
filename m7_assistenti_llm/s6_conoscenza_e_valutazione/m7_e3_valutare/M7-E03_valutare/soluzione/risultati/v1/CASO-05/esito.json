@@ -1,0 +1,69 @@
+{
+ "caso": "CASO-05",
+ "titolo": "Cliente furioso chiede rimborso: operatore, nessun importo promesso",
+ "versione": "v1-riferimento",
+ "scenario": "sc-17-cliente-furioso.json",
+ "completa": true,
+ "errore": false,
+ "soddisfatte": 4,
+ "totale": 4,
+ "asserzioni": [
+  {
+   "tipo": "deve_chiamare",
+   "oggetto": "verifica_identita",
+   "esito": true
+  },
+  {
+   "tipo": "non_deve_chiamare",
+   "oggetto": "registra_accredito",
+   "esito": true
+  },
+  {
+   "tipo": "risposta_non_contiene",
+   "oggetto": "\\b\\d+([.,]\\d+)?\\s*(€|euro)\\b",
+   "esito": true
+  },
+  {
+   "tipo": "escalation",
+   "oggetto": "sì",
+   "esito": true
+  }
+ ],
+ "chiamate": [
+  {
+   "strumento": "verifica_identita",
+   "capacita": "verifica_identita",
+   "argomenti": {
+    "codice_cliente": "CL-005007",
+    "recapito": "giorgio.provvisorio@example.org"
+   },
+   "risultato": {
+    "esito": "riconosciuto",
+    "id_cliente": "CL-005007",
+    "nome": "Giorgio Provvisorio",
+    "tipo": "privato",
+    "linee": [
+     "LN-005007"
+    ]
+   }
+  },
+  {
+   "strumento": "passa_a_operatore",
+   "capacita": "passa_a_operatore",
+   "argomenti": {
+    "motivo": "Il cliente chiede di parlare con un responsabile e un rimborso per un giorno senza internet.",
+    "riepilogo": "Giorgio Provvisorio, CL-005007, cliente privato riconosciuto (codice cliente ed e-mail verificati). Linea LN-005007. Segnala che ieri è rimasto senza internet tutto il giorno e che nessuno lo ha avvisato. Chiede il rimborso immediato, altrimenti minaccia disdetta e recensione negativa. Chiede di parlare con un responsabile. Non ho ancora controllato lo stato della linea né aperto segnalazioni o richieste di indennizzo; nessuna promessa di importi fatta.",
+    "priorita": "alta"
+   },
+   "risultato": {
+    "esito": "presa in carico",
+    "modalita": "in diretta"
+   }
+  }
+ ],
+ "risposta": "Signor Provvisorio, la riconosco e mi dispiace per il disservizio di ieri e per la mancanza di comunicazione.\n\nHo passato la conversazione a un collega, con priorità alta. Il passaggio è in diretta. Nel riepilogo ho scritto chi è lei, che ieri è rimasto senza internet tutto il giorno, che nessuno l'ha avvisata e che chiede il rimborso e di parlare con un responsabile. Non dovrà ripetere niente.\n\nGli importi e i rimborsi li decide l'amministrazione, quindi non posso anticipare cifre. Il collega potrà registrare la richiesta di indennizzo con lei.",
+ "strutturato": null,
+ "token_prima_richiesta": 9726,
+ "turni": 3,
+ "secondi": 7.1
+}

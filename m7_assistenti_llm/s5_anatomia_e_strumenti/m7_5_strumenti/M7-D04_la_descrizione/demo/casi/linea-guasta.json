@@ -1,0 +1,10 @@
+{
+ "id": "linea-guasta",
+ "titolo": "Una cliente chiede della sua linea e dà codice e recapito",
+ "scenario": "sc-01-fibra-assente-guasto-pergine.json",
+ "messaggio": "Buongiorno, sono Laura Prova, codice cliente CL-000101, e-mail laura.prova@example.org. Non ho più internet da poco dopo le dieci: mi dite qual è la situazione della mia linea?",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_identita", "stato_linea"],
+  "prima_di": [["verifica_identita", "stato_linea"], ["verifica_identita", "cerca_cliente"]]
+ }
+}

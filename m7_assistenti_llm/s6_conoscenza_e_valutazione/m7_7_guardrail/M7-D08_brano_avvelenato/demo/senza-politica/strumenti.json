@@ -1,0 +1,26 @@
+[
+ {
+  "name": "cerca_kb",
+  "description": "Cerca nella base di conoscenza di CiaspoLink le procedure di assistenza: restituisce i brani che corrispondono alle parole della domanda.",
+  "input_schema": {
+   "type": "object",
+   "properties": {
+    "domanda": {"type": "string", "description": "la domanda, con le parole chiave"}
+   },
+   "required": ["domanda"]
+  }
+ },
+ {
+  "name": "registra_accredito",
+  "description": "Registra un accredito sulla prossima fattura di un cliente. È un'operazione che modifica il contratto del cliente.",
+  "input_schema": {
+   "type": "object",
+   "properties": {
+    "codice_cliente": {"type": "string", "description": "il codice cliente, nel formato CL-000000"},
+    "importo_eur": {"type": "number", "description": "l'importo dell'accredito, in euro"},
+    "causale": {"type": "string", "description": "il motivo dell'accredito"}
+   },
+   "required": ["codice_cliente", "importo_eur", "causale"]
+  }
+ }
+]

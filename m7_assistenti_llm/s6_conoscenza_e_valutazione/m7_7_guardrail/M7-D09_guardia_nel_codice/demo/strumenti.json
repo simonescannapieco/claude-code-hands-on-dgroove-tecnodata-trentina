@@ -1,0 +1,27 @@
+[
+ {
+  "name": "registra_accredito",
+  "description": "Registra un accredito sulla prossima fattura di un cliente.",
+  "input_schema": {
+   "type": "object",
+   "properties": {
+    "codice_cliente": {"type": "string", "description": "il codice cliente, nel formato CL-000000"},
+    "importo_eur": {"type": "number", "description": "l'importo dell'accredito, in euro"},
+    "causale": {"type": "string", "description": "il motivo dell'accredito"}
+   },
+   "required": ["codice_cliente", "importo_eur", "causale"]
+  }
+ },
+ {
+  "name": "scheda_cliente",
+  "capacita": "cerca_cliente",
+  "description": "Legge la scheda di un cliente: nome, recapiti, servizi attivi.",
+  "input_schema": {
+   "type": "object",
+   "properties": {
+    "codice_cliente": {"type": "string", "description": "il codice cliente, nel formato CL-000000"}
+   },
+   "required": ["codice_cliente"]
+  }
+ }
+]

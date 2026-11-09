@@ -1,0 +1,8 @@
+caso       risultati/v0  ->  risultati/v1
+CASO-01    8/10 · 4 chiamate · 7701 token  ->  10/10 · 4 chiamate · 9689 token
+CASO-02    4/6 · 1 chiamate · 7697 token  ->  6/6 · 2 chiamate · 9686 token
+CASO-03    3/5 · 2 chiamate · 7831 token  ->  5/5 · 4 chiamate · 9822 token
+CASO-04    5/5 · 0 chiamate · 7692 token  ->  5/5 · 0 chiamate · 9681 token
+CASO-05    3/4 · 2 chiamate · 7736 token  ->  4/4 · 2 chiamate · 9726 token
+totale: 23/30  ->  30/30
+la seconda versione rispetto alla prima: confermata in questa misura

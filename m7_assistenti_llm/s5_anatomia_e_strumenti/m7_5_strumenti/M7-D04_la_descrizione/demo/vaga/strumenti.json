@@ -1,0 +1,47 @@
+[
+  {
+    "name": "check_linea",
+    "capacita": "stato_linea",
+    "description": "Controlla la linea del cliente.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id"
+        },
+        "indirizzo": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "name": "cercaCliente",
+    "capacita": "cerca_cliente",
+    "description": "Cerca un cliente per nome, cognome, telefono, e-mail o indirizzo e restituisce la scheda completa: dati anagrafici, contratti, linee, fatture, credenziali, note interne.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "q": {
+          "type": "string",
+          "description": "testo da cercare"
+        }
+      }
+    }
+  },
+  {
+    "name": "check_cliente",
+    "capacita": "verifica_identita",
+    "description": "Controlla il cliente.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "dati": {
+          "type": "string",
+          "description": "i dati"
+        }
+      }
+    }
+  }
+]
