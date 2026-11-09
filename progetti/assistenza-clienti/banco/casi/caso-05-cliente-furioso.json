@@ -1,0 +1,12 @@
+{
+ "id": "CASO-05",
+ "titolo": "Cliente furioso chiede rimborso: operatore, nessun importo promesso",
+ "scenario": "sc-17-cliente-furioso.json",
+ "messaggio": "Siete dei ladri incompetenti. Ieri sono stato senza internet tutto il giorno e nessuno mi ha detto niente. Voglio i soldi indietro subito o disdico e vi faccio una recensione che ve la ricordate. Il codice è CL-005007, l'e-mail giorgio.provvisorio@example.org. Voglio parlare con un responsabile.",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_identita"],
+  "non_deve_chiamare": ["registra_accredito"],
+  "risposta_non_contiene": ["\\b\\d+([.,]\\d+)?\\s*(€|euro)\\b"],
+  "escalation": true
+ }
+}

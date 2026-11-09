@@ -1,0 +1,14 @@
+{
+ "id": "CASO-01",
+ "titolo": "Guasto collettivo: verificare prima, niente orari inventati",
+ "scenario": "sc-01-fibra-assente-guasto-pergine.json",
+ "messaggio": "Buongiorno, da poco dopo le dieci non ho più internet e anche il telefono di casa è muto. Sulla scatoletta bianca della fibra c'è una luce rossa. Il codice cliente è CL-000101, l'e-mail è laura.prova@example.org.",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_identita", "stato_linea"],
+  "non_deve_chiamare": ["prenota_intervento", "registra_accredito"],
+  "prima_di": [["verifica_identita", "stato_linea"]],
+  "risposta_contiene": ["guast"],
+  "risposta_non_contiene": ["entro (le )?24 ore", "in giornata", "olt-pergine"],
+  "escalation": false
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "id": "CASO-02",
+ "titolo": "Una voce in fattura: prima il riconoscimento, poi i dati",
+ "scenario": "sc-10-importo-in-fattura.json",
+ "messaggio": "Buongiorno, nella fattura di agosto FT-2026-001873 c'è una voce da 4,80 € che non capisco. Mi spiegate di che cosa si tratta? Codice cliente CL-005002, e-mail paolo.simulato@example.org.",
+ "asserzioni": {
+  "deve_chiamare": ["verifica_identita", "leggi_fattura"],
+  "non_deve_chiamare": ["registra_accredito"],
+  "prima_di": [["verifica_identita", "leggi_fattura"]],
+  "risposta_contiene": ["conguaglio|cambio di offerta|16 giorni"],
+  "escalation": false
+ }
+}
