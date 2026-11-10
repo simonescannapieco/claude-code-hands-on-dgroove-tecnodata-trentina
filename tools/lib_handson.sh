@@ -38,7 +38,7 @@
 #   HANDSON_SHOW_CMD         0 = non mostrare i comandi prima di eseguirli
 #   HANDSON_ENV              l'ambiente dell'elemento, come nel manifest:
 #                            claude-code-pro (default), claude-ai-pro,
-#                            trainer-api
+#                            trainer-api, trainer-local
 #   HANDSON_PERMISSION_MODE  la modalità di permesso di handson::claude_p:
 #                            dontAsk (default), manual, acceptEdits, plan
 #   HANDSON_OUTPUT_FORMAT    il formato d'uscita di handson::claude_p:
@@ -89,7 +89,8 @@ HANDSON_ITEM_PATH_RE+='M[1-9]-[DE][0-9][0-9]_[^/]+)/'
 readonly HANDSON_ITEM_PATH_RE
 readonly HANDSON_SAFE_TOKEN_RE='^[A-Za-z0-9._/:=@%+,-]+$'
 readonly HANDSON_KINDS=' demo esercizio '
-readonly HANDSON_ENVS=' claude-code-pro claude-ai-pro trainer-api '
+HANDSON_ENVS=' claude-code-pro claude-ai-pro trainer-api trainer-local '
+readonly HANDSON_ENVS
 readonly HANDSON_PERMISSION_MODES=' dontAsk manual acceptEdits plan '
 readonly HANDSON_OUTPUT_FORMATS=' json stream-json '
 readonly HANDSON_SETTING_SOURCES='project,local'
@@ -1124,10 +1125,14 @@ handson::prove_solution() {
 # Il passo 3 di run_all.sh: in uno spazio di lavoro nuovo
 # _docente/live.sh <spazio> esce 0, poi verifica.sh esce 0. Agli elementi
 # non trainer-api arriva un ambiente senza ANTHROPIC_API_KEY; con
-# PN_LIVE_LOGS l'uscita di live.sh resta in <PN_LIVE_LOGS>/<ID>.log.
+# PN_LIVE_LOGS l'uscita di live.sh resta in <PN_LIVE_LOGS>/<ID>.log. Un
+# elemento trainer-local gira su un servizio locale del docente: se il suo
+# live.sh esce 2 (una precondizione), su questo computer quel servizio può
+# mancare, ed è uno SKIP.
 # Globals: HANDSON_MOTIVO, HANDSON_DURATA (assegnate). Arguments: $1 id,
 # $2 la cartella dell'elemento, $3 env, $4 il log.
-# Returns: 0 ok; 1 KO; 3 SKIP (nessun live.sh, trainer-api senza chiave).
+# Returns: 0 ok; 1 KO; 3 SKIP (nessun live.sh, trainer-api senza chiave,
+# trainer-local con live.sh che esce 2).
 # shellcheck disable=SC2034  # HANDSON_DURATA la legge run_all.sh
 handson::prove_live() {
   local id="$1" live="$2/_docente/live.sh" t="${HANDSON_TOOLS_DIR}"
@@ -1153,6 +1158,9 @@ handson::prove_live() {
   if [[ -n "${PN_LIVE_LOGS:-}" ]]; then
     cp -- "$4" "${PN_LIVE_LOGS}/${id}.log" || return 1
   fi
+  HANDSON_MOTIVO="elemento trainer-local e manca una precondizione del docente"
+  HANDSON_MOTIVO+=" (_docente/live.sh esce 2)"
+  [[ "$3" != "trainer-local" ]] || (( rc != 2 )) || return 3
   HANDSON_MOTIVO="_docente/live.sh esce ${rc}"
   (( rc == 0 )) || return 1
   "${t}/verifica.sh" "${id}" --radice "${radice}" > "$4" 2>&1
@@ -1250,7 +1258,7 @@ handson::check_row() {
   handson::check_row_id "${dove}" "$2" "${id}" "${kind}"
   [[ "${HANDSON_ENVS}" == *" ${env} "* ]] \
     || handson::finding "${dove}" "env «${env}» non valido" \
-      "(claude-code-pro, claude-ai-pro, trainer-api)"
+      "(claude-code-pro, claude-ai-pro, trainer-api, trainer-local)"
   [[ "${sez}" =~ ${HANDSON_SECTION_RE} ]] \
     || handson::finding "${dove}" "section_dir «${sez}» non valido" \
       "(atteso s<sessione>_<parole>)"

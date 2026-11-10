@@ -9,8 +9,8 @@
 #   - i nove moduli m<N>_<nome>/, ciascuno con README.md e manifest.tsv;
 #   - ogni riga dei manifest: id M<N>-D<nn>/M<N>-E<nn> del modulo giusto e
 #     coerente con kind (demo|esercizio), env (claude-code-pro,
-#     claude-ai-pro, trainer-api), section_dir, subdeck_dir, deck_path,
-#     minutes intero, title_it, le cartelle che nomina;
+#     claude-ai-pro, trainer-api, trainer-local), section_dir, subdeck_dir,
+#     deck_path, minutes intero, title_it, le cartelle che nomina;
 #   - ogni elemento: README.md con le dieci sezioni, verifica.sh
 #     eseguibile, esercizio/ o demo/ secondo kind, soluzione/, progetti.txt
 #     che nomina progetti esistenti;

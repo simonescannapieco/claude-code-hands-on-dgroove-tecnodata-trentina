@@ -139,7 +139,28 @@ t_live() {
   expect_absent "e la chiave non viene stampata" "${CHIAVE_FINTA}"
   run cat "${r}-log/M1-D01.log"
   expect "al live.sh trainer-api la chiave arriva" 0 "chiave API presente"
+  cambia_campo "${r}" M1-D01 3 trainer-local
+  run_all "${r}" --live M1-D01
+  expect "trainer-local non chiede la chiave" 0 "1 ok, 0 KO, 0 SKIP"
+  run env PN_HANDSON_ROOT="${r}" PN_LIVE_LOGS="${r}-log" \
+    ANTHROPIC_API_KEY="${CHIAVE_FINTA}" "${TOOLS}/run_all.sh" --live M1-D01
+  expect "trainer-local con la chiave nell'ambiente: live ok" 0 "live ok"
+  run cat "${r}-log/M1-D01.log"
+  expect "al live.sh trainer-local la chiave non arriva" 0 \
+    "chiave API assente"
+  finto_live "${r}" 'echo "servizio assente"; exit 2'
+  run_all "${r}" --live M1-D01
+  expect "trainer-local, live.sh esce 2: SKIP" 0 \
+    "live SKIP: elemento trainer-local"
+  expect "trainer-local, live.sh esce 2: non è un KO" 0 "0 KO, 1 SKIP"
+  finto_live "${r}" 'echo "esito diverso"; exit 1'
+  run_all "${r}" --live M1-D01
+  expect "trainer-local, live.sh esce 1: KO" 1 "live: _docente/live.sh esce 1"
   cambia_campo "${r}" M1-D01 3 claude-code-pro
+  finto_live "${r}" 'exit 2'
+  run_all "${r}" --live M1-D01
+  expect "fuori da trainer-local, live.sh esce 2: KO" 1 \
+    "live: _docente/live.sh esce 2"
   finto_live "${r}" 'echo "esito diverso"; exit 1'
   run_all "${r}" --live M1-D01
   expect "live.sh che fallisce: KO" 1 "live: _docente/live.sh esce 1"

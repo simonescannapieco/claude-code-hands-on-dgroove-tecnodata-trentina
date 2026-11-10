@@ -182,8 +182,19 @@ t_suggerimenti() {
   fi
   prepara "${r}/repo" "${r}/ws3" M1-D01
   expect "API: lo esegue il docente" 0 "lo esegue il docente"
+  expect_absent "API: non dice che l'elemento usa l'API" "con l'API"
   check "API: nessun claude interattivo" lacks_line "  claude"
   expect_absent "API: nessun rimando ai comandi del README" \
+    "i comandi del README, nel terminale"
+  sed -i 's/^\(M1-D01\tdemo\t\)trainer-api/\1trainer-local/' "${man}"
+  if ! grep -qF -- $'M1-D01\tdemo\ttrainer-local\t' "${man}"; then
+    fail "il manifest di prova non è passato a trainer-local"
+    return
+  fi
+  prepara "${r}/repo" "${r}/ws4" M1-D01
+  expect "servizio locale: lo esegue il docente" 0 "lo esegue il docente"
+  check "servizio locale: nessun claude interattivo" lacks_line "  claude"
+  expect_absent "servizio locale: nessun rimando ai comandi del README" \
     "i comandi del README, nel terminale"
 }
 

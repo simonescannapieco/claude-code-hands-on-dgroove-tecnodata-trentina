@@ -38,7 +38,7 @@ readonly D05
 readonly FINTO_PY="${MOD}/_docente/ollama_finto_m7_d05.py"
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=73
+readonly CASES=78
 readonly FATTO='Fatto: le due ricerche sono in risposte/risultati.json.'
 TMP=''
 PORTA=''
@@ -208,6 +208,13 @@ t_prepara() {
     return
   fi
   pass "prepara_esercizio.sh M7-D05"
+  # La demo gira su Ollama: il riepilogo non può dire che usa l'API.
+  if grep -qF "lo esegue il docente" "${TMP}/prepara.log" \
+      && ! grep -qF "l'API" "${TMP}/prepara.log"; then
+    pass "prepara_esercizio.sh M7-D05: il riepilogo non nomina l'API"
+  else
+    fail "il riepilogo di M7-D05: $(tail -n 8 "${TMP}/prepara.log")"
+  fi
   for f in domande.txt cerca.py controlla_risultati.py \
       articoli/art-06-addebito-ripetuto.md; do
     vero "spazio di lavoro: ${f}" test -f "${ws}/${f}"
@@ -404,6 +411,19 @@ t_live() {
   expect "live: Ollama che non risponde, 2" 2 "VERIFICA KO"
   run "${D05}/_docente/live.sh"
   expect "live: senza argomenti, 2" 2 "uso:"
+  # La demo non usa la chiave API: per run_all.sh è un elemento trainer-local.
+  run awk -F'\t' '$1 == "M7-D05" { print "env=" $3 }' \
+    "${RADICE}/m7_assistenti_llm/manifest.tsv"
+  expect "manifest: M7-D05 è trainer-local" 0 "env=trainer-local"
+  modo ok
+  run env PN_OLLAMA_URL="http://127.0.0.1:${PORTA}" HANDSON_NO_PAUSE=1 \
+    "${RADICE}/tools/run_all.sh" --live M7-D05
+  expect "run_all --live: l'Ollama finto, live ok" 0 "live ok"
+  run env PN_OLLAMA_URL=http://127.0.0.1:1 HANDSON_NO_PAUSE=1 \
+    "${RADICE}/tools/run_all.sh" --live M7-D05
+  expect "run_all --live: Ollama che non risponde, SKIP" 0 \
+    "live SKIP: elemento trainer-local"
+  assente "run_all --live: lo SKIP non parla della chiave" "ANTHROPIC_API_KEY"
 }
 
 t_shellcheck() {

@@ -10,9 +10,10 @@
 #      soluzione/applica.sh <spazio di lavoro>;
 #   3. con --live, in uno spazio di lavoro nuovo, _docente/live.sh
 #      <spazio di lavoro> esce 0 e dopo di lui verifica.sh passa:
-#      l'esecuzione dal vivo, scritta con l'elemento. Senza live.sh, o per
-#      un elemento trainer-api senza ANTHROPIC_API_KEY, la riga dice SKIP;
-#      ai live.sh degli altri elementi arriva un ambiente senza
+#      l'esecuzione dal vivo, scritta con l'elemento. Senza live.sh, per
+#      un elemento trainer-api senza ANTHROPIC_API_KEY o per un elemento
+#      trainer-local il cui live.sh esce 2, la riga dice SKIP; ai live.sh
+#      degli elementi non trainer-api arriva un ambiente senza
 #      ANTHROPIC_API_KEY, così Claude Code usa l'abbonamento.
 # Uno SKIP non è un superamento: il riepilogo li conta a parte. Nella
 # copia per i partecipanti (senza soluzione/) il passo 2 è SKIP.

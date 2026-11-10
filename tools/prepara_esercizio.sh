@@ -85,8 +85,8 @@ print_next_steps() {
       printf 'sono nella cartella qui sopra.\n'
       verifica='La verifica legge i file che il README vi fa scrivere o'
       verifica+=$' costruire:\n  ' ;;
-    trainer-api:*)
-      printf "Elemento del docente con l'API: lo esegue il docente.\n" ;;
+    trainer-api:*|trainer-local:*)
+      printf 'Questo elemento lo esegue il docente.\n' ;;
     *)
       if comando_dal_repository "${HANDSON_ITEM_DIR}/README.md"; then
         printf '  # dalla cartella esercitazioni: i comandi del README,'

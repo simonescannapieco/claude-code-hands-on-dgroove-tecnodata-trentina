@@ -175,6 +175,12 @@ t_manifest() {
   riga_campo 2 claude-code-max
   check_r
   expect "env non valido" 1 "env «claude-code-max» non valido"
+  expect "il messaggio elenca i quattro env" 1 \
+    "(claude-code-pro, claude-ai-pro, trainer-api, trainer-local)"
+  fresh man5b
+  riga_campo 2 trainer-local
+  check_r
+  expect "env trainer-local ammesso" 0 "2 elementi, 0 segnalazioni"
   fresh man6
   riga_campo 6 10m
   check_r

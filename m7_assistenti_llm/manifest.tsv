@@ -5,7 +5,7 @@ M7-D03	demo	claude-code-pro	s5_anatomia_e_strumenti	m7_5_strumenti	slides/theory
 M7-D04	demo	claude-code-pro	s5_anatomia_e_strumenti	m7_5_strumenti	slides/theory/m7_assistenti_llm/m7_5_strumenti	3	La descrizione è il contratto
 M7-E01	esercizio	claude-code-pro	s5_anatomia_e_strumenti	m7_e1_banco_di_prova	slides/practice/m7_esercitazione_assistente/m7_e1_banco_di_prova	13	Il banco di prova
 M7-E02	esercizio	claude-code-pro	s5_anatomia_e_strumenti	m7_e2_riprogettare	slides/practice/m7_esercitazione_assistente/m7_e2_riprogettare	31	Riprogettare un'interazione
-M7-D05	demo	trainer-api	s6_conoscenza_e_valutazione	m7_6_la_conoscenza	slides/theory/m7_assistenti_llm/m7_6_la_conoscenza	2	Cercare per significato
+M7-D05	demo	trainer-local	s6_conoscenza_e_valutazione	m7_6_la_conoscenza	slides/theory/m7_assistenti_llm/m7_6_la_conoscenza	2	Cercare per significato
 M7-D06	demo	claude-code-pro	s6_conoscenza_e_valutazione	m7_6_la_conoscenza	slides/theory/m7_assistenti_llm/m7_6_la_conoscenza	3	Tre brani, una risposta con la fonte
 M7-D10	demo	claude-ai-pro	s6_conoscenza_e_valutazione	m7_6_la_conoscenza	slides/theory/m7_assistenti_llm/m7_6_la_conoscenza	3	L'assistente in un progetto di claude.ai
 M7-D07	demo	claude-code-pro	s6_conoscenza_e_valutazione	m7_7_guardrail	slides/theory/m7_assistenti_llm/m7_7_guardrail	3	Tre difese a confronto
