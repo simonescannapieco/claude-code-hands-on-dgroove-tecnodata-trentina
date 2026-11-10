@@ -1,0 +1,30 @@
+{
+  "letto_il": "2026-11-10",
+  "unita": "dollari per milione di token",
+  "pagina_prezzi": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "pagina_haiku": "https://platform.claude.com/docs/en/models/haiku-5-5/overview",
+  "nota_haiku": "I prezzi di Claude Haiku 5.5 valgono per prompt fino a 100.000 token.",
+  "modelli": {
+    "haiku": {
+      "input": 0.10,
+      "output": 0.50,
+      "cache_write_5m": 0.125,
+      "cache_write_1h": 0.20,
+      "cache_read": 0.01
+    },
+    "sonnet": {
+      "input": 2,
+      "output": 10,
+      "cache_write_5m": 2.5,
+      "cache_write_1h": 4,
+      "cache_read": 0.10
+    },
+    "opus": {
+      "input": 4,
+      "output": 20,
+      "cache_write_5m": 5,
+      "cache_write_1h": 8,
+      "cache_read": 0.20
+    }
+  }
+}

@@ -1,1 +1,7 @@
 id	kind	env	section_dir	subdeck_dir	deck_path	minutes	title_it
+M8-D01	demo	trainer-api	s6_costi_e_ottimizzazione	m8_3_il_conto_in_token	slides/theory/m8_costi_ottimizzazione/m8_3_il_conto_in_token	2	Quanti token pesa una frase
+M8-D02	demo	claude-code-pro	s6_costi_e_ottimizzazione	m8_3_il_conto_in_token	slides/theory/m8_costi_ottimizzazione/m8_3_il_conto_in_token	3	Il conto dal campo usage
+M8-D04	demo	claude-code-pro	s6_costi_e_ottimizzazione	m8_4_il_modello_giusto	slides/theory/m8_costi_ottimizzazione/m8_4_il_modello_giusto	3	Il modello giusto per il lavoro
+M8-D03	demo	claude-code-pro	s6_costi_e_ottimizzazione	m8_5_la_cache	slides/theory/m8_costi_ottimizzazione/m8_5_la_cache	3	La cache, vista nel contatore
+M8-E01	esercizio	claude-code-pro	s6_costi_e_ottimizzazione	m8_e1_il_conto	slides/practice/m8_esercitazione_token/m8_e1_il_conto	6	Quanto costa una risposta
+M8-E02	esercizio	claude-code-pro	s6_costi_e_ottimizzazione	m8_e2_meta_dei_token	slides/practice/m8_esercitazione_token/m8_e2_meta_dei_token	22	Metà dei token, a parità di qualità

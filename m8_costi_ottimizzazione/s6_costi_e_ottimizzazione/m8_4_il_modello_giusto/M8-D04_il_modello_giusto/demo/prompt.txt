@@ -1,0 +1,3 @@
+Classifica ciascuno dei ticket numerati qui sotto in una sola categoria fra guasto, lentezza, fattura, attivazione, secondo il problema che il cliente chiede di risolvere. Scrivi le etichette nell'ordine dei ticket, una per ticket.
+
+@@TICKET@@

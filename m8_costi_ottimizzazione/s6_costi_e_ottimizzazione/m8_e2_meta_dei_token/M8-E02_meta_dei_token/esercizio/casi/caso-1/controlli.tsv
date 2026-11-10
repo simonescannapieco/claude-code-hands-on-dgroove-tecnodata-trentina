@@ -1,0 +1,8 @@
+tipo	valore	descrizione
+presente	TK-2026-04294	cita il numero della segnalazione
+presente	Il team di assistenza CiaspoLink	firma con «Il team di assistenza CiaspoLink»
+assente	\bticket\b	dice «segnalazione», non «ticket»
+assente	olt-pergine|0/1/3|\b40 linee|quaranta linee	non riporta nomi di apparati né il numero delle linee coinvolte
+assente	a breve|sicuramente|garantit|entro (sera|stasera|un'ora|due ore)	non promette tempi e non usa le parole da evitare
+assente	disservizio|\bdegrado\b|problematica|inconveniente|presa in carico|le faremo sapere|sarà nostra cura	non usa le altre formule che la guida al tono vuole evitare
+parole_max	200	al massimo 200 parole

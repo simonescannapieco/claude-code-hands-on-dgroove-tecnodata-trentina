@@ -1,0 +1,5 @@
+# Il volume del conto del mese: un'ipotesi dell'esercizio, non una misura.
+# Il mese si conta ai prezzi base di input e di output di haiku, senza cache.
+ticket_al_mese = 10000
+token_input_per_ticket = 1000
+token_output_per_ticket = 150

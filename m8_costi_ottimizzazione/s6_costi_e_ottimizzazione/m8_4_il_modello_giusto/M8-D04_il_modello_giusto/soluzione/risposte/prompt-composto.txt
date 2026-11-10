@@ -1,0 +1,17 @@
+Classifica ciascuno dei ticket numerati qui sotto in una sola categoria fra guasto, lentezza, fattura, attivazione, secondo il problema che il cliente chiede di risolvere. Scrivi le etichette nell'ordine dei ticket, una per ticket.
+
+1. Da ieri sera non ho più internet: sull'ONT la spia LOS è rossa fissa e nessun dispositivo riesce a collegarsi.
+
+2. Nella fattura FT-2026-001823 trovo 30,00 euro di canone in più rispetto al mese scorso, ma non ho cambiato offerta: mi spiegate da dove arrivano?
+
+3. La sera i video si bloccano di continuo: lo speed test via cavo segna 30 Mbit/s su un contratto da 1 Gbit/s, mentre di giorno va tutto bene.
+
+4. Vi pago il canone ogni mese e la fattura di settembre è già pagata, ma da lunedì la linea di casa è morta: il router non si collega e la spia Internet resta spenta. Della fattura parliamo dopo: prima fatemi tornare la connessione.
+
+5. Ho firmato il contratto per la fibra lunedì 7 settembre: a che punto è l'attivazione della linea? Aspetto ancora di sapere quando viene il tecnico.
+
+6. Da inizio settembre, in smart working, le videochiamate vanno a scatti e il mio collega sulla stessa linea misura 25 Mbit/s in upload invece dei 300 previsti. La connessione però non cade mai.
+
+7. Il tecnico è venuto martedì 8 settembre e ha montato l'ONT, ma la linea non è mai partita: la spia resta spenta e non si naviga. Nell'area clienti la pratica AT-2026-0745 risulta ancora da completare: quando chiudete il lavoro?
+
+8. Ho pagato la fattura FT-2026-001901 con il bonifico del 7 settembre ma mi è arrivato un sollecito: potete controllare che il pagamento sia arrivato?

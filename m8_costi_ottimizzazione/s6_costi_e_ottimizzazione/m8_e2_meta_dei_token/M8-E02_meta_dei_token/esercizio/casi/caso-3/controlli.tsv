@@ -1,0 +1,8 @@
+tipo	valore	descrizione
+presente	TK-2026-04387	cita il numero della segnalazione
+assente	\bticket\b	dice «segnalazione», non «ticket»
+assente	bts-cles|\bS2\b|dBm	non riporta nomi di apparati né la misura del segnale
+assente	a breve|sicuramente|garantit|entro (sera|stasera|un'ora|due ore)	non promette tempi e non usa le parole da evitare
+assente	disservizio|\bdegrado\b|problematica|inconveniente|presa in carico|le faremo sapere|sarà nostra cura	non usa le altre formule che la guida al tono vuole evitare
+assente	Gentile|Il team di assistenza	è un messaggio di chat: niente formule da lettera né firma
+parole_max	100	al massimo 100 parole

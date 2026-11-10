@@ -1,0 +1,8 @@
+OK	cita il numero della segnalazione	
+OK	firma con «Il team di assistenza CiaspoLink»	
+OK	dice «segnalazione», non «ticket»	
+OK	non riporta nomi di apparati né il numero delle linee coinvolte	
+OK	non promette tempi e non usa le parole da evitare	
+OK	non usa le altre formule che la guida al tono vuole evitare	
+OK	al massimo 200 parole	129 parole
+totale	7/7

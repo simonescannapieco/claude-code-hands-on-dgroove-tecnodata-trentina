@@ -1,0 +1,1 @@
+Una cliente dice che il telefono di casa è muto ma internet funziona: qual è il primo controllo da farle fare? Rispondi in una riga.

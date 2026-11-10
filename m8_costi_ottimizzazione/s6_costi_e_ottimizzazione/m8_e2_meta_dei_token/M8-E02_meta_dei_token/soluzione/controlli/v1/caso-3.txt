@@ -1,0 +1,8 @@
+OK	cita il numero della segnalazione	
+OK	dice «segnalazione», non «ticket»	
+OK	non riporta nomi di apparati né la misura del segnale	
+OK	non promette tempi e non usa le parole da evitare	
+OK	non usa le altre formule che la guida al tono vuole evitare	
+OK	è un messaggio di chat: niente formule da lettera né firma	
+OK	al massimo 100 parole	83 parole
+totale	7/7

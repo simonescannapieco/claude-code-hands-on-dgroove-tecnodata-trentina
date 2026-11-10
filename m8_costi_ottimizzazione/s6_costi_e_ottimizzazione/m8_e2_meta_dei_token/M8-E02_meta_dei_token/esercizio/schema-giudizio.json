@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "criteri": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "motivo": {"type": "string"},
+          "rispettato": {"type": "boolean"}
+        },
+        "required": ["id", "motivo", "rispettato"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["criteri"],
+  "additionalProperties": false
+}

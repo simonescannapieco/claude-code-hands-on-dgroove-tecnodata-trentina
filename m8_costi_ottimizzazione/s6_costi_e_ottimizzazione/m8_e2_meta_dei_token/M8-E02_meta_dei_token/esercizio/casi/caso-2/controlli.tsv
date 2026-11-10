@@ -1,0 +1,10 @@
+tipo	valore	descrizione
+presente	TK-2026-04367	cita il numero della segnalazione
+presente	Il team di assistenza CiaspoLink	firma con «Il team di assistenza CiaspoLink»
+presente	operatore	dice che passa la conversazione a un operatore
+assente	\bticket\b	dice «segnalazione», non «ticket»
+assente	bts-cles|\bS1\b	non riporta nomi di apparati
+assente	a breve|sicuramente|garantit|entro (sera|stasera|un'ora|due ore)	non promette tempi e non usa le parole da evitare
+assente	disservizio|\bdegrado\b|problematica|inconveniente|presa in carico|le faremo sapere|sarà nostra cura	non usa le altre formule che la guida al tono vuole evitare
+assente	rimborso|indennizzo|sconto	non promette rimborsi o sconti
+parole_max	200	al massimo 200 parole

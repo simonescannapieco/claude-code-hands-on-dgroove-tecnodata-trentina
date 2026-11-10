@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "etichette": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["guasto", "lentezza", "fattura", "attivazione"]
+      },
+      "minItems": 8,
+      "maxItems": 8
+    }
+  },
+  "required": ["etichette"],
+  "additionalProperties": false
+}

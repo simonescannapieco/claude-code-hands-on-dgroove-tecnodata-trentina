@@ -1,0 +1,1 @@
+Perché la connessione in fibra di un cliente cade ogni sera verso le nove e torna da sola dopo pochi minuti? Di giorno non succede, il router resta acceso e gli altri clienti della zona non segnalano nulla.
