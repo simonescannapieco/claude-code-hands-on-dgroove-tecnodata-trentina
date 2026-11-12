@@ -206,6 +206,12 @@ verifica ha stampato per la taratura:
     prova-SC-20: etichetta «non superato», giudice «non superato», totale 8 su 18: d'accordo
     (dato) accordo con le etichette: 4 su 4; voti lasciati a null dal giudice: 0
 
+In quella prova il passo 2 delle istruzioni del giudice chiedeva la motivazione
+«prima del voto»; lo schema del banco mette però i voti prima delle motivazioni,
+e i quattro verdetti registrati scrivono prima i voti. Dal 12 novembre 2026 il
+passo 2 chiede «una frase di motivazione per il voto», ciò che lo schema
+permette; lo schema non è cambiato.
+
 Il prompt del passo 3 ha portato Claude a scrivere la coppia sullo scenario SC-08,
 la fibra in arrivo: nel primo caso il cliente lascia nome e numero e chiede di
 essere richiamato, nel suo opposto vuole soltanto sapere. Sulla versione di

@@ -133,7 +133,9 @@ stampa:
 - la risposta, e, come dimostrazione che fa lo script e non dice niente su
   Claude, i dati della risposta che vengono dal risultato e i numeri, i codici
   e gli orari della risposta che nel risultato non ci sono (il codice di una
-  linea inesistente viene dal messaggio del cliente);
+  linea inesistente viene dal messaggio del cliente). Per lo script un numero
+  ha almeno due cifre, un codice è di due maiuscole e sei cifre, un orario è
+  come 10:12: una cifra sola, come il 9 di una data, non la conta;
 - turni, secondi e i token della prima richiesta.
 
 Le due garanzie, una riga per caso, «confermata» oppure «non confermata in
@@ -157,8 +159,9 @@ docente):
   garanzia, confermata 6 su 6;
 - nel caso della linea che esiste la risposta riporta i dati del risultato (il
   guasto, l'orario 10:12, «circa 40» linee, i tecnici sul posto), e nelle tre
-  esecuzioni il controllo non trova nella risposta numeri, codici o orari
-  estranei al risultato;
+  esecuzioni il controllo non trova nella risposta codici, orari o numeri di
+  due o più cifre estranei al risultato (in due delle tre la risposta dice
+  anche «il 9 novembre», una cifra sola, che lo script non conta);
 - nel caso della linea che non esiste, nello stream: `"is_error":true` nel
   blocco `tool_result` del messaggio utente, con il testo del risultato,
   `{"errore": "linea non trovata: serve il codice LN-000000"}`; e la risposta

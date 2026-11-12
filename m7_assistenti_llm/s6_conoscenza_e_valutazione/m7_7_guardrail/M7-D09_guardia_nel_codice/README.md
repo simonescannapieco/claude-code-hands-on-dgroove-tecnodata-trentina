@@ -230,6 +230,11 @@ Le righe delle garanzie:
     «Replaces the tool's output with the provided value before it is sent to Claude.» (updatedToolOutput cambia ciò che Claude riceve): confermata 2 su 2
     «Blocks the prompt, so it never reaches Claude.» (l'hook UserPromptSubmit che esce 2 ferma il prompt): confermata 2 su 2
 
+Nella prima riga, «ferma la chiamata» va letto come lo decide il controllo: al
+server non arriva nessuna chiamata a `registra_accredito`. Nella registrazione
+nessuna chiamata è stata nemmeno chiesta, perché con la regola deny lo
+strumento non era fra quelli offerti a Claude.
+
 Gli stream sono nella cartella `soluzione/risposte/` di questo elemento (nel
 repository del corso; la copia senza soluzioni non l'ha).
 

@@ -1,6 +1,6 @@
 # Note per il docente: assistenza clienti
 
-Questa cartella non arriva ai partecipanti: è esclusa dall'esportazione della copia per gli studenti.
+Questa cartella è per il docente. Sta nel repository, che i partecipanti clonano così com'è (README, «Per il docente»): resta fuori soltanto dalla copia senza soluzioni di `tools/esporta_studenti.sh`.
 
 ## A che cosa serve il materiale
 

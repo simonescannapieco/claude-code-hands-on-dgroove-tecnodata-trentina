@@ -1,6 +1,6 @@
 # Le debolezze inserite nell'assistente v0
 
-Solo per il docente: questa cartella resta fuori dalla copia dei partecipanti. L'assistente v0 (`../v0/`) è scritto per sembrare plausibile, come tanti prompt nati per strati successivi; le debolezze qui sotto sono volute. Gli scenari indicati sono quelli che le mettono in luce.
+Per il docente: questa cartella sta nel repository che i partecipanti clonano così com'è, e resta fuori soltanto dalla copia senza soluzioni di `tools/esporta_studenti.sh`; in aula le debolezze non si dicono, perché trovarle è il lavoro del banco di prova. L'assistente v0 (`../v0/`) è scritto per sembrare plausibile, come tanti prompt nati per strati successivi; le debolezze qui sotto sono volute. Gli scenari indicati sono quelli che le mettono in luce.
 
 ## Le istruzioni: `v0/system-prompt.md` (1.910 parole)
 

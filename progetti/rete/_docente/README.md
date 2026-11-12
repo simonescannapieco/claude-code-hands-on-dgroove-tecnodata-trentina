@@ -1,6 +1,6 @@
 # Rete — materiale del docente
 
-Questa cartella non arriva ai partecipanti (è esclusa dalla copia esportata). Contiene le soluzioni dell'audit e la mappa degli avvenimenti nei log.
+Questa cartella è per il docente: sta nel repository, che i partecipanti clonano così com'è, e resta fuori soltanto dalla copia senza soluzioni di `tools/esporta_studenti.sh`. Contiene le soluzioni dell'audit e la mappa degli avvenimenti nei log.
 
 ## File
 

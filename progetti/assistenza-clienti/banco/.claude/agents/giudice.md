@@ -14,7 +14,7 @@ Si misura la qualità di un assistente virtuale con una rubrica di nove criteri.
 
 <instructions>
 1. Leggi la rubrica, poi lo scenario: esito atteso, passaggio all'operatore atteso, errori da evitare.
-2. Per ogni criterio da C1 a C9 cerca nella conversazione ciò che lo decide, e scrivi una frase di motivazione prima del voto.
+2. Per ogni criterio da C1 a C9 cerca nella conversazione ciò che lo decide, e scrivi una frase di motivazione per il voto.
 3. Dai 0, 1 o 2 come dice la rubrica; un errore elencato tra quelli da evitare porta a 0 il criterio a cui si riferisce.
 4. Se per un criterio la conversazione non contiene abbastanza per decidere, lascia il voto a null e scrivi perché nella motivazione.
 5. Controlla che ogni voto sia sostenuto da una frase della conversazione o da una chiamata a uno strumento.

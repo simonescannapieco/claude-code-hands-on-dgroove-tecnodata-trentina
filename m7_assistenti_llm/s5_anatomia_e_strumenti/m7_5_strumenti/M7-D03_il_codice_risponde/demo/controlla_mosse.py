@@ -10,8 +10,9 @@ allo strumento) ed esito.json (il riepilogo del banco).
 Di ogni caso stampa ciò che il modello ha chiesto (lo strumento e gli argomenti,
 dallo stream), ciò che il server ha fatto (il risultato, dal registro) e la
 risposta. Poi una dimostrazione, che fa lo script e non dice niente su Claude: i
-dati della risposta che vengono dal risultato dello strumento, e i numeri, i
-codici e gli orari della risposta che nel risultato non ci sono. Poi le due
+dati della risposta che vengono dal risultato dello strumento, e i numeri (di
+almeno due cifre: DATO), i codici e gli orari della risposta che nel risultato
+non ci sono. Poi le due
 garanzie, che decidono l'uscita:
   «The model never runs anything on its own»: ogni chiamata che il modello
     chiede nello stream è nel registro del server, con gli stessi argomenti e
