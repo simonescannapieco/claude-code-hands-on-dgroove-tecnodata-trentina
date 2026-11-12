@@ -226,6 +226,27 @@ non c'è. Le tre garanzie:
 confermate. Le tre risposte, la parola e la frase sono nella cartella
 `soluzione/` di questo elemento.
 
+### Un esito in contraddizione con la documentazione
+
+Il 12 novembre 2026 la prova è stata rifatta con i passi di questo
+README, sull'account del docente: claude.ai nella nuova esperienza, con
+il modello che l'account aveva selezionato, Sonnet con effort medium, e
+una chat nuova per prova, ognuna con «Memory» spenta prima del primo
+messaggio. Nella prova A la parola è comparsa, e anzi apriva la risposta
+(«GHIRO-4264 Durante la notte un guasto alla rete…»); le prove B e C
+sono andate come nella registrazione del corso. Il controllo ha stampato
+«Claude non vede la descrizione del progetto (prova A): non confermata in
+questa esecuzione», e la verifica è uscita con 1.
+
+È un comportamento in contraddizione con la documentazione di Anthropic:
+l'articolo del supporto «How can I create and manage projects?»
+(https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects),
+riletto il 12 novembre 2026, dice ancora che Claude non avrà accesso al
+nome e alla descrizione del progetto, la prima delle frasi citate qui
+sopra. Se nella vostra verifica la prova A è «non confermata», con la
+memoria spenta e la frase nella descrizione, avete trovato lo stesso
+esito: fatelo vedere al docente.
+
 ## Verifica (tools/verifica.sh M3-D03)
 
 `tools/verifica.sh M3-D03` fa girare `controlla_progetto.py`
@@ -247,7 +268,9 @@ tiene; con 2 quando un file non si legge o non è testo UTF-8, o quando
   C: controllate prima che quella chat avesse la memoria spenta (l'icona
   barrata) e che la parola non l'abbiate scritta voi in una chat. Se è
   tutto in ordine, è un esito da segnalare al docente: la documentazione
-  lo esclude.
+  lo esclude. Per la prova A è già successo il 12 novembre 2026: lo
+  racconta «Un esito in contraddizione con la documentazione», in «Che
+  cosa osservare».
 - La verifica dice che nella risposta della prova B la parola non c'è:
   controllate che la frase sia nelle istruzioni del progetto e che
   la chat sia dentro il progetto, poi rifate la prova B in una chat nuova.
