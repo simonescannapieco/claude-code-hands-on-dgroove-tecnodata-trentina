@@ -52,7 +52,7 @@ Lo spazio di lavoro `~/corso-claude-code/M6-D02/` con:
   | sub/CLAUDE.md | `sub/CLAUDE.md` |
   | file letto | `sub/nota.txt`, un file di testo qualunque |
 
-  Poi `src/a.php`, un file PHP senza parole, e `.claude/`: `settings.json`,
+  Poi `src/a.php`, un file PHP senza parole in codice, e `.claude/`: `settings.json`,
   con l'hook `InstructionsLoaded` e le impostazioni prudenti del corso, e
   `hooks/registra_caricamenti.py`, la copia dello script di `tools/` del
   repository, che scrive una riga per ogni caricamento in
@@ -234,8 +234,9 @@ controllo esce con 1, e la demo si rifà.
 Come dati, mai come esito né come uscita: le parole che ogni risposta riporta,
 posto per posto; gli strumenti; i caricamenti, nell'ordine in cui l'hook li ha
 scritti; la prima richiesta; turni, token e secondi. La parola di
-`sub/nota.txt` arriva a Claude con il `Read`, ma non è un file di istruzioni e
-il registro non lo nomina: se Claude la elenca è un dato. Dei quattro bracci
+`sub/nota.txt` arriva a Claude con il `Read`, ma non è un file di istruzioni:
+nel registro compare solo come `trigger_file_path` del caricamento di
+`sub/CLAUDE.md`, e se Claude la elenca è un dato. Dei quattro bracci
 di costo, la prima richiesta di ognuno, il commento sul braccio base, lo
 stesso testo visibile e l'import contro il testo incollato, con «import ≥
 inline: sì» o «no»: nessuna delle frasi dà una soglia in token.

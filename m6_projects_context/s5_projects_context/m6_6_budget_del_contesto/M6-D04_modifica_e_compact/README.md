@@ -105,9 +105,13 @@ Perché un solo processo con `--input-format stream-json`: «Input format (only
 works with --print): "text" (default), or "stream-json" (realtime streaming
 input)» (`claude --help`, versione 2.1.319). La sessione resta aperta fra un
 messaggio e l'altro, come quella che usate voi, mentre il file cambia da
-fuori. Con `--resume` ogni messaggio sarebbe un `claude -p` nuovo, un processo
-nuovo: un riavvio, e al riavvio la documentazione dice che il contenuto nuovo
-si carica (qui sotto).
+fuori. Con `--resume`, che riprende una conversazione precisa («--resume with a
+session ID to continue a specific conversation», da «Run Claude Code
+programmatically», https://code.claude.com/docs/en/headless), ogni messaggio
+sarebbe un `claude -p` nuovo, un processo nuovo: la sessione non resterebbe
+aperta, e la demo non metterebbe più alla prova la frase qui sotto. Se una
+conversazione ripresa con `--resume` rilegga il `CLAUDE.md` modificato, le
+pagine di Anthropic lette per il corso non lo dicono.
 
 ## Che cosa osservare
 

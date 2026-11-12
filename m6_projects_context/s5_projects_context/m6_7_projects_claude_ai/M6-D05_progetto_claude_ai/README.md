@@ -198,7 +198,10 @@ istruzioni nominano `carta-servizi.md`.
 La pagina «What are projects?» annuncia una nuova versione dei progetti, in
 beta: «Other existing projects in chat and Cowork stay on the current version
 for now, and we’ll move them as the rollout expands.» Questa demo riguarda la
-versione attuale, quella dei progetti nelle chat di claude.ai.
+versione attuale, quella dei progetti nelle chat di claude.ai. La stessa pagina
+dice che alcuni sono già stati spostati: «We've started moving existing projects
+for some Pro, Max, and Ultra users to the new version.» Su quegli account i
+progetti sono la versione nuova, e i passi qui sopra possono essere diversi.
 
 ### Sullo schermo
 
