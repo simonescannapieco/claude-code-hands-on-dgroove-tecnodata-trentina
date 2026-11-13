@@ -70,9 +70,9 @@ precedente delle impostazioni in Settings > Memory. Dove i due layout
 differiscono, i passi li danno tutti e due.
 
 1. **La memoria accesa, la ricerca spenta.** In claude.ai, in Settings >
-   Your Claude, «Memory from chats» dev'essere acceso (nel layout
-   precedente delle impostazioni: in Settings > Memory, «Generate memory
-   from chats»). La memoria non dev'essere in pausa: con «Pause memory»
+   Your Claude, «Generate memory from chats» dev'essere acceso (nel
+   layout precedente delle impostazioni: in Settings > Memory, con lo
+   stesso nome). La memoria non dev'essere in pausa: con «Pause memory»
    Claude conserva la memoria che ha, ma non la usa e non ne crea di
    nuova. Nella stessa pagina spegnete «Search and reference chats», la
    ricerca nelle chat passate: così il codice può tornare solo dalla

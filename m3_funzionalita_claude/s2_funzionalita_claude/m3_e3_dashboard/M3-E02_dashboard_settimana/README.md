@@ -217,6 +217,15 @@ editor, o su GitHub nella vista «Raw», e copiate tutto.
 
    <!-- /prompt: dashboard -->
 
+   Mentre Claude prepara l'artifact, la chat può fermarsi su «Needs your
+   input». Nella prova del 12 novembre 2026, nella nuova esperienza, è
+   successo due volte: «Claude wants to use Upload asset from
+   claude-artifacts», per i file con i numeri della dashboard, e poi
+   «Claude wants to use Db write from claude-artifacts», per i dati e la
+   pagina dell'artifact, ciascuna con «Decline» e «Allow once». Leggete
+   che cosa chiede («Show full input» lo mostra per intero) e, se sono i
+   numeri e la pagina della dashboard, scegliete «Allow once».
+
    L'artifact si apre accanto alla conversazione. Confrontate a occhio i
    suoi numeri con quelli della verifica. Poi chiedete a Claude una o due
    modifiche, per esempio «Metti in alto quattro riquadri con
@@ -355,14 +364,13 @@ editor, o su GitHub nella vista «Raw», e copiate tutto.
   Haiku 5.5, or the Fable models.»
   (https://code.claude.com/docs/en/model-config). I numeri della coppia
   sono del corso, non quelli di Anthropic. Nella registrazione del corso
-  (1 novembre 2026, Claude Code 2.1.316, Sonnet con effort low):
-  incollando 8, 9 e 9 indicatori giusti su dieci, con il file e il
-  codice 10, 10 e 10, cioè confermata in tutte e tre le coppie:
-  confermata 3 su 3. Incollando erano sbagliati `soddisfazione_media` e
-  `voti` nella prima coppia, `mediana_minuti_prima_risposta` nella
-  seconda e `soddisfazione_media` nella terza; con il file, nessuno. Come
-  dato, i token in entrata: da 57.230 a 57.236 per esecuzione
-  incollando, da 30.954 a 31.647 con il file.
+  (12 novembre 2026, Claude Code 2.1.322, Sonnet con effort low):
+  incollando 10, 10 e 10 indicatori giusti su dieci, con il file e il
+  codice 10, 10 e 9, cioè non distinguibile nelle prime due coppie e non
+  confermata in questa esecuzione nella terza: confermata 0 su 3. Con il
+  file era sbagliato `clienti_ricorrenti` nella terza esecuzione;
+  incollando, nessuno. Come dato, i token in entrata: da 57.361 a 57.365
+  per esecuzione incollando, da 21.923 a 30.954 con il file.
 - Nella registrazione del corso in claude.ai (1 novembre 2026, nuova
   esperienza, Sonnet 5.5, la chat con la memoria spenta): la prima
   risposta, dopo il passo «Read a file, updated tasks, ran 2 commands»,

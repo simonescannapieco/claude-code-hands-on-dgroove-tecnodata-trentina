@@ -156,27 +156,28 @@ verifica.
 
 Il numero di versione è un dato, non un verdetto: il controllo non sa
 quale sia l'ultima versione del changelog, e non la va a cercare. Nella
-registrazione del corso del 21 ottobre 2026, con Sonnet e il solo WebSearch, le
-ricerche sulla domanda attuale hanno trovato una pagina di terzi con una
-versione più vecchia: per questo contano le fonti citate, che servono a
-controllare da dove viene un numero, come dice il centro assistenza
-(«Che cosa dice Anthropic», primo punto). In claude.ai la stessa prova la
-guardate a occhio, dalle fonti citate.
+registrazione del corso del 12 novembre 2026, con Sonnet e il solo
+WebSearch, le ricerche sulla domanda attuale hanno trovato pagine di
+terzi con una versione più vecchia: per questo contano le fonti citate,
+che servono a controllare da dove viene un numero, come dice il centro
+assistenza («Che cosa dice Anthropic», primo punto). In claude.ai la
+stessa prova la guardate a occhio, dalle fonti citate.
 `tools/verifica.sh M3-D02` fa girare lo stesso controllo, quello della
 cartella dell'elemento, sullo stream dello spazio di lavoro: decide dalle
 chiamate, non legge `esiti.tsv` e non scrive niente.
 
-Nella registrazione del corso (21 ottobre 2026, Claude Code 2.1.306,
+Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,
 Sonnet con il solo WebSearch, tre coppie, le due domande come sono qui,
 con la stessa coda): per la domanda attuale una chiamata a WebSearch in
 ognuna delle tre esecuzioni, con la ricerca «Claude Code changelog
 latest version»; per la stabile, nessuna. «Cerca per l'attuale, non per
 lo stabile»: confermata 3 su 3. Le risposte sull'attuale hanno citato
-pagine di terzi e dato 2.1.263, una versione più vecchia di quella
-installata per la registrazione, e lo hanno detto loro stesse: il
-changelog ufficiale non l'avevano trovato, consultato o verificato. È un
-dato, non un esito: il controllo non decide sulla versione. Le sei
-esecuzioni sono nella cartella `soluzione/risposte/` di questo elemento.
+pagine di terzi e dato 2.1.310, una versione più vecchia di quella
+installata per la registrazione, la 2.1.322, e lo hanno detto loro
+stesse: il numero non veniva dal changelog ufficiale, o non avevano
+potuto verificarlo lì. È un dato, non un esito: il controllo non decide
+sulla versione. Le sei esecuzioni sono nella cartella
+`soluzione/risposte/` di questo elemento.
 
 ## Verifica (tools/verifica.sh M3-D02)
 

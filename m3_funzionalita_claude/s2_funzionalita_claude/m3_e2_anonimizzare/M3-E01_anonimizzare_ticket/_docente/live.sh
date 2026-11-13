@@ -15,6 +15,17 @@
 #     e leggi la sua ultima riga; correggi finché dice uscita: 0.», se il
 #     file anonimo manca o vi restano dati personali, contati con
 #     _docente/residui.py (il controllo originale, che non scrive niente);
+#   - «La verifica dice che il file anonimo non è l'originale con [OMESSO]
+#     al posto dei dati personali: correggi anonimizza.py perché
+#     sostituisca soltanto i dati e lasci com'è tutto il resto, poi esegui
+#     python3 anonimizza.py e, da solo, python3 controlla_pii.py, e leggi
+#     la sua ultima riga.», se non vi restano dati personali ma la forma
+#     non è quella del file grezzo con [OMESSO]: la «struttura» di
+#     _docente/residui.py, i problemi di forma di verifica.py (un testo
+#     riscritto invece che sostituito, una colonna cambiata), che
+#     controlla_pii.py non guarda (osservato nella prova dal vivo del
+#     2026-11-12 con Claude Code 2.1.322: sette testi riscritti, la
+#     verifica uscita con 1, e nessun seguito che lo dicesse);
 #   - «Ora scrivi profilo.py ed eseguilo da solo, come chiedeva il primo
 #     messaggio.», se manca soltanto il profilo.
 # Ogni seguito è una richiesta di una frase sola: resta semplice, senza i
@@ -59,6 +70,12 @@ SEGUITO_CONTROLLO='Esegui python3 anonimizza.py, poi da solo python3'
 SEGUITO_CONTROLLO+=' controlla_pii.py, e leggi la sua ultima riga;'
 SEGUITO_CONTROLLO+=' correggi finché dice uscita: 0.'
 readonly SEGUITO_CONTROLLO
+SEGUITO_FORMA="La verifica dice che il file anonimo non è l'originale con"
+SEGUITO_FORMA+=' [OMESSO] al posto dei dati personali: correggi anonimizza.py'
+SEGUITO_FORMA+=" perché sostituisca soltanto i dati e lasci com'è tutto il"
+SEGUITO_FORMA+=' resto, poi esegui python3 anonimizza.py e, da solo, python3'
+SEGUITO_FORMA+=' controlla_pii.py, e leggi la sua ultima riga.'
+readonly SEGUITO_FORMA
 SEGUITO_PROFILO='Ora scrivi profilo.py ed eseguilo da solo, come chiedeva'
 SEGUITO_PROFILO+=' il primo messaggio.'
 readonly SEGUITO_PROFILO
@@ -135,7 +152,9 @@ sessione_di() {
 }
 
 # Che cosa manca, dopo un turno: «controllo» (il file anonimo manca o vi
-# restano dati personali), «profilo» (manca solo il profilo) o «fatto».
+# restano dati personali), «forma» (nessun dato personale, ma la forma non
+# è quella del file grezzo con [OMESSO]: la «struttura» di residui.py),
+# «profilo» (manca solo il profilo) o «fatto».
 # Outputs: la parola su STDOUT. Returns: 2 se residui.py non riesce.
 stato_del_lavoro() {
   local misura
@@ -143,6 +162,8 @@ stato_del_lavoro() {
     || return 2
   if [[ "$(jq -r '.totale' <<< "${misura}")" != "0" ]]; then
     echo controllo
+  elif [[ "$(jq -r '.struttura | length' <<< "${misura}")" != "0" ]]; then
+    echo forma
   elif [[ ! -f anonimo/profilo.json ]]; then
     echo profilo
   else
@@ -188,6 +209,7 @@ main() {
     case "${stato}" in
       fatto) break ;;
       profilo) seguito="${SEGUITO_PROFILO}" ;;
+      forma) seguito="${SEGUITO_FORMA}" ;;
       *) seguito="${SEGUITO_CONTROLLO}" ;;
     esac
     handson::step "Turno ${n}: ${seguito}"

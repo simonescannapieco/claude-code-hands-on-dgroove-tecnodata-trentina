@@ -48,7 +48,10 @@
 #     chiamare claude (anche impostazioni senza regole Bash); una sessione
 #     che finisce al primo turno, una che finisce al secondo (con
 #     --resume), una che non finisce (quattro chiamate, uscita 1), una a
-#     cui manca il profilo, una chiamata fallita; le opzioni passate a
+#     cui manca il profilo, una che al primo turno lascia un testo
+#     riscritto senza dati personali (il seguito chiede di sostituire
+#     soltanto i dati e lasciare com'è tutto il resto, un comando alla
+#     volta), una chiamata fallita; le opzioni passate a
 #     claude (Read, Write, Edit e le regole Bash delle impostazioni,
 #     --strict-mcp-config), il prompt uguale a quello del README,
 #     ANTHROPIC_API_KEY tolta;
@@ -91,7 +94,7 @@ readonly PROGETTO="${RADICE}/progetti/assistenza-clienti"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=179
+readonly CASES=182
 readonly FINE="Fatto: il file anonimo, i dati personali rimasti e il \
 profilo sono quelli attesi."
 # La frase della guida di Claude Code che la verifica stampa, com'è oggi
@@ -496,7 +499,10 @@ PY
 cartella corrente), secondo FINTO_MODO: completo (gli script della
 soluzione, il controllo, il profilo), a_rate (al primo turno uno script che
 non toglie niente, con --resume la soluzione), mai (sempre lo script che non
-toglie niente), senza_profilo (al primo turno niente profilo). Con
+toglie niente), senza_profilo (al primo turno niente profilo), riscritto
+(al primo turno la soluzione con uno spazio in più in fondo alla prima
+descrizione: nessun dato personale, la forma sbagliata; con --resume la
+soluzione). Con
 FINTO_ESITO=ko esce 1. Registra ogni chiamata in FINTO_LOG («CHIAVE» se
 ANTHROPIC_API_KEY gli arriva), gli argomenti in FINTO_ARGV (una riga JSON
 per chiamata) e il prompt di ogni chiamata in FINTO_PROMPT.<n>."""
@@ -555,6 +561,17 @@ def cattivo():
     esegui("controlla_pii.py")
 
 
+def riscrivi():
+    import csv
+    nome = "anonimo/ticket-anonimi.csv"
+    with open(nome, encoding="utf-8", newline="") as fh:
+        righe = list(csv.reader(fh))
+    i = righe[0].index("descrizione")
+    righe[1][i] += " "
+    with open(nome, "w", encoding="utf-8", newline="") as fh:
+        csv.writer(fh, lineterminator="\n").writerows(righe)
+
+
 def main(argv):
     if argv[:1] == ["--version"]:
         print("0.0.0 (Claude Code, finto)")
@@ -590,6 +607,10 @@ def main(argv):
             esegui("profilo.py")
         else:
             buono(False)
+    elif modo == "riscritto":
+        buono(True)
+        if not ripresa:
+            riscrivi()
     print(json.dumps({
         "type": "result", "subtype": "success", "is_error": False,
         "session_id": "sessione-finta", "result": "Fatto (finto).",
@@ -1414,6 +1435,21 @@ PY
     pass "live.sh: il secondo turno chiede il profilo, da solo"
   else
     fail "live.sh: il secondo turno non chiede il profilo"
+  fi
+  ws w
+  live_finto "${w}" FINTO_MODO=riscritto
+  expect "live.sh: un testo riscritto, finito al secondo turno esce 0" 0 \
+    "VERIFICA OK"
+  expect_chiamate "live.sh: un testo riscritto, due chiamate" 2
+  if sed -n 2p "${TMP}/finto.argv" | grep -qF '"--resume", "sessione-finta"' \
+      && grep -qF "non è l'originale con [OMESSO] al posto dei dati" \
+        "${TMP}/prompt.2" \
+      && grep -qF "lasci com'è tutto il resto" "${TMP}/prompt.2" \
+      && grep -qF "e, da solo, python3 controlla_pii.py" "${TMP}/prompt.2"
+  then
+    pass "live.sh: un testo riscritto, il turno 2 chiede la forma, da solo"
+  else
+    fail "live.sh: un testo riscritto, il turno 2 non chiede la forma"
   fi
   ws w
   live_finto "${w}" FINTO_ESITO=ko

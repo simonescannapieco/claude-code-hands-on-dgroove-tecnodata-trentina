@@ -14,8 +14,10 @@
 #     chiave, l'oggetto dentro una chiave kpi, un elenco, un JSON rotto, un
 #     testo non UTF-8, le virgolette tipografiche del testo della pagina (1,
 #     con il pulsante «Copy» e senza «dalla { alla }»); il contesto di
-#     Anthropic stampato, mai
-#     «smentita»; le precondizioni (2): spazio di lavoro assente, CSV
+#     Anthropic stampato, mai «smentita»; la coppia registrata del
+#     2026-11-12 come dato (Claude Code 2.1.322, «confermata 0 su 3»), non
+#     più quella del 2026-11-01; le precondizioni (2): spazio di lavoro
+#     assente, CSV
 #     assente o senza le colonne, kpi_veri.py dell'elemento assente, un
 #     controllo uscito fuori contratto;
 #   - _docente/confronta_gemello.py su esecuzioni sintetiche, costruite qui
@@ -39,7 +41,10 @@
 #     (<anonymized_tickets>) e come si legge; il formato «Un oggetto
 #     JSON», non «soltanto»; il seguito della dashboard con i tag e senza
 #     ruolo; il README con le dieci sezioni e, prima del passo 4, il testo
-#     dei due file di prompt, non una loro vista formattata («Raw»); i
+#     dei due file di prompt, non una loro vista formattata («Raw»); al
+#     passo 6, dopo il prompt della dashboard, le due richieste di
+#     permesso della prova del 2026-11-12 («Needs your input», «Upload
+#     asset» e «Db write from claude-artifacts», «Decline», «Allow once»); i
 #     comandi di _docente/README-gemello.md con --permission-prompts none,
 #     come li passa il registratore; nessun identificativo interno nei
 #     file per i partecipanti;
@@ -69,7 +74,7 @@ readonly E01="${SEZIONE}/m3_e2_anonimizzare/M3-E01_anonimizzare_ticket"
 # rifiuta gli spazi di lavoro, anche se TMPDIR punta lì.
 # shellcheck source=../../tools/lib_handson.sh
 source "${RADICE}/tools/lib_handson.sh"
-readonly CASES=82
+readonly CASES=86
 readonly FINE="Fatto: kpi.json ha le dieci chiavi, con i tipi giusti."
 # Gli identificativi interni che i file per i partecipanti non portano.
 INTERNI='FACT-|Tecnodata|[Tt]riage|Envelope|M[0-9]-X[0-9]|\bX-[0-9]'
@@ -318,6 +323,12 @@ t_verifica() {
     "coppia registrata dal docente in Claude Code"
   expect "verifica: l'esito della registrazione del corso, come dato" 0 \
     "Nella registrazione del corso"
+  expect "verifica: la registrazione del 2026-11-12, Claude Code 2.1.322" 0 \
+    "Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,"
+  expect "verifica: la coppia del 2026-11-12, confermata 0 su 3" 0 \
+    "con il file e il codice 10, 10 e 9: confermata 0 su 3."
+  expect_absent "verifica: non più la registrazione del 2026-11-01" \
+    "(1 novembre 2026, Claude Code 2.1.316,"
   expect_absent "verifica: nessun segnaposto di registrazione" \
     "[REGISTRAZIONE"
   expect_absent "verifica: nessun esito dice «smentita»" "smentit"
@@ -649,6 +660,22 @@ if len(p3) == 1 and len(p4) == 1 and p3[0] < p4[0]:
     if all(s in prima for s in ("`prompt-numeri.md`", "`prompt-dashboard.md`",
                                 "vista formattata", "vista «Raw»")):
         print("README: il testo dei file, prima del passo 4")
+# Al passo 6, dopo il prompt della dashboard, le due richieste di permesso
+# che la prova del 2026-11-12 ha mostrato, e che cosa scegliere.
+p6 = [k for k, r in enumerate(righe) if r.startswith("6. **Poi la dashboard")]
+p7 = [k for k, r in enumerate(righe) if r.startswith("7. **Tenerla privata")]
+fine = [k for k, r in enumerate(righe)
+        if r.strip() == "<!-- /prompt: dashboard -->"]
+if len(p6) == 1 and len(p7) == 1 and len(fine) == 1 and \
+        p6[0] < fine[0] < p7[0]:
+    dopo = " ".join(" ".join(righe[fine[0]:p7[0]]).split())
+    if all(s in dopo for s in ("«Needs your input»",
+                               "«Claude wants to use Upload asset from "
+                               "claude-artifacts»",
+                               "«Claude wants to use Db write from "
+                               "claude-artifacts»",
+                               "«Decline»", "scegliete «Allow once»")):
+        print("README: le due richieste di permesso, al passo 6")
 # I comandi della coppia in README-gemello.md: --permission-prompts none,
 # come li passa il registratore, nei due claude -p e nell'elenco di ciò
 # che è uguale nelle due braccia.
@@ -701,6 +728,8 @@ si calcola" 0 "coppia contesto e istruzione diversi"
   expect "README: prima del passo 4, il testo dei due file di prompt, non \
 una loro vista formattata («Raw»)" 0 \
     "README: il testo dei file, prima del passo 4"
+  expect "README: al passo 6, le due richieste di permesso e «Allow once»" 0 \
+    "README: le due richieste di permesso, al passo 6"
   expect "README-gemello: i due claude -p e l'elenco con \
 --permission-prompts none, come il registratore" 0 \
     "gemello: --permission-prompts none, come il registratore"

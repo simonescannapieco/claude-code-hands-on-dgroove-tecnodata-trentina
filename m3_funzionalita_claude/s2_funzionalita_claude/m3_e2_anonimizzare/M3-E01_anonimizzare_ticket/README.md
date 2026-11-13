@@ -315,30 +315,34 @@ Lo spazio di lavoro `~/corso-claude-code/M3-E01/` con:
   il passo 4, «Esegui python3 controlla_pii.py …», in uno spazio di
   lavoro senza `controlla_pii.py` né `impronte.json`, contro il prompt
   intero; per ogni sessione, il file anonimo misurato con il controllo
-  originale: prima la forma giusta del file, poi meno dati personali
-  rimasti. Confermata se il file con il controllo è migliore, non
-  distinguibile se sono uguali, non confermata in questa esecuzione se è
-  peggiore; se un file manca, la coppia non decide. Nella registrazione
-  del corso (1 novembre 2026, Claude Code 2.1.316, Sonnet con effort
-  medium, tre coppie) le sessioni sono `claude -p` in modalità `dontAsk`,
-  che «denies every call that would otherwise prompt … though a mod you
-  installed can still approve some of those calls»
-  (https://code.claude.com/docs/en/headless): nessuna approvazione a
-  mano, e ciò che la chiederebbe è negato, salvo ciò che una mod
-  installata può ancora approvare. Con il
-  controllo, 0 dati personali rimasti in tutte e tre le sessioni; senza,
-  1, 16 e 7, nomi e informazioni sulla salute. Nella prima coppia tutti
-  e due i file avevano testi riscritti invece che sostituiti, cinque con
-  il controllo e tre senza: la forma è giusta o sbagliata, non si
-  contano i testi, e ne basta uno riscritto a sbagliarla; così la forma
-  non li distingue, e decidono i dati rimasti. Confermata 3 su 3. Il
-  ciclo della guida, dalle chiamate di
-  ogni sessione con il controllo: il controllo eseguito 6, 6 e 3 volte,
-  l'ultima con uscita 0; confermata 3 su 3. In quattro sessioni su sei,
-  una con il controllo e tre senza, una chiamata Bash ha nominato il
-  file grezzo fuori dagli script dell'esercizio, con un `python3` scritto
-  per l'occasione: `dontAsk` l'ha negata ogni volta. Nella vostra
-  sessione è la richiesta a cui rispondete No (passo 3).
+  originale: prima la forma del file, poi meno dati personali rimasti.
+  La forma è giusta o sbagliata, non si contano i testi, e ne basta uno
+  riscritto invece che sostituito a sbagliarla. Confermata se il file con
+  il controllo è migliore, non distinguibile se sono uguali, non
+  confermata in questa esecuzione se è peggiore; se un file manca, la
+  coppia non decide. Nella registrazione del corso (12 novembre 2026,
+  Claude Code 2.1.322, Sonnet con effort medium, tre coppie) le sessioni
+  sono `claude -p` in modalità `dontAsk`, che «denies every call that
+  would otherwise prompt … though a mod you installed can still approve
+  some of those calls» (https://code.claude.com/docs/en/headless):
+  nessuna approvazione a mano, e ciò che la chiederebbe è negato, salvo
+  ciò che una mod installata può ancora approvare. Con il controllo, in
+  tutti e tre i file testi di oggetto e descrizione riscritti invece che
+  sostituiti, 10, 8 e 7, cioè la forma sbagliata, e 1, 0 e 0 dati
+  personali rimasti (un nome); senza il controllo, la forma giusta in
+  tutti e tre, e 7, 6 e 2 dati personali rimasti, nomi e informazioni
+  sulla salute. Prima la forma: con questa regola ogni file con il
+  controllo è peggiore del suo pari, e ogni coppia è non confermata in
+  questa esecuzione: confermata 0 su 3. `controlla_pii.py` cerca i dati
+  personali e non guarda se un testo è stato riscritto: lo dice la
+  verifica. Il ciclo della guida, dalle chiamate di ogni sessione con il
+  controllo: il controllo eseguito 3, 5 e 5 volte; nella prima le tre
+  uscite sono state 1, e la sessione è finita con un nome rimasto; nelle
+  altre due l'ultima è stata 0: confermata 2 su 3. In tre sessioni su
+  sei, le tre senza il controllo, una chiamata Bash ha nominato il file
+  grezzo fuori dagli script dell'esercizio, con un `python3` scritto per
+  l'occasione: `dontAsk` l'ha negata ogni volta. Nella vostra sessione è
+  la richiesta a cui rispondete No (passo 3).
 
 ## Verifica (tools/verifica.sh M3-E01)
 
@@ -421,13 +425,13 @@ e fra ciò che pesa ci sono il modello e l'effort: «Additional factors that
 affect your usage limits include: … Tool usage (e.g., Research, web
 search) | Model choice | Effort level»
 (https://support.claude.com/en/articles/9797557-usage-limit-best-practices).
-Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
+Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,
 Sonnet con effort medium, sull'account del docente, `claude -p` senza
 approvazioni, il prompt in un solo messaggio), le tre sessioni con il
-controllo: 35, 31 e 20 turni (`num_turns`) in 128,2, 95,4 e 90,7
-secondi; nel JSON delle risposte, token in entrata 56, 36 e 30, scritti
-in cache 27.645, 25.593 e 22.993, letti dalla cache 892.050, 518.654 e
-421.214, in uscita 13.970, 11.226 e 10.796. Alla fine, `/exit`.
+controllo: 19, 31 e 34 turni (`num_turns`) in 79,4, 102,0 e 122,2
+secondi; nel JSON delle risposte, token in entrata 26, 48 e 46, scritti
+in cache 22.659, 26.821 e 29.244, letti dalla cache 358.658, 751.565 e
+741.744, in uscita 10.334, 12.576 e 14.739. Alla fine, `/exit`.
 
 ## Per approfondire
 

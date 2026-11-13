@@ -696,19 +696,23 @@ citazioni = [
     "individual memories while memory is on."]
 print("citazioni: " + ("tutte" if all(c in piatto for c in citazioni)
                        else "no"))
-# I due layout delle impostazioni: il percorso aggiornato c'è, e ogni
-# percorso o nome del layout precedente ha «layout precedente delle
-# impostazioni» nelle 80 lettere prima.
+# I due layout delle impostazioni: il percorso aggiornato c'è, con il nome
+# che l'interruttore ha in tutti e due, «Generate memory from chats» (il
+# centro assistenza riletto il 2026-11-12), mai quello di prima, «Memory
+# from chats» da solo; e ogni percorso del layout precedente ha «layout
+# precedente delle impostazioni» nelle 80 lettere prima.
 nuovi = all(s in piatto for s in ("Settings > Your Claude",
-                                  "«Memory from chats»",
+                                  "«Generate memory from chats»",
                                   "«Manage» accanto a «Your memory»"))
-vecchi = [m.start() for m in re.finditer(
-    r"Settings > Memory|Generate memory from chats", piatto)]
+di_prima = "«Memory from chats»" in piatto
+vecchi = [m.start() for m in re.finditer(r"Settings > Memory", piatto)]
 soli = [i for i in vecchi if "layout precedente delle impostazioni"
         not in piatto[max(0, i - 80):i]]
-print("layout: " + ("sì" if nuovi and vecchi and not soli
-                    else "no (aggiornato: %s; precedenti senza il layout: "
-                    "%d)" % ("sì" if nuovi else "no", len(soli))))
+print("layout: " + ("sì" if nuovi and not di_prima and vecchi and not soli
+                    else "no (aggiornato: %s; il nome di prima: %s; "
+                    "precedenti senza il layout: %d)"
+                    % ("sì" if nuovi else "no", "sì" if di_prima else "no",
+                       len(soli))))
 vietate = re.findall(r"FACT-|Tecnodata|smentit|\boggi\b|stamattina|"
                      r"prossima sessione|\bX-[0-9]", testo)
 print("vietate: " + (", ".join(vietate) or "nessuna"))
