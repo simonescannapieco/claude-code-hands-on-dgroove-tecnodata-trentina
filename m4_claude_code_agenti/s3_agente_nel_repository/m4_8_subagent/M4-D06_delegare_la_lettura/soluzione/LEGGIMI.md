@@ -1,7 +1,7 @@
 # Soluzione di M4-D06
 
-Qui c'è la registrazione del corso del 1 novembre 2026, con Claude Code
-2.1.316 e Sonnet, sull'account del docente: gli stream delle tre coppie,
+Qui c'è la registrazione del corso del 12 novembre 2026, con Claude Code
+2.1.322 e Sonnet, sull'account del docente: gli stream delle tre coppie,
 in `risposte/` (`delega-<n>.jsonl` e `senza-<n>.jsonl`), da cui
 `tools/verifica.sh M4-D06` stampa i dati e i verdetti. È la prova del
 docente con i due prompt di `demo/`, un tag per ingrediente. Le sessioni

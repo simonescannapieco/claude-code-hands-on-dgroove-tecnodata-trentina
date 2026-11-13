@@ -1,7 +1,7 @@
 # M4-D03 — la registrazione del corso
 
-Qui ci sono le tre esecuzioni della registrazione del corso del 1
-novembre 2026, con Claude Code 2.1.316 e Sonnet, sull'account del
+Qui ci sono le tre esecuzioni della registrazione del corso del 12
+novembre 2026, con Claude Code 2.1.322 e Sonnet, sull'account del
 docente: la prova del docente con il prompt di `demo/prompt.txt`,
 `_docente/live.sh --esecuzioni 3`. La cartella `esecuzioni/` ha
 `giro-1/`, `giro-2/` e `giro-3/`, ciascuna con il suo `stream.jsonl` e la

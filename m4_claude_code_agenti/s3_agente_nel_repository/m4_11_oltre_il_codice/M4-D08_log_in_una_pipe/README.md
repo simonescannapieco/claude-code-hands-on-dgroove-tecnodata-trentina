@@ -149,10 +149,10 @@ con gli strumenti di sempre, e a Claude arriva solo ciò che serve.
   in pipe: sono dati, giusti o sbagliati, e non decidono l'esito. Si
   stampano anche i byte e i token in entrata di ciascun braccio.
 
-Nella registrazione del corso (1 novembre 2026, Claude Code 2.1.316,
+Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,
 Sonnet con effort low): il braccio filtrato, 13.564 byte in pipe, è uscito
 con 0 e ha risposto «inizio 10:12 | fine 11:40», orari giusti tutti e
-due, con 12.308 token in entrata; il braccio grande, 12.664.323 byte, è
+due, con 12.427 token in entrata; il braccio grande, 12.664.323 byte, è
 uscito con 1, senza niente su STDOUT e con su STDERR «Error: piped stdin
 input exceeds 10MB. Pass large content as a file path in your prompt
 instead.». «Lo stdin in pipe ha un tetto di 10 MB: oltre, Claude Code
@@ -189,9 +189,9 @@ Una chiamata breve a Sonnet con effort low, senza strumenti né subagent,
 con le righe di un solo apparato in ingresso (circa 13 KB). Il secondo
 braccio manda lo stesso comando con il file grande: secondo la documentazione
 Claude Code esce con un errore, e il controllo dice se quel braccio ha
-prodotto una risposta. Nella registrazione del corso (1 novembre 2026,
-Claude Code 2.1.316, Sonnet con effort low), dal JSON del braccio filtrato:
-1 turno (`num_turns`), 1,9 secondi, 12.308 token in entrata, cache
+prodotto una risposta. Nella registrazione del corso (12 novembre 2026,
+Claude Code 2.1.322, Sonnet con effort low), dal JSON del braccio filtrato:
+1 turno (`num_turns`), 1,1 secondi, 12.427 token in entrata, cache
 compresa, e 17 in uscita. Per il braccio grande nessun JSON, quindi nessun
 dato d'uso: Claude Code è uscito con l'errore.
 

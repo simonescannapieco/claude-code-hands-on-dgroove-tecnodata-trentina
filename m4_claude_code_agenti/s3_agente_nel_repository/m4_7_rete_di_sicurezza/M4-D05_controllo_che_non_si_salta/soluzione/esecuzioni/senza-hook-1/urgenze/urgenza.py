@@ -5,15 +5,14 @@ Una segnalazione è urgente se vale almeno una di queste due condizioni:
 - coinvolge almeno 10 clienti;
 - è aperta da almeno 7 giorni.
 
-Entrambe le soglie sono incluse: 10 clienti o 7 giorni bastano già.
-
 Esempio d'uso:
 
-    >>> urgente(clienti=10, giorni_aperta=0)
+    >>> from urgenza import urgente
+    >>> urgente(clienti=12, giorni_aperta=1)   # molti clienti coinvolti
     True
-    >>> urgente(clienti=1, giorni_aperta=7)
+    >>> urgente(clienti=2, giorni_aperta=15)   # aperta da molto tempo
     True
-    >>> urgente(clienti=3, giorni_aperta=1)
+    >>> urgente(clienti=3, giorni_aperta=1)    # nessuna delle due condizioni
     False
 """
 

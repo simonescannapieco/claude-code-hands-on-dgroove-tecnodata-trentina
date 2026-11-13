@@ -1,7 +1,7 @@
 # M4-D08 — la soluzione è la registrazione del corso
 
-Qui c'è la cartella `pipe/` della registrazione del corso del 1 novembre
-2026, con Claude Code 2.1.316 e Sonnet, sull'account del docente: per i
+Qui c'è la cartella `pipe/` della registrazione del corso del 12 novembre
+2026, con Claude Code 2.1.322 e Sonnet, sull'account del docente: per i
 due bracci, `filtrato` e `grande`, lo STDOUT (`.out`), lo STDERR (`.err`),
 il codice d'uscita di `claude` (`.uscita`) e i byte passati in pipe
 (`.byte`), come li scrivono i passi 2 e 3 del README. Vengono dalla prova

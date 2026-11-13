@@ -190,7 +190,7 @@ e la stessa modalità; nessuna esecuzione senza hook mostra blocchi.
 Altrimenti la verifica esce 1 e dice che cosa rifare. Il controllo non
 scrive niente.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,
 Sonnet con effort low, in acceptEdits, tre esecuzioni per braccio): con
 l'hook, un blocco in ogni esecuzione, `urgenza.py` cambiato e
 `test_urgenza.py` no, e i test verdi alla fine (3 test, OK). «L'uscita 2
@@ -257,11 +257,11 @@ la sessione, e consuma altre richieste. claude.ai e Claude Code
 consumano gli stessi limiti: se il limite della sessione è vicino,
 guardate il risultato del docente invece di rifare i due bracci.
 
-Nella registrazione del corso (28 ottobre 2026, Claude Code 2.1.312,
+Nella registrazione del corso (12 novembre 2026, Claude Code 2.1.322,
 Sonnet con effort low), dal JSON di ogni esecuzione: con l'hook 8, 7 e
-8 turni (`num_turns`), 18,5, 21,0 e 38,6 secondi, 112.670, 111.465 e
-153.979 token in entrata, cache compresa; senza, 5, 4 e 4 turni, 15,8,
-17,1 e 12,3 secondi, 72.221, 71.988 e 71.975 token.
+7 turni (`num_turns`), 17,3, 16,7 e 14,4 secondi, 96.418, 137.774 e
+115.724 token in entrata, cache compresa; senza, 4, 4 e 4 turni, 10,9,
+10,1 e 10,2 secondi, 75.030, 74.752 e 74.914 token.
 
 ## Per approfondire
 

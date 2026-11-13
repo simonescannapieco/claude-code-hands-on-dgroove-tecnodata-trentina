@@ -1,21 +1,18 @@
-"""Urgenza di una segnalazione di guasto.
+"""Valutazione dell'urgenza di una segnalazione di guasto.
 
-Una segnalazione è urgente se vale almeno una di queste condizioni:
+Una segnalazione è urgente se soddisfa almeno una di queste condizioni:
 
-- coinvolge 10 clienti o più;
-- è aperta da 7 giorni o più.
-
-Le soglie sono incluse: con esattamente 10 clienti, oppure con
-esattamente 7 giorni, la segnalazione è già urgente.
+- coinvolge 10 o più clienti;
+- è aperta da 7 o più giorni.
 
 Esempio d'uso:
 
     >>> from urgenza import urgente
-    >>> urgente(10, 0)   # soglia sui clienti raggiunta
+    >>> urgente(clienti=10, giorni_aperta=1)
     True
-    >>> urgente(1, 7)    # soglia sui giorni raggiunta
+    >>> urgente(clienti=3, giorni_aperta=7)
     True
-    >>> urgente(3, 1)    # nessuna soglia raggiunta
+    >>> urgente(clienti=3, giorni_aperta=6)
     False
 """
 
